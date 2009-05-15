@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+		android:id="@+id/server_add"
+		android:title="Add Server"
+		android:icon="@android:drawable/ic_menu_add" />
+	<item
+		android:id="@+id/settings"
+		android:title="Settings"
+		android:icon="@android:drawable/ic_menu_preferences" />
+	<item
+		android:id="@+id/about"
+		android:title="About"
+		android:icon="@android:drawable/ic_menu_help" />
+</menu>

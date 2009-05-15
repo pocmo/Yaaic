@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<LinearLayout
+	    android:orientation="vertical"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent">
+	    <TextView
+	    	android:text="Title:"
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="wrap_content" />
+	    <EditText
+	    	android:id="@+id/server_title"
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="wrap_content" />
+	    <TextView
+	    	android:text="Host:"
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="wrap_content" />
+	    <EditText
+	    	android:id="@+id/server_host"
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="wrap_content" />
+	    <TextView
+	    	android:text="Port:"
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="wrap_content" />
+	    <EditText
+	    	android:id="@+id/server_port"
+	    	android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:text="6667" />
+		<TextView
+			android:text="Password:"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content" />
+		<EditText
+			android:id="@+id/server_password"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content" />
+		<CheckBox
+			android:id="@+id/server_autoconnect"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="Auto connect on startup" />
+		<CheckBox
+			android:id="@+id/server_usessl"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="Use SSL" />
+		<Button
+			android:id="@+id/server_add"
+			android:drawableLeft="@android:drawable/ic_input_add"
+			android:drawablePadding="3px"
+			android:text="Add to list"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+	</LinearLayout>
+</ScrollView>

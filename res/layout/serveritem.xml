@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:orientation="horizontal" android:padding="3px">
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"		
+		android:drawableLeft="@android:drawable/presence_away"
+		android:layout_margin="5px"
+		android:drawablePadding="5px"
+		android:text="" />
+	<!-- <RadioButton
+		android:id="@+id/server_checkbox"
+		android:layout_width="wrap_content"
+		android:layout_height="fill_parent"
+		android:layout_marginRight="5px"/>
+	 -->	
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+	    android:orientation="vertical">
+		<TextView
+			android:id="@+id/server_title"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="Title"
+			android:textSize="22px"/>
+		<TextView
+			android:id="@+id/server_host"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="Host" />
+		<TextView
+			android:id="@+id/server_channels"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="Channels" />
+	</LinearLayout>
+</LinearLayout>

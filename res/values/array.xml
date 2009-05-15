@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<array name="server_popup">
+		<item>Connect</item>
+		<!-- <item>Edit</item> -->
+		<item>Delete</item>
+		<item>Disconnect</item>
+	</array>
+</resources>

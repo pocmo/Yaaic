@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Yaaic</string>
+    
+    <string name="server_add_title">Yaaic: New Server</string>
+    <string name="settings_title">Yaaic: Settings</string>
+    <string name="about_title">About Yaaic</string>
+    
+    <string name="about_text">\
+Yaaic 0.1\n\
+Yet Another Android IRC Client\n\
+Sebastian Kaspari\n\
+http://www.yaaic.org\n\
+\n\
+Yaaic is free and will remain free! If you like Yaaic you can support Yaaic by donating a small amount. :)\n\
+\n\
+Thanks to:\n\
+- Bonko -\n\
+For Beta-Testing and Reporting Bugs\n\
+\n\
+- Paul Mutton -\n\
+For the awesome PircBot IRC API\n\
+</string>
+
+</resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical">
+	<TextView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/server_title"
+		android:text=""
+		android:textSize="22px"
+		android:drawableLeft="@android:drawable/presence_away"
+		android:padding="5px"
+		android:drawablePadding="5px"
+		android:background="#FF333333" />
+	<ExpandableListView
+		android:id="@android:id/list"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" />
+	<ScrollView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:background="#FF333333"
+		android:padding="5px">
+		<TextView
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/server_log"
+			android:text="Connecting..." />
+	</ScrollView>
+	<EditText
+		android:id="@+id/server_input"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" />
+</LinearLayout>
