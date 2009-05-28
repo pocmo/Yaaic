@@ -35,7 +35,13 @@ import org.yaaic.client.db.ServerDatabase;
 import org.yaaic.client.irc.IrcBinder;
 import org.yaaic.client.irc.IrcService;
 
-public class ServerList extends ListActivity implements OnItemLongClickListener, ServiceConnection {
+/**
+ * ServerList Activity
+ * 
+ * @author Sebastian Kaspari <s.kaspari@googlemail.com>
+ */
+public class ServerList extends ListActivity implements OnItemLongClickListener, ServiceConnection
+{
 	public static final String TAG = "Yaaic/ServerList";
 	
 	private ServerDatabase db;

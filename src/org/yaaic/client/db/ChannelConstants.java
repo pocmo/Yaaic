@@ -2,6 +2,11 @@ package org.yaaic.client.db;
 
 import android.provider.BaseColumns;
 
+/**
+ * ChannelConstants
+ * 
+ * @author Sebastian Kaspari <s.kaspari@googlemail.com>
+ */
 public interface ChannelConstants extends BaseColumns
 {
 	public static final String TABLE_NAME = "channels";

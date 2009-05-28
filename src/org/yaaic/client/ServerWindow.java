@@ -18,6 +18,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+/**
+ * ServerWindow Activity
+ * 
+ * @author Sebastian Kaspari <s.kaspari@googlemail.com>
+ */
 public class ServerWindow extends ExpandableListActivity implements ServiceConnection
 {
 	private static final String TAG = "Yaaic/ServerWindow";

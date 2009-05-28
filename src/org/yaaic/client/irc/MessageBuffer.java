@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.text.SpannableString;
 
 /**
+ * MessageBuffer
  * 
  * @author Sebastian Kaspari <pocmo@yaaic.org>
  */

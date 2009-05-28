@@ -7,6 +7,11 @@ import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+/**
+ * ServerWindowListAdapater
+ * 
+ * @author Sebastian Kaspari <s.kaspari@googlemail.com>
+ */
 public class ServerWindowListAdapter extends BaseExpandableListAdapter
 {
 	private ServerWindow serverWindow;

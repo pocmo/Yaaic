@@ -15,6 +15,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 /**
+ * IrcService
  * 
  * @author Sebastian Kaspari
  */

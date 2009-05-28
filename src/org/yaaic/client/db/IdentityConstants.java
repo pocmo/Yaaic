@@ -1,5 +1,11 @@
 package org.yaaic.client.db;
 
-public class IdentityConstants {
+/**
+ * IdentityConstants
+ * 
+ * @author Sebastian Kaspari <s.kaspari@googlemail.com>
+ */
+public class IdentityConstants
+{
 
 }

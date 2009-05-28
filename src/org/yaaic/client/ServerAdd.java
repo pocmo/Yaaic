@@ -10,6 +10,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+/**
+ * ServerAdd Activity
+ * 
+ * @author Sebastian Kaspari <s.kaspari@googlemail.com>
+ */
 public class ServerAdd extends Activity implements OnClickListener
 {
 	@Override

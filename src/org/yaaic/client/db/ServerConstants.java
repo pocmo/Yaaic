@@ -2,6 +2,11 @@ package org.yaaic.client.db;
 
 import android.provider.BaseColumns;
 
+/**
+ * Server Constants
+ * 
+ * @author Sebastian Kaspari <s.kaspari@googlemail.com>
+ */
 public interface ServerConstants extends BaseColumns
 {
 	public static final String TABLE_NAME   = "servers";

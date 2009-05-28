@@ -3,6 +3,11 @@ package org.yaaic.client;
 import android.app.Activity;
 import android.os.Bundle;
 
+/**
+ * About Activity
+ * 
+ * @author Sebastian Kaspari <s.kaspari@googlemail.com>
+ */
 public class About extends Activity
 {
 	@Override

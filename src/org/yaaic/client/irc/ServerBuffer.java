@@ -1,5 +1,11 @@
 package org.yaaic.client.irc;
 
-public class ServerBuffer extends MessageBuffer {
+/**
+ * ServerBuffer
+ * 
+ * @author Sebastian Kaspari <s.kaspari@googlemail.com>
+ */
+public class ServerBuffer extends MessageBuffer
+{
 
 }

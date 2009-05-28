@@ -4,6 +4,7 @@ import android.os.Binder;
 import android.util.Log;
 
 /**
+ * IrcBinder
  * 
  * @author Sebastian Kaspari <pocmo@yaaic.org>
  */
