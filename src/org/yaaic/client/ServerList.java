@@ -22,11 +22,7 @@ package org.yaaic.client;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -86,14 +82,6 @@ public class ServerList extends ListActivity implements OnItemLongClickListener,
         Log.d(TAG, "Binding to Service: " + binding);
         
         setContentView(R.layout.main);
-        
-        /*
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notification = new Notification(R.drawable.icon, "#pocmo <Henna> Hallo Pocmo", System.currentTimeMillis());
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 123, new Intent(this, ServerAdd.class), 0);
-        notification.setLatestEventInfo(this, "#pocmo", "<Henna> Hallo Pocmo", contentIntent);
-        manager.notify(1234, notification);
-        */
         
     	db = new ServerDatabase(this);
     	
@@ -155,8 +143,6 @@ public class ServerList extends ListActivity implements OnItemLongClickListener,
     	Intent serverIntent = new Intent(this, ServerWindow.class);
     	serverIntent.putExtra("server_title", tv.getText());
     	startActivity(serverIntent);
-    	//Toast.makeText(this, tv.getText().toString(), Toast.LENGTH_SHORT).show();
-    	//db.removeServer(tv.getText().toString());
     	//cursor.requery();
     }
     
