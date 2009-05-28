@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import android.text.SpannableString;
 
 /**
- * MessageBuffer
+ * A MessageBuffer for storing SpannableString Objects
  * 
  * @author Sebastian Kaspari <pocmo@yaaic.org>
  */
@@ -44,7 +44,7 @@ public class MessageBuffer
 	private static final int EMERGENCY_MAX_SIZE = 10;
 	
 	/**
-	 * 
+	 * Constructor - Create a fresh ne MessageBuffer
 	 */
 	public MessageBuffer()
 	{
@@ -52,7 +52,7 @@ public class MessageBuffer
 	}
 	
 	/**
-	 * 
+	 * Add a SpannableString to the Buffer
 	 * @param s
 	 * @return
 	 */
