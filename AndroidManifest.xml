@@ -23,7 +23,7 @@
         <activity android:name=".ServerWindow"
         		  android:label="ServerWindow">
         </activity>
-     <service android:name=".YaaicService"/>
+     <service android:name=".irc.IrcService"/>
     </application>
 	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
 </manifest> 
