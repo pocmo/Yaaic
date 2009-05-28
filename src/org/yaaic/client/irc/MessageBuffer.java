@@ -44,7 +44,7 @@ public class MessageBuffer
 	private static final int EMERGENCY_MAX_SIZE = 10;
 	
 	/**
-	 * Constructor - Create a fresh ne MessageBuffer
+	 * Constructor - Create a fresh new MessageBuffer
 	 */
 	public MessageBuffer()
 	{
