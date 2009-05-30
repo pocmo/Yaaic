@@ -108,7 +108,7 @@ public class ServerList extends ListActivity implements OnItemLongClickListener,
     	cursor = db.getServers();
     	this.startManagingCursor(cursor);
     	
-    	SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.serveritem, cursor, FROM, TO);
+    	SimpleCursorAdapter adapter = new ServerListAdapter(this, R.layout.serveritem, cursor, FROM, TO);
     	this.setListAdapter(adapter);
 
     	this.getListView().setOnItemLongClickListener(this);
@@ -293,6 +293,10 @@ public class ServerList extends ListActivity implements OnItemLongClickListener,
 			);
 		}
 		autoCursor.close();
+		
+		ServerListAdapter adapter = (ServerListAdapter) getListAdapter();
+		adapter.setIrcBinder(binder);
+		cursor.requery();
 	}
 	
 	/**

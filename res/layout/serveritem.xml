@@ -25,9 +25,10 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 	android:layout_height="wrap_content"
 	android:orientation="horizontal" android:padding="3px">
 	<TextView
+		android:id="@+id/server_icon"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"		
-		android:drawableLeft="@android:drawable/presence_away"
+		android:layout_height="wrap_content"
+		android:drawableLeft="@android:drawable/presence_offline"
 		android:layout_margin="5px"
 		android:drawablePadding="5px"
 		android:text="" />
