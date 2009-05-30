@@ -84,7 +84,7 @@ public class ServerList extends ListActivity implements OnItemLongClickListener,
         setContentView(R.layout.main);
         
     	db = new ServerDatabase(this);
-    	
+
     	cursor = db.getServers();
     	this.startManagingCursor(cursor);
     	
@@ -93,6 +93,11 @@ public class ServerList extends ListActivity implements OnItemLongClickListener,
 
     	this.getListView().setOnItemLongClickListener(this);
         
+    	this.initAnimation();
+    }
+    
+    public void initAnimation()
+    {
         AnimationSet set = new AnimationSet(true);
 
         Animation animation = new AlphaAnimation(0.0f, 1.0f);
@@ -106,8 +111,7 @@ public class ServerList extends ListActivity implements OnItemLongClickListener,
         animation.setDuration(300);
         set.addAnimation(animation);
 
-        LayoutAnimationController controller =
-                new LayoutAnimationController(set, 0.5f);
+        LayoutAnimationController controller = new LayoutAnimationController(set, 0.5f);
         ListView lv = (ListView) getListView();
         lv.setLayoutAnimation(controller);
     }
