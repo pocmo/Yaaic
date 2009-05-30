@@ -58,14 +58,31 @@ import org.yaaic.client.irc.IrcService;
  */
 public class ServerList extends ListActivity implements OnItemLongClickListener, ServiceConnection
 {
+	/**
+	 * Debugging/Log tag
+	 */
 	public static final String TAG = "Yaaic/ServerList";
 	
 	private ServerDatabase db;
 	
+	/**
+	 * Mapping for servers database to servers list view
+	 */
 	private static final String[] FROM = { ServerConstants.TITLE, ServerConstants.HOST };
+	
+	/**
+	 * Mapping for servers database to servers list view
+	 */
 	private static final int[] TO = { R.id.server_title, R.id.server_host };
 	
+	/**
+	 * Cursor for servers database
+	 */
 	private Cursor cursor;
+	
+	/**
+	 * Binder for IrcService
+	 */
 	private IrcBinder binder;
 	
     @Override
