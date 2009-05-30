@@ -35,7 +35,7 @@ import android.util.Log;
 /**
  * IrcService
  * 
- * @author Sebastian Kaspari
+ * @author Sebastian Kaspari <s.kaspari@googlemail.com>
  */
 public class IrcService extends Service
 {
