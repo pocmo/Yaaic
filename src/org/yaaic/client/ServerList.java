@@ -85,6 +85,9 @@ public class ServerList extends ListActivity implements OnItemLongClickListener,
 	 */
 	private IrcBinder binder;
 	
+	/**
+	 * On Create
+	 */
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -113,6 +116,9 @@ public class ServerList extends ListActivity implements OnItemLongClickListener,
     	this.initAnimation();
     }
     
+    /**
+     * Create and apply animations for the server list (on create)
+     */
     public void initAnimation()
     {
         AnimationSet set = new AnimationSet(true);
@@ -133,6 +139,9 @@ public class ServerList extends ListActivity implements OnItemLongClickListener,
         lv.setLayoutAnimation(controller);
     }
     
+    /**
+     * On Resume
+     */
     public void onResume()
     {
     	Log.d(TAG, "onResume");
@@ -140,6 +149,9 @@ public class ServerList extends ListActivity implements OnItemLongClickListener,
     	super.onResume();
     }
     
+    /**
+     * On Pause
+     */
     public void onPause()
     {
     	Log.d(TAG, "onPause");
@@ -147,6 +159,9 @@ public class ServerList extends ListActivity implements OnItemLongClickListener,
     	super.onPause();
     }
     
+    /**
+     * On Destroy
+     */
     public void onDestroy()
     {
     	Log.d(TAG, "onDestroy");
@@ -154,9 +169,12 @@ public class ServerList extends ListActivity implements OnItemLongClickListener,
     	super.onDestroy();
     	
     	db.close();
-    	unbindService(this);
+    	unbindService(this); // disconnect service
     }
     
+    /**
+     * Click Listener
+     */
     public void onListItemClick(ListView listView, View view, int position, long id)
     {
     	TextView tv = (TextView) view.findViewById(R.id.server_title);
@@ -167,6 +185,9 @@ public class ServerList extends ListActivity implements OnItemLongClickListener,
     	//cursor.requery();
     }
     
+    /**
+     * Long Click Listener
+     */
 	public boolean onItemLongClick(AdapterView<?> av, View v, int position, long id) {
 		final TextView tv = (TextView) v.findViewById(R.id.server_title);
 		
@@ -182,6 +203,12 @@ public class ServerList extends ListActivity implements OnItemLongClickListener,
 		return true;
 	}
 	
+	/**
+	 * Server selected (Long click)
+	 * 
+	 * @param item id/position of item selected
+	 * @param title title of item (server title [unique id])
+	 */
 	public void onServerDialogSelect(int item, String title)
 	{
 		Log.d(TAG, "ServerDialogSelect: Item #" + item);
@@ -206,26 +233,38 @@ public class ServerList extends ListActivity implements OnItemLongClickListener,
 		}
 	}
     
+	/**
+	 * Options Menu (Menu Button pressed)
+	 */
     public boolean onCreateOptionsMenu(Menu menu)
     {
     	super.onCreateOptionsMenu(menu);
+    	
+    	// inflate from xml
     	MenuInflater inflater = getMenuInflater();
     	inflater.inflate(R.menu.main, menu);
+    	
     	return true;
     }
     
+    /**
+     * Listener for menu items
+     */
     public boolean onOptionsItemSelected(MenuItem item)
     {
     	switch (item.getItemId())
     	{
+    		// Add a new server
     		case R.id.server_add:
     			Intent serverAddIntent = new Intent(this, ServerAdd.class);
     			startActivity(serverAddIntent);
     			return true;
+			// Show settings
     		case R.id.settings:
     			Intent settingsIntent = new Intent(this, Settings.class);
     			startActivity(settingsIntent);
     			return true;
+			// Show about window
     		case R.id.about:
     			Intent aboutIntent = new Intent(this, About.class);
     			startActivity(aboutIntent);
@@ -234,13 +273,16 @@ public class ServerList extends ListActivity implements OnItemLongClickListener,
     	return false;
     }
 
+    /**
+     * Listener: IrcService connected to activity
+     */
 	public void onServiceConnected(ComponentName name, IBinder service)
 	{
 		Log.d(TAG, "Service connected");
 		
 		binder = (IrcBinder) service;
 		
-        // AutoConnect
+        // Look for AutoConnect servers and connect if needed
         Cursor autoCursor = db.getAutoConnectServers();
 		while(autoCursor.moveToNext()) {
 			binder.connect(
@@ -253,11 +295,19 @@ public class ServerList extends ListActivity implements OnItemLongClickListener,
 		autoCursor.close();
 	}
 	
+	/**
+	 * Listener: IrcServers disconnected from activity
+	 */
 	public void onServiceDisconnected(ComponentName name)
 	{
 		Log.d(TAG, "Service disconnected");
 	}
 	
+	/**
+	 * Connect to given server
+	 * 
+	 * @param title Title of server (unique id)
+	 */
 	private void connectToServer(String title)
 	{
 		Cursor cursor = db.getServer(title);
