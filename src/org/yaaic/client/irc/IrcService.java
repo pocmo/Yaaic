@@ -25,11 +25,9 @@ import java.util.HashMap;
 
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.NickAlreadyInUseException;
-import org.yaaic.client.db.ServerDatabase;
 
 import android.app.Service;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
