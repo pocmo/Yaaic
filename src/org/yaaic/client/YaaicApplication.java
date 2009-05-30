@@ -29,5 +29,5 @@ import android.app.Application;
  */
 public class YaaicApplication extends Application
 {
-
+	public static final String VERSION = " Alpha 1";
 }

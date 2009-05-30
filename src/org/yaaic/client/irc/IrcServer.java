@@ -21,6 +21,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 package org.yaaic.client.irc;
 
 import org.jibble.pircbot.PircBot;
+import org.yaaic.client.YaaicApplication;
 
 /**
  * IrcServer
@@ -32,7 +33,10 @@ public class IrcServer extends PircBot
 	public IrcServer()
 	{
 		this.setName("Yaaic");
-		this.setAutoNickChange(true);
 		this.setLogin("yaaic");
+		
+		this.setVersion("Yaaic " + YaaicApplication.VERSION);
+		
+		this.setAutoNickChange(true);
 	}
 }
