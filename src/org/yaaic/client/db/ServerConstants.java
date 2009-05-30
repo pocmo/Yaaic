@@ -31,6 +31,7 @@ public interface ServerConstants extends BaseColumns
 {
 	public static final String TABLE_NAME   = "servers";
 	
+	// fields
 	public static final String TITLE    	= "title";
 	public static final String HOST     	= "host";
 	public static final String PORT     	= "port";
