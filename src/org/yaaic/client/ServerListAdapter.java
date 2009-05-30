@@ -94,18 +94,18 @@ public class ServerListAdapter extends SimpleCursorAdapter
 			
 			if (binder.isConnected(title)) {
 				tvServerIcon.setCompoundDrawablesWithIntrinsicBounds(
-						context.getResources().getDrawable(android.R.drawable.presence_online),
-						null,
-						null,
-						null
-					);
+					context.getResources().getDrawable(android.R.drawable.presence_online),
+					null,
+					null,
+					null
+				);
 			} else {
 				tvServerIcon.setCompoundDrawablesWithIntrinsicBounds(
-						context.getResources().getDrawable(android.R.drawable.presence_offline),
-						null,
-						null,
-						null
-					);
+					context.getResources().getDrawable(android.R.drawable.presence_offline),
+					null,
+					null,
+					null
+				);
 			}
 			
 		}
