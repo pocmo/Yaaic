@@ -18,7 +18,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.yaaic.client;
+package org.yaaic.client.view;
+
+import org.yaaic.client.R;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -28,7 +30,7 @@ import android.os.Bundle;
  * 
  * @author Sebastian Kaspari <s.kaspari@googlemail.com>
  */
-public class About extends Activity
+public class AboutActivity extends Activity
 {
 	@Override
 	protected void onCreate(Bundle savedInstanceState)

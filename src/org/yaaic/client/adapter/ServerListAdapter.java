@@ -18,8 +18,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.yaaic.client;
+package org.yaaic.client.adapter;
 
+import org.yaaic.client.R;
+import org.yaaic.client.R.id;
 import org.yaaic.client.irc.IrcBinder;
 
 import android.app.Activity;

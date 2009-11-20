@@ -18,8 +18,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.yaaic.client;
+package org.yaaic.client.view;
 
+import org.yaaic.client.R;
 import org.yaaic.client.db.ServerDatabase;
 
 import android.app.Activity;
@@ -35,7 +36,7 @@ import android.widget.EditText;
  * 
  * @author Sebastian Kaspari <s.kaspari@googlemail.com>
  */
-public class ServerAdd extends Activity implements OnClickListener
+public class ServerAddActivity extends Activity implements OnClickListener
 {
 	@Override
     public void onCreate(Bundle savedInstanceState)

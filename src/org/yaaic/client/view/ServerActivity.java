@@ -18,8 +18,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.yaaic.client;
+package org.yaaic.client.view;
 
+import org.yaaic.client.R;
+import org.yaaic.client.adapter.ServerWindowListAdapter;
 import org.yaaic.client.db.ServerConstants;
 import org.yaaic.client.db.ServerDatabase;
 import org.yaaic.client.irc.IrcBinder;
@@ -43,7 +45,7 @@ import android.widget.TextView;
  * 
  * @author Sebastian Kaspari <s.kaspari@googlemail.com>
  */
-public class ServerWindow extends ExpandableListActivity implements ServiceConnection
+public class ServerActivity extends ExpandableListActivity implements ServiceConnection
 {
 	private static final String TAG = "Yaaic/ServerWindow";
 	private IrcBinder binder;

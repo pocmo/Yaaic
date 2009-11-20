@@ -18,7 +18,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.yaaic.client;
+package org.yaaic.client.adapter;
+
+import org.yaaic.client.view.ServerActivity;
 
 import android.view.Gravity;
 import android.view.View;
@@ -34,10 +36,10 @@ import android.widget.TextView;
  */
 public class ServerWindowListAdapter extends BaseExpandableListAdapter
 {
-	private ServerWindow serverWindow;
+	private ServerActivity serverWindow;
 	private String[] groups = { "Channels (0)", "Queries (0)" };
 	
-	public ServerWindowListAdapter(ServerWindow serverWindow)
+	public ServerWindowListAdapter(ServerActivity serverWindow)
 	{
 		this.serverWindow = serverWindow;
 	}

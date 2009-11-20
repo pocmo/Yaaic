@@ -18,7 +18,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.yaaic.client;
+package org.yaaic.client.view;
+
+import org.yaaic.client.R;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
@@ -28,7 +30,7 @@ import android.preference.PreferenceActivity;
  * 
  * @author Sebastian Kaspari <s.kaspari@googlemail.com>
  */
-public class Settings extends PreferenceActivity
+public class SettingsActivity extends PreferenceActivity
 {
 	@Override
 	public void onCreate(Bundle savedInstanceState)

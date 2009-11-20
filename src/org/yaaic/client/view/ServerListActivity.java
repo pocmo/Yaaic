@@ -18,7 +18,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.yaaic.client;
+package org.yaaic.client.view;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -46,6 +46,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemLongClickListener;
 
+import org.yaaic.client.R;
+import org.yaaic.client.adapter.ServerListAdapter;
 import org.yaaic.client.db.ServerConstants;
 import org.yaaic.client.db.ServerDatabase;
 import org.yaaic.client.irc.IrcBinder;
@@ -56,7 +58,7 @@ import org.yaaic.client.irc.IrcService;
  * 
  * @author Sebastian Kaspari <s.kaspari@googlemail.com>
  */
-public class ServerList extends ListActivity implements OnItemLongClickListener, ServiceConnection
+public class ServerListActivity extends ListActivity implements OnItemLongClickListener, ServiceConnection
 {
 	/**
 	 * Debugging/Log tag
@@ -179,7 +181,7 @@ public class ServerList extends ListActivity implements OnItemLongClickListener,
     {
     	TextView tv = (TextView) view.findViewById(R.id.server_title);
     	
-    	Intent serverIntent = new Intent(this, ServerWindow.class);
+    	Intent serverIntent = new Intent(this, ServerActivity.class);
     	serverIntent.putExtra("server_title", tv.getText());
     	startActivity(serverIntent);
     	//cursor.requery();
@@ -256,17 +258,17 @@ public class ServerList extends ListActivity implements OnItemLongClickListener,
     	{
     		// Add a new server
     		case R.id.server_add:
-    			Intent serverAddIntent = new Intent(this, ServerAdd.class);
+    			Intent serverAddIntent = new Intent(this, ServerAddActivity.class);
     			startActivity(serverAddIntent);
     			return true;
 			// Show settings
     		case R.id.settings:
-    			Intent settingsIntent = new Intent(this, Settings.class);
+    			Intent settingsIntent = new Intent(this, SettingsActivity.class);
     			startActivity(settingsIntent);
     			return true;
 			// Show about window
     		case R.id.about:
-    			Intent aboutIntent = new Intent(this, About.class);
+    			Intent aboutIntent = new Intent(this, AboutActivity.class);
     			startActivity(aboutIntent);
     			return true;
     	}
