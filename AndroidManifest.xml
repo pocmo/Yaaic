@@ -20,15 +20,16 @@ You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="org.yaaic.client"
-      android:versionCode="1" android:versionName="0.1.0">
+	package="org.yaaic.client"
+	android:versionCode="1"
+	android:versionName="0.1.0">
     <application android:icon="@drawable/icon" android:label="@string/app_name" android:name="YaaicApplication">
         <activity
             android:name=".view.ServerListActivity"
             android:label="@string/app_name">
 	        <intent-filter>
-	            <action android:name="android.intent.action.MAIN" />
-	            <category android:name="android.intent.category.LAUNCHER" />
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
 	        </intent-filter>
         </activity>
         <activity

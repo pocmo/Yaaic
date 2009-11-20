@@ -1,5 +1,5 @@
 /*
-Yaaic - Yet Another Android IRC Client
+ Yaaic - Yet Another Android IRC Client
 
 Copyright 2009 Sebastian Kaspari
 
