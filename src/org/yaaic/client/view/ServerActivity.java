@@ -54,7 +54,7 @@ public class ServerActivity extends ExpandableListActivity implements ServiceCon
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.serverwindow);
+		setContentView(R.layout.server);
 		
 		title = getIntent().getStringExtra("server_title");
 		setTitle(title);

@@ -103,7 +103,7 @@ public class ServerListActivity extends ListActivity implements OnItemLongClickL
         boolean binding = bindService(serviceIntent, this, 0);
         Log.d(TAG, "Binding to Service: " + binding);
         
-        setContentView(R.layout.main);
+        setContentView(R.layout.serverlist);
         
     	db = new ServerDatabase(this);
 
