@@ -27,9 +27,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 	<item
 		android:id="@+id/settings"
 		android:title="Settings"
-		android:icon="@android:drawable/ic_menu_preferences" />
+		android:icon="@android:drawable/ic_menu_preferences"
+		android:visible="false" />
 	<item
 		android:id="@+id/about"
 		android:title="About"
-		android:icon="@android:drawable/ic_menu_help" />
+		android:icon="@android:drawable/ic_menu_help"
+		android:visible="false" />
 </menu>

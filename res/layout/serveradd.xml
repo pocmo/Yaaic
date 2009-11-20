@@ -34,7 +34,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 	    <EditText
 	    	android:id="@+id/server_title"
 	    	android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content" />
+	    	android:layout_height="wrap_content"
+	    	android:singleLine="true" />
 	    <TextView
 	    	android:text="Host:"
 	    	android:layout_width="fill_parent"
@@ -42,7 +43,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 	    <EditText
 	    	android:id="@+id/server_host"
 	    	android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content" />
+	    	android:layout_height="wrap_content"
+	    	android:singleLine="true" />
 	    <TextView
 	    	android:text="Port:"
 	    	android:layout_width="fill_parent"
@@ -51,6 +53,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 	    	android:id="@+id/server_port"
 	    	android:layout_width="wrap_content"
 	    	android:layout_height="wrap_content"
+	    	android:singleLine="true"
 	    	android:text="6667" />
 		<TextView
 			android:text="Password:"
@@ -59,22 +62,25 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 		<EditText
 			android:id="@+id/server_password"
 			android:layout_width="fill_parent"
-			android:layout_height="wrap_content" />
+			android:layout_height="wrap_content"
+			android:singleLine="true"
+			android:password="true" />
 		<CheckBox
 			android:id="@+id/server_autoconnect"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:text="Auto connect on startup" />
+			android:text="Auto connect on startup"
+			android:visibility="gone" />
 		<CheckBox
 			android:id="@+id/server_usessl"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:text="Use SSL" />
+			android:text="Use SSL"
+			android:visibility="gone" />
 		<Button
 			android:id="@+id/server_add"
-			android:drawableLeft="@android:drawable/ic_input_add"
 			android:drawablePadding="3px"
-			android:text="Add to list"
+			android:text="Add server"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content" />
 	</LinearLayout>

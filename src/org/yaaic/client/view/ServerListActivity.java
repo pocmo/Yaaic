@@ -244,7 +244,7 @@ public class ServerListActivity extends ListActivity implements OnItemLongClickL
     	
     	// inflate from xml
     	MenuInflater inflater = getMenuInflater();
-    	inflater.inflate(R.menu.main, menu);
+    	inflater.inflate(R.menu.serverlist, menu);
     	
     	return true;
     }
