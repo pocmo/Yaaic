@@ -52,4 +52,5 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
      <service android:name=".irc.IrcService"/>
     </application>
 	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+	<uses-sdk android:minSdkVersion="4" />
 </manifest> 
