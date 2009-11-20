@@ -3,7 +3,6 @@
 #
 
 bin/
+gen/
 R.java
 
-# local
-snippets/
