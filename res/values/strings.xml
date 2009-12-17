@@ -1,36 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 
-Yaaic - Yet Another Android IRC Client
-
-Copyright 2009 Sebastian Kaspari
-
-This file is part of Yaaic.
-
-Yaaic is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Yaaic is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
--->
 <resources>
     <string name="app_name">Yaaic</string>
     
-    <string name="server_add_title">Yaaic: New Server</string>
-    <string name="settings_title">Yaaic: Settings</string>
-    <string name="about_title">About Yaaic</string>
+    <string name="add_server_menu">Add server</string>
     
-    <string name="about_text">\
-Yaaic 0.1\n\
-Yet Another Android IRC Client\n\
-Sebastian Kaspari\n\
-http://www.yaaic.org\n\
-</string>
-
+    <string name="add_server_label">Add new server</string>
+    <string name="server_title">Title</string>
+    <string name="server_host">Host</string>
+    <string name="server_port">Port</string>
+    <string name="server_password">Password</string>
+    <string name="server_useSSL">Use SSL</string>
+    <string name="server_autoconnect">Auto connect on startup</string>
+    <string name="server_channels">Channels</string>
+    <string name="add_server">Add server</string>
+    
+    <string name="cancel">Cancel</string>
+    
+    <string name="channel">Channel</string>
+    <string name="join">Join</string>
+    <string name="join_channel">Join Channel</string>
+    <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="delete">Delete</string>
 </resources>

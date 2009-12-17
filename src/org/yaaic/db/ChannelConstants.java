@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- 
+/*
 Yaaic - Yet Another Android IRC Client
 
 Copyright 2009 Sebastian Kaspari
@@ -18,14 +17,31 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
--->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/join"
-        android:title="@string/join_channel"
-        android:icon="@android:drawable/ic_menu_add" />
-    <item
-        android:id="@+id/disconnect"
-        android:title="@string/disconnect"
-        android:icon="@android:drawable/ic_menu_close_clear_cancel" />
-</menu>
+*/
+package org.yaaic.db;
+
+import android.provider.BaseColumns;
+
+/**
+ * Constants for the channel database
+ * 
+ * @author Sebastian Kaspari <sebastian@yaaic.org>
+ */
+public interface ChannelConstants extends BaseColumns
+{
+	public static final String TABLE_NAME = "channels";
+	
+	// fields
+	public static final String NAME		  = "name";
+	public static final String PASSWORD   = "password";
+	public static final String SERVER     = "server";
+	
+	/**
+	 * All fields in the database
+	 */
+	public static final String[] ALL = {
+		NAME,
+		PASSWORD,
+		SERVER
+	};
+}

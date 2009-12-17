@@ -28,60 +28,74 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent">
 	    <TextView
-	    	android:text="Title:"
+	    	android:text="@string/server_title"
 	    	android:layout_width="fill_parent"
 	    	android:layout_height="wrap_content" />
 	    <EditText
-	    	android:id="@+id/server_title"
+	    	android:id="@+id/title"
 	    	android:layout_width="fill_parent"
 	    	android:layout_height="wrap_content"
 	    	android:singleLine="true" />
 	    <TextView
-	    	android:text="Host:"
+	    	android:text="@string/server_host"
 	    	android:layout_width="fill_parent"
 	    	android:layout_height="wrap_content" />
 	    <EditText
-	    	android:id="@+id/server_host"
+	    	android:id="@+id/host"
 	    	android:layout_width="fill_parent"
 	    	android:layout_height="wrap_content"
 	    	android:singleLine="true" />
 	    <TextView
-	    	android:text="Port:"
+	    	android:text="@string/server_port"
 	    	android:layout_width="fill_parent"
 	    	android:layout_height="wrap_content" />
 	    <EditText
-	    	android:id="@+id/server_port"
+	    	android:id="@+id/port"
 	    	android:layout_width="wrap_content"
 	    	android:layout_height="wrap_content"
 	    	android:singleLine="true"
+	    	android:minEms="6"
 	    	android:text="6667" />
 		<TextView
-			android:text="Password:"
+			android:text="@string/server_password"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content" />
 		<EditText
-			android:id="@+id/server_password"
-			android:layout_width="fill_parent"
+			android:id="@+id/password"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:singleLine="true"
-			android:password="true" />
+			android:password="true"
+			android:minEms="10"
+			android:maxEms="10" />
 		<CheckBox
-			android:id="@+id/server_autoconnect"
+			android:id="@+id/autoconnect"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:text="Auto connect on startup"
+			android:text="@string/server_port"
 			android:visibility="gone" />
 		<CheckBox
-			android:id="@+id/server_usessl"
+			android:id="@+id/useSSL"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:text="Use SSL"
+			android:text="@string/server_useSSL"
 			android:visibility="gone" />
-		<Button
-			android:id="@+id/server_add"
-			android:drawablePadding="3px"
-			android:text="Add server"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content" />
+		<LinearLayout
+		    android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+			<Button
+				android:id="@+id/add"
+				android:text="@string/add_server"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_weight="1" />
+            <Button
+                android:id="@+id/cancel"
+                android:text="@string/cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0" />
+		</LinearLayout>
 	</LinearLayout>
 </ScrollView>

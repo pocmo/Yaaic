@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!-- 
 Yaaic - Yet Another Android IRC Client
 
@@ -19,44 +19,33 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="wrap_content"
-	android:orientation="horizontal" android:padding="3px">
-	<TextView
-		android:id="@+id/server_icon"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:drawableLeft="@android:drawable/presence_offline"
-		android:layout_margin="5px"
-		android:drawablePadding="5px"
-		android:text="" />
-	<!-- <RadioButton
-		android:id="@+id/server_checkbox"
-		android:layout_width="wrap_content"
-		android:layout_height="fill_parent"
-		android:layout_marginRight="5px"/>
-	 -->	
-	<LinearLayout
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-	    android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="5px">
+    <ImageView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/disconnected"
+        android:layout_gravity="center_vertical" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="5px">
+	    <TextView
+	        android:id="@+id/title"
+	        android:layout_width="fill_parent" 
+	        android:layout_height="wrap_content"
+			android:text=""
+			android:textSize="16px" />
 		<TextView
-			android:id="@+id/server_title"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:text="Title"
-			android:textSize="22px"/>
-		<TextView
-			android:id="@+id/server_host"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:text="Host" />
-		<TextView
-			android:id="@+id/server_channels"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:text="Channels" />
-	</LinearLayout>
+		   android:id="@+id/host"
+		   android:layout_width="fill_parent"
+		   android:layout_height="wrap_content"
+		   android:text=""
+		   android:textSize="12px" />
+    </LinearLayout>
 </LinearLayout>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!-- 
 Yaaic - Yet Another Android IRC Client
 
@@ -20,38 +20,76 @@ You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	android:orientation="vertical">
-	<TextView
-		android:layout_width="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout
+	    android:orientation="horizontal"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:padding="5px">
+	    <ImageView
+	        android:id="@+id/status"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:src="@drawable/disconnected"/>
+	    <TextView
+	        android:id="@+id/title"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="5px"
+	        android:textSize="16px"
+	        android:layout_weight="1" />
+	</LinearLayout>
+	<ViewFlipper
+        android:id="@+id/channels"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="1">
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="1"
+            android:background="#990000" />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="2"
+            android:background="#009900" />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="3"
+            android:background="#000099" />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="4"
+            android:background="#009999" />
+	</ViewFlipper>
+	<LinearLayout
+        android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:id="@+id/server_title"
-		android:text=""
-		android:textSize="22px"
-		android:drawableLeft="@android:drawable/presence_away"
-		android:padding="5px"
-		android:drawablePadding="5px"
-		android:background="#FF333333" />
-	<ExpandableListView
-		android:id="@android:id/list"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" />
-	<ScrollView
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_weight="1"
-		android:background="#FF333333"
-		android:padding="5px">
-		<TextView
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:id="@+id/server_log"
-			android:text="Connecting..." />
-	</ScrollView>
-	<EditText
-		android:id="@+id/server_input"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" />
+        android:gravity="right">
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:singleLine="true" />
+		<Button
+            android:id="@+id/previous"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="&lt;" />
+        <Button
+            android:id="@+id/next"
+	       android:layout_width="wrap_content"
+	       android:layout_height="wrap_content"
+	       android:text="&gt;" />
+    </LinearLayout>
 </LinearLayout>
