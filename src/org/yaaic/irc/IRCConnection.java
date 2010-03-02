@@ -249,9 +249,17 @@ public class IRCConnection extends PircBot
 	 * On Topic
 	 */
 	@Override
-	protected void onTopic(String channel, String topic, String setBy, long date, boolean changed)
+	protected void onTopic(String target, String topic, String setBy, long date, boolean changed)
 	{
-		debug("Topic", channel + " " + setBy + " " + topic);
+		debug("Topic", target + " " + setBy + " " + topic);
+		
+		if (changed) {
+			server.getChannel(target).addMessage(setBy + " sets topic: " + topic);
+		} else {
+			server.getChannel(target).addMessage("Topic: " + topic);
+		}
+		
+		service.sendBroadcast(new Intent(Broadcast.CHANNEL_MESSAGE));
 	}
 
 	/**
