@@ -28,6 +28,7 @@ import org.jibble.pircbot.User;
 
 import org.yaaic.Yaaic;
 import org.yaaic.model.Broadcast;
+import org.yaaic.model.Channel;
 import org.yaaic.model.Server;
 import org.yaaic.model.Status;
 
@@ -63,6 +64,8 @@ public class IRCConnection extends PircBot
 	@Override
 	public void onConnect()
 	{
+		debug("Connect", "");
+		
 		server.setStatus(Status.CONNECTED);
 		
 		service.sendBroadcast(new Intent(Broadcast.SERVER_UPDATE));
@@ -75,6 +78,9 @@ public class IRCConnection extends PircBot
 	protected void onAction(String sender, String login, String hostname, String target, String action)
 	{
 		debug("Action", target + " " + sender + " " + action);
+		
+		server.getChannel(target).addMessage("* " + sender + " " + action);
+		service.sendBroadcast(new Intent(Broadcast.CHANNEL_MESSAGE));
 	}
 
 	/**
@@ -120,6 +126,11 @@ public class IRCConnection extends PircBot
 	protected void onJoin(String channel, String sender, String login, String hostname)
 	{
 		debug("Join", channel + " " + sender);
+		
+		if (sender.equals(getNick())) {
+			// We joined a new channel
+			server.addChannel(new Channel(channel));
+		}
 	}
 
 	/**
@@ -137,7 +148,7 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onMessage(String channel, String sender, String login, String hostname, String message)
 	{
-		debug("Deop", channel + " " + sender + " " + message);
+		debug("Message", channel + " " + sender + " " + message);
 	}
 
 	/**
@@ -173,7 +184,7 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onOp(String channel, String sourceNick, String sourceLogin, String sourceHostname, String recipient)
 	{
-		debug("Deop", channel + " " + recipient + "(" + sourceNick + ")");
+		debug("Op", channel + " " + recipient + "(" + sourceNick + ")");
 	}
 
 	/**
@@ -246,7 +257,7 @@ public class IRCConnection extends PircBot
 	private void debug(String event, String params)
 	{
 		if (DEBUG_EVENTS) {
-			Log.d(TAG, "[" + event + "]: " + params);
+			Log.d(TAG, "(" + server.getTitle() + ") [" + event + "]: " + params);
 		}
 	}
 	

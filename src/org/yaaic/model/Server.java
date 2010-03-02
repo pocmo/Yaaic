@@ -21,6 +21,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 package org.yaaic.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 import org.yaaic.R;
 
@@ -36,7 +38,7 @@ public class Server
 	private String host;
 	private int port;
 	
-	private ArrayList<Channel> channels = new ArrayList<Channel>();
+	private HashMap<String, Channel> channels = new HashMap<String, Channel>();
 	
 	private int status = Status.DISCONNECTED;
 	
@@ -165,9 +167,17 @@ public class Server
 	 * 
 	 * @return
 	 */
-	public ArrayList<Channel> getChannels()
+	public Collection<Channel> getChannels()
 	{
-		return channels;
+		return channels.values();
+	}
+	
+	/**
+	 * Get channel by name
+	 */
+	public Channel getChannel(String name)
+	{
+		return channels.get(name);
 	}
 	
 	/**
@@ -177,7 +187,7 @@ public class Server
 	 */
 	public void addChannel(Channel channel)
 	{
-		channels.add(channel);
+		channels.put(channel.getName(), channel);
 	}
 	
 	/**
