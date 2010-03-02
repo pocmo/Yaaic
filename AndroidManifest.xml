@@ -19,10 +19,9 @@
         <activity
             android:name=".view.ServerActivity">
         </activity>
-    <service android:name=".irc.IRCService"></service>
-
+        <service android:name=".irc.IRCService"></service>
     </application>
+    
     <uses-sdk android:minSdkVersion="4" />
-<uses-permission android:name="android.permission.INTERNET"></uses-permission>
-
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 </manifest> 
