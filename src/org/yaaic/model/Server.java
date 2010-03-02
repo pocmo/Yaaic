@@ -20,6 +20,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.model;
 
+import java.util.ArrayList;
+
 import org.yaaic.R;
 
 /**
@@ -33,6 +35,8 @@ public class Server
 	private String title;
 	private String host;
 	private int port;
+	
+	private ArrayList<Channel> channels = new ArrayList<Channel>();
 	
 	private int status = Status.DISCONNECTED;
 	
@@ -139,7 +143,7 @@ public class Server
 	/**
 	 * Is disconnected?
 	 * 
-	 * @return
+	 * @return true if the user is disconnected, false if the user is connected or currently connecting 
 	 */
 	public boolean isDisconnected()
 	{
@@ -148,13 +152,39 @@ public class Server
 	
 	/**
 	 * Is connected?
-	 * @return
+	 * 
+	 * @return true if the user is (successfully) connected to this server, false otherwise
 	 */
 	public boolean isConnected()
 	{
 		return status == Status.CONNECTED;
 	}
 	
+	/**
+	 * Get all (joined) channels
+	 * 
+	 * @return
+	 */
+	public ArrayList<Channel> getChannels()
+	{
+		return channels;
+	}
+	
+	/**
+	 * Add a new (joined) channel
+	 * 
+	 * @param channel
+	 */
+	public void addChannel(Channel channel)
+	{
+		channels.add(channel);
+	}
+	
+	/**
+	 * Get icon for current server status
+	 * 
+	 * @return int Status icon ressource
+	 */
 	public int getStatusIcon()
 	{
 		switch (status) {
