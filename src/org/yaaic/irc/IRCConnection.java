@@ -201,9 +201,12 @@ public class IRCConnection extends PircBot
 	 * On Op
 	 */
 	@Override
-	protected void onOp(String channel, String sourceNick, String sourceLogin, String sourceHostname, String recipient)
+	protected void onOp(String target, String sourceNick, String sourceLogin, String sourceHostname, String recipient)
 	{
-		debug("Op", channel + " " + recipient + "(" + sourceNick + ")");
+		debug("Op", target + " " + recipient + "(" + sourceNick + ")");
+		
+		server.getChannel(target).addMessage(sourceNick + " oped " + recipient);
+		service.sendBroadcast(new Intent(Broadcast.CHANNEL_MESSAGE));
 	}
 
 	/**
