@@ -20,17 +20,25 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.view;
 
+import java.util.Iterator;
+
 import org.yaaic.R;
 import org.yaaic.Yaaic;
 import org.yaaic.irc.IRCBinder;
 import org.yaaic.irc.IRCService;
+import org.yaaic.listener.ChannelListener;
 import org.yaaic.listener.FlingListener;
+import org.yaaic.model.Broadcast;
+import org.yaaic.model.Channel;
 import org.yaaic.model.Server;
+import org.yaaic.receiver.ChannelReceiver;
+import org.yaaic.receiver.ServerReceiver;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -52,9 +60,11 @@ import android.widget.ViewFlipper;
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class ServerActivity extends Activity implements ServiceConnection
+public class ServerActivity extends Activity implements ServiceConnection, ChannelListener
 {
 	protected static final String TextView = null;
+	private Server server;
+	private ChannelReceiver receiver;
 	private IRCBinder binder;
 	private int serverId;
 	
@@ -67,7 +77,7 @@ public class ServerActivity extends Activity implements ServiceConnection
 		
 		this.serverId = getIntent().getExtras().getInt("serverId");
 		
-		Server server = (Server) Yaaic.getInstance().getServerById(serverId);
+		server = (Server) Yaaic.getInstance().getServerById(serverId);
 		
 		setContentView(R.layout.server);
 		
@@ -95,6 +105,9 @@ public class ServerActivity extends Activity implements ServiceConnection
 		*/
 		
 		flingDetector = new GestureDetector(new FlingListener((ViewFlipper) findViewById(R.id.channels)));
+		
+    	receiver = new ChannelReceiver(this);
+    	registerReceiver(receiver, new IntentFilter(Broadcast.CHANNEL_MESSAGE));
 	}
 	
 	@Override
@@ -169,5 +182,26 @@ public class ServerActivity extends Activity implements ServiceConnection
 		}
 		
 		return true;
+	}
+
+	/**
+	 * On channel message
+	 */
+	public void onChannelMessage()
+	{
+	}
+
+	/**
+	 * On new channel
+	 */
+	public void onNewChannel()
+	{
+	}
+
+	/**
+	 * On channel remove
+	 */
+	public void onRemoveChannel()
+	{
 	}
 }
