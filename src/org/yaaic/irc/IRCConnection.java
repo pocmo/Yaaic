@@ -162,6 +162,9 @@ public class IRCConnection extends PircBot
 	protected void onMessage(String target, String sender, String login, String hostname, String message)
 	{
 		debug("Message", target + " " + sender + " " + message);
+
+		server.getChannel(target).addMessage("<" + sender + ">" + message);
+		service.sendBroadcast(new Intent(Broadcast.CHANNEL_MESSAGE));
 	}
 
 	/**
