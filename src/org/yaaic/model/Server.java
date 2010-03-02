@@ -191,6 +191,16 @@ public class Server
 	}
 	
 	/**
+	 * Renive a (joined) channel
+	 * 
+	 * @param name
+	 */
+	public void removeChannel(String name)
+	{
+		channels.remove(name);
+	}
+	
+	/**
 	 * Get icon for current server status
 	 * 
 	 * @return int Status icon ressource

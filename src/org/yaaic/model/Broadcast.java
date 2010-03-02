@@ -26,4 +26,5 @@ public class Broadcast
 	
 	public static final String CHANNEL_MESSAGE	= "org.yaaic.channel.message";
 	public static final String CHANNEL_NEW		= "org.yaaic.channel.new";
+	public static final String CHANNEL_REMOVE	= "org.yaaic.channel.remove";
 }

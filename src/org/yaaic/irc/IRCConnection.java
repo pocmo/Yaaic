@@ -141,18 +141,27 @@ public class IRCConnection extends PircBot
 	 * On Kick
 	 */
 	@Override
-	protected void onKick(String channel, String kickerNick, String kickerLogin, String kickerHostname, String recipientNick, String reason)
+	protected void onKick(String target, String kickerNick, String kickerLogin, String kickerHostname, String recipientNick, String reason)
 	{
-		debug("Kick", channel + " " + recipientNick + "(" + kickerNick + ")");
+		debug("Kick", target + " " + recipientNick + "(" + kickerNick + ")");
+		
+		if (recipientNick.equals(getNick())) {
+			// We are kicked
+			server.removeChannel(target);
+			service.sendBroadcast(new Intent(Broadcast.CHANNEL_REMOVE));
+		} else {
+			server.getChannel(target).addMessage(kickerNick + " kicked " + recipientNick);
+			service.sendBroadcast(new Intent(Broadcast.CHANNEL_MESSAGE));
+		}
 	}
 
 	/**
 	 * On Message
 	 */
 	@Override
-	protected void onMessage(String channel, String sender, String login, String hostname, String message)
+	protected void onMessage(String target, String sender, String login, String hostname, String message)
 	{
-		debug("Message", channel + " " + sender + " " + message);
+		debug("Message", target + " " + sender + " " + message);
 	}
 
 	/**
