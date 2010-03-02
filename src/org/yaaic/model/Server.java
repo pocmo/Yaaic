@@ -20,7 +20,6 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.model;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
