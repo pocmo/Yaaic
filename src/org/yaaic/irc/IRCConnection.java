@@ -123,13 +123,17 @@ public class IRCConnection extends PircBot
 	 * On Join
 	 */
 	@Override
-	protected void onJoin(String channel, String sender, String login, String hostname)
+	protected void onJoin(String target, String sender, String login, String hostname)
 	{
-		debug("Join", channel + " " + sender);
+		debug("Join", target + " " + sender);
 		
 		if (sender.equals(getNick())) {
 			// We joined a new channel
-			server.addChannel(new Channel(channel));
+			server.addChannel(new Channel(target));
+			service.sendBroadcast(new Intent(Broadcast.CHANNEL_NEW));
+		} else {
+			server.getChannel(target).addMessage(sender + " joined");
+			service.sendBroadcast(new Intent(Broadcast.CHANNEL_MESSAGE));
 		}
 	}
 
