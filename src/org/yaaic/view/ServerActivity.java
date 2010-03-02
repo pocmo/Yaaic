@@ -190,7 +190,7 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 	{
 		String message = server.getChannel(target).pollMessage();
 		
-		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "(" + target + ") " + message, Toast.LENGTH_SHORT).show();
 	}
 
 	/**

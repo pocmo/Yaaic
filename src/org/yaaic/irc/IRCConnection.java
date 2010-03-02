@@ -190,7 +190,7 @@ public class IRCConnection extends PircBot
 	{
 		debug("Message", target + " " + sender + " " + message);
 
-		server.getChannel(target).addMessage("<" + sender + ">" + message);
+		server.getChannel(target).addMessage("<" + sender + "> " + message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 		intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
