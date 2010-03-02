@@ -42,7 +42,7 @@ public class ChannelReceiver extends BroadcastReceiver
 		String action = intent.getAction();
 
 		if (action.equals(Broadcast.CHANNEL_MESSAGE)) {
-			listener.onChannelMessage();
+			listener.onChannelMessage(intent.getExtras().getString(Broadcast.EXTRA_CHANNEL));
 		}
 	}
 }

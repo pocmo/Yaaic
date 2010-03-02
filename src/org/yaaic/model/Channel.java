@@ -57,10 +57,30 @@ public class Channel
 	 */
 	public void addMessage(String message)
 	{
-		messages.add(message);
+		messages.addFirst(message);
 		
 		if (messages.size() > BUFFER_SIZE) {
-			messages.removeFirst();
+			messages.removeLast();
 		}
+	}
+	
+	/**
+	 * Get all messages
+	 * 
+	 * @return
+	 */
+	public LinkedList<String> getMessages()
+	{
+		return messages;
+	}
+	
+	/**
+	 * Get last message
+	 * 
+	 * @return
+	 */
+	public String pollMessage()
+	{
+		return messages.poll();
 	}
 }

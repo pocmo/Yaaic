@@ -80,7 +80,10 @@ public class IRCConnection extends PircBot
 		debug("Action", target + " " + sender + " " + action);
 		
 		server.getChannel(target).addMessage("* " + sender + " " + action);
-		service.sendBroadcast(new Intent(Broadcast.CHANNEL_MESSAGE));
+		
+		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+		intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
+		service.sendBroadcast(intent);
 	}
 
 	/**
@@ -133,7 +136,10 @@ public class IRCConnection extends PircBot
 			service.sendBroadcast(new Intent(Broadcast.CHANNEL_NEW));
 		} else {
 			server.getChannel(target).addMessage(sender + " joined");
-			service.sendBroadcast(new Intent(Broadcast.CHANNEL_MESSAGE));
+			
+			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+			intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
+			service.sendBroadcast(intent);
 		}
 	}
 
@@ -151,7 +157,10 @@ public class IRCConnection extends PircBot
 			service.sendBroadcast(new Intent(Broadcast.CHANNEL_REMOVE));
 		} else {
 			server.getChannel(target).addMessage(kickerNick + " kicked " + recipientNick);
-			service.sendBroadcast(new Intent(Broadcast.CHANNEL_MESSAGE));
+
+			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+			intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
+			service.sendBroadcast(intent);			
 		}
 	}
 
@@ -164,7 +173,10 @@ public class IRCConnection extends PircBot
 		debug("Message", target + " " + sender + " " + message);
 
 		server.getChannel(target).addMessage("<" + sender + ">" + message);
-		service.sendBroadcast(new Intent(Broadcast.CHANNEL_MESSAGE));
+		
+		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+		intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
+		service.sendBroadcast(intent);
 	}
 
 	/**
@@ -176,7 +188,10 @@ public class IRCConnection extends PircBot
 		debug("Mode", target + " " + sourceNick + " " + mode);
 		
 		server.getChannel(target).addMessage(sourceNick + " sets mode " + mode);
-		service.sendBroadcast(new Intent(Broadcast.CHANNEL_MESSAGE));
+		
+		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+		intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
+		service.sendBroadcast(intent);
 	}
 
 	/**
@@ -206,7 +221,10 @@ public class IRCConnection extends PircBot
 		debug("Op", target + " " + recipient + "(" + sourceNick + ")");
 		
 		server.getChannel(target).addMessage(sourceNick + " oped " + recipient);
-		service.sendBroadcast(new Intent(Broadcast.CHANNEL_MESSAGE));
+		
+		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+		intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
+		service.sendBroadcast(intent);
 	}
 
 	/**
@@ -223,7 +241,10 @@ public class IRCConnection extends PircBot
 			service.sendBroadcast(new Intent(Broadcast.CHANNEL_REMOVE));
 		} else {
 			server.getChannel(target).addMessage(sender + " parted");
-			service.sendBroadcast(new Intent(Broadcast.CHANNEL_MESSAGE));
+			
+			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+			intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
+			service.sendBroadcast(intent);
 		}
 	}
 
@@ -259,7 +280,9 @@ public class IRCConnection extends PircBot
 			server.getChannel(target).addMessage("Topic: " + topic);
 		}
 		
-		service.sendBroadcast(new Intent(Broadcast.CHANNEL_MESSAGE));
+		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+		intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
+		service.sendBroadcast(intent);
 	}
 
 	/**

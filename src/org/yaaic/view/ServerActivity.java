@@ -20,8 +20,6 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.view;
 
-import java.util.Iterator;
-
 import org.yaaic.R;
 import org.yaaic.Yaaic;
 import org.yaaic.irc.IRCBinder;
@@ -53,6 +51,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 /**
@@ -187,8 +186,11 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 	/**
 	 * On channel message
 	 */
-	public void onChannelMessage()
+	public void onChannelMessage(String target)
 	{
+		String message = server.getChannel(target).pollMessage();
+		
+		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 	}
 
 	/**
