@@ -213,9 +213,18 @@ public class IRCConnection extends PircBot
 	 * On Part
 	 */
 	@Override
-	protected void onPart(String channel, String sender, String login, String hostname)
+	protected void onPart(String target, String sender, String login, String hostname)
 	{
-		debug("Part", channel + " " + sender);
+		debug("Part", target + " " + sender);
+		
+		if (sender.equals(getNick())) {
+			// We pareted a channel
+			server.removeChannel(target);
+			service.sendBroadcast(new Intent(Broadcast.CHANNEL_REMOVE));
+		} else {
+			server.getChannel(target).addMessage(sender + " parted");
+			service.sendBroadcast(new Intent(Broadcast.CHANNEL_MESSAGE));
+		}
 	}
 
 	/**
