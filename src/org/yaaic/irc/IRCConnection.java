@@ -99,27 +99,45 @@ public class IRCConnection extends PircBot
 	 * On Deop
 	 */
 	@Override
-	protected void onDeop(String channel, String sourceNick, String sourceLogin, String sourceHostname, String recipient)
+	protected void onDeop(String target, String sourceNick, String sourceLogin, String sourceHostname, String recipient)
 	{
-		debug("Deop", channel + " " + recipient + "(" + sourceNick + ")");
+		debug("Deop", target + " " + recipient + "(" + sourceNick + ")");
+		
+		server.getChannel(target).addMessage(sourceNick + " deoped " + recipient);
+		
+		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+		intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
+		service.sendBroadcast(intent);
 	}
 
 	/**
 	 * On DeVoice
 	 */
 	@Override
-	protected void onDeVoice(String channel, String sourceNick, String sourceLogin, String sourceHostname, String recipient)
+	protected void onDeVoice(String target, String sourceNick, String sourceLogin, String sourceHostname, String recipient)
 	{
-		debug("DeVoice", channel + " " + recipient + "(" + sourceNick + ")");
+		debug("DeVoice", target + " " + recipient + "(" + sourceNick + ")");
+		
+		server.getChannel(target).addMessage(sourceNick + " devoiced " + recipient);
+		
+		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+		intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
+		service.sendBroadcast(intent);
 	}
 
 	/**
 	 * On Invite
 	 */
 	@Override
-	protected void onInvite(String targetNick, String sourceNick, String sourceLogin, String sourceHostname, String channel)
+	protected void onInvite(String targetNick, String sourceNick, String sourceLogin, String sourceHostname, String target)
 	{
-		debug("Invite", channel + " " + targetNick + "(" + sourceNick + ")");
+		debug("Invite", target + " " + targetNick + "(" + sourceNick + ")");
+		
+		server.getChannel(target).addMessage(sourceNick + " invited " + targetNick);
+		
+		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+		intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
+		service.sendBroadcast(intent);
 	}
 
 	/**
@@ -298,9 +316,15 @@ public class IRCConnection extends PircBot
 	 * On Voice
 	 */
 	@Override
-	protected void onVoice(String channel, String sourceNick, String sourceLogin, String sourceHostname, String recipient)
+	protected void onVoice(String target, String sourceNick, String sourceLogin, String sourceHostname, String recipient)
 	{
-		debug("Voice", channel + " " + recipient + "(" + sourceNick + ")");
+		debug("Voice", target + " " + recipient + "(" + sourceNick + ")");
+		
+		server.getChannel(target).addMessage(sourceNick + " voiced " + recipient);
+		
+		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+		intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
+		service.sendBroadcast(intent);
 	}
 	
 	/**
