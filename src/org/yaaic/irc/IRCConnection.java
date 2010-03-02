@@ -171,9 +171,12 @@ public class IRCConnection extends PircBot
 	 * On Mode
 	 */
 	@Override
-	protected void onMode(String channel, String sourceNick, String sourceLogin, String sourceHostname, String mode)
+	protected void onMode(String target, String sourceNick, String sourceLogin, String sourceHostname, String mode)
 	{
-		debug("Mode", channel + " " + sourceNick + " " + mode);
+		debug("Mode", target + " " + sourceNick + " " + mode);
+		
+		server.getChannel(target).addMessage(sourceNick + " sets mode " + mode);
+		service.sendBroadcast(new Intent(Broadcast.CHANNEL_MESSAGE));
 	}
 
 	/**
