@@ -29,4 +29,5 @@ public class Broadcast
 	public static final String CHANNEL_REMOVE	= "org.yaaic.channel.remove";
 	
 	public static final String EXTRA_CHANNEL	= "channel";
+	public static final String EXTRA_SERVER		= "server";
 }

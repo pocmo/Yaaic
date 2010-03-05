@@ -82,6 +82,7 @@ public class IRCConnection extends PircBot
 		server.getChannel(target).addMessage("* " + sender + " " + action);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
 		intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
 		service.sendBroadcast(intent);
 	}
@@ -106,6 +107,7 @@ public class IRCConnection extends PircBot
 		server.getChannel(target).addMessage(sourceNick + " deoped " + recipient);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
 		intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
 		service.sendBroadcast(intent);
 	}
@@ -121,6 +123,7 @@ public class IRCConnection extends PircBot
 		server.getChannel(target).addMessage(sourceNick + " devoiced " + recipient);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
 		intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
 		service.sendBroadcast(intent);
 	}
@@ -136,6 +139,7 @@ public class IRCConnection extends PircBot
 		server.getChannel(target).addMessage(sourceNick + " invited " + targetNick);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
 		intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
 		service.sendBroadcast(intent);
 	}
@@ -154,11 +158,13 @@ public class IRCConnection extends PircBot
 			
 			Intent intent = new Intent(Broadcast.CHANNEL_NEW);
 			intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
+			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
 			service.sendBroadcast(intent);
 		} else {
 			server.getChannel(target).addMessage(sender + " joined");
 			
 			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
 			intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
 			service.sendBroadcast(intent);
 		}
@@ -177,12 +183,14 @@ public class IRCConnection extends PircBot
 			server.removeChannel(target);
 			
 			Intent intent = new Intent(Broadcast.CHANNEL_REMOVE);
+			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
 			intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
 			service.sendBroadcast(intent);
 		} else {
 			server.getChannel(target).addMessage(kickerNick + " kicked " + recipientNick);
 
 			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
 			intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
 			service.sendBroadcast(intent);			
 		}
@@ -199,6 +207,7 @@ public class IRCConnection extends PircBot
 		server.getChannel(target).addMessage("<" + sender + "> " + message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
 		intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
 		service.sendBroadcast(intent);
 	}
@@ -214,6 +223,7 @@ public class IRCConnection extends PircBot
 		server.getChannel(target).addMessage(sourceNick + " sets mode " + mode);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
 		intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
 		service.sendBroadcast(intent);
 	}
@@ -247,6 +257,7 @@ public class IRCConnection extends PircBot
 		server.getChannel(target).addMessage(sourceNick + " oped " + recipient);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
 		intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
 		service.sendBroadcast(intent);
 	}
@@ -264,12 +275,14 @@ public class IRCConnection extends PircBot
 			server.removeChannel(target);
 			
 			Intent intent = new Intent(Broadcast.CHANNEL_REMOVE);
+			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
 			intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
 			service.sendBroadcast(intent);
 		} else {
 			server.getChannel(target).addMessage(sender + " parted");
 			
 			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
 			intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
 			service.sendBroadcast(intent);
 		}
@@ -308,6 +321,7 @@ public class IRCConnection extends PircBot
 		}
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
 		intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
 		service.sendBroadcast(intent);
 	}
@@ -332,6 +346,7 @@ public class IRCConnection extends PircBot
 		server.getChannel(target).addMessage(sourceNick + " voiced " + recipient);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
 		intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
 		service.sendBroadcast(intent);
 	}
