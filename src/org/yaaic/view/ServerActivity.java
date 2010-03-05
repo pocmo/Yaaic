@@ -20,16 +20,6 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.view;
 
-import org.yaaic.R;
-import org.yaaic.Yaaic;
-import org.yaaic.irc.IRCBinder;
-import org.yaaic.irc.IRCService;
-import org.yaaic.listener.ChannelListener;
-import org.yaaic.listener.FlingListener;
-import org.yaaic.model.Broadcast;
-import org.yaaic.model.Server;
-import org.yaaic.receiver.ChannelReceiver;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ComponentName;
@@ -38,19 +28,30 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.view.GestureDetector;
+import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
+import android.widget.ViewSwitcher;
+
+import org.yaaic.R;
+import org.yaaic.Yaaic;
+import org.yaaic.adapter.DeckAdapter;
+import org.yaaic.irc.IRCBinder;
+import org.yaaic.irc.IRCService;
+import org.yaaic.listener.ChannelListener;
+import org.yaaic.model.Broadcast;
+import org.yaaic.model.Server;
+import org.yaaic.receiver.ChannelReceiver;
 
 /**
  * Connected to server
@@ -59,58 +60,35 @@ import android.widget.ViewFlipper;
  */
 public class ServerActivity extends Activity implements ServiceConnection, ChannelListener
 {
-	protected static final String TextView = null;
-	private Server server;
-	private ChannelReceiver receiver;
-	private IRCBinder binder;
-	private int serverId;
+	public static final String TAG = "Yaaic/ServerActivity";
 	
-	private GestureDetector flingDetector;
+	private int serverId;
+	private Server server;
+	private IRCBinder binder;
+	private ChannelReceiver receiver;
+	
+	private ViewSwitcher switcher;
+	private Gallery deck;
+	private DeckAdapter deckAdapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		
-		this.serverId = getIntent().getExtras().getInt("serverId");
-		
+		serverId = getIntent().getExtras().getInt("serverId");
 		server = (Server) Yaaic.getInstance().getServerById(serverId);
+		setTitle("Yaaic - " + server.getTitle());
 		
 		setContentView(R.layout.server);
 		
 		((TextView) findViewById(R.id.title)).setText(server.getTitle());
 		((ImageView) findViewById(R.id.status)).setImageResource(server.getStatusIcon());
 		
-		/*
-		((Button) findViewById(R.id.next)).setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				ViewFlipper vf = (ViewFlipper) v.getRootView().findViewById(R.id.channels);
-				vf.setInAnimation(AnimationUtils.loadAnimation(v.getContext(), R.anim.slide_left_in));
-				vf.setOutAnimation(AnimationUtils.loadAnimation(v.getContext(), R.anim.slide_left_out));
-				vf.showNext();
-			}
-		});
-		
-		((Button) findViewById(R.id.previous)).setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				ViewFlipper vf = (ViewFlipper) v.getRootView().findViewById(R.id.channels);
-				vf.setInAnimation(AnimationUtils.loadAnimation(v.getContext(), R.anim.slide_right_in));
-				vf.setOutAnimation(AnimationUtils.loadAnimation(v.getContext(), R.anim.slide_right_out));
-				vf.showPrevious();
-			}
-		});
-		*/
-		
-		flingDetector = new GestureDetector(new FlingListener((ViewFlipper) findViewById(R.id.channels)));
-		
-    	receiver = new ChannelReceiver(this);
-    	registerReceiver(receiver, new IntentFilter(Broadcast.CHANNEL_MESSAGE));
-	}
-	
-	@Override
-	public boolean onTouchEvent(MotionEvent event)
-	{
-		return flingDetector.onTouchEvent(event);
+		deckAdapter = new DeckAdapter();
+		deck = (Gallery) findViewById(R.id.deck);
+		deck.setAdapter(deckAdapter);
+		switcher = (ViewSwitcher) findViewById(R.id.switcher);
 	}
 	
 	@Override
@@ -120,6 +98,11 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 		
         Intent intent = new Intent(this, IRCService.class);
         bindService(intent, this, 0);
+        
+    	receiver = new ChannelReceiver(this);
+    	registerReceiver(receiver, new IntentFilter(Broadcast.CHANNEL_MESSAGE));
+    	registerReceiver(receiver, new IntentFilter(Broadcast.CHANNEL_NEW));
+    	registerReceiver(receiver, new IntentFilter(Broadcast.CHANNEL_REMOVE));
 	}
 	
 	@Override
@@ -128,6 +111,7 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 		super.onPause();
 		
 		unbindService(this);
+		unregisterReceiver(receiver);
 	}
 
 	public void onServiceConnected(ComponentName name, IBinder service)
@@ -196,7 +180,36 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 	 */
 	public void onNewChannel(String target)
 	{
+		Log.d(TAG, "onNewChannel() " + target);
 		
+		TextView canvas = new TextView(this);
+		canvas.setText(target);
+		canvas.setTextColor(0xff000000);
+		
+		// XXX: Refactor this crap :)
+		
+        Display d = getWindowManager().getDefaultDisplay();
+        int width = d.getWidth();
+        int height = d.getHeight();
+        
+		float fw = (float) width;
+		float fh = (float) height;
+		
+		float vwf = fw / 100 * 80;
+		float vhf = fh / 100 * 80;
+		
+		int w = (int) vwf;
+		int h = (int) vhf;
+		
+		canvas.setPadding(10, 10, 10, 10);
+		canvas.setBackgroundColor(0xff888888);
+		canvas.setLayoutParams(new Gallery.LayoutParams(w, h));
+		
+		deckAdapter.addItem(target, canvas);
+		/*
+		deck.addView(child)
+		containers.put(target, new ChannelContainer(channel, canvas));
+		*/
 	}
 
 	/**
@@ -204,6 +217,5 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 	 */
 	public void onRemoveChannel(String target)
 	{
-		
 	}
 }
