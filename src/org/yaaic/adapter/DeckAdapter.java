@@ -92,7 +92,6 @@ public class DeckAdapter extends BaseAdapter
 	public void addItem(Channel channel)
 	{
 		channels.add(channel);
-		//views.add(view);
 		
 		notifyDataSetChanged();
 	}
@@ -120,11 +119,6 @@ public class DeckAdapter extends BaseAdapter
 	public void removeItem(Channel channel)
 	{
 		channels.remove(channel);
-		/*
-		View view = map.get(channel);
-		views.remove(view);
-		map.remove(channel);
-		*/
 		
 		notifyDataSetChanged();
 	}

@@ -63,7 +63,8 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 	private ServerListAdapter adapter;
 	
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.servers);
         
@@ -82,9 +83,8 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
         Intent intent = new Intent(this, IRCService.class);
         startService(intent);
         bindService(intent, this, 0);
-    	
+
     	receiver = new ServerReceiver(this);
-    	
     	registerReceiver(receiver, new IntentFilter(Broadcast.SERVER_UPDATE));
     }
     
@@ -158,6 +158,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 			        	adapter.notifyDataSetChanged();
 			        	break;
 			        case 1: // Disconnect
+			        	server.clearChannels();
 						binder.getService().getConnection(server.getId()).quitServer();
 			        	break;
 			        case 2: // Delete
@@ -186,7 +187,8 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
     }
 
 	@Override
-	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+	public boolean onMenuItemSelected(int featureId, MenuItem item)
+	{
 		switch (item.getItemId()) {
 			case R.id.add:
 				startActivityForResult(new Intent(this, AddServerActivity.class), 0);
@@ -197,7 +199,8 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
 		if (resultCode == RESULT_OK) {
 			// Refresh list from database
 			adapter.loadServers();

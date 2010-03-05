@@ -190,13 +190,21 @@ public class Server
 	}
 	
 	/**
-	 * Renive a (joined) channel
+	 * Remove a (joined) channel
 	 * 
 	 * @param name
 	 */
 	public void removeChannel(String name)
 	{
 		channels.remove(name);
+	}
+	
+	/**
+	 * Remove all channels
+	 */
+	public void clearChannels()
+	{
+		channels.clear();
 	}
 	
 	/**

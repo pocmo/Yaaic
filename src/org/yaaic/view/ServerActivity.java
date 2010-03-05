@@ -153,6 +153,7 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 		switch (item.getItemId()) {
 			case R.id.disconnect:
 				binder.getService().getConnection(serverId).quitServer();
+				server.clearChannels();
 				setResult(RESULT_OK);
 				finish();
 				break;
