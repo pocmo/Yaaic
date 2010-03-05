@@ -151,7 +151,10 @@ public class IRCConnection extends PircBot
 		if (sender.equals(getNick())) {
 			// We joined a new channel
 			server.addChannel(new Channel(target));
-			service.sendBroadcast(new Intent(Broadcast.CHANNEL_NEW));
+			
+			Intent intent = new Intent(Broadcast.CHANNEL_NEW);
+			intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
+			service.sendBroadcast(intent);
 		} else {
 			server.getChannel(target).addMessage(sender + " joined");
 			
@@ -172,7 +175,10 @@ public class IRCConnection extends PircBot
 		if (recipientNick.equals(getNick())) {
 			// We are kicked
 			server.removeChannel(target);
-			service.sendBroadcast(new Intent(Broadcast.CHANNEL_REMOVE));
+			
+			Intent intent = new Intent(Broadcast.CHANNEL_REMOVE);
+			intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
+			service.sendBroadcast(intent);
 		} else {
 			server.getChannel(target).addMessage(kickerNick + " kicked " + recipientNick);
 
@@ -256,7 +262,10 @@ public class IRCConnection extends PircBot
 		if (sender.equals(getNick())) {
 			// We pareted a channel
 			server.removeChannel(target);
-			service.sendBroadcast(new Intent(Broadcast.CHANNEL_REMOVE));
+			
+			Intent intent = new Intent(Broadcast.CHANNEL_REMOVE);
+			intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
+			service.sendBroadcast(intent);
 		} else {
 			server.getChannel(target).addMessage(sender + " parted");
 			

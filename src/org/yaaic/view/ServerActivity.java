@@ -27,10 +27,8 @@ import org.yaaic.irc.IRCService;
 import org.yaaic.listener.ChannelListener;
 import org.yaaic.listener.FlingListener;
 import org.yaaic.model.Broadcast;
-import org.yaaic.model.Channel;
 import org.yaaic.model.Server;
 import org.yaaic.receiver.ChannelReceiver;
-import org.yaaic.receiver.ServerReceiver;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -196,14 +194,16 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 	/**
 	 * On new channel
 	 */
-	public void onNewChannel()
+	public void onNewChannel(String target)
 	{
+		
 	}
 
 	/**
 	 * On channel remove
 	 */
-	public void onRemoveChannel()
+	public void onRemoveChannel(String target)
 	{
+		
 	}
 }
