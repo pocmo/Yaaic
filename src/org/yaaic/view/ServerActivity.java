@@ -30,18 +30,21 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewSwitcher;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TableLayout.LayoutParams;
 
 import org.yaaic.R;
 import org.yaaic.Yaaic;
@@ -50,6 +53,7 @@ import org.yaaic.irc.IRCBinder;
 import org.yaaic.irc.IRCService;
 import org.yaaic.listener.ChannelListener;
 import org.yaaic.model.Broadcast;
+import org.yaaic.model.Channel;
 import org.yaaic.model.Server;
 import org.yaaic.receiver.ChannelReceiver;
 
@@ -58,7 +62,7 @@ import org.yaaic.receiver.ChannelReceiver;
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class ServerActivity extends Activity implements ServiceConnection, ChannelListener
+public class ServerActivity extends Activity implements ServiceConnection, ChannelListener, OnItemClickListener
 {
 	public static final String TAG = "Yaaic/ServerActivity";
 	
@@ -85,10 +89,18 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 		((TextView) findViewById(R.id.title)).setText(server.getTitle());
 		((ImageView) findViewById(R.id.status)).setImageResource(server.getStatusIcon());
 		
-		deckAdapter = new DeckAdapter();
+        Display d = getWindowManager().getDefaultDisplay();
+
+        deckAdapter = new DeckAdapter(d.getWidth(), d.getHeight());
 		deck = (Gallery) findViewById(R.id.deck);
 		deck.setAdapter(deckAdapter);
+		deck.setOnItemClickListener(this);
+
 		switcher = (ViewSwitcher) findViewById(R.id.switcher);
+		
+		for (Channel channel : server.getChannels()) {
+			onNewChannel(channel.getName());
+		}
 	}
 	
 	@Override
@@ -175,13 +187,17 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 		TextView canvas = (TextView) deckAdapter.getItemByName(target);
 		
 		if (canvas != null) {
-			Log.d(TAG, "Got canvas, setting text");
 			canvas.append("\n" + message);
 			deckAdapter.notifyDataSetChanged();
+			
+			Log.d(TAG, "Target: " + target + " - Switched: " + deckAdapter.getSwitchedName());
+			
+			if (target.equals(deckAdapter.getSwitchedName())) {
+				((TextView) deckAdapter.getSwitchedView()).append("\n" + message);
+			}
 		} else {
 			Log.d(TAG, "No canvas found");
 		}
-		//Toast.makeText(this, "(" + target + ") " + message, Toast.LENGTH_SHORT).show();
 	}
 
 	/**
@@ -191,34 +207,56 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 	{
 		Log.d(TAG, "onNewChannel() " + target);
 		
-		TextView canvas = new TextView(this);
-		canvas.setText(target);
-		canvas.setTextColor(0xff000000);
+		deckAdapter.addItem(server.getChannel(target));
+	}
+
+	/**
+	 * On Channel item clicked
+	 */
+	public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
+	{
+		Log.d(TAG, "Selected channel: " + position);
 		
-		// XXX: Refactor this crap :)
-		
-        Display d = getWindowManager().getDefaultDisplay();
-        int width = d.getWidth();
-        int height = d.getHeight();
-        
-		float fw = (float) width;
-		float fh = (float) height;
-		
-		float vwf = fw / 100 * 80;
-		float vhf = fh / 100 * 80;
-		
-		int w = (int) vwf;
-		int h = (int) vhf;
-		
-		canvas.setPadding(10, 10, 10, 10);
-		canvas.setBackgroundColor(0xff888888);
-		canvas.setLayoutParams(new Gallery.LayoutParams(w, h));
-		
-		deckAdapter.addItem(target, canvas);
-		/*
-		deck.addView(child)
-		containers.put(target, new ChannelContainer(channel, canvas));
-		*/
+		Channel channel = deckAdapter.getItem(position);
+		view = deckAdapter.renderChannel(channel, switcher);
+		//getView(position, view, deck);
+		view.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+		deckAdapter.setSwitched(channel.getName(), view);
+		switcher.addView(view);
+		switcher.showNext();
+	}
+	
+	/**
+	 * On key down
+	 * 
+	 * This is glue code to call onBackPressed() which
+	 * will be automatically called by later android releases
+	 */
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)
+	{
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			onBackPressed();
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * On back key pressed
+	 */
+	public void onBackPressed()
+	{
+		if (deckAdapter.isSwitched()) {
+			switcher.showNext();
+			switcher.removeView(deckAdapter.getSwitchedView());
+			//switcher.showNext();
+			deckAdapter.setSwitched(null, null);
+			Log.d(TAG, "Back pressed");
+		} else {
+			Log.d(TAG, "Back pressed -> FINISH");
+			finish();
+		}
 	}
 
 	/**

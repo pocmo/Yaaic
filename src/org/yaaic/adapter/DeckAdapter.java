@@ -23,9 +23,14 @@ package org.yaaic.adapter;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import org.yaaic.model.Channel;
+
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Gallery;
+import android.widget.TextView;
 
 /**
  * The adapter for the "DeckView"
@@ -35,22 +40,39 @@ import android.widget.BaseAdapter;
 public class DeckAdapter extends BaseAdapter
 {
 	private HashMap<String, View> map = new HashMap<String, View>();
-	private LinkedList<View> views = new LinkedList<View>();
+	private LinkedList<Channel> channels = new LinkedList<Channel>();
+	private View currentView;
+	private String currentChannel;
+	
+	private int width;
+	private int height;
+	
+	/**
+	 * Create a new DeckAdapter
+	 * 
+	 * @param width
+	 * @param height
+	 */
+	public DeckAdapter(int width, int height)
+	{
+		this.width = width;
+		this.height = height;
+	}
 	
 	/**
 	 * Get number of item
 	 */
 	public int getCount()
 	{
-		return views.size();
+		return channels.size();
 	}
 
 	/**
 	 * Get item at position
 	 */
-	public View getItem(int position)
+	public Channel getItem(int position)
 	{
-		return views.get(position);
+		return channels.get(position);
 	}
 
 	/**
@@ -67,10 +89,10 @@ public class DeckAdapter extends BaseAdapter
 	 * @param channel Name of the channel
 	 * @param view The view object
 	 */
-	public void addItem(String channel, View view)
+	public void addItem(Channel channel)
 	{
-		map.put(channel, view);
-		views.add(view);
+		channels.add(channel);
+		//views.add(view);
 		
 		notifyDataSetChanged();
 	}
@@ -83,7 +105,11 @@ public class DeckAdapter extends BaseAdapter
 	 */
 	public View getItemByName(String channel)
 	{
-		return map.get(channel);
+		if (map.containsKey(channel)) {
+			return map.get(channel);
+		}
+		
+		return null;
 	}
 	
 	/**
@@ -91,18 +117,57 @@ public class DeckAdapter extends BaseAdapter
 	 * 
 	 * @param channel
 	 */
-	public void removeItem(String channel)
+	public void removeItem(Channel channel)
 	{
+		channels.remove(channel);
+		/*
 		View view = map.get(channel);
 		views.remove(view);
 		map.remove(channel);
+		*/
 		
 		notifyDataSetChanged();
 	}
 	
-	public void updated()
+	/**
+	 * Set single channel view
+	 * 
+	 * @param switched
+	 */
+	public void setSwitched(String channel, View current)
 	{
-		//notifyDataSetChanged();
+		currentChannel = channel;
+		currentView = current;
+	}
+	
+	/**
+	 * Get single channel view
+	 * 
+	 * @return
+	 */
+	public View getSwitchedView()
+	{
+		return currentView;
+	}
+	
+	/**
+	 * Get name of channel (single channel view)
+	 * 
+	 * @return
+	 */
+	public String getSwitchedName()
+	{
+		return currentChannel;
+	}
+	
+	/**
+	 * Has the view been switched to single channel view? 
+	 * 
+	 * @return view true if view is in single channel view, false otherwise
+	 */
+	public boolean isSwitched()
+	{
+		return currentView != null;
 	}
 
 	/**
@@ -110,6 +175,43 @@ public class DeckAdapter extends BaseAdapter
 	 */
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
-		return views.get(position);
+		Channel channel = getItem(position);
+		convertView = map.get(channel.getName());
+		
+		if (convertView == null) {
+			convertView = renderChannel(channel, parent);
+			map.put(channel.getName(), convertView);
+		}
+
+		return convertView;
+	}
+	
+	public View renderChannel(Channel channel, ViewGroup parent)
+	{
+		TextView canvas = new TextView(parent.getContext());
+		canvas.setText(channel.getName());
+		
+		for (String message : channel.getHistory()) {
+			canvas.append("\n" + message);
+		}
+		
+		canvas.setTextColor(0xff000000);
+		
+		// XXX: Refactor this crap :)
+        
+		float fw = (float) width;
+		float fh = (float) height;
+		
+		float vwf = fw / 100 * 80;
+		float vhf = fh / 100 * 80;
+		
+		int w = (int) vwf;
+		int h = (int) vhf;
+		
+		canvas.setPadding(10, 10, 10, 10);
+		canvas.setBackgroundColor(0xff888888);
+		canvas.setLayoutParams(new Gallery.LayoutParams(w, h));
+		
+		return canvas;
 	}
 }
