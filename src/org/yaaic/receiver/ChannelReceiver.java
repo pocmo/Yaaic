@@ -29,6 +29,8 @@ import org.yaaic.model.Broadcast;
 
 public class ChannelReceiver extends BroadcastReceiver
 {
+	public static final String TAG = "Yaaic/ChannelReceiver";
+	
 	private ChannelListener listener;
 	private int serverId;
 	
