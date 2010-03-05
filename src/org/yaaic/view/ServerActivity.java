@@ -172,7 +172,16 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 	{
 		String message = server.getChannel(target).pollMessage();
 		
-		Toast.makeText(this, "(" + target + ") " + message, Toast.LENGTH_SHORT).show();
+		TextView canvas = (TextView) deckAdapter.getItemByName(target);
+		
+		if (canvas != null) {
+			Log.d(TAG, "Got canvas, setting text");
+			canvas.append("\n" + message);
+			deckAdapter.notifyDataSetChanged();
+		} else {
+			Log.d(TAG, "No canvas found");
+		}
+		//Toast.makeText(this, "(" + target + ") " + message, Toast.LENGTH_SHORT).show();
 	}
 
 	/**

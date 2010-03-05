@@ -99,6 +99,11 @@ public class DeckAdapter extends BaseAdapter
 		
 		notifyDataSetChanged();
 	}
+	
+	public void updated()
+	{
+		//notifyDataSetChanged();
+	}
 
 	/**
 	 * Get view at given position
