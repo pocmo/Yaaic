@@ -111,7 +111,7 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
         Intent intent = new Intent(this, IRCService.class);
         bindService(intent, this, 0);
         
-    	receiver = new ChannelReceiver(this);
+    	receiver = new ChannelReceiver(server.getId(), this);
     	registerReceiver(receiver, new IntentFilter(Broadcast.CHANNEL_MESSAGE));
     	registerReceiver(receiver, new IntentFilter(Broadcast.CHANNEL_NEW));
     	registerReceiver(receiver, new IntentFilter(Broadcast.CHANNEL_REMOVE));
@@ -176,6 +176,16 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 		}
 		
 		return true;
+	}
+	
+	/**
+	 * Get server object assigned to this activity
+	 * 
+	 * @return the server object
+	 */
+	public Server getServer()
+	{
+		return server;
 	}
 
 	/**

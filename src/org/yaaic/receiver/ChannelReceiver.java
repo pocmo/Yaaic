@@ -20,25 +20,38 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.receiver;
 
-import org.yaaic.listener.ChannelListener;
-import org.yaaic.model.Broadcast;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import org.yaaic.listener.ChannelListener;
+import org.yaaic.model.Broadcast;
+
 public class ChannelReceiver extends BroadcastReceiver
 {
 	private ChannelListener listener;
+	private int serverId;
 	
-	public ChannelReceiver(ChannelListener listener)
+	/**
+	 * Create a new channel reciever
+	 *  
+	 * @param serverId Only listen on channels of this server
+	 * @param listener 
+	 */
+	public ChannelReceiver(int serverId, ChannelListener listener)
 	{
 		this.listener = listener;
+		this.serverId = serverId;
 	}
 
 	@Override
 	public void onReceive(Context context, Intent intent)
 	{
+		int serverId = intent.getExtras().getInt(Broadcast.EXTRA_SERVER);
+		if (serverId != this.serverId) {
+			return;
+		}
+		
 		String action = intent.getAction();
 
 		if (action.equals(Broadcast.CHANNEL_MESSAGE)) {
