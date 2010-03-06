@@ -54,6 +54,7 @@ import org.yaaic.irc.IRCService;
 import org.yaaic.listener.ChannelListener;
 import org.yaaic.model.Broadcast;
 import org.yaaic.model.Channel;
+import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 import org.yaaic.receiver.ChannelReceiver;
 
@@ -193,18 +194,18 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 	 */
 	public void onChannelMessage(String target)
 	{
-		String message = server.getChannel(target).pollMessage();
+		Message message = server.getChannel(target).pollMessage();
 		
 		TextView canvas = (TextView) deckAdapter.getItemByName(target);
 		
 		if (canvas != null) {
-			canvas.append("\n" + message);
+			canvas.append(message.render());
 			deckAdapter.notifyDataSetChanged();
 			
 			Log.d(TAG, "Target: " + target + " - Switched: " + deckAdapter.getSwitchedName());
 			
 			if (target.equals(deckAdapter.getSwitchedName())) {
-				((TextView) deckAdapter.getSwitchedView()).append("\n" + message);
+				((TextView) deckAdapter.getSwitchedView()).append(message.render());
 			}
 		} else {
 			Log.d(TAG, "No canvas found");

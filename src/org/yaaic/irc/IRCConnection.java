@@ -29,6 +29,7 @@ import org.jibble.pircbot.User;
 import org.yaaic.Yaaic;
 import org.yaaic.model.Broadcast;
 import org.yaaic.model.Channel;
+import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 import org.yaaic.model.Status;
 
@@ -79,7 +80,8 @@ public class IRCConnection extends PircBot
 	{
 		debug("Action", target + " " + sender + " " + action);
 		
-		server.getChannel(target).addMessage("* " + sender + " " + action);
+		Message message = new Message(sender + " " + action);
+		server.getChannel(target).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
@@ -104,7 +106,8 @@ public class IRCConnection extends PircBot
 	{
 		debug("Deop", target + " " + recipient + "(" + sourceNick + ")");
 		
-		server.getChannel(target).addMessage(sourceNick + " deoped " + recipient);
+		Message message = new Message(sourceNick + " deoped " + recipient);
+		server.getChannel(target).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
@@ -120,7 +123,8 @@ public class IRCConnection extends PircBot
 	{
 		debug("DeVoice", target + " " + recipient + "(" + sourceNick + ")");
 		
-		server.getChannel(target).addMessage(sourceNick + " devoiced " + recipient);
+		Message message = new Message(sourceNick + " devoiced " + recipient);
+		server.getChannel(target).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
@@ -136,7 +140,8 @@ public class IRCConnection extends PircBot
 	{
 		debug("Invite", target + " " + targetNick + "(" + sourceNick + ")");
 		
-		server.getChannel(target).addMessage(sourceNick + " invited " + targetNick);
+		Message message = new Message(sourceNick + " invited " + targetNick);
+		server.getChannel(target).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
@@ -161,7 +166,8 @@ public class IRCConnection extends PircBot
 			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
 			service.sendBroadcast(intent);
 		} else {
-			server.getChannel(target).addMessage(sender + " joined");
+			Message message = new Message(sender + " joined");
+			server.getChannel(target).addMessage(message);
 			
 			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
@@ -187,7 +193,8 @@ public class IRCConnection extends PircBot
 			intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
 			service.sendBroadcast(intent);
 		} else {
-			server.getChannel(target).addMessage(kickerNick + " kicked " + recipientNick);
+			Message message = new Message(kickerNick + " kicked " + recipientNick);
+			server.getChannel(target).addMessage(message);
 
 			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
@@ -200,11 +207,12 @@ public class IRCConnection extends PircBot
 	 * On Message
 	 */
 	@Override
-	protected void onMessage(String target, String sender, String login, String hostname, String message)
+	protected void onMessage(String target, String sender, String login, String hostname, String text)
 	{
-		debug("Message", target + " " + sender + " " + message);
+		debug("Message", target + " " + sender + " " + text);
 
-		server.getChannel(target).addMessage("<" + sender + "> " + message);
+		Message message = new Message("<" + sender + "> " + text);
+		server.getChannel(target).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
@@ -220,7 +228,8 @@ public class IRCConnection extends PircBot
 	{
 		debug("Mode", target + " " + sourceNick + " " + mode);
 		
-		server.getChannel(target).addMessage(sourceNick + " sets mode " + mode);
+		Message message = new Message(sourceNick + " sets mode " + mode);
+		server.getChannel(target).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
@@ -235,6 +244,8 @@ public class IRCConnection extends PircBot
 	protected void onNickChange(String oldNick, String login, String hostname, String newNick)
 	{
 		debug("Nick", oldNick + " " + newNick);
+		
+		// XXX: Add message to all channels where oldNick / newNick is present
 	}
 
 	/**
@@ -244,6 +255,8 @@ public class IRCConnection extends PircBot
 	protected void onNotice(String sourceNick, String sourceLogin, String sourceHostname, String target, String notice)
 	{
 		debug("Notice", sourceNick + " " + notice);
+
+		// XXX: Where should notices be shown? Current window? All windows? Server window?
 	}
 
 	/**
@@ -254,7 +267,8 @@ public class IRCConnection extends PircBot
 	{
 		debug("Op", target + " " + recipient + "(" + sourceNick + ")");
 		
-		server.getChannel(target).addMessage(sourceNick + " oped " + recipient);
+		Message message = new Message(sourceNick + " oped " + recipient);
+		server.getChannel(target).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
@@ -279,7 +293,8 @@ public class IRCConnection extends PircBot
 			intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
 			service.sendBroadcast(intent);
 		} else {
-			server.getChannel(target).addMessage(sender + " parted");
+			Message message = new Message(sender + " parted");
+			server.getChannel(target).addMessage(message);
 			
 			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
@@ -315,9 +330,11 @@ public class IRCConnection extends PircBot
 		debug("Topic", target + " " + setBy + " " + topic);
 		
 		if (changed) {
-			server.getChannel(target).addMessage(setBy + " sets topic: " + topic);
+			Message message = new Message(setBy + " sets topic: " + topic);
+			server.getChannel(target).addMessage(message);
 		} else {
-			server.getChannel(target).addMessage("Topic: " + topic);
+			Message message = new Message("Topic: " + topic);
+			server.getChannel(target).addMessage(message);
 		}
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
@@ -333,6 +350,8 @@ public class IRCConnection extends PircBot
 	protected void onUserList(String channel, User[] users)
 	{
 		debug("UserList", channel + " (" + users.length + ")");
+		
+		// XXX: Store user list somewhere and keep it updated or just broadcast some event?
 	}
 
 	/**
@@ -343,7 +362,8 @@ public class IRCConnection extends PircBot
 	{
 		debug("Voice", target + " " + recipient + "(" + sourceNick + ")");
 		
-		server.getChannel(target).addMessage(sourceNick + " voiced " + recipient);
+		Message message = new Message(sourceNick + " voiced " + recipient);
+		server.getChannel(target).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());

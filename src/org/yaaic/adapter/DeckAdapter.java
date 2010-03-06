@@ -24,8 +24,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.yaaic.model.Channel;
+import org.yaaic.model.Message;
 
-import android.view.Display;
+import android.text.SpannableString;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -183,10 +184,10 @@ public class DeckAdapter extends BaseAdapter
 	public View renderChannel(Channel channel, ViewGroup parent)
 	{
 		TextView canvas = new TextView(parent.getContext());
-		canvas.setText(channel.getName());
+		canvas.setText(new SpannableString(channel.getName()));
 		
-		for (String message : channel.getHistory()) {
-			canvas.append("\n" + message);
+		for (Message message : channel.getHistory()) {
+			canvas.append(message.render());
 		}
 		
 		canvas.setTextColor(0xff000000);

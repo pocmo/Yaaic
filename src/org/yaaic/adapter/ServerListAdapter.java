@@ -33,7 +33,6 @@ import android.widget.TextView;
 import org.yaaic.R;
 import org.yaaic.Yaaic;
 import org.yaaic.model.Server;
-import org.yaaic.model.Status;
 
 /**
  * Adapter for server lists

@@ -20,6 +20,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.model;
 
+import android.text.SpannableString;
+
 /**
  * A channel or server message
  * 
@@ -28,6 +30,7 @@ package org.yaaic.model;
 public class Message {
 	private int icon;
 	private String text;
+	private SpannableString span;
 	
 	/**
 	 * Create a new message without an icon
@@ -80,5 +83,20 @@ public class Message {
 	public String getText()
 	{
 		return text;
+	}
+	
+	/**
+	 * Render message as spannable string
+	 */
+	public SpannableString render()
+	{
+		if (span == null) {
+			span = new SpannableString(text);
+			if (hasIcon()) {
+				
+			}
+		}
+		
+		return span;
 	}
 }

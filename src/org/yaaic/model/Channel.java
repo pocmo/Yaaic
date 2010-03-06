@@ -32,8 +32,8 @@ public class Channel
 	private static final int BUFFER_SIZE = 30;
 	
 	private String name;
-	private LinkedList<String> buffer = new LinkedList<String>();
-	private LinkedList<String> history = new LinkedList<String>();
+	private LinkedList<Message> buffer = new LinkedList<Message>();
+	private LinkedList<Message> history = new LinkedList<Message>();
 	
 	/**
 	 * Create a new channel object
@@ -56,7 +56,7 @@ public class Channel
 	/**
 	 * Add a message to the channel
 	 */
-	public void addMessage(String message)
+	public void addMessage(Message message)
 	{
 		buffer.addFirst(message);
 		history.addLast(message);
@@ -71,7 +71,7 @@ public class Channel
 	 * 
 	 * @return
 	 */
-	public LinkedList<String> getBuffer()
+	public LinkedList<Message> getBuffer()
 	{
 		return buffer;
 	}
@@ -81,7 +81,7 @@ public class Channel
 	 * 
 	 * @return
 	 */
-	public LinkedList<String> getHistory()
+	public LinkedList<Message> getHistory()
 	{
 		return history;
 	}
@@ -91,7 +91,7 @@ public class Channel
 	 * 
 	 * @return
 	 */
-	public String pollMessage()
+	public Message pollMessage()
 	{
 		return buffer.poll();
 	}
