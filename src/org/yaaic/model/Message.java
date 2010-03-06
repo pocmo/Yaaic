@@ -33,9 +33,10 @@ import android.text.style.ImageSpan;
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
 public class Message {
-	public static final int COLOR_GREEN = 0xFF458509;
-	public static final int COLOR_RED   = 0xFFcc0000;
-	public static final int COLOR_BLUE  = 0xFF729fcf;
+	public static final int COLOR_GREEN  = 0xFF458509;
+	public static final int COLOR_RED    = 0xFFcc0000;
+	public static final int COLOR_BLUE   = 0xFF729fcf;
+	public static final int COLOR_YELLOW = 0xFFbe9b01;
 	
 	private int icon = -1;
 	private String text;
