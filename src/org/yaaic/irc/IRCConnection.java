@@ -233,6 +233,7 @@ public class IRCConnection extends PircBot
 	{
 		debug("Mode", target + " " + sourceNick + " " + mode);
 		
+		/*//Disabled as it doubles events (e.g. onOp and onMode will be called)
 		Message message = new Message(sourceNick + " sets mode " + mode);
 		server.getChannel(target).addMessage(message);
 		
@@ -240,6 +241,7 @@ public class IRCConnection extends PircBot
 		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
 		intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
 		service.sendBroadcast(intent);
+		*/
 	}
 
 	/**
