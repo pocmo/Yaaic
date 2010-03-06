@@ -96,7 +96,7 @@ public class Message {
 			canvas = new SpannableString("\n " + text);
 			if (hasIcon()) {
 				Drawable drawable = context.getResources().getDrawable(icon);
-				drawable.setBounds(0, 0, 16, 16);
+				drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
 				canvas.setSpan(new ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM), 1, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
 		}
