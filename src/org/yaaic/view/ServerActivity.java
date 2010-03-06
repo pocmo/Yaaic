@@ -199,13 +199,11 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 		TextView canvas = (TextView) deckAdapter.getItemByName(target);
 		
 		if (canvas != null) {
-			canvas.append(message.render());
+			canvas.append(message.render(canvas.getContext()));
 			deckAdapter.notifyDataSetChanged();
 			
-			Log.d(TAG, "Target: " + target + " - Switched: " + deckAdapter.getSwitchedName());
-			
 			if (target.equals(deckAdapter.getSwitchedName())) {
-				((TextView) deckAdapter.getSwitchedView()).append(message.render());
+				((TextView) deckAdapter.getSwitchedView()).append(message.render(canvas.getContext()));
 			}
 		} else {
 			Log.d(TAG, "No canvas found");
