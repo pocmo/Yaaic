@@ -184,13 +184,17 @@ public class DeckAdapter extends BaseAdapter
 	public View renderChannel(Channel channel, ViewGroup parent)
 	{
 		TextView canvas = new TextView(parent.getContext());
-		canvas.setText(new SpannableString(channel.getName()));
+		canvas.setTextSize(12);
+		canvas.setTextColor(0xffeeeeee);
+		canvas.setPadding(10, 10, 10, 10);
+		canvas.setBackgroundColor(0xff222222);
+		
+		SpannableString welcome = new SpannableString("Joined " + channel.getName());
+		canvas.setText(welcome);
 		
 		for (Message message : channel.getHistory()) {
 			canvas.append(message.render());
 		}
-		
-		canvas.setTextColor(0xff000000);
 		
 		// XXX: Refactor this crap :)
         
@@ -203,8 +207,6 @@ public class DeckAdapter extends BaseAdapter
 		int w = (int) vwf;
 		int h = (int) vhf;
 		
-		canvas.setPadding(10, 10, 10, 10);
-		canvas.setBackgroundColor(0xff888888);
 		canvas.setLayoutParams(new Gallery.LayoutParams(w, h));
 		
 		return canvas;
