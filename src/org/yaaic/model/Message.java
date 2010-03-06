@@ -20,7 +20,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.model;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.style.ImageSpan;
 
 /**
  * A channel or server message
@@ -30,7 +34,7 @@ import android.text.SpannableString;
 public class Message {
 	private int icon;
 	private String text;
-	private SpannableString span;
+	private SpannableString canvas;
 	
 	/**
 	 * Create a new message without an icon
@@ -44,15 +48,11 @@ public class Message {
 	}
 	
 	/**
-	 * Create a new message with an icon
-	 * 
-	 * @param icon
-	 * @param text
+	 * Set the message's icon
 	 */
-	public Message(int icon, String text)
+	public void setIcon(int icon)
 	{
 		this.icon = icon;
-		this.text = text;
 	}
 	
 	/**
@@ -87,16 +87,20 @@ public class Message {
 	
 	/**
 	 * Render message as spannable string
+	 * 
+	 * @return
 	 */
-	public SpannableString render()
+	public SpannableString render(Context context)
 	{
-		if (span == null) {
-			span = new SpannableString(text);
+		if (canvas == null) {
+			canvas = new SpannableString("\n " + text);
 			if (hasIcon()) {
-				
+				Drawable drawable = context.getResources().getDrawable(icon);
+				drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+				canvas.setSpan(new ImageSpan(drawable), 1, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
 		}
 		
-		return span;
+		return canvas;
 	}
 }
