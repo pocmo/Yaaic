@@ -26,6 +26,7 @@ import java.util.LinkedList;
 import org.yaaic.model.Channel;
 import org.yaaic.model.Message;
 
+import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.view.View;
 import android.view.ViewGroup;
@@ -184,9 +185,10 @@ public class DeckAdapter extends BaseAdapter
 	public View renderChannel(Channel channel, ViewGroup parent)
 	{
 		TextView canvas = new TextView(parent.getContext());
-		canvas.setTextSize(12);
+		canvas.setTextSize(11);
+		canvas.setTypeface(Typeface.MONOSPACE);
 		canvas.setTextColor(0xffeeeeee);
-		canvas.setPadding(10, 10, 10, 10);
+		canvas.setPadding(5, 5, 5, 5);
 		canvas.setBackgroundColor(0xff222222);
 		
 		SpannableString welcome = new SpannableString("Joined " + channel.getName());
