@@ -24,6 +24,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 
 /**
@@ -32,9 +33,14 @@ import android.text.style.ImageSpan;
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
 public class Message {
-	private int icon;
+	public static final int COLOR_GREEN = 0xFF458509;
+	public static final int COLOR_RED   = 0xFFcc0000;
+	public static final int COLOR_BLUE  = 0xFF729fcf;
+	
+	private int icon = -1;
 	private String text;
 	private SpannableString canvas;
+	private int color = -1;
 	
 	/**
 	 * Create a new message without an icon
@@ -44,7 +50,6 @@ public class Message {
 	public Message(String text)
 	{
 		this.text = text;
-		this.icon = -1;
 	}
 	
 	/**
@@ -86,6 +91,14 @@ public class Message {
 	}
 	
 	/**
+	 * Set the color of this message
+	 */
+	public void setColor(int color)
+	{
+		this.color = color;
+	}
+	
+	/**
 	 * Render message as spannable string
 	 * 
 	 * @return
@@ -99,6 +112,9 @@ public class Message {
 				Drawable drawable = context.getResources().getDrawable(icon);
 				drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
 				canvas.setSpan(new ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM), 1, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			}
+			if (color != -1) {
+				canvas.setSpan(new ForegroundColorSpan(color), 0, canvas.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
 		}
 		
