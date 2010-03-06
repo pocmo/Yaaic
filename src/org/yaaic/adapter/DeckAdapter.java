@@ -30,6 +30,7 @@ import android.text.SpannableString;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.TextView;
 
@@ -193,7 +194,7 @@ public class DeckAdapter extends BaseAdapter
 		canvas.setText(welcome);
 		
 		for (Message message : channel.getHistory()) {
-			canvas.append(message.render());
+			canvas.append(message.render(canvas.getContext()));
 		}
 		
 		// XXX: Refactor this crap :)
