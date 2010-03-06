@@ -110,6 +110,7 @@ public class IRCConnection extends PircBot
 		
 		Message message = new Message(sourceNick + " deoped " + recipient);
 		message.setIcon(R.drawable.op);
+		message.setColor(Message.COLOR_BLUE);
 		server.getChannel(target).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
@@ -127,6 +128,7 @@ public class IRCConnection extends PircBot
 		debug("DeVoice", target + " " + recipient + "(" + sourceNick + ")");
 		
 		Message message = new Message(sourceNick + " devoiced " + recipient);
+		message.setColor(Message.COLOR_BLUE);
 		message.setIcon(R.drawable.voice);
 		server.getChannel(target).addMessage(message);
 		
@@ -172,6 +174,7 @@ public class IRCConnection extends PircBot
 		} else {
 			Message message = new Message(sender + " joined");
 			message.setIcon(R.drawable.join);
+			message.setColor(Message.COLOR_GREEN);
 			server.getChannel(target).addMessage(message);
 			
 			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
@@ -199,6 +202,7 @@ public class IRCConnection extends PircBot
 			service.sendBroadcast(intent);
 		} else {
 			Message message = new Message(kickerNick + " kicked " + recipientNick);
+			message.setColor(Message.COLOR_GREEN);
 			server.getChannel(target).addMessage(message);
 
 			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
@@ -275,6 +279,7 @@ public class IRCConnection extends PircBot
 		debug("Op", target + " " + recipient + "(" + sourceNick + ")");
 		
 		Message message = new Message(sourceNick + " oped " + recipient);
+		message.setColor(Message.COLOR_BLUE);
 		message.setIcon(R.drawable.op);
 		server.getChannel(target).addMessage(message);
 		
@@ -302,6 +307,7 @@ public class IRCConnection extends PircBot
 			service.sendBroadcast(intent);
 		} else {
 			Message message = new Message(sender + " parted");
+			message.setColor(Message.COLOR_GREEN);
 			message.setIcon(R.drawable.part);
 			server.getChannel(target).addMessage(message);
 			
@@ -342,13 +348,16 @@ public class IRCConnection extends PircBot
 		
 		if (changed) {
 			Message message = new Message(setBy + " sets topic: " + topic);
+			message.setColor(Message.COLOR_YELLOW);
 			server.getChannel(target).addMessage(message);
 		} else {
 			Message message = new Message("Topic: " + topic);
+			message.setColor(Message.COLOR_YELLOW);
 			server.getChannel(target).addMessage(message);
 		}
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+;
 		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
 		intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
 		service.sendBroadcast(intent);
@@ -375,6 +384,7 @@ public class IRCConnection extends PircBot
 		
 		Message message = new Message(sourceNick + " voiced " + recipient);
 		message.setIcon(R.drawable.voice);
+		message.setColor(Message.COLOR_BLUE);
 		server.getChannel(target).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
