@@ -274,5 +274,6 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 	 */
 	public void onRemoveChannel(String target)
 	{
+		// XXX: Implement me :)
 	}
 }

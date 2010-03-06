@@ -23,6 +23,7 @@ package org.yaaic.irc;
 import android.content.Intent;
 import android.util.Log;
 
+import org.jibble.pircbot.Colors;
 import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.User;
 
@@ -80,6 +81,9 @@ public class IRCConnection extends PircBot
 	protected void onAction(String sender, String login, String hostname, String target, String action)
 	{
 		debug("Action", target + " " + sender + " " + action);
+		
+		// Strip mIRC colors and formatting
+		action = Colors.removeFormattingAndColors(action);
 		
 		Message message = new Message(sender + " " + action);
 		message.setIcon(R.drawable.action);
@@ -219,6 +223,9 @@ public class IRCConnection extends PircBot
 	protected void onMessage(String target, String sender, String login, String hostname, String text)
 	{
 		debug("Message", target + " " + sender + " " + text);
+		
+		// Strip mIRC colors and formatting
+		text = Colors.removeFormattingAndColors(text);
 
 		Message message = new Message("<" + sender + "> " + text);
 		server.getChannel(target).addMessage(message);
@@ -267,6 +274,9 @@ public class IRCConnection extends PircBot
 	{
 		debug("Notice", sourceNick + " " + notice);
 
+		// Strip mIRC colors and formatting
+		notice = Colors.removeFormattingAndColors(notice);
+		
 		// XXX: Where should notices be shown? Current window? All windows? Server window?
 	}
 
@@ -325,6 +335,9 @@ public class IRCConnection extends PircBot
 	protected void onPrivateMessage(String sender, String login, String hostname, String message)
 	{
 		debug("PrivateMessage", sender + " " + message);
+		
+		// Strip mIRC colors and formatting
+		message = Colors.removeFormattingAndColors(message);
 		
 		// XXX: Open a query if there's none yet
 	}
