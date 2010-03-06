@@ -30,7 +30,6 @@ import android.text.SpannableString;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.TextView;
 
