@@ -93,7 +93,11 @@ public class Message {
 	public SpannableString render(Context context)
 	{
 		if (canvas == null) {
-			canvas = new SpannableString("\n " + text);
+			String prefix = "\n";
+			if (hasIcon()) {
+				prefix = " " + prefix;
+			}
+			canvas = new SpannableString(prefix + text);
 			if (hasIcon()) {
 				Drawable drawable = context.getResources().getDrawable(icon);
 				drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
