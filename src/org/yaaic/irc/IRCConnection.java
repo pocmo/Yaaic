@@ -26,6 +26,7 @@ import android.util.Log;
 import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.User;
 
+import org.yaaic.R;
 import org.yaaic.Yaaic;
 import org.yaaic.model.Broadcast;
 import org.yaaic.model.Channel;
@@ -81,6 +82,7 @@ public class IRCConnection extends PircBot
 		debug("Action", target + " " + sender + " " + action);
 		
 		Message message = new Message(sender + " " + action);
+		message.setIcon(R.drawable.action);
 		server.getChannel(target).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
@@ -107,6 +109,7 @@ public class IRCConnection extends PircBot
 		debug("Deop", target + " " + recipient + "(" + sourceNick + ")");
 		
 		Message message = new Message(sourceNick + " deoped " + recipient);
+		message.setIcon(R.drawable.op);
 		server.getChannel(target).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
@@ -124,6 +127,7 @@ public class IRCConnection extends PircBot
 		debug("DeVoice", target + " " + recipient + "(" + sourceNick + ")");
 		
 		Message message = new Message(sourceNick + " devoiced " + recipient);
+		message.setIcon(R.drawable.voice);
 		server.getChannel(target).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
@@ -167,6 +171,7 @@ public class IRCConnection extends PircBot
 			service.sendBroadcast(intent);
 		} else {
 			Message message = new Message(sender + " joined");
+			message.setIcon(R.drawable.join);
 			server.getChannel(target).addMessage(message);
 			
 			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
@@ -268,6 +273,7 @@ public class IRCConnection extends PircBot
 		debug("Op", target + " " + recipient + "(" + sourceNick + ")");
 		
 		Message message = new Message(sourceNick + " oped " + recipient);
+		message.setIcon(R.drawable.op);
 		server.getChannel(target).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
@@ -294,6 +300,7 @@ public class IRCConnection extends PircBot
 			service.sendBroadcast(intent);
 		} else {
 			Message message = new Message(sender + " parted");
+			message.setIcon(R.drawable.part);
 			server.getChannel(target).addMessage(message);
 			
 			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
@@ -310,6 +317,8 @@ public class IRCConnection extends PircBot
 	protected void onPrivateMessage(String sender, String login, String hostname, String message)
 	{
 		debug("PrivateMessage", sender + " " + message);
+		
+		// XXX: Open a query if there's none yet
 	}
 
 	/**
@@ -363,6 +372,7 @@ public class IRCConnection extends PircBot
 		debug("Voice", target + " " + recipient + "(" + sourceNick + ")");
 		
 		Message message = new Message(sourceNick + " voiced " + recipient);
+		message.setIcon(R.drawable.voice);
 		server.getChannel(target).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
