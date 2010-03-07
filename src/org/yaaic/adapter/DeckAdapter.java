@@ -23,15 +23,19 @@ package org.yaaic.adapter;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import org.yaaic.R;
 import org.yaaic.model.Channel;
 import org.yaaic.model.Message;
 
+import android.content.Context;
 import android.graphics.Typeface;
 import android.text.SpannableString;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 /**
@@ -185,11 +189,11 @@ public class DeckAdapter extends BaseAdapter
 	public View renderChannel(Channel channel, ViewGroup parent)
 	{
 		TextView canvas = new TextView(parent.getContext());
+		canvas.setBackgroundColor(0xff222222);
+		canvas.setPadding(5, 5, 5, 5);
 		canvas.setTextSize(11);
 		canvas.setTypeface(Typeface.MONOSPACE);
 		canvas.setTextColor(0xffeeeeee);
-		canvas.setPadding(5, 5, 5, 5);
-		canvas.setBackgroundColor(0xff222222);
 		
 		SpannableString welcome = new SpannableString("Joined " + channel.getName());
 		canvas.setText(welcome);
@@ -209,6 +213,7 @@ public class DeckAdapter extends BaseAdapter
 		int w = (int) vwf;
 		int h = (int) vhf;
 		
+		//channelView.setLayoutParams(new Gallery.LayoutParams(w, h));
 		canvas.setLayoutParams(new Gallery.LayoutParams(w, h));
 		
 		return canvas;
