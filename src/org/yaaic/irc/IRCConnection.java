@@ -349,6 +349,8 @@ public class IRCConnection extends PircBot
 	protected void onQuit(String sourceNick, String sourceLogin, String sourceHostname, String reason)
 	{
 		debug("Quit", sourceNick);
+		
+		// XXX: Add message to all channels where this user has been
 	}
 
 	/**

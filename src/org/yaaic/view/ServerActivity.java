@@ -201,7 +201,7 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 		if (canvas != null) {
 			canvas.append(message.render(canvas.getContext()));
 			int y = (canvas.getLineCount() * canvas.getLineHeight()) - canvas.getHeight() + 20;
-			Log.d(TAG, "Scrolling to: " + y);
+			//Log.d(TAG, "Scrolling to: " + y);
 			canvas.scrollTo(0, y);
 			deckAdapter.notifyDataSetChanged();
 			
