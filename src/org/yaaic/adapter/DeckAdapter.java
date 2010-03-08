@@ -41,7 +41,7 @@ public class DeckAdapter extends BaseAdapter
 {
 	private HashMap<String, MessageListView> map = new HashMap<String, MessageListView>();
 	private LinkedList<Channel> channels = new LinkedList<Channel>();
-	private View currentView;
+	private MessageListView currentView;
 	private String currentChannel;
 	
 	private int width;
@@ -128,7 +128,7 @@ public class DeckAdapter extends BaseAdapter
 	 * 
 	 * @param switched
 	 */
-	public void setSwitched(String channel, View current)
+	public void setSwitched(String channel, MessageListView current)
 	{
 		currentChannel = channel;
 		currentView = current;
@@ -139,7 +139,7 @@ public class DeckAdapter extends BaseAdapter
 	 * 
 	 * @return
 	 */
-	public View getSwitchedView()
+	public MessageListView getSwitchedView()
 	{
 		return currentView;
 	}

@@ -226,6 +226,11 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 			MessageListAdapter adapter = view.getAdapter();
 			adapter.addMessage(message);
 		}
+		
+		if (deckAdapter.isSwitched()) {
+			MessageListView switchedView = deckAdapter.getSwitchedView();
+			switchedView.getAdapter().addMessage(message);
+		}
 	}
 
 	/**
