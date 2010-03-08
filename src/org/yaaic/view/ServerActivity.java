@@ -35,6 +35,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -63,7 +64,7 @@ import org.yaaic.receiver.ChannelReceiver;
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class ServerActivity extends Activity implements ServiceConnection, ChannelListener, OnItemClickListener
+public class ServerActivity extends Activity implements ServiceConnection, ChannelListener, OnItemClickListener, OnKeyListener
 {
 	public static final String TAG = "Yaaic/ServerActivity";
 	
@@ -92,6 +93,7 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 		
 		((TextView) findViewById(R.id.title)).setText(server.getTitle());
 		((ImageView) findViewById(R.id.status)).setImageResource(server.getStatusIcon());
+		((EditText) findViewById(R.id.input)).setOnKeyListener(this);
 		
 		deck = (Gallery) findViewById(R.id.deck);
         deckAdapter = new DeckAdapter();
@@ -298,5 +300,31 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 	public void onRemoveChannel(String target)
 	{
 		// XXX: Implement me :)
+	}
+
+	/**
+	 * On key pressed (input line)
+	 */
+	public boolean onKey(View view, int keyCode, KeyEvent event)
+	{
+		if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
+			EditText input = (EditText) view;
+			String text = input.getText().toString();
+			input.setText("");
+			
+			Log.d(TAG, "Entered: " + text);
+			
+			Channel channel = deckAdapter.getItem(deck.getSelectedItemPosition());
+			
+			if (channel != null) {
+				String nickname = this.binder.getService().getConnection(serverId).getNick();
+				channel.addMessage(new Message("<" + nickname + "> " + text));
+				onChannelMessage(channel.getName());
+				this.binder.getService().getConnection(serverId).sendMessage(channel.getName(), text);
+			}
+			
+			return true;
+		}
+		return false;
 	}
 }

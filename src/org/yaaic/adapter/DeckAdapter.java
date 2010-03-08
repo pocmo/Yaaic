@@ -39,6 +39,8 @@ import android.widget.ListView;
  */
 public class DeckAdapter extends BaseAdapter
 {
+	public static final String TAG = "Yaaic/DeckAdapter";
+	
 	private HashMap<String, MessageListView> map = new HashMap<String, MessageListView>();
 	private LinkedList<Channel> channels = new LinkedList<Channel>();
 	private MessageListView currentView;
@@ -57,7 +59,10 @@ public class DeckAdapter extends BaseAdapter
 	 */
 	public Channel getItem(int position)
 	{
-		return channels.get(position);
+		if (position >= 0 && position < channels.size()) {
+			return channels.get(position);
+		}
+		return null;
 	}
 
 	/**
