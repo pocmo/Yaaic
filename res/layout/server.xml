@@ -39,7 +39,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:paddingLeft="5px"
-	        android:textSize="16px"
+	        android:textSize="14px"
 	        android:layout_weight="1" />
 	</LinearLayout>
 	<ViewSwitcher
