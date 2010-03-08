@@ -49,6 +49,7 @@ import android.widget.TableLayout.LayoutParams;
 import org.yaaic.R;
 import org.yaaic.Yaaic;
 import org.yaaic.adapter.DeckAdapter;
+import org.yaaic.adapter.MessageListAdapter;
 import org.yaaic.irc.IRCBinder;
 import org.yaaic.irc.IRCService;
 import org.yaaic.listener.ChannelListener;
@@ -92,8 +93,8 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 		
         Display d = getWindowManager().getDefaultDisplay();
 
-        deckAdapter = new DeckAdapter(d.getWidth(), d.getHeight());
 		deck = (Gallery) findViewById(R.id.deck);
+        deckAdapter = new DeckAdapter(d.getWidth(), d.getHeight());
 		deck.setAdapter(deckAdapter);
 		deck.setOnItemClickListener(this);
 
@@ -194,22 +195,14 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 	 */
 	public void onChannelMessage(String target)
 	{
+		Log.d(TAG, "Message for target " + target);
+		
 		Message message = server.getChannel(target).pollMessage();
+		MessageListView view = (MessageListView) deckAdapter.getItemByName(target);
 		
-		TextView canvas = (TextView) deckAdapter.getItemByName(target);
-		
-		if (canvas != null) {
-			canvas.append(message.render(canvas.getContext()));
-			int y = (canvas.getLineCount() * canvas.getLineHeight()) - canvas.getHeight() + 20;
-			//Log.d(TAG, "Scrolling to: " + y);
-			canvas.scrollTo(0, y);
-			deckAdapter.notifyDataSetChanged();
-			
-			if (target.equals(deckAdapter.getSwitchedName())) {
-				((TextView) deckAdapter.getSwitchedView()).append(message.render(canvas.getContext()));
-			}
-		} else {
-			Log.d(TAG, "No canvas found");
+		if (view != null) {
+			MessageListAdapter adapter = view.getAdapter();
+			adapter.addMessage(message);
 		}
 	}
 
@@ -231,11 +224,11 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 		Log.d(TAG, "Selected channel: " + position);
 		
 		Channel channel = deckAdapter.getItem(position);
-		view = deckAdapter.renderChannel(channel, switcher);
-		//getView(position, view, deck);
-		view.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-		deckAdapter.setSwitched(channel.getName(), view);
-		switcher.addView(view);
+		MessageListView canvas = deckAdapter.renderChannel(channel, switcher);
+		canvas.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+		canvas.setDelegateTouchEvents(false); // Do not delegate
+		deckAdapter.setSwitched(channel.getName(), canvas);
+		switcher.addView(canvas);
 		switcher.showNext();
 	}
 	

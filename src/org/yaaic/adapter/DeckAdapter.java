@@ -24,15 +24,13 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.yaaic.model.Channel;
-import org.yaaic.model.Message;
+import org.yaaic.view.MessageListView;
 
-import android.graphics.Typeface;
-import android.text.SpannableString;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
-import android.widget.TextView;
+import android.widget.ListView;
 
 /**
  * The adapter for the "DeckView"
@@ -41,7 +39,7 @@ import android.widget.TextView;
  */
 public class DeckAdapter extends BaseAdapter
 {
-	private HashMap<String, View> map = new HashMap<String, View>();
+	private HashMap<String, MessageListView> map = new HashMap<String, MessageListView>();
 	private LinkedList<Channel> channels = new LinkedList<Channel>();
 	private View currentView;
 	private String currentChannel;
@@ -104,7 +102,7 @@ public class DeckAdapter extends BaseAdapter
 	 * @param channel
 	 * @return The item
 	 */
-	public View getItemByName(String channel)
+	public MessageListView getItemByName(String channel)
 	{
 		if (map.containsKey(channel)) {
 			return map.get(channel);
@@ -175,21 +173,47 @@ public class DeckAdapter extends BaseAdapter
 		convertView = map.get(channel.getName());
 		
 		if (convertView == null) {
-			convertView = renderChannel(channel, parent);
-			map.put(channel.getName(), convertView);
+			MessageListView view = renderChannel(channel, parent);
+			map.put(channel.getName(), view);
+			return view;
+		} else {
+			return convertView;
 		}
-
-		return convertView;
 	}
 	
-	public View renderChannel(Channel channel, ViewGroup parent)
+	/**
+	 * Render a channel view (MessageListView)
+	 * 
+	 * @param channel The channel of the view
+	 * @param parent The parent view (context)
+	 * @return The rendered MessageListView
+	 */
+	public MessageListView renderChannel(Channel channel, ViewGroup parent)
 	{
+		MessageListView list = new MessageListView(parent.getContext());
+		list.setAdapter(new MessageListAdapter(channel, parent.getContext()));
+		
+		// XXX: Refactor this crap :)
+        
+		float fw = (float) width;
+		float fh = (float) height;
+		
+		float vwf = fw / 100 * 80;
+		float vhf = fh / 100 * 80;
+		
+		int w = (int) vwf;
+		int h = (int) vhf;
+		
+		list.setLayoutParams(new Gallery.LayoutParams(w, h));
+		list.setBackgroundColor(0xff222222);
+		list.setPadding(5, 5, 5, 5);
+		list.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
+		list.setScrollContainer(false);
+		
+		return list;
+		
+		/*
 		TextView canvas = new TextView(parent.getContext());
-		canvas.setBackgroundColor(0xff222222);
-		canvas.setPadding(5, 5, 5, 5);
-		canvas.setTextSize(11);
-		canvas.setTypeface(Typeface.MONOSPACE);
-		canvas.setTextColor(0xffeeeeee);
 		
 		SpannableString welcome = new SpannableString("Joined " + channel.getName());
 		canvas.setText(welcome);
@@ -213,5 +237,6 @@ public class DeckAdapter extends BaseAdapter
 		canvas.setLayoutParams(new Gallery.LayoutParams(w, h));
 		
 		return canvas;
+		*/
 	}
 }

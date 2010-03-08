@@ -166,6 +166,7 @@ public class Database extends SQLiteOpenHelper
 			
 			servers.put(server.getId(), server);
 		}
+		cursor.close();
 		
 		return servers;
 	}

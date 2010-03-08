@@ -216,6 +216,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 	{
     	Database db = new Database(this);
     	db.removeServerById(serverId);
+    	db.close();
     	
     	Yaaic.getInstance().removeServerById(serverId);
     	adapter.loadServers();

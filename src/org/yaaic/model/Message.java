@@ -21,11 +21,13 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 package org.yaaic.model;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
+import android.widget.TextView;
 
 /**
  * A channel or server message
@@ -118,6 +120,18 @@ public class Message {
 				canvas.setSpan(new ForegroundColorSpan(color), 0, canvas.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
 		}
+		
+		return canvas;
+	}
+	
+	public TextView renderTextView(Context context)
+	{
+		TextView canvas = new TextView(context);
+		
+		canvas.setText(this.render(context));
+		canvas.setTextSize(11);
+		canvas.setTypeface(Typeface.MONOSPACE);
+		canvas.setTextColor(0xffeeeeee);
 		
 		return canvas;
 	}
