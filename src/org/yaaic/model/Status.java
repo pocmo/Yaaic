@@ -20,6 +20,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.model;
 
+/**
+ * Helper class for server status constants 
+ * 
+ * @author Sebastian Kaspari <sebastian@yaaic.org>
+ */
 public class Status {
 	public static final int DISCONNECTED = 0;
 	public static final int CONNECTING = 1;

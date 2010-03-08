@@ -29,7 +29,6 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -94,8 +93,6 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 		((TextView) findViewById(R.id.title)).setText(server.getTitle());
 		((ImageView) findViewById(R.id.status)).setImageResource(server.getStatusIcon());
 		
-        Display d = getWindowManager().getDefaultDisplay();
-
 		deck = (Gallery) findViewById(R.id.deck);
         deckAdapter = new DeckAdapter();
 		deck.setAdapter(deckAdapter);
