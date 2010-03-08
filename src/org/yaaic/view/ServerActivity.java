@@ -97,7 +97,7 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
         Display d = getWindowManager().getDefaultDisplay();
 
 		deck = (Gallery) findViewById(R.id.deck);
-        deckAdapter = new DeckAdapter(d.getWidth(), d.getHeight());
+        deckAdapter = new DeckAdapter();
 		deck.setAdapter(deckAdapter);
 		deck.setOnItemClickListener(this);
 

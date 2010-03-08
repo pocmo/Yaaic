@@ -44,21 +44,6 @@ public class DeckAdapter extends BaseAdapter
 	private MessageListView currentView;
 	private String currentChannel;
 	
-	private int width;
-	private int height;
-	
-	/**
-	 * Create a new DeckAdapter
-	 * 
-	 * @param width
-	 * @param height
-	 */
-	public DeckAdapter(int width, int height)
-	{
-		this.width = width;
-		this.height = height;
-	}
-	
 	/**
 	 * Get number of item
 	 */
