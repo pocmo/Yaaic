@@ -197,17 +197,22 @@ public class DeckAdapter extends BaseAdapter
 		// XXX: In addition to that we need to resize the lists if the
 		//      screen is resized or rotated
         
-		float fw = (float) width;
-		float fh = (float) height;
+		/*
+		float fw = (float) ;
+		float fh = (float) parent.getHeight();
 		
 		float vwf = fw / 100 * 80;
-		float vhf = fh / 100 * 80;
+		float vhf = fh / 100 * 90;
 		
 		int w = (int) vwf;
 		int h = (int) vhf;
+		*/
 		
 		list.setDivider(null);
-		list.setLayoutParams(new Gallery.LayoutParams(w, h));
+		list.setLayoutParams(new Gallery.LayoutParams(
+			parent.getWidth() / 100 * 85,
+			parent.getHeight() / 100 * 95
+		));
 		list.setBackgroundColor(0xff222222);
 		list.setPadding(5, 5, 5, 5);
 		list.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
