@@ -60,7 +60,7 @@ import org.yaaic.model.Server;
 import org.yaaic.receiver.ChannelReceiver;
 
 /**
- * Connected to server
+ * The server view with a scrollable list of all channels
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
@@ -77,6 +77,9 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 	private Gallery deck;
 	private DeckAdapter deckAdapter;
 	
+	/**
+	 * On create
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -105,6 +108,9 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 		}
 	}
 	
+	/**
+	 * On resume
+	 */
 	@Override
 	public void onResume()
 	{
@@ -119,6 +125,9 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
     	registerReceiver(receiver, new IntentFilter(Broadcast.CHANNEL_REMOVE));
 	}
 	
+	/**
+	 * On Pause
+	 */
 	@Override
 	public void onPause()
 	{
@@ -128,18 +137,28 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 		unregisterReceiver(receiver);
 	}
 
+	/**
+	 * On service connected
+	 */
 	public void onServiceConnected(ComponentName name, IBinder service)
 	{
 		this.binder = (IRCBinder) service;
 	}
 
+	/**
+	 * On service disconnected
+	 */
 	public void onServiceDisconnected(ComponentName name)
 	{
 		this.binder = null;
 	}
 
+	/**
+	 * On options menu requested
+	 */
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
     	super.onCreateOptionsMenu(menu);
     	
     	// inflate from xml
@@ -149,6 +168,9 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
     	return true;
 	}
 
+	/**
+	 * On menu item selected
+	 */
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item)
 	{
