@@ -193,21 +193,6 @@ public class DeckAdapter extends BaseAdapter
 		MessageListView list = new MessageListView(parent.getContext());
 		list.setAdapter(new MessageListAdapter(channel, parent.getContext()));
 		
-		// XXX: Refactor this crap :)
-		// XXX: In addition to that we need to resize the lists if the
-		//      screen is resized or rotated
-        
-		/*
-		float fw = (float) ;
-		float fh = (float) parent.getHeight();
-		
-		float vwf = fw / 100 * 80;
-		float vhf = fh / 100 * 90;
-		
-		int w = (int) vwf;
-		int h = (int) vhf;
-		*/
-		
 		list.setDivider(null);
 		list.setLayoutParams(new Gallery.LayoutParams(
 			parent.getWidth() / 100 * 85,
