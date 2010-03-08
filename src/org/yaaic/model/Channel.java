@@ -91,8 +91,24 @@ public class Channel
 	 * 
 	 * @return
 	 */
-	public Message pollMessage()
+	public Message pollBufferedMessage()
 	{
 		return buffer.poll();
+	}
+	
+	/**
+	 * Does the channel have buffered messages?
+	 */
+	public boolean hasBufferedMessages()
+	{
+		return buffer.size() > 0;
+	}
+	
+	/**
+	 * Clear the message buffer
+	 */
+	public void clearBuffer()
+	{
+		buffer.clear();
 	}
 }

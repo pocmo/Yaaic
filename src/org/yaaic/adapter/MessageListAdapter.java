@@ -54,6 +54,8 @@ public class MessageListAdapter extends BaseAdapter
 		for (Message message : channel.getHistory()) {
 			messages.add(message.renderTextView(context));
 		}
+		
+		channel.clearBuffer();
 	}
 
 	/**

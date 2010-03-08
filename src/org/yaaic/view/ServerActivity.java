@@ -218,18 +218,21 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 	public void onChannelMessage(String target)
 	{
 		Log.d(TAG, "Message for target " + target);
+		Channel channel = server.getChannel(target);
 		
-		Message message = server.getChannel(target).pollMessage();
-		MessageListView view = (MessageListView) deckAdapter.getItemByName(target);
-		
-		if (view != null) {
-			MessageListAdapter adapter = view.getAdapter();
-			adapter.addMessage(message);
-		}
-		
-		if (deckAdapter.isSwitched()) {
-			MessageListView switchedView = deckAdapter.getSwitchedView();
-			switchedView.getAdapter().addMessage(message);
+		while(channel.hasBufferedMessages()) {
+			Message message = channel.pollBufferedMessage();
+			MessageListView view = (MessageListView) deckAdapter.getItemByName(target);
+			
+			if (view != null) {
+				MessageListAdapter adapter = view.getAdapter();
+				adapter.addMessage(message);
+			}
+			
+			if (deckAdapter.isSwitched()) {
+				MessageListView switchedView = deckAdapter.getSwitchedView();
+				switchedView.getAdapter().addMessage(message);
+			}
 		}
 	}
 
