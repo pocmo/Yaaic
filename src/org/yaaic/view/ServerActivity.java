@@ -51,6 +51,7 @@ import org.yaaic.R;
 import org.yaaic.Yaaic;
 import org.yaaic.adapter.DeckAdapter;
 import org.yaaic.adapter.MessageListAdapter;
+import org.yaaic.command.CommandParser;
 import org.yaaic.irc.IRCBinder;
 import org.yaaic.irc.IRCService;
 import org.yaaic.listener.ChannelListener;
@@ -325,10 +326,14 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 			Channel channel = deckAdapter.getItem(deck.getSelectedItemPosition());
 			
 			if (channel != null) {
-				String nickname = this.binder.getService().getConnection(serverId).getNick();
-				channel.addMessage(new Message("<" + nickname + "> " + text));
-				onChannelMessage(channel.getName());
-				this.binder.getService().getConnection(serverId).sendMessage(channel.getName(), text);
+				if (!text.trim().startsWith("/")) {
+					String nickname = this.binder.getService().getConnection(serverId).getNick();
+					channel.addMessage(new Message("<" + nickname + "> " + text));
+					onChannelMessage(channel.getName());
+					this.binder.getService().getConnection(serverId).sendMessage(channel.getName(), text);
+				} else {
+					CommandParser.getInstance().parse(text, server, channel, binder.getService());
+				}
 			}
 			
 			return true;
