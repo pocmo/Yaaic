@@ -54,6 +54,7 @@ public class CommandParser
 		commands.put("me", new MeCommand());
 		commands.put("names", new NamesCommand());
 		commands.put("echo", new EchoCommand());
+		commands.put("topic", new TopicCommand());
 	}
 	
 	/**
