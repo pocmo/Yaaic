@@ -20,6 +20,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.irc;
 
+import java.util.Vector;
+
 import android.content.Intent;
 import android.util.Log;
 
@@ -263,7 +265,17 @@ public class IRCConnection extends PircBot
 	{
 		debug("Nick", oldNick + " " + newNick);
 		
-		// XXX: Add message to all channels where oldNick / newNick is present
+		for (String target : getChannelsByNickname(newNick)) {
+			Channel channel = server.getChannel(target);
+			Message message = new Message(oldNick + " is now known as " + newNick);
+			message.setColor(Message.COLOR_GREEN);
+			channel.addMessage(message);
+			
+			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+			intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
+			service.sendBroadcast(intent);
+		}
 	}
 
 	/**
@@ -372,7 +384,7 @@ public class IRCConnection extends PircBot
 		}
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
-;
+
 		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
 		intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
 		service.sendBroadcast(intent);
@@ -426,6 +438,30 @@ public class IRCConnection extends PircBot
 		if (DEBUG_EVENTS) {
 			Log.d(TAG, "(" + server.getTitle() + ") [" + event + "]: " + params);
 		}
+	}
+	
+	/**
+	 * Get all channels where the user with the given nickname is online
+	 * 
+	 * @param nickname
+	 * @return Array of channel names
+	 */
+	private Vector<String> getChannelsByNickname(String nickname)
+	{
+		Vector<String> channels = new Vector<String>();
+		
+		for (String channel : this.getChannels()) {
+			for (User user : this.getUsers(channel)) {
+				if (user.getNick().equals(nickname)) {
+					channels.add(channel);
+					break;
+				}
+			}
+		}
+		
+		Log.d(TAG, "Found " + channels.size() + " channels for nickname " + nickname);
+		
+		return channels;
 	}
 	
 	/**
