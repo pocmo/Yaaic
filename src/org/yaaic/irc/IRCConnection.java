@@ -362,7 +362,22 @@ public class IRCConnection extends PircBot
 	{
 		debug("Quit", sourceNick);
 		
-		// XXX: Add message to all channels where this user has been
+		if (!sourceNick.equals(this.getNick())) {
+			for (String target : getChannelsByNickname(sourceNick)) {
+				Channel channel = server.getChannel(target);
+				Message message = new Message(sourceNick + " quitted");
+				message.setColor(Message.COLOR_GREEN);
+				message.setIcon(R.drawable.quit);
+				channel.addMessage(message);
+				
+				Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+				intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+				intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
+				service.sendBroadcast(intent);
+			}
+		} else {
+			// XXX: We quitted
+		}
 	}
 
 	/**
