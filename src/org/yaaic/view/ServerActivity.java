@@ -221,11 +221,17 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 		
 		while(channel.hasBufferedMessages()) {
 			Message message = channel.pollBufferedMessage();
-			MessageListView view = (MessageListView) deckAdapter.getItemByName(target);
 			
-			if (view != null) {
-				MessageListAdapter adapter = view.getAdapter();
-				adapter.addMessage(message);
+			int position = deckAdapter.getPositionByName(target);
+			
+			if (position != -1) {
+				MessageListView view = (MessageListView) deck.getChildAt(position);
+				if (view != null) {
+					MessageListAdapter adapter = view.getAdapter();
+					adapter.addMessage(message);
+				} else {
+					Log.d(TAG, "MessageListView Adapter is null");
+				}
 			}
 			
 			if (deckAdapter.isSwitched()) {

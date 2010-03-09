@@ -20,7 +20,6 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.adapter;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.yaaic.model.Channel;
@@ -41,7 +40,6 @@ public class DeckAdapter extends BaseAdapter
 {
 	public static final String TAG = "Yaaic/DeckAdapter";
 	
-	private HashMap<String, MessageListView> map = new HashMap<String, MessageListView>();
 	private LinkedList<Channel> channels = new LinkedList<Channel>();
 	private MessageListView currentView;
 	private String currentChannel;
@@ -92,13 +90,15 @@ public class DeckAdapter extends BaseAdapter
 	 * @param channel
 	 * @return The item
 	 */
-	public MessageListView getItemByName(String channel)
+	public int getPositionByName(String name)
 	{
-		if (map.containsKey(channel)) {
-			return map.get(channel);
+		for (int i = 0; i <  channels.size(); i++) {
+			if (channels.get(i).getName().equals(name)) {
+				return i;
+			}
 		}
 		
-		return null;
+		return -1;
 	}
 	
 	/**
@@ -153,22 +153,14 @@ public class DeckAdapter extends BaseAdapter
 	{
 		return currentView != null;
 	}
-
+	
 	/**
 	 * Get view at given position
 	 */
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
 		Channel channel = getItem(position);
-		convertView = map.get(channel.getName());
-		
-		if (convertView == null) {
-			MessageListView view = renderChannel(channel, parent);
-			map.put(channel.getName(), view);
-			return view;
-		} else {
-			return convertView;
-		}
+		return renderChannel(channel, parent);
 	}
 	
 	/**
@@ -190,8 +182,8 @@ public class DeckAdapter extends BaseAdapter
 		));
 		list.setBackgroundColor(0xff222222);
 		list.setPadding(5, 5, 5, 5);
-		list.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
 		list.setScrollContainer(false);
+		list.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
 		list.setSelection(list.getAdapter().getCount() - 1); // scroll to bottom
 		
 		return list;
