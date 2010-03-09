@@ -100,8 +100,7 @@ public class CommandParser
 					errorMessage.setColor(Message.COLOR_RED);
 					channel.addMessage(errorMessage);
 					
-					Message usageMessage = new Message("Usage of " + type + ": " + command.getUsage());
-					//usageMessage.setColor(Message.COLOR_RED);
+					Message usageMessage = new Message("Syntax: " + command.getUsage());
 					channel.addMessage(usageMessage);
 					
 					Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);

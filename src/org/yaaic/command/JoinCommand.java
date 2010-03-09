@@ -52,6 +52,6 @@ public class JoinCommand extends BaseCommand
 	@Override
 	public String getUsage()
 	{
-		return "/join channel [key]";
+		return "/join <channel> [<key>]";
 	}
 }

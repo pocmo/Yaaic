@@ -50,6 +50,6 @@ public class NickCommand extends BaseCommand
 	@Override
 	public String getUsage()
 	{
-		return "/nick nickname";
+		return "/nick <nickname>";
 	}
 }
