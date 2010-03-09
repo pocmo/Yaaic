@@ -48,4 +48,32 @@ public abstract class BaseCommand
 	 * @return The usage description
 	 */
 	public abstract String getUsage();
+	
+	/**
+	 * Merge params to a string
+	 * 
+	 * @params params The params to merge
+	 */
+	public static String mergeParams(String[] params)
+	{
+		return mergeParams(params, 1);
+	}
+	
+	/**
+	 * Merge params to a string
+	 * 
+	 * @param params The params to merge
+	 * @param position Start at given param
+	 */
+	public static String mergeParams(String[] params, int position)
+	{
+		StringBuffer buffer = new StringBuffer();
+		
+		for (; position < params.length; position++) {
+			buffer.append(params[position]);
+			buffer.append(" ");
+		}
+		
+		return buffer.toString().trim();
+	}
 }
