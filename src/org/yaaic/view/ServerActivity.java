@@ -321,8 +321,6 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 			String text = input.getText().toString();
 			input.setText("");
 			
-			Log.d(TAG, "Entered: " + text);
-			
 			Channel channel = deckAdapter.getItem(deck.getSelectedItemPosition());
 			
 			if (channel != null) {
