@@ -28,7 +28,6 @@ import org.yaaic.model.Channel;
 import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 
-import android.R.color;
 import android.content.Intent;
 
 /**
