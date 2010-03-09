@@ -25,7 +25,7 @@ import org.yaaic.model.Channel;
 import org.yaaic.model.Server;
 
 /**
- * Command: /join
+ * Command: /join <channel> [<key>]
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */

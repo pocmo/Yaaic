@@ -51,6 +51,7 @@ public class CommandParser
 		
 		commands.put("nick", new NickCommand());
 		commands.put("join", new JoinCommand());
+		commands.put("me", new MeCommand());
 	}
 	
 	/**
