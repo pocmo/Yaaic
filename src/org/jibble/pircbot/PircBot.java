@@ -1026,13 +1026,17 @@ public abstract class PircBot implements ReplyConstants {
         }
         else if (command.equals("QUIT")) {
             // Someone has quit from the IRC server.
+        	
+        	// XXX: Pircbot Patch - Call onQuit before removing the user. This way we
+        	//						are able to know which channels the user was on.
+        	this.onQuit(sourceNick, sourceLogin, sourceHostname, line.substring(line.indexOf(" :") + 2));
+        	
             if (sourceNick.equals(this.getNick())) {
                 this.removeAllChannels();
             }
             else {
                 this.removeUser(sourceNick);
             }
-            this.onQuit(sourceNick, sourceLogin, sourceHostname, line.substring(line.indexOf(" :") + 2));
         }
         else if (command.equals("KICK")) {
             // Somebody has been kicked from a channel.
