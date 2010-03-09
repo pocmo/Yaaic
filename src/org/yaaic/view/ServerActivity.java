@@ -44,6 +44,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.TableLayout.LayoutParams;
 
 import org.yaaic.R;
@@ -64,7 +65,7 @@ import org.yaaic.receiver.ChannelReceiver;
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class ServerActivity extends Activity implements ServiceConnection, ChannelListener, OnItemClickListener, OnKeyListener
+public class ServerActivity extends Activity implements ServiceConnection, ChannelListener, OnItemClickListener, OnKeyListener, OnItemSelectedListener
 {
 	public static final String TAG = "Yaaic/ServerActivity";
 	
@@ -96,6 +97,7 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 		((EditText) findViewById(R.id.input)).setOnKeyListener(this);
 		
 		deck = (Gallery) findViewById(R.id.deck);
+		deck.setOnItemSelectedListener(this);
         deckAdapter = new DeckAdapter();
 		deck.setAdapter(deckAdapter);
 		deck.setOnItemClickListener(this);
@@ -332,5 +334,24 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * On channel selected/focused
+	 */
+	public void onItemSelected(AdapterView<?> deck, View view, int position, long id)
+	{
+		Channel channel = (Channel) deck.getItemAtPosition(position);
+		if (channel != null) {
+			((TextView) findViewById(R.id.title)).setText(server.getTitle() + " - " + channel.getName());
+		}
+	}
+
+	/**
+	 * On no channel selected/focused
+	 */
+	public void onNothingSelected(AdapterView<?> arg0)
+	{
+		((TextView) findViewById(R.id.title)).setText(server.getTitle());
 	}
 }
