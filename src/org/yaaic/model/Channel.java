@@ -32,6 +32,7 @@ public class Channel
 	private static final int BUFFER_SIZE = 30;
 	
 	private String name;
+	private String topic;
 	private LinkedList<Message> buffer = new LinkedList<Message>();
 	private LinkedList<Message> history = new LinkedList<Message>();
 	
@@ -43,6 +44,7 @@ public class Channel
 	public Channel(String name)
 	{
 		this.name = name;
+		this.topic = "";
 	}
 	
 	/**
@@ -102,5 +104,25 @@ public class Channel
 	public void clearBuffer()
 	{
 		buffer.clear();
+	}
+	
+	/**
+	 * Set the channel's topic
+	 * 
+	 * @param topic The topic of the channel
+	 */
+	public void setTopic(String topic)
+	{
+		this.topic = topic;
+	}
+	
+	/**
+	 * Get the topic of the channel
+	 * 
+	 * @return The channel's topic
+	 */
+	public String getTopic()
+	{
+		return topic;
 	}
 }

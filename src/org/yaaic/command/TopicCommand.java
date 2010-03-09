@@ -41,7 +41,7 @@ public class TopicCommand extends BaseCommand
 	{
 		if (params.length == 1) {
 			// Show topic
-			// XXX: PircBot doesn't save the channel's topic - we have to keep track of the topic in the channel class
+			service.getConnection(server.getId()).onTopic(channel.getName(), channel.getTopic(), "", 0, false);
 		} else if (params.length > 1) {
 			// Change topic
 			service.getConnection(server.getId()).setTopic(channel.getName(), BaseCommand.mergeParams(params));

@@ -384,7 +384,7 @@ public class IRCConnection extends PircBot
 	 * On Topic
 	 */
 	@Override
-	protected void onTopic(String target, String topic, String setBy, long date, boolean changed)
+	public void onTopic(String target, String topic, String setBy, long date, boolean changed)
 	{
 		debug("Topic", target + " " + setBy + " " + topic);
 		
@@ -398,8 +398,10 @@ public class IRCConnection extends PircBot
 			server.getChannel(target).addMessage(message);
 		}
 		
+		// remember channel's topic
+		server.getChannel(target).setTopic(topic);
+		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
-
 		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
 		intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
 		service.sendBroadcast(intent);
