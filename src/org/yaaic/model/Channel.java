@@ -67,16 +67,6 @@ public class Channel
 	}
 	
 	/**
-	 * Get all buffered messages
-	 * 
-	 * @return
-	 */
-	public LinkedList<Message> getBuffer()
-	{
-		return buffer;
-	}
-	
-	/**
 	 * Get channel history
 	 * 
 	 * @return
