@@ -48,6 +48,8 @@ public class CommandParser
 	private CommandParser()
 	{
 		commands = new HashMap<String, BaseCommand>();
+		
+		commands.put("nick", new NickCommand());
 	}
 	
 	/**
