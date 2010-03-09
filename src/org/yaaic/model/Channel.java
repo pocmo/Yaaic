@@ -93,7 +93,9 @@ public class Channel
 	 */
 	public Message pollBufferedMessage()
 	{
-		return buffer.poll();
+		Message message = buffer.getLast();
+		buffer.removeLast();
+		return message;
 	}
 	
 	/**
