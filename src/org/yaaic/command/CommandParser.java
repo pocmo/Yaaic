@@ -56,6 +56,10 @@ public class CommandParser
 		commands.put("echo", new EchoCommand());
 		commands.put("topic", new TopicCommand());
 		commands.put("quit", new QuitCommand());
+		commands.put("op", new OpCommand());
+		commands.put("voice", new VoiceCommand());
+		commands.put("deop", new DeopCommand());
+		commands.put("devoice", new DevoiceCommand());
 	}
 	
 	/**
