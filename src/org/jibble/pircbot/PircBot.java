@@ -29,6 +29,8 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
+import android.util.Log;
+
 /**
  * PircBot is a Java framework for writing IRC bots quickly and easily.
  *  <p>
@@ -65,6 +67,7 @@ import java.util.StringTokenizer;
  * @version    1.4.6 (Build time: Wed Apr 11 19:20:59 2007)
  */
 public abstract class PircBot implements ReplyConstants {
+	public static final String TAG = "Yaaic/PircBot";
     /**
      * The definitive version number of this release of PircBot.
      * (Note: Change this before automatically building releases)
@@ -862,7 +865,9 @@ public abstract class PircBot implements ReplyConstants {
      */
     public void log(String line) {
         if (_verbose) {
-            System.out.println(System.currentTimeMillis() + " " + line);
+        	// XXX: PircBot Patch: Log to debug log instead of standard output
+        	Log.d(TAG, line);
+            //System.out.println(System.currentTimeMillis() + " " + line);
         }
     }
 
