@@ -28,6 +28,7 @@ import org.yaaic.model.Channel;
 import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 
+import android.R.color;
 import android.content.Intent;
 
 /**
@@ -90,14 +91,18 @@ public class CommandParser
 		
 		if (isCommand(type)) {
 			BaseCommand command = commands.get(type);
-			if (command.needsParams() > 0 && params.length - 1 == command.needsParams()) {
+			try {
 				command.execute(params, server, channel, service);
-			} else {
+			} catch(CommandException e) {
 				// Wrong number of params
 				if (channel != null) {
-					Message message = new Message("Usage of " + type + ": " + command.getUsage());
-					message.setColor(Message.COLOR_RED);
-					channel.addMessage(message);
+					Message errorMessage = new Message(type + ": " + e.getMessage());
+					errorMessage.setColor(Message.COLOR_RED);
+					channel.addMessage(errorMessage);
+					
+					Message usageMessage = new Message("Usage of " + type + ": " + command.getUsage());
+					//usageMessage.setColor(Message.COLOR_RED);
+					channel.addMessage(usageMessage);
 					
 					Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 					intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());

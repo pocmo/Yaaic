@@ -35,9 +35,13 @@ public class NickCommand extends BaseCommand
 	 * Execute /nick
 	 */
 	@Override
-	public void execute(String[] params, Server server, Channel channel, IRCService service)
+	public void execute(String[] params, Server server, Channel channel, IRCService service) throws CommandException 
 	{
-		service.getConnection(server.getId()).changeNick(params[1]);
+		if (params.length == 2) {
+			service.getConnection(server.getId()).changeNick(params[1]);
+		} else {
+			throw new CommandException("Invalid number of params");
+		}
 	}
 	
 	/**
@@ -48,14 +52,4 @@ public class NickCommand extends BaseCommand
 	{
 		return "/nick nickname";
 	}
-
-	/**
-	 * Number of params needed (1)
-	 */
-	@Override
-	public int needsParams()
-	{
-		return 1;
-	}
-	
 }

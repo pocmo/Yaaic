@@ -38,8 +38,9 @@ public abstract class BaseCommand
 	 * @param server The server object
 	 * @param channel The channel object or null if no channel is selected
 	 * @param service The service with all server connections
+	 * @throws CommandException if command couldn't be executed
 	 */
-	public abstract void execute(String[] params, Server server, Channel channel, IRCService service);
+	public abstract void execute(String[] params, Server server, Channel channel, IRCService service) throws CommandException;
 	
 	/**
 	 * Get the usage description for this command
@@ -47,13 +48,4 @@ public abstract class BaseCommand
 	 * @return The usage description
 	 */
 	public abstract String getUsage();
-
-	/**
-	 * How much params does this command need?
-	 * 
-	 * Default: 0
-	 * 
-	 * @return The number of params needed
-	 */
-	public abstract int needsParams();
 }
