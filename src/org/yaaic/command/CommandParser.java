@@ -53,6 +53,7 @@ public class CommandParser
 		commands.put("join", new JoinCommand());
 		commands.put("me", new MeCommand());
 		commands.put("names", new NamesCommand());
+		commands.put("echo", new EchoCommand());
 	}
 	
 	/**
