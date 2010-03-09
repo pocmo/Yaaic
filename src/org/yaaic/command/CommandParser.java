@@ -50,6 +50,7 @@ public class CommandParser
 		commands = new HashMap<String, BaseCommand>();
 		
 		commands.put("nick", new NickCommand());
+		commands.put("join", new JoinCommand());
 	}
 	
 	/**
