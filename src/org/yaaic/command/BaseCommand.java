@@ -31,6 +31,14 @@ import org.yaaic.model.Server;
  */
 public abstract class BaseCommand
 {
+	/**
+	 * Execute the command
+	 * 
+	 * @param params The params given (0 is the command itself)
+	 * @param server The server object
+	 * @param channel The channel object or null if no channel is selected
+	 * @param service The service with all server connections
+	 */
 	public abstract void execute(String[] params, Server server, Channel channel, IRCService service);
 	
 	/**
