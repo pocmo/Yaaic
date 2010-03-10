@@ -55,25 +55,28 @@ import org.yaaic.command.CommandParser;
 import org.yaaic.irc.IRCBinder;
 import org.yaaic.irc.IRCService;
 import org.yaaic.listener.ChannelListener;
+import org.yaaic.listener.ServerListener;
 import org.yaaic.model.Broadcast;
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 import org.yaaic.receiver.ChannelReceiver;
+import org.yaaic.receiver.ServerReceiver;
 
 /**
  * The server view with a scrollable list of all channels
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class ServerActivity extends Activity implements ServiceConnection, ChannelListener, OnItemClickListener, OnKeyListener, OnItemSelectedListener
+public class ServerActivity extends Activity implements ServiceConnection, ServerListener, ChannelListener, OnItemClickListener, OnKeyListener, OnItemSelectedListener
 {
 	public static final String TAG = "Yaaic/ServerActivity";
 	
 	private int serverId;
 	private Server server;
 	private IRCBinder binder;
-	private ChannelReceiver receiver;
+	private ChannelReceiver channelReceiver;
+	private ServerReceiver serverReceiver;
 	
 	private ViewSwitcher switcher;
 	private Gallery deck;
@@ -96,12 +99,7 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 		((TextView) findViewById(R.id.title)).setText(server.getTitle());
 		((ImageView) findViewById(R.id.status)).setImageResource(server.getStatusIcon());
 		
-		EditText input = (EditText) findViewById(R.id.input);
-		input.setOnKeyListener(this);
-
-		if (!server.isConnected()) {
-			input.setEnabled(false);
-		}
+		((EditText) findViewById(R.id.input)).setOnKeyListener(this);
 		
 		deck = (Gallery) findViewById(R.id.deck);
 		deck.setOnItemSelectedListener(this);
@@ -127,10 +125,17 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
         Intent intent = new Intent(this, IRCService.class);
         bindService(intent, this, 0);
         
-    	receiver = new ChannelReceiver(server.getId(), this);
-    	registerReceiver(receiver, new IntentFilter(Broadcast.CHANNEL_MESSAGE));
-    	registerReceiver(receiver, new IntentFilter(Broadcast.CHANNEL_NEW));
-    	registerReceiver(receiver, new IntentFilter(Broadcast.CHANNEL_REMOVE));
+    	channelReceiver = new ChannelReceiver(server.getId(), this);
+    	registerReceiver(channelReceiver, new IntentFilter(Broadcast.CHANNEL_MESSAGE));
+    	registerReceiver(channelReceiver, new IntentFilter(Broadcast.CHANNEL_NEW));
+    	registerReceiver(channelReceiver, new IntentFilter(Broadcast.CHANNEL_REMOVE));
+
+    	serverReceiver = new ServerReceiver(this);
+    	registerReceiver(serverReceiver, new IntentFilter(Broadcast.SERVER_UPDATE));
+
+		if (!server.isConnected()) {
+			 ((EditText) findViewById(R.id.input)).setEnabled(false);
+		}
 	}
 	
 	/**
@@ -142,7 +147,8 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 		super.onPause();
 		
 		unbindService(this);
-		unregisterReceiver(receiver);
+		unregisterReceiver(channelReceiver);
+		unregisterReceiver(serverReceiver);
 	}
 
 	/**
@@ -261,6 +267,29 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 			deck.setSelection(deckAdapter.getCount() - 1);
 		}
 	}
+	
+	/**
+	 * On channel remove
+	 */
+	public void onRemoveConversation(String target)
+	{
+		// XXX: Implement me :)
+	}
+
+	/**
+	 * On server status update
+	 */
+	public void onStatusUpdate()
+	{
+		((ImageView) findViewById(R.id.status)).setImageResource(server.getStatusIcon());
+		
+		EditText input = (EditText) findViewById(R.id.input);
+		if (server.isConnected()) {
+			input.setEnabled(true); 
+		} else {
+			input.setEnabled(false);
+		}
+	}
 
 	/**
 	 * On Channel item clicked
@@ -306,14 +335,6 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 		} else {
 			finish();
 		}
-	}
-
-	/**
-	 * On channel remove
-	 */
-	public void onRemoveConversation(String target)
-	{
-		// XXX: Implement me :)
 	}
 
 	/**
