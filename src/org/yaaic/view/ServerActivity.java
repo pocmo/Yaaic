@@ -232,7 +232,7 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 					MessageListAdapter adapter = view.getAdapter();
 					adapter.addMessage(message);
 				} else {
-					Log.d(TAG, "MessageListView Adapter is null");
+					Log.d(TAG, "MessageListView Adapter is null (position: " + position + ")");
 				}
 			}
 			
@@ -319,6 +319,11 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 			EditText input = (EditText) view;
 			String text = input.getText().toString();
 			input.setText("");
+			
+			if (text == "") {
+				// ignore empty messages
+				return true;
+			}
 			
 			Conversation conversation = deckAdapter.getItem(deck.getSelectedItemPosition());
 			
