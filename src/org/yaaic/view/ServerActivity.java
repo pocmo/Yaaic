@@ -95,7 +95,13 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 		
 		((TextView) findViewById(R.id.title)).setText(server.getTitle());
 		((ImageView) findViewById(R.id.status)).setImageResource(server.getStatusIcon());
-		((EditText) findViewById(R.id.input)).setOnKeyListener(this);
+		
+		EditText input = (EditText) findViewById(R.id.input);
+		input.setOnKeyListener(this);
+
+		if (!server.isConnected()) {
+			input.setEnabled(false);
+		}
 		
 		deck = (Gallery) findViewById(R.id.deck);
 		deck.setOnItemSelectedListener(this);
