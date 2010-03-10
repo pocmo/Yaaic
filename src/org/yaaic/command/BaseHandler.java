@@ -21,7 +21,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 package org.yaaic.command;
 
 import org.yaaic.irc.IRCService;
-import org.yaaic.model.Channel;
+import org.yaaic.model.Conversation;
 import org.yaaic.model.Server;
 
 /**
@@ -40,7 +40,7 @@ public abstract class BaseHandler
 	 * @param service The service with all server connections
 	 * @throws CommandException if command couldn't be executed
 	 */
-	public abstract void execute(String[] params, Server server, Channel channel, IRCService service) throws CommandException;
+	public abstract void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException;
 	
 	/**
 	 * Get the usage description for this command
