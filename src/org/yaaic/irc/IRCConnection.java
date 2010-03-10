@@ -88,21 +88,38 @@ public class IRCConnection extends PircBot
 
 		// Strip mIRC colors and formatting
 		action = Colors.removeFormattingAndColors(action);
+
+		Message message = new Message(sender + " " + action);
+		message.setIcon(R.drawable.action);
 		
 		if (target.equals(this.getNick())) {
 			// We are the target - this is an action in a query
-			target = sender;
+			Conversation conversation = server.getConversation(sender); 
+			if (conversation == null) { 
+				// Open a query if there's none yet
+				conversation = new Query(sender);
+				server.addConversationl(conversation);
+				conversation.addMessage(message);
+				
+				Intent intent = new Intent(Broadcast.CHANNEL_NEW);
+				intent.putExtra(Broadcast.EXTRA_CHANNEL, sender);
+				intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+				service.sendBroadcast(intent);
+			} else {
+				Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+				intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+				intent.putExtra(Broadcast.EXTRA_CHANNEL, sender);
+				service.sendBroadcast(intent);
+			}
+		} else {
+			// A action in a channel
+			server.getConversation(target).addMessage(message);
+			
+			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+			intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
+			service.sendBroadcast(intent);
 		}
-		
-		Message message = new Message(sender + " " + action);
-		message.setIcon(R.drawable.action);
-
-		server.getConversation(target).addMessage(message);
-		
-		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
-		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-		intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
-		service.sendBroadcast(intent);
 	}
 
 	/**
@@ -357,23 +374,22 @@ public class IRCConnection extends PircBot
 		
 		// Strip mIRC colors and formatting
 		text = Colors.removeFormattingAndColors(text);
-		
+
+		Message message = new Message("<" + sender + "> " + text);
+
 		Conversation conversation = server.getConversation(sender);
 
 		if (conversation == null) { 
 			// Open a query if there's none yet
 			conversation = new Query(sender);
-			server.addConversationl(conversation);
-			
-			Message message = new Message("<" + sender + "> " + text);
 			conversation.addMessage(message);
+			server.addConversationl(conversation);
 			
 			Intent intent = new Intent(Broadcast.CHANNEL_NEW);
 			intent.putExtra(Broadcast.EXTRA_CHANNEL, sender);
 			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
 			service.sendBroadcast(intent);
 		} else {
-			Message message = new Message("<" + sender + "> " + text);
 			conversation.addMessage(message);
 			
 			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
