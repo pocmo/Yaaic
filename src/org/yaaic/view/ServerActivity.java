@@ -249,6 +249,11 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 	public void onNewConversation(String target)
 	{
 		deckAdapter.addItem(server.getConversation(target));
+		
+		if (!deckAdapter.isSwitched()) {
+			// Scroll to new conversation
+			deck.setSelection(deckAdapter.getCount() - 1);
+		}
 	}
 
 	/**
