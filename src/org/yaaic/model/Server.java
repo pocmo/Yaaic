@@ -37,7 +37,7 @@ public class Server
 	private String host;
 	private int port;
 	
-	private HashMap<String, Channel> channels = new HashMap<String, Channel>();
+	private HashMap<String, Conversation> conversations = new HashMap<String, Conversation>();
 	
 	private int status = Status.DISCONNECTED;
 	
@@ -162,49 +162,50 @@ public class Server
 	}
 	
 	/**
-	 * Get all (joined) channels
+	 * Get all conversations
 	 * 
 	 * @return
 	 */
-	public Collection<Channel> getChannels()
+	public Collection<Conversation> getConversations()
 	{
-		return channels.values();
+		// XXX: This is a bad idea as this is not sorted.
+		return conversations.values();
 	}
 	
 	/**
-	 * Get channel by name
+	 * Get conversation by name
 	 */
-	public Channel getChannel(String name)
+	public Conversation getConversation(String name)
 	{
-		return channels.get(name);
+		return conversations.get(name);
 	}
 	
 	/**
-	 * Add a new (joined) channel
+	 * Add a new conversation
 	 * 
-	 * @param channel
+	 * @param conversation The conversation to add
 	 */
-	public void addChannel(Channel channel)
+	public void addConversationl(Conversation conversation)
 	{
-		channels.put(channel.getName(), channel);
+		conversations.put(conversation.getName(), conversation);
 	}
 	
 	/**
-	 * Remove a (joined) channel
+	 * Removes a conversation by name
 	 * 
 	 * @param name
 	 */
-	public void removeChannel(String name)
+	public void removeConversation(String name)
 	{
-		channels.remove(name);
+		conversations.remove(name);
 	}
 	
 	/**
-	 * Remove all channels
+	 * Remove all conversations
 	 */
-	public void clearChannels()
+	public void clearConversations()
 	{
-		channels.clear();
+		conversations.clear();
 	}
 	
 	/**
