@@ -44,6 +44,10 @@ public class MeHandler extends BaseHandler
 	@Override
 	public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException 
 	{
+		if (conversation.getType() == Conversation.TYPE_SERVER) {
+			throw new CommandException("Only usable from within a channel or a query");
+		}
+		
 		if (params.length > 1) {
 			String action = BaseHandler.mergeParams(params);
 			String nickname = service.getConnection(server.getId()).getNick();

@@ -39,6 +39,10 @@ public class VoiceHandler extends BaseHandler
 	@Override
 	public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException 
 	{
+		if (conversation.getType() != Conversation.TYPE_CHANNEL) {
+			throw new CommandException("Only usable from within a channel");
+		}
+		
 		if (params.length == 2) {
 			service.getConnection(server.getId()).voice(conversation.getName(), params[1]);
 		} else {
