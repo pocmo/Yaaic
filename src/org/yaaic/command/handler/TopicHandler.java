@@ -21,8 +21,10 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 package org.yaaic.command.handler;
 
 import org.yaaic.command.BaseHandler;
+import org.yaaic.command.CommandException;
 import org.yaaic.irc.IRCService;
 import org.yaaic.model.Channel;
+import org.yaaic.model.Conversation;
 import org.yaaic.model.Server;
 
 /**
@@ -38,8 +40,14 @@ public class TopicHandler extends BaseHandler
 	 * Execute /topic
 	 */
 	@Override
-	public void execute(String[] params, Server server, Channel channel, IRCService service) 
+	public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException
 	{
+		if (conversation.getType() != Conversation.TYPE_CHANNEL) {
+			throw new CommandException("Only usable from within a channel");
+		}
+		
+		Channel channel = (Channel) conversation;
+		
 		if (params.length == 1) {
 			// Show topic
 			service.getConnection(server.getId()).onTopic(channel.getName(), channel.getTopic(), "", 0, false);

@@ -25,7 +25,7 @@ import org.yaaic.command.BaseHandler;
 import org.yaaic.command.CommandException;
 import org.yaaic.irc.IRCService;
 import org.yaaic.model.Broadcast;
-import org.yaaic.model.Channel;
+import org.yaaic.model.Conversation;
 import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 
@@ -43,10 +43,10 @@ public class NamesHandler extends BaseHandler
 	 * Execute /names
 	 */
 	@Override
-	public void execute(String[] params, Server server, Channel channel, IRCService service) throws CommandException 
+	public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException 
 	{
-		StringBuffer userList = new StringBuffer("Users " + channel.getName() + ":");
-		for (User user : service.getConnection(server.getId()).getUsers(channel.getName())) {
+		StringBuffer userList = new StringBuffer("Users " + conversation.getName() + ":");
+		for (User user : service.getConnection(server.getId()).getUsers(conversation.getName())) {
 			userList.append(" ");
 			userList.append(user.getPrefix());
 			userList.append(user.getNick());
@@ -54,11 +54,11 @@ public class NamesHandler extends BaseHandler
 		
 		Message message = new Message(userList.toString());
 		message.setColor(Message.COLOR_YELLOW);
-		channel.addMessage(message);
+		conversation.addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-		intent.putExtra(Broadcast.EXTRA_CHANNEL, channel.getName());
+		intent.putExtra(Broadcast.EXTRA_CHANNEL, conversation.getName());
 		service.sendBroadcast(intent);
 	}
 	

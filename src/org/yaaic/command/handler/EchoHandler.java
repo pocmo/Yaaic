@@ -24,7 +24,7 @@ import org.yaaic.command.BaseHandler;
 import org.yaaic.command.CommandException;
 import org.yaaic.irc.IRCService;
 import org.yaaic.model.Broadcast;
-import org.yaaic.model.Channel;
+import org.yaaic.model.Conversation;
 import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 
@@ -41,15 +41,15 @@ public class EchoHandler extends BaseHandler
 	 * Execute /echo
 	 */
 	@Override
-	public void execute(String[] params, Server server, Channel channel, IRCService service) throws CommandException 
+	public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException 
 	{
 		if (params.length > 1) {
 			Message message = new Message(BaseHandler.mergeParams(params));
-			channel.addMessage(message);
+			conversation.addMessage(message);
 			
 			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-			intent.putExtra(Broadcast.EXTRA_CHANNEL, channel.getName());
+			intent.putExtra(Broadcast.EXTRA_CHANNEL, conversation.getName());
 			service.sendBroadcast(intent);
 		} else {
 			throw new CommandException("Text is missing");

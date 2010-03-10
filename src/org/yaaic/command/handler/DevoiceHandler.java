@@ -23,7 +23,7 @@ package org.yaaic.command.handler;
 import org.yaaic.command.BaseHandler;
 import org.yaaic.command.CommandException;
 import org.yaaic.irc.IRCService;
-import org.yaaic.model.Channel;
+import org.yaaic.model.Conversation;
 import org.yaaic.model.Server;
 
 /**
@@ -37,10 +37,10 @@ public class DevoiceHandler extends BaseHandler
 	 * Execute /devoice
 	 */
 	@Override
-	public void execute(String[] params, Server server, Channel channel, IRCService service) throws CommandException 
+	public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException 
 	{
 		if (params.length == 2) {
-			service.getConnection(server.getId()).deVoice(channel.getName(), params[1]);
+			service.getConnection(server.getId()).deVoice(conversation.getName(), params[1]);
 		} else {
 			throw new CommandException("Invalid number of params");
 		}
