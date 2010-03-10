@@ -76,6 +76,10 @@ public class CommandParser
 		commands.put("devoice", new DevoiceHandler());
 		commands.put("kick", new KickHandler());
 		commands.put("query", new QueryHandler());
+		
+		// Aliases
+		commands.put("j", commands.get("join"));
+		commands.put("q", commands.get("query"));
 	}
 	
 	/**
