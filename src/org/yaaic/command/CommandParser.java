@@ -60,6 +60,7 @@ public class CommandParser
 		commands.put("voice", new VoiceCommand());
 		commands.put("deop", new DeopCommand());
 		commands.put("devoice", new DevoiceCommand());
+		commands.put("kick", new KickCommand());
 	}
 	
 	/**
