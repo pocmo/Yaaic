@@ -57,6 +57,7 @@ import org.yaaic.irc.IRCService;
 import org.yaaic.listener.ChannelListener;
 import org.yaaic.model.Broadcast;
 import org.yaaic.model.Channel;
+import org.yaaic.model.Conversation;
 import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 import org.yaaic.receiver.ChannelReceiver;
@@ -105,8 +106,8 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 
 		switcher = (ViewSwitcher) findViewById(R.id.switcher);
 		
-		for (Channel channel : server.getChannels()) {
-			onNewChannel(channel.getName());
+		for (Conversation conversation : server.getConversations()) {
+			onNewConversation(conversation.getName());
 		}
 	}
 	
@@ -179,7 +180,7 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 		switch (item.getItemId()) {
 			case R.id.disconnect:
 				binder.getService().getConnection(serverId).quitServer();
-				server.clearChannels();
+				server.clearConversations();
 				setResult(RESULT_OK);
 				finish();
 				break;
@@ -217,12 +218,12 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 	/**
 	 * On channel message
 	 */
-	public void onChannelMessage(String target)
+	public void onConversationMessage(String target)
 	{
-		Channel channel = server.getChannel(target);
+		Conversation conversation = server.getConversation(target);
 		
-		while(channel.hasBufferedMessages()) {
-			Message message = channel.pollBufferedMessage();
+		while(conversation.hasBufferedMessages()) {
+			Message message = conversation.pollBufferedMessage();
 			
 			int position = deckAdapter.getPositionByName(target);
 			
@@ -246,11 +247,9 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 	/**
 	 * On new channel
 	 */
-	public void onNewChannel(String target)
+	public void onNewConversation(String target)
 	{
-		Log.d(TAG, "onNewChannel() " + target);
-		
-		deckAdapter.addItem(server.getChannel(target));
+		deckAdapter.addItem(server.getConversation(target));
 	}
 
 	/**
@@ -260,11 +259,11 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 	{
 		Log.d(TAG, "Selected channel: " + position);
 		
-		Channel channel = deckAdapter.getItem(position);
-		MessageListView canvas = deckAdapter.renderChannel(channel, switcher);
+		Conversation conversation = deckAdapter.getItem(position);
+		MessageListView canvas = deckAdapter.renderConversation(conversation, switcher);
 		canvas.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 		canvas.setDelegateTouchEvents(false); // Do not delegate
-		deckAdapter.setSwitched(channel.getName(), canvas);
+		deckAdapter.setSwitched(conversation.getName(), canvas);
 		switcher.addView(canvas);
 		switcher.showNext();
 	}
@@ -302,7 +301,7 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 	/**
 	 * On channel remove
 	 */
-	public void onRemoveChannel(String target)
+	public void onRemoveConversation(String target)
 	{
 		// XXX: Implement me :)
 	}
@@ -317,16 +316,16 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 			String text = input.getText().toString();
 			input.setText("");
 			
-			Channel channel = deckAdapter.getItem(deck.getSelectedItemPosition());
+			Conversation conversation = deckAdapter.getItem(deck.getSelectedItemPosition());
 			
-			if (channel != null) {
+			if (conversation != null) {
 				if (!text.trim().startsWith("/")) {
 					String nickname = this.binder.getService().getConnection(serverId).getNick();
-					channel.addMessage(new Message("<" + nickname + "> " + text));
-					onChannelMessage(channel.getName());
-					this.binder.getService().getConnection(serverId).sendMessage(channel.getName(), text);
+					conversation.addMessage(new Message("<" + nickname + "> " + text));
+					onConversationMessage(conversation.getName());
+					this.binder.getService().getConnection(serverId).sendMessage(conversation.getName(), text);
 				} else {
-					CommandParser.getInstance().parse(text, server, channel, binder.getService());
+					CommandParser.getInstance().parse(text, server, conversation, binder.getService());
 				}
 			}
 			
