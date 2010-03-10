@@ -22,7 +22,7 @@ package org.yaaic.listener;
 
 public interface ChannelListener
 {
-	public void onChannelMessage(String target);
-	public void onNewChannel(String target);
-	public void onRemoveChannel(String target);
+	public void onConversationMessage(String target);
+	public void onNewConversation(String target);
+	public void onRemoveConversation(String target);
 }
