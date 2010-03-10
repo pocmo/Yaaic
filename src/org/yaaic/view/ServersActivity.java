@@ -158,7 +158,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 			        	adapter.notifyDataSetChanged();
 			        	break;
 			        case 1: // Disconnect
-			        	server.clearChannels();
+			        	server.clearConversations();
 						binder.getService().getConnection(server.getId()).quitServer();
 			        	break;
 			        case 2: // Delete
