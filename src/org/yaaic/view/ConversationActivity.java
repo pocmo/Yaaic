@@ -248,7 +248,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 				}
 			}
 			
-			if (deckAdapter.isSwitched()) {
+			if (deckAdapter.isSwitched() && target.equals(deckAdapter.getSwitchedName())) {
 				MessageListView switchedView = deckAdapter.getSwitchedView();
 				switchedView.getAdapter().addMessage(message);
 			}
