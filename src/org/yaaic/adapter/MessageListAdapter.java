@@ -22,7 +22,7 @@ package org.yaaic.adapter;
 
 import java.util.LinkedList;
 
-import org.yaaic.model.Channel;
+import org.yaaic.model.Conversation;
 import org.yaaic.model.Message;
 
 import android.content.Context;
@@ -47,22 +47,22 @@ public class MessageListAdapter extends BaseAdapter
 	 * @param channel
 	 * @param context
 	 */
-	public MessageListAdapter(Channel channel, Context context)
+	public MessageListAdapter(Conversation conversation, Context context)
 	{
 		this.context = context;
 		
 		// Render channel name as first message in channel
 
 		// XXX: There will be no messages shown if channel is empty, why?
-		Message header = new Message(channel.getName());
+		Message header = new Message(conversation.getName());
 		header.setColor(Message.COLOR_RED);
 		messages.add(header.renderTextView(context));
 		
-		for (Message message : channel.getHistory()) {
+		for (Message message : conversation.getHistory()) {
 			messages.add(message.renderTextView(context));
 		}
 		
-		channel.clearBuffer();
+		conversation.clearBuffer();
 	}
 
 	/**
