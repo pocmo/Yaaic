@@ -349,15 +349,18 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 	public void onItemSelected(AdapterView<?> deck, View view, int position, long id)
 	{
 		Conversation conversation = (Conversation) deck.getItemAtPosition(position);
-		if (conversation != null) {
+		
+		if (conversation != null && conversation.getType() != Conversation.TYPE_SERVER) {
 			((TextView) findViewById(R.id.title)).setText(server.getTitle() + " - " + conversation.getName());
+		} else {
+			onNothingSelected(deck);
 		}
 	}
 
 	/**
 	 * On no channel selected/focused
 	 */
-	public void onNothingSelected(AdapterView<?> arg0)
+	public void onNothingSelected(AdapterView<?> deck)
 	{
 		((TextView) findViewById(R.id.title)).setText(server.getTitle());
 	}
