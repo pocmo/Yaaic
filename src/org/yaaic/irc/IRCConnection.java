@@ -85,12 +85,18 @@ public class IRCConnection extends PircBot
 	protected void onAction(String sender, String login, String hostname, String target, String action)
 	{
 		debug("Action", target + " " + sender + " " + action);
-		
+
 		// Strip mIRC colors and formatting
 		action = Colors.removeFormattingAndColors(action);
 		
+		if (target.equals(this.getNick())) {
+			// We are the target - this is an action in a query
+			target = sender;
+		}
+		
 		Message message = new Message(sender + " " + action);
 		message.setIcon(R.drawable.action);
+
 		server.getConversation(target).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
