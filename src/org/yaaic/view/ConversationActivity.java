@@ -364,10 +364,17 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 			
 			if (conversation != null) {
 				if (!text.trim().startsWith("/")) {
-					String nickname = this.binder.getService().getConnection(serverId).getNick();
-					conversation.addMessage(new Message("<" + nickname + "> " + text));
+					if (conversation.getType() != Conversation.TYPE_SERVER) {
+						String nickname = this.binder.getService().getConnection(serverId).getNick();
+						conversation.addMessage(new Message("<" + nickname + "> " + text));
+						this.binder.getService().getConnection(serverId).sendMessage(conversation.getName(), text);
+					} else {
+						Message message = new Message("You can only chat from within a channel or a query");
+						message.setColor(Message.COLOR_YELLOW);
+						message.setIcon(R.drawable.warning);
+						conversation.addMessage(message);
+					}
 					onConversationMessage(conversation.getName());
-					this.binder.getService().getConnection(serverId).sendMessage(conversation.getName(), text);
 				} else {
 					CommandParser.getInstance().parse(text, server, conversation, binder.getService());
 				}
