@@ -42,6 +42,14 @@ public class Server
 	private int status = Status.DISCONNECTED;
 	
 	/**
+	 * Create a new server object
+	 */
+	public Server()
+	{
+		conversations.put(ServerInfo.DEFAULT_NAME, new ServerInfo());
+	}
+	
+	/**
 	 * Get unique id of server
 	 * 
 	 * @return id

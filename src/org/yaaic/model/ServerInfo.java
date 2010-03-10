@@ -21,51 +21,30 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 package org.yaaic.model;
 
 /**
- * An IRC channel (extends Conversation)
+ * ServerInfo for all messages regarding the server
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class Channel extends Conversation
+public class ServerInfo extends Conversation
 {
-	private String topic;
-
-	/**
-	 * Create a new channel object
-	 * 
-	 * @param name of the channel
-	 */
-	public Channel(String name)
-	{
-		super(name);
-		this.topic = "";
-	}
+	public static final String DEFAULT_NAME = "";
 	
+	/**
+	 * Create a new ServerInfo object
+	 * 
+	 * @param name
+	 */
+	public ServerInfo()
+	{
+		super(DEFAULT_NAME);
+	}
+
 	/**
 	 * Get the type of this conversation
 	 */
 	@Override
 	public int getType()
 	{
-		return Conversation.TYPE_CHANNEL;
-	}
-	
-	/**
-	 * Set the channel's topic
-	 * 
-	 * @param topic The topic of the channel
-	 */
-	public void setTopic(String topic)
-	{
-		this.topic = topic;
-	}
-	
-	/**
-	 * Get the topic of the channel
-	 * 
-	 * @return The channel's topic
-	 */
-	public String getTopic()
-	{
-		return topic;
+		return Conversation.TYPE_SERVER;
 	}
 }
