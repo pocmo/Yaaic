@@ -343,6 +343,14 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	public boolean onKey(View view, int keyCode, KeyEvent event)
 	{
 		if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
+			if (!server.isConnected()) {
+				Message message = new Message("Not connected");
+				message.setColor(Message.COLOR_RED);
+				message.setIcon(R.drawable.error);
+				server.getConversation(server.getSelectedConversation()).addMessage(message);
+				onConversationMessage(server.getSelectedConversation());
+			}
+			
 			EditText input = (EditText) view;
 			String text = input.getText().toString();
 			input.setText("");
