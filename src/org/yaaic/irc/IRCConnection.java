@@ -89,7 +89,7 @@ public class IRCConnection extends PircBot
 		
 		Message message = new Message(sender + " " + action);
 		message.setIcon(R.drawable.action);
-		server.getChannel(target).addMessage(message);
+		server.getConversation(target).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
@@ -117,7 +117,7 @@ public class IRCConnection extends PircBot
 		Message message = new Message(sourceNick + " deoped " + recipient);
 		message.setIcon(R.drawable.op);
 		message.setColor(Message.COLOR_BLUE);
-		server.getChannel(target).addMessage(message);
+		server.getConversation(target).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
@@ -136,7 +136,7 @@ public class IRCConnection extends PircBot
 		Message message = new Message(sourceNick + " devoiced " + recipient);
 		message.setColor(Message.COLOR_BLUE);
 		message.setIcon(R.drawable.voice);
-		server.getChannel(target).addMessage(message);
+		server.getConversation(target).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
@@ -153,7 +153,7 @@ public class IRCConnection extends PircBot
 		debug("Invite", target + " " + targetNick + "(" + sourceNick + ")");
 		
 		Message message = new Message(sourceNick + " invited " + targetNick);
-		server.getChannel(target).addMessage(message);
+		server.getConversation(target).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
@@ -171,7 +171,7 @@ public class IRCConnection extends PircBot
 		
 		if (sender.equals(getNick())) {
 			// We joined a new channel
-			server.addChannel(new Channel(target));
+			server.addConversationl(new Channel(target));
 			
 			Intent intent = new Intent(Broadcast.CHANNEL_NEW);
 			intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
@@ -181,7 +181,7 @@ public class IRCConnection extends PircBot
 			Message message = new Message(sender + " joined");
 			message.setIcon(R.drawable.join);
 			message.setColor(Message.COLOR_GREEN);
-			server.getChannel(target).addMessage(message);
+			server.getConversation(target).addMessage(message);
 			
 			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
@@ -200,7 +200,7 @@ public class IRCConnection extends PircBot
 		
 		if (recipientNick.equals(getNick())) {
 			// We are kicked
-			server.removeChannel(target);
+			server.removeConversation(target);
 			
 			Intent intent = new Intent(Broadcast.CHANNEL_REMOVE);
 			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
@@ -209,7 +209,7 @@ public class IRCConnection extends PircBot
 		} else {
 			Message message = new Message(kickerNick + " kicked " + recipientNick);
 			message.setColor(Message.COLOR_GREEN);
-			server.getChannel(target).addMessage(message);
+			server.getConversation(target).addMessage(message);
 
 			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
@@ -230,7 +230,7 @@ public class IRCConnection extends PircBot
 		text = Colors.removeFormattingAndColors(text);
 
 		Message message = new Message("<" + sender + "> " + text);
-		server.getChannel(target).addMessage(message);
+		server.getConversation(target).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
@@ -266,10 +266,9 @@ public class IRCConnection extends PircBot
 		debug("Nick", oldNick + " " + newNick);
 		
 		for (String target : getChannelsByNickname(newNick)) {
-			Channel channel = server.getChannel(target);
 			Message message = new Message(oldNick + " is now known as " + newNick);
 			message.setColor(Message.COLOR_GREEN);
-			channel.addMessage(message);
+			server.getConversation(target).addMessage(message);
 			
 			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
@@ -303,7 +302,7 @@ public class IRCConnection extends PircBot
 		Message message = new Message(sourceNick + " oped " + recipient);
 		message.setColor(Message.COLOR_BLUE);
 		message.setIcon(R.drawable.op);
-		server.getChannel(target).addMessage(message);
+		server.getConversation(target).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
@@ -321,7 +320,7 @@ public class IRCConnection extends PircBot
 		
 		if (sender.equals(getNick())) {
 			// We pareted a channel
-			server.removeChannel(target);
+			server.removeConversation(target);
 			
 			Intent intent = new Intent(Broadcast.CHANNEL_REMOVE);
 			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
@@ -331,7 +330,7 @@ public class IRCConnection extends PircBot
 			Message message = new Message(sender + " parted");
 			message.setColor(Message.COLOR_GREEN);
 			message.setIcon(R.drawable.part);
-			server.getChannel(target).addMessage(message);
+			server.getConversation(target).addMessage(message);
 			
 			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
@@ -364,11 +363,10 @@ public class IRCConnection extends PircBot
 		
 		if (!sourceNick.equals(this.getNick())) {
 			for (String target : getChannelsByNickname(sourceNick)) {
-				Channel channel = server.getChannel(target);
 				Message message = new Message(sourceNick + " quitted");
 				message.setColor(Message.COLOR_GREEN);
 				message.setIcon(R.drawable.quit);
-				channel.addMessage(message);
+				server.getConversation(target).addMessage(message);
 				
 				Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 				intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
@@ -391,15 +389,15 @@ public class IRCConnection extends PircBot
 		if (changed) {
 			Message message = new Message(setBy + " sets topic: " + topic);
 			message.setColor(Message.COLOR_YELLOW);
-			server.getChannel(target).addMessage(message);
+			server.getConversation(target).addMessage(message);
 		} else {
 			Message message = new Message("Topic: " + topic);
 			message.setColor(Message.COLOR_YELLOW);
-			server.getChannel(target).addMessage(message);
+			server.getConversation(target).addMessage(message);
 		}
 		
 		// remember channel's topic
-		server.getChannel(target).setTopic(topic);
+		((Channel) server.getConversation(target)).setTopic(topic);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
@@ -429,7 +427,7 @@ public class IRCConnection extends PircBot
 		Message message = new Message(sourceNick + " voiced " + recipient);
 		message.setIcon(R.drawable.voice);
 		message.setColor(Message.COLOR_BLUE);
-		server.getChannel(target).addMessage(message);
+		server.getConversation(target).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
