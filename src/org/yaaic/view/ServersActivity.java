@@ -86,6 +86,8 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 
     	receiver = new ServerReceiver(this);
     	registerReceiver(receiver, new IntentFilter(Broadcast.SERVER_UPDATE));
+    	
+    	adapter.loadServers();
     }
     
     @Override
