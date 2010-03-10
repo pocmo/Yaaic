@@ -126,7 +126,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 			binder.connect(server);
 		}
 
-		Intent intent = new Intent(this, ServerActivity.class);
+		Intent intent = new Intent(this, ConversationActivity.class);
 		intent.putExtra("serverId", server.getId());
 		startActivityForResult(intent, 0);
 	}

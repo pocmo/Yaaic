@@ -68,9 +68,9 @@ import org.yaaic.receiver.ServerReceiver;
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class ServerActivity extends Activity implements ServiceConnection, ServerListener, ChannelListener, OnItemClickListener, OnKeyListener, OnItemSelectedListener
+public class ConversationActivity extends Activity implements ServiceConnection, ServerListener, ChannelListener, OnItemClickListener, OnKeyListener, OnItemSelectedListener
 {
-	public static final String TAG = "Yaaic/ServerActivity";
+	public static final String TAG = "Yaaic/ConversationActivity";
 	
 	private int serverId;
 	private Server server;
