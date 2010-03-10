@@ -31,6 +31,7 @@ import org.yaaic.command.handler.MeHandler;
 import org.yaaic.command.handler.NamesHandler;
 import org.yaaic.command.handler.NickHandler;
 import org.yaaic.command.handler.OpHandler;
+import org.yaaic.command.handler.QueryHandler;
 import org.yaaic.command.handler.QuitHandler;
 import org.yaaic.command.handler.TopicHandler;
 import org.yaaic.command.handler.VoiceHandler;
@@ -61,6 +62,7 @@ public class CommandParser
 	{
 		commands = new HashMap<String, BaseHandler>();
 		
+		// Commands
 		commands.put("nick", new NickHandler());
 		commands.put("join", new JoinHandler());
 		commands.put("me", new MeHandler());
@@ -73,6 +75,7 @@ public class CommandParser
 		commands.put("deop", new DeopHandler());
 		commands.put("devoice", new DevoiceHandler());
 		commands.put("kick", new KickHandler());
+		commands.put("query", new QueryHandler());
 	}
 	
 	/**
