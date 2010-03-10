@@ -75,8 +75,16 @@ public class IRCConnection extends PircBot
 		debug("Connect", "");
 		
 		server.setStatus(Status.CONNECTED);
-		
 		service.sendBroadcast(new Intent(Broadcast.SERVER_UPDATE));
+		
+		Message message = new Message("Connected to " + server.getTitle());
+		message.setColor(Message.COLOR_GREEN);
+		server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(message);
+		
+		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+		intent.putExtra(Broadcast.EXTRA_CHANNEL, ServerInfo.DEFAULT_NAME);
+		service.sendBroadcast(intent);
 	}
 	
 	/**
