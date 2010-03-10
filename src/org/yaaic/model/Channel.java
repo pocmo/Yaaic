@@ -20,22 +20,15 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.model;
 
-import java.util.LinkedList;
-
 /**
- * An IRC channel
+ * An IRC channel (extends Conversation)
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class Channel
+public class Channel extends Conversation
 {
-	private static final int BUFFER_SIZE = 30;
-	
-	private String name;
 	private String topic;
-	private LinkedList<Message> buffer = new LinkedList<Message>();
-	private LinkedList<Message> history = new LinkedList<Message>();
-	
+
 	/**
 	 * Create a new channel object
 	 * 
@@ -43,67 +36,8 @@ public class Channel
 	 */
 	public Channel(String name)
 	{
-		this.name = name;
+		super(name);
 		this.topic = "";
-	}
-	
-	/**
-	 * Get name of channel
-	 */
-	public String getName()
-	{
-		return name;
-	}
-	
-	/**
-	 * Add a message to the channel
-	 */
-	public void addMessage(Message message)
-	{
-		buffer.addFirst(message);
-		history.addLast(message);
-		
-		if (history.size() > BUFFER_SIZE) {
-			history.removeFirst();
-		}
-	}
-	
-	/**
-	 * Get channel history
-	 * 
-	 * @return
-	 */
-	public LinkedList<Message> getHistory()
-	{
-		return history;
-	}
-	
-	/**
-	 * Get last buffered message
-	 * 
-	 * @return
-	 */
-	public Message pollBufferedMessage()
-	{
-		Message message = buffer.getLast();
-		buffer.removeLast();
-		return message;
-	}
-	
-	/**
-	 * Does the channel have buffered messages?
-	 */
-	public boolean hasBufferedMessages()
-	{
-		return buffer.size() > 0;
-	}
-	
-	/**
-	 * Clear the message buffer
-	 */
-	public void clearBuffer()
-	{
-		buffer.clear();
 	}
 	
 	/**
