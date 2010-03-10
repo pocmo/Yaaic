@@ -22,7 +22,7 @@ package org.yaaic.adapter;
 
 import java.util.LinkedList;
 
-import org.yaaic.model.Channel;
+import org.yaaic.model.Conversation;
 import org.yaaic.view.MessageListView;
 
 import android.view.View;
@@ -40,7 +40,7 @@ public class DeckAdapter extends BaseAdapter
 {
 	public static final String TAG = "Yaaic/DeckAdapter";
 	
-	private LinkedList<Channel> channels = new LinkedList<Channel>();
+	private LinkedList<Conversation> conversations = new LinkedList<Conversation>();
 	private MessageListView currentView;
 	private String currentChannel;
 	
@@ -49,16 +49,16 @@ public class DeckAdapter extends BaseAdapter
 	 */
 	public int getCount()
 	{
-		return channels.size();
+		return conversations.size();
 	}
 
 	/**
 	 * Get item at position
 	 */
-	public Channel getItem(int position)
+	public Conversation getItem(int position)
 	{
-		if (position >= 0 && position < channels.size()) {
-			return channels.get(position);
+		if (position >= 0 && position < conversations.size()) {
+			return conversations.get(position);
 		}
 		return null;
 	}
@@ -77,9 +77,9 @@ public class DeckAdapter extends BaseAdapter
 	 * @param channel Name of the channel
 	 * @param view The view object
 	 */
-	public void addItem(Channel channel)
+	public void addItem(Conversation conversation)
 	{
-		channels.add(channel);
+		conversations.add(conversation);
 		
 		notifyDataSetChanged();
 	}
@@ -92,8 +92,8 @@ public class DeckAdapter extends BaseAdapter
 	 */
 	public int getPositionByName(String name)
 	{
-		for (int i = 0; i <  channels.size(); i++) {
-			if (channels.get(i).getName().equals(name)) {
+		for (int i = 0; i <  conversations.size(); i++) {
+			if (conversations.get(i).getName().equals(name)) {
 				return i;
 			}
 		}
@@ -106,9 +106,9 @@ public class DeckAdapter extends BaseAdapter
 	 * 
 	 * @param channel
 	 */
-	public void removeItem(Channel channel)
+	public void removeItem(Conversation conversation)
 	{
-		channels.remove(channel);
+		conversations.remove(conversation);
 		
 		notifyDataSetChanged();
 	}
@@ -159,21 +159,21 @@ public class DeckAdapter extends BaseAdapter
 	 */
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
-		Channel channel = getItem(position);
-		return renderChannel(channel, parent);
+		Conversation conversation = getItem(position);
+		return renderConversation(conversation, parent);
 	}
 	
 	/**
-	 * Render a channel view (MessageListView)
+	 * Render a conversation view (MessageListView)
 	 * 
-	 * @param channel The channel of the view
+	 * @param channel The conversation of the view
 	 * @param parent The parent view (context)
 	 * @return The rendered MessageListView
 	 */
-	public MessageListView renderChannel(Channel channel, ViewGroup parent)
+	public MessageListView renderConversation(Conversation conversation, ViewGroup parent)
 	{
 		MessageListView list = new MessageListView(parent.getContext());
-		list.setAdapter(new MessageListAdapter(channel, parent.getContext()));
+		list.setAdapter(new MessageListAdapter(conversation, parent.getContext()));
 		
 		list.setDivider(null);
 		list.setLayoutParams(new Gallery.LayoutParams(
