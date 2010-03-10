@@ -73,7 +73,7 @@ public class MessageListAdapter extends BaseAdapter
 	 * 
 	 * @param message
 	 */
-	public void addMessage(Message message)
+	public synchronized void addMessage(Message message)
 	{
 		messages.add(message.renderTextView(context));
 		notifyDataSetChanged();
