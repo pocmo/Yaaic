@@ -31,6 +31,7 @@ import org.yaaic.command.handler.MeHandler;
 import org.yaaic.command.handler.NamesHandler;
 import org.yaaic.command.handler.NickHandler;
 import org.yaaic.command.handler.OpHandler;
+import org.yaaic.command.handler.PartHandler;
 import org.yaaic.command.handler.QueryHandler;
 import org.yaaic.command.handler.QuitHandler;
 import org.yaaic.command.handler.TopicHandler;
@@ -76,6 +77,7 @@ public class CommandParser
 		commands.put("devoice", new DevoiceHandler());
 		commands.put("kick", new KickHandler());
 		commands.put("query", new QueryHandler());
+		commands.put("part", new PartHandler());
 		
 		// Aliases
 		commands.put("j", commands.get("join"));
@@ -132,9 +134,9 @@ public class CommandParser
 					Message usageMessage = new Message("Syntax: " + command.getUsage());
 					conversation.addMessage(usageMessage);
 					
-					Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+					Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
 					intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-					intent.putExtra(Broadcast.EXTRA_CHANNEL, conversation.getName());
+					intent.putExtra(Broadcast.EXTRA_CONVERSATION, conversation.getName());
 					service.sendBroadcast(intent);
 				}
 			}
@@ -145,9 +147,9 @@ public class CommandParser
 				message.setColor(Message.COLOR_RED);
 				conversation.addMessage(message);
 				
-				Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+				Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
 				intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-				intent.putExtra(Broadcast.EXTRA_CHANNEL, conversation.getName());
+				intent.putExtra(Broadcast.EXTRA_CONVERSATION, conversation.getName());
 				service.sendBroadcast(intent);
 			}
 		}

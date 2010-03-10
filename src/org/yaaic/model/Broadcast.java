@@ -20,14 +20,19 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.model;
 
+/**
+ * Constants and helpers for Broadcasts
+ * 
+ * @author Sebastian Kaspari <sebastian@yaaic.org>
+ */
 public class Broadcast
 {
-	public static final String SERVER_UPDATE 	= "org.yaaic.server.status";
+	public static final String SERVER_UPDATE 		= "org.yaaic.server.status";
 	
-	public static final String CHANNEL_MESSAGE	= "org.yaaic.channel.message";
-	public static final String CHANNEL_NEW		= "org.yaaic.channel.new";
-	public static final String CHANNEL_REMOVE	= "org.yaaic.channel.remove";
-	
-	public static final String EXTRA_CHANNEL	= "channel";
-	public static final String EXTRA_SERVER		= "server";
+	public static final String CONVERSATION_MESSAGE	= "org.yaaic.conversation.message";
+	public static final String CONVERSATION_NEW		= "org.yaaic.conversation.new";
+	public static final String CONVERSATION_REMOVE	= "org.yaaic.conversation.remove";
+
+	public static final String EXTRA_SERVER			= "server";
+	public static final String EXTRA_CONVERSATION	= "conversation";
 }

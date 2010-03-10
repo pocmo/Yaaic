@@ -20,59 +20,46 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.command.handler;
 
-import org.yaaic.R;
 import org.yaaic.command.BaseHandler;
 import org.yaaic.command.CommandException;
 import org.yaaic.irc.IRCService;
-import org.yaaic.model.Broadcast;
 import org.yaaic.model.Conversation;
-import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 
-import android.content.Intent;
-
 /**
- * Command: /me <action>
+ * Command: /part [<channel>]
+ * 
+ * Leave the current or the given channel
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class MeHandler extends BaseHandler
+public class PartHandler extends BaseHandler
 {
 	/**
-	 * Execute /me
+	 * Execute /part
 	 */
 	@Override
 	public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException 
 	{
-		if (conversation.getType() == Conversation.TYPE_SERVER) {
-			throw new CommandException("Only usable from within a channel or a query");
-		}
-		
-		if (params.length > 1) {
-			String action = BaseHandler.mergeParams(params);
-			String nickname = service.getConnection(server.getId()).getNick();
+		if (params.length == 1) {
+			if (conversation.getType() != Conversation.TYPE_CHANNEL) {
+				throw new CommandException("Only usable from within a channel");
+			}
 			
-			Message message = new Message(nickname + " " + action);
-			message.setIcon(R.drawable.action);
-			server.getConversation(conversation.getName()).addMessage(message);
-			
-			Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-			intent.putExtra(Broadcast.EXTRA_CONVERSATION, conversation.getName());
-			service.sendBroadcast(intent);
-			
-			service.getConnection(server.getId()).sendAction(conversation.getName(), action);
+			service.getConnection(server.getId()).partChannel(conversation.getName());
+		} else if (params.length == 2) {
+			service.getConnection(server.getId()).partChannel(params[1]);
 		} else {
-			throw new CommandException("Text is missing");
+			throw new CommandException("Invalid number of params");
 		}
 	}
 	
 	/**
-	 * Usage of /me
+	 * Usage of /part
 	 */
 	@Override
 	public String getUsage()
 	{
-		return "/me <text>";
+		return "/part [<channel>]";
 	}
 }

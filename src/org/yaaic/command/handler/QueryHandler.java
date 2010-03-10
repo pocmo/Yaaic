@@ -59,9 +59,9 @@ public class QueryHandler extends BaseHandler
 			
 			server.addConversationl(new Query(params[1]));
 			
-			Intent intent = new Intent(Broadcast.CHANNEL_NEW);
+			Intent intent = new Intent(Broadcast.CONVERSATION_NEW);
 			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-			intent.putExtra(Broadcast.EXTRA_CHANNEL, params[1]);
+			intent.putExtra(Broadcast.EXTRA_CONVERSATION, params[1]);
 			service.sendBroadcast(intent);
 		} else {
 			throw new CommandException("Invalid number of params");

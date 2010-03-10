@@ -56,12 +56,12 @@ public class ChannelReceiver extends BroadcastReceiver
 		
 		String action = intent.getAction();
 
-		if (action.equals(Broadcast.CHANNEL_MESSAGE)) {
-			listener.onConversationMessage(intent.getExtras().getString(Broadcast.EXTRA_CHANNEL));
-		} else if (action.equals(Broadcast.CHANNEL_NEW)) {
-			listener.onNewConversation(intent.getExtras().getString(Broadcast.EXTRA_CHANNEL));
-		} else if (action.equals(Broadcast.CHANNEL_REMOVE)) {
-			intent.getExtras().getString(Broadcast.EXTRA_CHANNEL);
+		if (action.equals(Broadcast.CONVERSATION_MESSAGE)) {
+			listener.onConversationMessage(intent.getExtras().getString(Broadcast.EXTRA_CONVERSATION));
+		} else if (action.equals(Broadcast.CONVERSATION_NEW)) {
+			listener.onNewConversation(intent.getExtras().getString(Broadcast.EXTRA_CONVERSATION));
+		} else if (action.equals(Broadcast.CONVERSATION_REMOVE)) {
+			intent.getExtras().getString(Broadcast.EXTRA_CONVERSATION);
 		}
 		
 	}

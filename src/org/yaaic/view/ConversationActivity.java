@@ -126,9 +126,9 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         bindService(intent, this, 0);
         
     	channelReceiver = new ChannelReceiver(server.getId(), this);
-    	registerReceiver(channelReceiver, new IntentFilter(Broadcast.CHANNEL_MESSAGE));
-    	registerReceiver(channelReceiver, new IntentFilter(Broadcast.CHANNEL_NEW));
-    	registerReceiver(channelReceiver, new IntentFilter(Broadcast.CHANNEL_REMOVE));
+    	registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_MESSAGE));
+    	registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_NEW));
+    	registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_REMOVE));
 
     	serverReceiver = new ServerReceiver(this);
     	registerReceiver(serverReceiver, new IntentFilter(Broadcast.SERVER_UPDATE));
