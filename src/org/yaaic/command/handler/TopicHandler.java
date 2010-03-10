@@ -18,38 +18,43 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.yaaic.command;
+package org.yaaic.command.handler;
 
+import org.yaaic.command.BaseHandler;
 import org.yaaic.irc.IRCService;
 import org.yaaic.model.Channel;
 import org.yaaic.model.Server;
 
 /**
- * Command: /voice <nickname>
+ * Command: /topic [<topic>]
+ * 
+ * Show the current topic or change the topic if a new topic is provided
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class VoiceCommand extends BaseCommand
+public class TopicHandler extends BaseHandler
 {
 	/**
-	 * Execute /voice
+	 * Execute /topic
 	 */
 	@Override
-	public void execute(String[] params, Server server, Channel channel, IRCService service) throws CommandException 
+	public void execute(String[] params, Server server, Channel channel, IRCService service) 
 	{
-		if (params.length == 2) {
-			service.getConnection(server.getId()).voice(channel.getName(), params[1]);
-		} else {
-			throw new CommandException("Invalid number of params");
+		if (params.length == 1) {
+			// Show topic
+			service.getConnection(server.getId()).onTopic(channel.getName(), channel.getTopic(), "", 0, false);
+		} else if (params.length > 1) {
+			// Change topic
+			service.getConnection(server.getId()).setTopic(channel.getName(), BaseHandler.mergeParams(params));
 		}
 	}
 	
 	/**
-	 * Usage of /voice
+	 * Usage of /topic
 	 */
 	@Override
 	public String getUsage()
 	{
-		return "/voice <nickname>";
+		return "/topic [<topic>]";
 	}
 }

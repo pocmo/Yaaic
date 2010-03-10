@@ -29,7 +29,7 @@ import org.yaaic.model.Server;
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public abstract class BaseCommand
+public abstract class BaseHandler
 {
 	/**
 	 * Execute the command

@@ -18,38 +18,40 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.yaaic.command;
+package org.yaaic.command.handler;
 
+import org.yaaic.command.BaseHandler;
+import org.yaaic.command.CommandException;
 import org.yaaic.irc.IRCService;
 import org.yaaic.model.Channel;
 import org.yaaic.model.Server;
 
 /**
- * Command: /nick <nickname>
+ * Command: /deop <nickname>
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class NickCommand extends BaseCommand
+public class OpHandler extends BaseHandler
 {
 	/**
-	 * Execute /nick
+	 * Execute /deop
 	 */
 	@Override
 	public void execute(String[] params, Server server, Channel channel, IRCService service) throws CommandException 
 	{
 		if (params.length == 2) {
-			service.getConnection(server.getId()).changeNick(params[1]);
+			service.getConnection(server.getId()).op(channel.getName(), params[1]);
 		} else {
 			throw new CommandException("Invalid number of params");
 		}
 	}
 	
 	/**
-	 * Usage of /nick
+	 * Usage of /deop
 	 */
 	@Override
 	public String getUsage()
 	{
-		return "/nick <nickname>";
+		return "/op <nickname>";
 	}
 }

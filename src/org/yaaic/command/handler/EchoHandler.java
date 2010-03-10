@@ -18,38 +18,50 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.yaaic.command;
+package org.yaaic.command.handler;
 
+import org.yaaic.command.BaseHandler;
+import org.yaaic.command.CommandException;
 import org.yaaic.irc.IRCService;
+import org.yaaic.model.Broadcast;
 import org.yaaic.model.Channel;
+import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 
+import android.content.Intent;
+
 /**
- * Command: /deop <nickname>
+ * Command: /echo <text>
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class OpCommand extends BaseCommand
+public class EchoHandler extends BaseHandler
 {
 	/**
-	 * Execute /deop
+	 * Execute /echo
 	 */
 	@Override
 	public void execute(String[] params, Server server, Channel channel, IRCService service) throws CommandException 
 	{
-		if (params.length == 2) {
-			service.getConnection(server.getId()).op(channel.getName(), params[1]);
+		if (params.length > 1) {
+			Message message = new Message(BaseHandler.mergeParams(params));
+			channel.addMessage(message);
+			
+			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+			intent.putExtra(Broadcast.EXTRA_CHANNEL, channel.getName());
+			service.sendBroadcast(intent);
 		} else {
-			throw new CommandException("Invalid number of params");
+			throw new CommandException("Text is missing");
 		}
 	}
 	
 	/**
-	 * Usage of /deop
+	 * Usage of /echo
 	 */
 	@Override
 	public String getUsage()
 	{
-		return "/op <nickname>";
+		return "/echo <text>";
 	}
 }

@@ -18,38 +18,56 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.yaaic.command;
+package org.yaaic.command.handler;
 
+import org.jibble.pircbot.User;
+import org.yaaic.command.BaseHandler;
+import org.yaaic.command.CommandException;
 import org.yaaic.irc.IRCService;
+import org.yaaic.model.Broadcast;
 import org.yaaic.model.Channel;
+import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 
+import android.content.Intent;
+
 /**
- * Command: /devoice <nickname>
+ * Command: /names
+ * Lists all users currently in the selected channel 
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class DevoiceCommand extends BaseCommand
+public class NamesHandler extends BaseHandler
 {
 	/**
-	 * Execute /devoice
+	 * Execute /names
 	 */
 	@Override
 	public void execute(String[] params, Server server, Channel channel, IRCService service) throws CommandException 
 	{
-		if (params.length == 2) {
-			service.getConnection(server.getId()).deVoice(channel.getName(), params[1]);
-		} else {
-			throw new CommandException("Invalid number of params");
+		StringBuffer userList = new StringBuffer("Users " + channel.getName() + ":");
+		for (User user : service.getConnection(server.getId()).getUsers(channel.getName())) {
+			userList.append(" ");
+			userList.append(user.getPrefix());
+			userList.append(user.getNick());
 		}
+		
+		Message message = new Message(userList.toString());
+		message.setColor(Message.COLOR_YELLOW);
+		channel.addMessage(message);
+		
+		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+		intent.putExtra(Broadcast.EXTRA_CHANNEL, channel.getName());
+		service.sendBroadcast(intent);
 	}
 	
 	/**
-	 * Usage of /devoice
+	 * Usage of /names
 	 */
 	@Override
 	public String getUsage()
 	{
-		return "/devoice <nickname>";
+		return "/names";
 	}
 }

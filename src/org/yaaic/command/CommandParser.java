@@ -22,6 +22,18 @@ package org.yaaic.command;
 
 import java.util.HashMap;
 
+import org.yaaic.command.handler.DeopHandler;
+import org.yaaic.command.handler.DevoiceHandler;
+import org.yaaic.command.handler.EchoHandler;
+import org.yaaic.command.handler.JoinHandler;
+import org.yaaic.command.handler.KickHandler;
+import org.yaaic.command.handler.MeHandler;
+import org.yaaic.command.handler.NamesHandler;
+import org.yaaic.command.handler.NickHandler;
+import org.yaaic.command.handler.OpHandler;
+import org.yaaic.command.handler.QuitHandler;
+import org.yaaic.command.handler.TopicHandler;
+import org.yaaic.command.handler.VoiceHandler;
 import org.yaaic.irc.IRCService;
 import org.yaaic.model.Broadcast;
 import org.yaaic.model.Channel;
@@ -39,7 +51,7 @@ public class CommandParser
 {
 	public static final String TAG = "Yaaic/CommandParser";
 	
-	private HashMap<String, BaseCommand> commands;
+	private HashMap<String, BaseHandler> commands;
 	private static CommandParser instance;
 
 	/**
@@ -47,20 +59,20 @@ public class CommandParser
 	 */
 	private CommandParser()
 	{
-		commands = new HashMap<String, BaseCommand>();
+		commands = new HashMap<String, BaseHandler>();
 		
-		commands.put("nick", new NickCommand());
-		commands.put("join", new JoinCommand());
-		commands.put("me", new MeCommand());
-		commands.put("names", new NamesCommand());
-		commands.put("echo", new EchoCommand());
-		commands.put("topic", new TopicCommand());
-		commands.put("quit", new QuitCommand());
-		commands.put("op", new OpCommand());
-		commands.put("voice", new VoiceCommand());
-		commands.put("deop", new DeopCommand());
-		commands.put("devoice", new DevoiceCommand());
-		commands.put("kick", new KickCommand());
+		commands.put("nick", new NickHandler());
+		commands.put("join", new JoinHandler());
+		commands.put("me", new MeHandler());
+		commands.put("names", new NamesHandler());
+		commands.put("echo", new EchoHandler());
+		commands.put("topic", new TopicHandler());
+		commands.put("quit", new QuitHandler());
+		commands.put("op", new OpHandler());
+		commands.put("voice", new VoiceHandler());
+		commands.put("deop", new DeopHandler());
+		commands.put("devoice", new DevoiceHandler());
+		commands.put("kick", new KickHandler());
 	}
 	
 	/**
@@ -100,7 +112,7 @@ public class CommandParser
 		String type = params[0];
 		
 		if (isCommand(type)) {
-			BaseCommand command = commands.get(type);
+			BaseHandler command = commands.get(type);
 			try {
 				command.execute(params, server, channel, service);
 			} catch(CommandException e) {

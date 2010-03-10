@@ -18,55 +18,40 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.yaaic.command;
+package org.yaaic.command.handler;
 
-import org.yaaic.R;
+import org.yaaic.command.BaseHandler;
+import org.yaaic.command.CommandException;
 import org.yaaic.irc.IRCService;
-import org.yaaic.model.Broadcast;
 import org.yaaic.model.Channel;
-import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 
-import android.content.Intent;
-
 /**
- * Command: /me <action>
+ * Command: /voice <nickname>
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class MeCommand extends BaseCommand
+public class VoiceHandler extends BaseHandler
 {
 	/**
-	 * Execute /me
+	 * Execute /voice
 	 */
 	@Override
 	public void execute(String[] params, Server server, Channel channel, IRCService service) throws CommandException 
 	{
-		if (params.length > 1) {
-			String action = BaseCommand.mergeParams(params);
-			String nickname = service.getConnection(server.getId()).getNick();
-			
-			Message message = new Message(nickname + " " + action);
-			message.setIcon(R.drawable.action);
-			server.getChannel(channel.getName()).addMessage(message);
-			
-			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
-			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-			intent.putExtra(Broadcast.EXTRA_CHANNEL, channel.getName());
-			service.sendBroadcast(intent);
-			
-			service.getConnection(server.getId()).sendAction(channel.getName(), action);
+		if (params.length == 2) {
+			service.getConnection(server.getId()).voice(channel.getName(), params[1]);
 		} else {
-			throw new CommandException("Text is missing");
+			throw new CommandException("Invalid number of params");
 		}
 	}
 	
 	/**
-	 * Usage of /me
+	 * Usage of /voice
 	 */
 	@Override
 	public String getUsage()
 	{
-		return "/me <text>";
+		return "/voice <nickname>";
 	}
 }

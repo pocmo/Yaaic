@@ -18,40 +18,42 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.yaaic.command;
+package org.yaaic.command.handler;
 
+import org.yaaic.command.BaseHandler;
+import org.yaaic.command.CommandException;
 import org.yaaic.irc.IRCService;
 import org.yaaic.model.Channel;
 import org.yaaic.model.Server;
 
 /**
- * Command: /join <channel> [<key>]
+ * Command: /kick <nickname>
+ * 
+ * Kicks a user from the current channel
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class JoinCommand extends BaseCommand
+public class KickHandler extends BaseHandler
 {
 	/**
-	 * Execute /join
+	 * Execute /kick
 	 */
 	@Override
-	public void execute(String[] params, Server server, Channel channel, IRCService service) throws CommandException
+	public void execute(String[] params, Server server, Channel channel, IRCService service) throws CommandException 
 	{
 		if (params.length == 2) {
-			service.getConnection(server.getId()).joinChannel(params[1]);
-		} else if (params.length == 3) {
-			service.getConnection(server.getId()).joinChannel(params[1], params[2]);
+			service.getConnection(server.getId()).kick(channel.getName(), params[1]);
 		} else {
 			throw new CommandException("Invalid number of params");
 		}
 	}
 	
 	/**
-	 * Usage of /join
+	 * Usage of /kick
 	 */
 	@Override
 	public String getUsage()
 	{
-		return "/join <channel> [<key>]";
+		return "/kick <nickname>";
 	}
 }

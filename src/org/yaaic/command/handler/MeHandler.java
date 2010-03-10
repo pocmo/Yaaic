@@ -18,38 +18,57 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.yaaic.command;
+package org.yaaic.command.handler;
 
+import org.yaaic.R;
+import org.yaaic.command.BaseHandler;
+import org.yaaic.command.CommandException;
 import org.yaaic.irc.IRCService;
+import org.yaaic.model.Broadcast;
 import org.yaaic.model.Channel;
+import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 
+import android.content.Intent;
+
 /**
- * Command: /quit [<reason>]
+ * Command: /me <action>
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class QuitCommand extends BaseCommand
+public class MeHandler extends BaseHandler
 {
 	/**
-	 * Execute /quit
+	 * Execute /me
 	 */
 	@Override
 	public void execute(String[] params, Server server, Channel channel, IRCService service) throws CommandException 
 	{
-		if (params.length == 1) {
-			service.getConnection(server.getId()).quitServer();
+		if (params.length > 1) {
+			String action = BaseHandler.mergeParams(params);
+			String nickname = service.getConnection(server.getId()).getNick();
+			
+			Message message = new Message(nickname + " " + action);
+			message.setIcon(R.drawable.action);
+			server.getChannel(channel.getName()).addMessage(message);
+			
+			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+			intent.putExtra(Broadcast.EXTRA_CHANNEL, channel.getName());
+			service.sendBroadcast(intent);
+			
+			service.getConnection(server.getId()).sendAction(channel.getName(), action);
 		} else {
-			service.getConnection(server.getId()).quitServer(BaseCommand.mergeParams(params));
+			throw new CommandException("Text is missing");
 		}
 	}
 	
 	/**
-	 * Usage of /quit
+	 * Usage of /me
 	 */
 	@Override
 	public String getUsage()
 	{
-		return "/quit [<reason>]";
+		return "/me <text>";
 	}
 }
