@@ -355,6 +355,11 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 		} else {
 			onNothingSelected(deck);
 		}
+		
+		// Remember selection
+		if (conversation != null) {
+			server.setSelectedConversation(conversation.getName());
+		}
 	}
 
 	/**

@@ -40,6 +40,7 @@ public class Server
 	private HashMap<String, Conversation> conversations = new HashMap<String, Conversation>();
 	
 	private int status = Status.DISCONNECTED;
+	private String selected = "";
 	
 	/**
 	 * Create a new server object
@@ -47,6 +48,7 @@ public class Server
 	public Server()
 	{
 		conversations.put(ServerInfo.DEFAULT_NAME, new ServerInfo());
+		this.selected = ServerInfo.DEFAULT_NAME;
 	}
 	
 	/**
@@ -214,6 +216,26 @@ public class Server
 	public void clearConversations()
 	{
 		conversations.clear();
+	}
+	
+	/**
+	 * Set name of currently selected conversation
+	 * 
+	 * @param selected The name of the selected conversation
+	 */
+	public void setSelectedConversation(String selected)
+	{
+		this.selected = selected;
+	}
+	
+	/**
+	 * Get name of currently selected conversation 
+	 * 
+	 * @return The name of the selected conversation
+	 */
+	public String getSelectedConversation()
+	{
+		return selected;
 	}
 	
 	/**
