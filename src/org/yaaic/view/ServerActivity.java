@@ -219,7 +219,6 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 	 */
 	public void onChannelMessage(String target)
 	{
-		Log.d(TAG, "Message for target " + target);
 		Channel channel = server.getChannel(target);
 		
 		while(channel.hasBufferedMessages()) {
@@ -294,11 +293,8 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 		if (deckAdapter.isSwitched()) {
 			switcher.showNext();
 			switcher.removeView(deckAdapter.getSwitchedView());
-			//switcher.showNext();
 			deckAdapter.setSwitched(null, null);
-			Log.d(TAG, "Back pressed");
 		} else {
-			Log.d(TAG, "Back pressed -> FINISH");
 			finish();
 		}
 	}
