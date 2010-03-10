@@ -54,9 +54,12 @@ public class MessageListAdapter extends BaseAdapter
 		// Render channel name as first message in channel
 
 		// XXX: There will be no messages shown if channel is empty, why?
-		Message header = new Message(conversation.getName());
-		header.setColor(Message.COLOR_RED);
-		messages.add(header.renderTextView(context));
+		
+		if (conversation.getType() != Conversation.TYPE_SERVER) {
+			Message header = new Message(conversation.getName());
+			header.setColor(Message.COLOR_RED);
+			messages.add(header.renderTextView(context));
+		}
 		
 		for (Message message : conversation.getHistory()) {
 			messages.add(message.renderTextView(context));
