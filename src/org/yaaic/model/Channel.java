@@ -41,6 +41,14 @@ public class Channel extends Conversation
 	}
 	
 	/**
+	 * Get the type of this conversation
+	 */
+	public int getType()
+	{
+		return Conversation.TYPE_CHANNEL;
+	}
+	
+	/**
 	 * Set the channel's topic
 	 * 
 	 * @param topic The topic of the channel

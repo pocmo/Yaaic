@@ -31,11 +31,22 @@ import java.util.LinkedList;
  */
 public abstract class Conversation
 {
+	public static final int TYPE_CHANNEL = 1;
+	public static final int TYPE_QUERY   = 2;
+	public static final int TYPE_SERVER  = 3;
+	
 	private static final int HISTORY_SIZE = 30;
 	
 	private LinkedList<Message> buffer = new LinkedList<Message>();
 	private LinkedList<Message> history = new LinkedList<Message>();
 	private String name;
+	
+	/**
+	 * Get the type of conversation (channel, query, ..)
+	 * 
+	 * @return See the constants: Conversation.TYPE_*
+	 */
+	public abstract int getType();
 	
 	/**
 	 * Create a new conversation with the given name
