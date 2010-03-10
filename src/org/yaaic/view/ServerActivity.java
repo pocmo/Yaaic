@@ -56,7 +56,6 @@ import org.yaaic.irc.IRCBinder;
 import org.yaaic.irc.IRCService;
 import org.yaaic.listener.ChannelListener;
 import org.yaaic.model.Broadcast;
-import org.yaaic.model.Channel;
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Message;
 import org.yaaic.model.Server;
@@ -339,9 +338,9 @@ public class ServerActivity extends Activity implements ServiceConnection, Chann
 	 */
 	public void onItemSelected(AdapterView<?> deck, View view, int position, long id)
 	{
-		Channel channel = (Channel) deck.getItemAtPosition(position);
-		if (channel != null) {
-			((TextView) findViewById(R.id.title)).setText(server.getTitle() + " - " + channel.getName());
+		Conversation conversation = (Conversation) deck.getItemAtPosition(position);
+		if (conversation != null) {
+			((TextView) findViewById(R.id.title)).setText(server.getTitle() + " - " + conversation.getName());
 		}
 	}
 

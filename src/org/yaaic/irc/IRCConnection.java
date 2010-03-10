@@ -33,7 +33,9 @@ import org.yaaic.R;
 import org.yaaic.Yaaic;
 import org.yaaic.model.Broadcast;
 import org.yaaic.model.Channel;
+import org.yaaic.model.Conversation;
 import org.yaaic.model.Message;
+import org.yaaic.model.Query;
 import org.yaaic.model.Server;
 import org.yaaic.model.Status;
 
@@ -343,14 +345,36 @@ public class IRCConnection extends PircBot
 	 * On Private Message
 	 */
 	@Override
-	protected void onPrivateMessage(String sender, String login, String hostname, String message)
+	protected void onPrivateMessage(String sender, String login, String hostname, String text)
 	{
-		debug("PrivateMessage", sender + " " + message);
+		debug("PrivateMessage", sender + " " + text);
 		
 		// Strip mIRC colors and formatting
-		message = Colors.removeFormattingAndColors(message);
+		text = Colors.removeFormattingAndColors(text);
 		
-		// XXX: Open a query if there's none yet
+		Conversation conversation = server.getConversation(sender);
+
+		if (conversation == null) { 
+			// Open a query if there's none yet
+			conversation = new Query(sender);
+			server.addConversationl(conversation);
+			
+			Message message = new Message("<" + sender + "> " + text);
+			conversation.addMessage(message);
+			
+			Intent intent = new Intent(Broadcast.CHANNEL_NEW);
+			intent.putExtra(Broadcast.EXTRA_CHANNEL, sender);
+			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+			service.sendBroadcast(intent);
+		} else {
+			Message message = new Message("<" + sender + "> " + text);
+			conversation.addMessage(message);
+			
+			Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+			intent.putExtra(Broadcast.EXTRA_CHANNEL, sender);
+			service.sendBroadcast(intent);
+		}
 	}
 
 	/**
