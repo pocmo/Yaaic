@@ -36,7 +36,7 @@ import org.yaaic.command.handler.TopicHandler;
 import org.yaaic.command.handler.VoiceHandler;
 import org.yaaic.irc.IRCService;
 import org.yaaic.model.Broadcast;
-import org.yaaic.model.Channel;
+import org.yaaic.model.Conversation;
 import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 
@@ -105,7 +105,7 @@ public class CommandParser
 	 * 
 	 * @param line
 	 */
-	public void parse(String line, Server server, Channel channel, IRCService service)
+	public void parse(String line, Server server, Conversation conversation, IRCService service)
 	{
 		line = line.trim().substring(1); // cut the slash
 		String[] params = line.split(" ");
@@ -114,33 +114,33 @@ public class CommandParser
 		if (isCommand(type)) {
 			BaseHandler command = commands.get(type);
 			try {
-				command.execute(params, server, channel, service);
+				command.execute(params, server, conversation, service);
 			} catch(CommandException e) {
 				// Wrong number of params
-				if (channel != null) {
+				if (conversation != null) {
 					Message errorMessage = new Message(type + ": " + e.getMessage());
 					errorMessage.setColor(Message.COLOR_RED);
-					channel.addMessage(errorMessage);
+					conversation.addMessage(errorMessage);
 					
 					Message usageMessage = new Message("Syntax: " + command.getUsage());
-					channel.addMessage(usageMessage);
+					conversation.addMessage(usageMessage);
 					
 					Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 					intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-					intent.putExtra(Broadcast.EXTRA_CHANNEL, channel.getName());
+					intent.putExtra(Broadcast.EXTRA_CHANNEL, conversation.getName());
 					service.sendBroadcast(intent);
 				}
 			}
 		} else {
 			// Unknown command
-			if (channel != null) {
+			if (conversation != null) {
 				Message message = new Message("Unknown command: " + type);
 				message.setColor(Message.COLOR_RED);
-				channel.addMessage(message);
+				conversation.addMessage(message);
 				
 				Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
 				intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-				intent.putExtra(Broadcast.EXTRA_CHANNEL, channel.getName());
+				intent.putExtra(Broadcast.EXTRA_CHANNEL, conversation.getName());
 				service.sendBroadcast(intent);
 			}
 		}
