@@ -37,6 +37,7 @@ import org.yaaic.model.Conversation;
 import org.yaaic.model.Message;
 import org.yaaic.model.Query;
 import org.yaaic.model.Server;
+import org.yaaic.model.ServerInfo;
 import org.yaaic.model.Status;
 
 public class IRCConnection extends PircBot
@@ -313,7 +314,22 @@ public class IRCConnection extends PircBot
 		// Strip mIRC colors and formatting
 		notice = Colors.removeFormattingAndColors(notice);
 		
-		// XXX: Where should notices be shown? Current window? All windows? Server window?
+		// Post notice to currently selected conversation
+		Conversation conversation = server.getConversation(server.getSelectedConversation());
+		
+		if (conversation == null) {
+			// Fallback: Use ServerInfo view
+			conversation = server.getConversation(ServerInfo.DEFAULT_NAME);
+		}
+
+		Message message = new Message("-" + sourceNick + "- " + notice);
+		message.setIcon(R.drawable.info);
+		conversation.addMessage(message);
+		
+		Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
+		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+		intent.putExtra(Broadcast.EXTRA_CHANNEL, conversation.getName());
+		service.sendBroadcast(intent);
 	}
 
 	/**
