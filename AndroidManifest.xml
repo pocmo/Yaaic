@@ -17,7 +17,8 @@
             android:label="@string/add_server_label">
         </activity>
         <activity
-            android:name=".view.ConversationActivity">
+            android:name=".view.ConversationActivity"
+            android:windowSoftInputMode="adjustResize">
         </activity>
         <service android:name=".irc.IRCService"></service>
     </application>
