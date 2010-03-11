@@ -52,9 +52,6 @@ public class MessageListAdapter extends BaseAdapter
 		this.context = context;
 		
 		// Render channel name as first message in channel
-
-		// XXX: There will be no messages shown if channel is empty, why?
-		
 		if (conversation.getType() != Conversation.TYPE_SERVER) {
 			Message header = new Message(conversation.getName());
 			header.setColor(Message.COLOR_RED);
@@ -65,6 +62,8 @@ public class MessageListAdapter extends BaseAdapter
 			messages.add(message.renderTextView(context));
 		}
 		
+		// XXX: We don't want to clear the buffer, we want to add only
+		//      buffered messages that are not already added (history)
 		conversation.clearBuffer();
 	}
 

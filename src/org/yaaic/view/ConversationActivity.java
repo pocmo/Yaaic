@@ -227,7 +227,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	}
 
 	/**
-	 * On channel message
+	 * On conversation message
 	 */
 	public void onConversationMessage(String target)
 	{
@@ -256,7 +256,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	}
 
 	/**
-	 * On new channel
+	 * On new conversation
 	 */
 	public void onNewConversation(String target)
 	{
@@ -269,11 +269,15 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	}
 	
 	/**
-	 * On channel remove
+	 * On conversation remove
 	 */
 	public void onRemoveConversation(String target)
 	{
-		// XXX: Implement me :)
+		deckAdapter.removeItem(target);
+		
+		if (deckAdapter.isSwitched()) {
+			onBackPressed();
+		}
 	}
 
 	/**
@@ -292,16 +296,16 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	}
 
 	/**
-	 * On Channel item clicked
+	 * On conversation item clicked
 	 */
 	public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
 	{
-		Log.d(TAG, "Selected channel: " + position);
-		
 		Conversation conversation = deckAdapter.getItem(position);
+		
 		MessageListView canvas = deckAdapter.renderConversation(conversation, switcher);
 		canvas.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 		canvas.setDelegateTouchEvents(false); // Do not delegate
+		
 		deckAdapter.setSwitched(conversation.getName(), canvas);
 		switcher.addView(canvas);
 		switcher.showNext();

@@ -61,7 +61,7 @@ public class ChannelReceiver extends BroadcastReceiver
 		} else if (action.equals(Broadcast.CONVERSATION_NEW)) {
 			listener.onNewConversation(intent.getExtras().getString(Broadcast.EXTRA_CONVERSATION));
 		} else if (action.equals(Broadcast.CONVERSATION_REMOVE)) {
-			intent.getExtras().getString(Broadcast.EXTRA_CONVERSATION);
+			listener.onRemoveConversation(intent.getExtras().getString(Broadcast.EXTRA_CONVERSATION));
 		}
 		
 	}

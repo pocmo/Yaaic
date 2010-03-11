@@ -106,11 +106,14 @@ public class DeckAdapter extends BaseAdapter
 	 * 
 	 * @param channel
 	 */
-	public void removeItem(Conversation conversation)
+	public void removeItem(String target)
 	{
-		conversations.remove(conversation);
+		int position = getPositionByName(target);
 		
-		notifyDataSetChanged();
+		if (position != -1) {
+			conversations.remove(position);
+			notifyDataSetChanged();
+		}
 	}
 	
 	/**

@@ -31,6 +31,8 @@ import java.util.LinkedList;
  */
 public abstract class Conversation
 {
+	public static final String TAG = "Yaaic/Conversation";
+	
 	public static final int TYPE_CHANNEL = 1;
 	public static final int TYPE_QUERY   = 2;
 	public static final int TYPE_SERVER  = 3;

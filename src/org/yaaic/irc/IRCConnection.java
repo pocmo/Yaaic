@@ -368,7 +368,7 @@ public class IRCConnection extends PircBot
 		debug("Part", target + " " + sender);
 		
 		if (sender.equals(getNick())) {
-			// We pareted a channel
+			// We parted a channel
 			server.removeConversation(target);
 			
 			Intent intent = new Intent(Broadcast.CONVERSATION_REMOVE);
