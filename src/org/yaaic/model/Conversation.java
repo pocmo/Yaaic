@@ -20,7 +20,9 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.model;
 
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Base class for conversations
@@ -39,8 +41,8 @@ public abstract class Conversation
 	
 	private static final int HISTORY_SIZE = 30;
 	
-	private LinkedList<Message> buffer = new LinkedList<Message>();
-	private LinkedList<Message> history = new LinkedList<Message>();
+	private List<Message> buffer;
+	private List<Message> history;
 	private String name;
 	
 	/**
@@ -57,6 +59,8 @@ public abstract class Conversation
 	 */
 	public Conversation(String name)
 	{
+		this.buffer = Collections.synchronizedList(new LinkedList<Message>());
+		this.history = Collections.synchronizedList(new LinkedList<Message>());
 		this.name = name;
 	}
 	
@@ -73,11 +77,11 @@ public abstract class Conversation
 	 */
 	public void addMessage(Message message)
 	{
-		buffer.addFirst(message);
-		history.addLast(message);
+		buffer.add(0, message);
+		history.add(message);
 		
 		if (history.size() > HISTORY_SIZE) {
-			history.removeFirst();
+			history.remove(0);
 		}
 	}
 	
@@ -86,7 +90,7 @@ public abstract class Conversation
 	 * 
 	 * @return
 	 */
-	public LinkedList<Message> getHistory()
+	public List<Message> getHistory()
 	{
 		return history;
 	}
@@ -98,8 +102,8 @@ public abstract class Conversation
 	 */
 	public Message pollBufferedMessage()
 	{
-		Message message = buffer.getLast();
-		buffer.removeLast();
+		Message message = buffer.get(buffer.size() - 1);
+		buffer.remove(buffer.size() - 1);
 		return message;
 	}
 	

@@ -20,7 +20,9 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.adapter;
 
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Message;
@@ -38,7 +40,7 @@ import android.widget.TextView;
  */
 public class MessageListAdapter extends BaseAdapter
 {
-	private LinkedList<TextView> messages = new LinkedList<TextView>();
+	private List<TextView> messages;
 	private Context context;
 	
 	/**
@@ -49,6 +51,7 @@ public class MessageListAdapter extends BaseAdapter
 	 */
 	public MessageListAdapter(Conversation conversation, Context context)
 	{
+		this.messages = Collections.synchronizedList(new LinkedList<TextView>());
 		this.context = context;
 		
 		// Render channel name as first message in channel

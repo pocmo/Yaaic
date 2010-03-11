@@ -20,7 +20,9 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.adapter;
 
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.yaaic.model.Conversation;
 import org.yaaic.view.MessageListView;
@@ -40,9 +42,17 @@ public class DeckAdapter extends BaseAdapter
 {
 	public static final String TAG = "Yaaic/DeckAdapter";
 	
-	private LinkedList<Conversation> conversations = new LinkedList<Conversation>();
+	private List<Conversation> conversations;
 	private MessageListView currentView;
 	private String currentChannel;
+	
+	/**
+	 * Create a new DeckAdapter instance
+	 */
+	public DeckAdapter()
+	{
+		conversations = Collections.synchronizedList(new LinkedList<Conversation>());
+	}
 	
 	/**
 	 * Get number of item
