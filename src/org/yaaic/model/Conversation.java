@@ -86,13 +86,22 @@ public abstract class Conversation
 	}
 	
 	/**
-	 * Get channel history
-	 * 
-	 * @return
+	 * Get size of the current history
 	 */
-	public List<Message> getHistory()
+	public int getHistorySize()
 	{
-		return history;
+		return history.size();
+	}
+	
+	/**
+	 * Get message of the history at the given position
+	 * 
+	 * @param position
+	 * @return The message at the given position
+	 */
+	public Message getHistoryMessage(int position)
+	{
+		return history.get(position);
 	}
 	
 	/**

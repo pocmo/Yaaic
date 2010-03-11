@@ -61,8 +61,8 @@ public class MessageListAdapter extends BaseAdapter
 			messages.add(header.renderTextView(context));
 		}
 		
-		for (Message message : conversation.getHistory()) {
-			messages.add(message.renderTextView(context));
+		for (int i = 0; i < conversation.getHistorySize(); i++) {
+			messages.add(conversation.getHistoryMessage(i).renderTextView(context));
 		}
 		
 		// XXX: We don't want to clear the buffer, we want to add only
