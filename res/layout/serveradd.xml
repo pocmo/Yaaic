@@ -22,11 +22,21 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 <ScrollView
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
+	android:layout_height="fill_parent"
+	android:scrollbarStyle="outsideOverlay">
 	<LinearLayout
 	    android:orientation="vertical"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent">
+	    <TextView
+	        android:text="Server"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:background="#ff333333"
+	        android:textSize="14px"
+	        android:gravity="center_horizontal"
+	        android:padding="3px"
+	        android:layout_margin="2px" />
 	    <TextView
 	    	android:text="@string/server_title"
 	    	android:layout_width="fill_parent"
@@ -80,6 +90,44 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 			android:layout_height="wrap_content"
 			android:text="@string/server_useSSL"
 			android:visibility="gone" />
+        <TextView
+            android:text="User"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#ff333333"
+            android:textSize="14px"
+            android:gravity="center_horizontal"
+            android:padding="3px"
+            android:layout_margin="2px" />
+        <TextView
+            android:text="Nickname"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/nickname"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true" />
+        <TextView
+            android:text="Ident"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/ident"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="yaaic"
+            android:singleLine="true" />
+        <TextView
+            android:text="Real Name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/realname"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:singleLine="true" />
 		<LinearLayout
 		    android:orientation="horizontal"
             android:layout_width="fill_parent"
