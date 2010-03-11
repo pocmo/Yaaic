@@ -433,7 +433,7 @@ public class IRCConnection extends PircBot
 		
 		if (!sourceNick.equals(this.getNick())) {
 			for (String target : getChannelsByNickname(sourceNick)) {
-				Message message = new Message(sourceNick + " quitted");
+				Message message = new Message(sourceNick + " quitted (" + reason + ")");
 				message.setColor(Message.COLOR_GREEN);
 				message.setIcon(R.drawable.quit);
 				server.getConversation(target).addMessage(message);
