@@ -195,6 +195,7 @@ public class DeckAdapter extends BaseAdapter
 		));
 		list.setBackgroundColor(0xff222222);
 		list.setPadding(5, 5, 5, 5);
+		list.setVerticalFadingEdgeEnabled(false);
 		list.setScrollBarStyle(ListView.SCROLLBARS_OUTSIDE_INSET);
 		list.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
 		list.setSelection(list.getAdapter().getCount() - 1); // scroll to bottom
