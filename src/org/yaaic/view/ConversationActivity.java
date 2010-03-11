@@ -94,7 +94,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		server = (Server) Yaaic.getInstance().getServerById(serverId);
 		setTitle("Yaaic - " + server.getTitle());
 		
-		setContentView(R.layout.server);
+		setContentView(R.layout.conversations);
 		
 		((TextView) findViewById(R.id.title)).setText(server.getTitle());
 		((ImageView) findViewById(R.id.status)).setImageResource(server.getStatusIcon());
