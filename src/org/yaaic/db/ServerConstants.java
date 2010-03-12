@@ -41,7 +41,7 @@ public interface ServerConstants extends BaseColumns
 	public static final String IDENTITY     = "identity";
 	
 	/**
-	 * All fields in the table
+	 * All fields of the table
 	 */
 	public static final String[] ALL = {
 		_ID,

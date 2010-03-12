@@ -23,25 +23,28 @@ package org.yaaic.db;
 import android.provider.BaseColumns;
 
 /**
- * Constants for the channel database
- * 
+ * Constants for the identity database
+ *  
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public interface ChannelConstants extends BaseColumns
+public class IdentityConstants implements BaseColumns
 {
-	public static final String TABLE_NAME = "channels";
+	public static final String TABLE_NAME = "identities";
 	
 	// fields
-	public static final String NAME		  = "name";
-	public static final String PASSWORD   = "password";
-	public static final String SERVER     = "server";
+	public static final String NICKNAME = "nickname";
+	public static final String IDENT 	= "ident";
+	public static final String REALNAME = "realname";
+	public static final String SERVER   = "server";
 	
 	/**
 	 * All fields of the table
 	 */
 	public static final String[] ALL = {
-		NAME,
-		PASSWORD,
+		_ID,
+		NICKNAME,
+		IDENT,
+		REALNAME,
 		SERVER
 	};
 }
