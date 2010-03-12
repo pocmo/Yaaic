@@ -62,6 +62,7 @@ public class AddServerActivity extends Activity implements OnClickListener
 	{
 		switch (v.getId()) {
 			case R.id.add:
+				// server
 				String title = ((EditText) findViewById(R.id.title)).getText().toString();
 				String host = ((EditText) findViewById(R.id.host)).getText().toString();
 				int port = Integer.parseInt(((EditText) findViewById(R.id.port)).getText().toString());
@@ -69,12 +70,22 @@ public class AddServerActivity extends Activity implements OnClickListener
 				boolean autoConnect = ((CheckBox) findViewById(R.id.autoconnect)).isChecked();
 				boolean useSSL = ((CheckBox) findViewById(R.id.useSSL)).isChecked();
 				
+				// identity
+				String nickname = ((EditText) findViewById(R.id.nickname)).getText().toString();
+				String ident = ((EditText) findViewById(R.id.ident)).getText().toString();
+				String realname = ((EditText) findViewById(R.id.realname)).getText().toString();
+				
+								
 				Database db = new Database(this);
-				long id = db.addServer(title, host, port, password, autoConnect, useSSL);
+				long identityId = db.addIdentity(nickname, ident, realname);
+				
+				Log.d(TAG, "New Identity with Id " + identityId + " (" + nickname + ", " + ident + ", " + realname + ")");
+				
+				long serverId = db.addServer(title, host, port, password, autoConnect, useSSL, identityId);
 				db.close();
 				
 				Server server = new Server();
-				server.setId((int) id);
+				server.setId((int) serverId);
 				server.setHost(host);
 				server.setPort(port);
 				server.setTitle(title);
@@ -93,36 +104,3 @@ public class AddServerActivity extends Activity implements OnClickListener
 		}
 	}
 }
-
-/*
-	@Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.serveradd);
-        
-        Button button = (Button) findViewById(R.id.server_add);
-        button.setOnClickListener(this);
-    }
-	
-	public void onClick(View v)
-	{
-		switch (v.getId()) {
-			case R.id.server_add:
-				
-				String title = ((EditText) findViewById(R.id.server_title)).getText().toString();
-				String host = ((EditText) findViewById(R.id.server_host)).getText().toString();
-				int port = Integer.parseInt(((EditText) findViewById(R.id.server_port)).getText().toString());
-				String password = ((EditText) findViewById(R.id.server_password)).getText().toString();
-				boolean autoConnect = ((CheckBox) findViewById(R.id.server_autoconnect)).isChecked();
-				boolean useSSL = ((CheckBox) findViewById(R.id.server_usessl)).isChecked();
-
-				ServerDatabase db = new ServerDatabase(this);
-				db.addServer(title, host, port, password, autoConnect, useSSL);
-				db.close();
-				
-				this.finish();
-				break;
-		}
-	}
-*/
