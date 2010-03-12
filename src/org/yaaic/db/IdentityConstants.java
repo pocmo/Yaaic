@@ -35,7 +35,6 @@ public class IdentityConstants implements BaseColumns
 	public static final String NICKNAME = "nickname";
 	public static final String IDENT 	= "ident";
 	public static final String REALNAME = "realname";
-	public static final String SERVER   = "server";
 	
 	/**
 	 * All fields of the table
@@ -45,6 +44,5 @@ public class IdentityConstants implements BaseColumns
 		NICKNAME,
 		IDENT,
 		REALNAME,
-		SERVER
 	};
 }

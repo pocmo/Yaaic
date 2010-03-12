@@ -50,6 +50,7 @@ public interface ServerConstants extends BaseColumns
 		PORT,
 		PASSWORD,
 		AUTOCONNECT,
-		USE_SSL
+		USE_SSL,
+		IDENTITY
 	};
 }

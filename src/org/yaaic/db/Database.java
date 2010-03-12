@@ -78,6 +78,14 @@ public class Database extends SQLiteOpenHelper
 				+ ChannelConstants.SERVER + " INTEGER"
 				+ ");"
 		);
+		
+		db.execSQL("CREATE TABLE " + IdentityConstants.TABLE_NAME +" ("
+				+ IdentityConstants._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+				+ IdentityConstants.NICKNAME + " TEXT NOT NULL,"
+				+ IdentityConstants.IDENT + " TEXT NOT NULL,"
+				+ IdentityConstants.REALNAME + " TEXT NOT NULL"
+				+ ");"
+		);
 	}
 	
 	/**
@@ -90,6 +98,7 @@ public class Database extends SQLiteOpenHelper
 		// migrate the database to the new version (add or remove rows..)
 		db.execSQL("DROP TABLE IF EXISTS " + ServerConstants.TABLE_NAME + ";");
 		db.execSQL("DROP TABLE IF EXISTS " + ChannelConstants.TABLE_NAME + ";");
+		db.execSQL("DROP TABLE IF EXISTS " + IdentityConstants.TABLE_NAME + ";");
 		
 		onCreate(db);
 	}
@@ -104,7 +113,7 @@ public class Database extends SQLiteOpenHelper
 	 * @param autoConnect Autoconnect to this server on startup?
 	 * @param useSSL Does the server use SSL?
 	 */
-	public long addServer(String title, String host, int port, String password, boolean autoConnect, boolean useSSL)
+	public long addServer(String title, String host, int port, String password, boolean autoConnect, boolean useSSL, long identityId)
 	{
 		ContentValues values = new ContentValues();
 		
@@ -114,6 +123,7 @@ public class Database extends SQLiteOpenHelper
 		values.put(ServerConstants.PASSWORD, password);
 		values.put(ServerConstants.AUTOCONNECT, autoConnect);
 		values.put(ServerConstants.USE_SSL, useSSL);
+		values.put(ServerConstants.IDENTITY, identityId);
 		
 		return this.getWritableDatabase().insert(ServerConstants.TABLE_NAME, null, values);
 	}
@@ -235,6 +245,49 @@ public class Database extends SQLiteOpenHelper
 	{
 		this.getWritableDatabase().execSQL(
 			"DELETE FROM " + ServerConstants.TABLE_NAME + " WHERE " + ServerConstants._ID + " = " + serverId + ";"
+		);
+	}
+	
+	/**
+	 * Add a new identity
+	 * 
+	 * @param identityId
+	 * @param nickname
+	 * @param ident
+	 * @param realname
+	 */
+	public long addIdentity(String nickname, String ident, String realname)
+	{
+		ContentValues values = new ContentValues();
+		
+		values.put(IdentityConstants.NICKNAME, nickname);
+		values.put(IdentityConstants.IDENT, ident);
+		values.put(IdentityConstants.REALNAME, realname);
+		
+		return this.getWritableDatabase().insert(IdentityConstants.TABLE_NAME, null, values);
+	}
+	
+	/**
+	 * Update the identity with the given id
+	 * 
+	 * @param identityId
+	 * @param nickname
+	 * @param ident
+	 * @param realname
+	 */
+	public void updateIdentity(int identityId, String nickname, String ident, String realname)
+	{
+		ContentValues values = new ContentValues();
+		
+		values.put(IdentityConstants.NICKNAME, nickname);
+		values.put(IdentityConstants.IDENT, ident);
+		values.put(IdentityConstants.REALNAME, realname);
+		
+		this.getWritableDatabase().update(
+			IdentityConstants.TABLE_NAME,
+			values,
+			IdentityConstants._ID + " = " + identityId,
+			null
 		);
 	}
 }
