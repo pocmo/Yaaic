@@ -36,6 +36,7 @@ public class Server
 	private String title;
 	private String host;
 	private int port;
+	private String password;
 	private Identity identity;
 	
 	private LinkedHashMap<String, Conversation> conversations = new LinkedHashMap<String, Conversation>();
@@ -90,6 +91,26 @@ public class Server
 	public void setId(int id)
 	{
 		this.id = id;
+	}
+	
+	/**
+	 * Set password of the server
+	 * 
+	 * @param password The password of the server
+	 */
+	public void setPassword(String password)
+	{
+		this.password = password;
+	}
+	
+	/**
+	 * Get the password of the server
+	 * 
+	 * @return The password of the server
+	 */
+	public String getPassword()
+	{
+		return password;
 	}
 	
 	/**
