@@ -22,6 +22,7 @@ package org.yaaic.db;
 
 import java.util.HashMap;
 
+import org.yaaic.model.Identity;
 import org.yaaic.model.Server;
 import org.yaaic.model.Status;
 
@@ -289,5 +290,38 @@ public class Database extends SQLiteOpenHelper
 			IdentityConstants._ID + " = " + identityId,
 			null
 		);
+	}
+	
+	/**
+	 * Get an identity by its id
+	 * 
+	 * @param identityId
+	 * @return
+	 */
+	public Identity getIdentityById(int identityId)
+	{
+		Cursor cursor = this.getReadableDatabase().query(
+			IdentityConstants.TABLE_NAME,
+			IdentityConstants.ALL,
+			IdentityConstants._ID + "=" + identityId,
+			null,
+			null,
+			null,
+			null
+		);
+		
+		if (cursor.moveToNext()) {
+			Identity identity = new Identity();
+			
+			identity.setNickname(cursor.getString(cursor.getColumnIndex(IdentityConstants.NICKNAME)));
+			identity.setIdent(cursor.getString(cursor.getColumnIndex(IdentityConstants.IDENT)));
+			identity.setRealName(cursor.getString(cursor.getColumnIndex(IdentityConstants.REALNAME)));
+			
+			cursor.close();
+			
+			return identity;
+		}
+		
+		return null;
 	}
 }
