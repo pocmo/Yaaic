@@ -20,6 +20,10 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.irc;
 
+import java.io.IOException;
+
+import org.jibble.pircbot.IrcException;
+import org.jibble.pircbot.NickAlreadyInUseException;
 import org.yaaic.model.Server;
 
 import android.os.Binder;
@@ -62,11 +66,18 @@ public class IRCBinder extends Binder
 
 					connection.setNickname(server.getIdentity().getNickname());
 					connection.setIdent(server.getIdentity().getIdent());
+					connection.setRealName(server.getIdentity().getRealName());
 					
-					connection.connect(server.getHost());
+					connection.connect(server.getHost(), server.getPort());
 				}
-				catch (Exception e) {
-					Log.d(TAG, "Exception: " + e.getMessage());
+				catch (NickAlreadyInUseException e) {
+					Log.d(TAG, "NickAlreadyInUseException: " + e.getMessage());
+				}
+				catch (IrcException e) {
+					Log.d(TAG, "IrcException: " + e.getMessage());
+				}
+				catch (IOException e) {
+					Log.d(TAG, "IOException: " + e.getMessage());
 				}
 			}
 		}.start();

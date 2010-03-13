@@ -61,7 +61,6 @@ public class IRCConnection extends PircBot
 		this.service = service;
 		
 		this.setAutoNickChange(true);
-		this.setVersion("Yaaic - Yet another Android IRC client - http://www.yaaic.org");
 	}
 	
 	/**
@@ -72,6 +71,27 @@ public class IRCConnection extends PircBot
 	public void setNickname(String nickname)
 	{
 		this.setName(nickname);
+	}
+	
+	public void setRealName(String realname)
+	{
+		// XXX: Pircbot uses the version for "real name" and "version".
+		//      The real "version" value is provided by onVersion() 
+		this.setVersion(realname);
+	}
+
+	/**
+	 * On version (CTCP version)
+	 * 
+	 * This is a fix for pircbot as pircbot uses the version as "real name" and as "version"
+	 */
+	@Override
+	protected void onVersion(String sourceNick, String sourceLogin,	String sourceHostname, String target) {
+		this.sendRawLine(
+				"NOTICE " + sourceNick + " :\u0001VERSION " +
+				"Yaaic - Yet another Android IRC client - http://www.yaaic.org" +
+				"\u0001"
+		);
 	}
 
 	/**
