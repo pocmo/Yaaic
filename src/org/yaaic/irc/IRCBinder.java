@@ -68,7 +68,11 @@ public class IRCBinder extends Binder
 					connection.setIdent(server.getIdentity().getIdent());
 					connection.setRealName(server.getIdentity().getRealName());
 					
-					connection.connect(server.getHost(), server.getPort());
+					if (server.getPassword() != "") {
+						connection.connect(server.getHost(), server.getPort(), server.getPassword());
+					} else {
+						connection.connect(server.getHost(), server.getPort());
+					}
 				}
 				catch (NickAlreadyInUseException e) {
 					Log.d(TAG, "NickAlreadyInUseException: " + e.getMessage());
