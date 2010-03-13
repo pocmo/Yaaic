@@ -281,6 +281,16 @@ public class Database extends SQLiteOpenHelper
 	 */
 	public void removeServerById(int serverId)
 	{
+		// XXX: Workaround: Remove identity assigned to this server
+		//      until we have some kind of identity manager
+		int identityId = this.getIdentityIdByServerId(serverId);
+		if (identityId != -1) {
+			this.getWritableDatabase().execSQL(
+				"DELETE FROM " + IdentityConstants.TABLE_NAME + " WHERE " + IdentityConstants._ID + " = " + identityId + ";"
+			);		
+		}
+		
+		// Now delete the server entry
 		this.getWritableDatabase().execSQL(
 			"DELETE FROM " + ServerConstants.TABLE_NAME + " WHERE " + ServerConstants._ID + " = " + serverId + ";"
 		);
@@ -360,5 +370,30 @@ public class Database extends SQLiteOpenHelper
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * Get a server by its id
+	 * 
+	 * @param serverId
+	 * @return
+	 */
+	private int getIdentityIdByServerId(int serverId)
+	{
+		Cursor cursor = this.getReadableDatabase().query(
+			ServerConstants.TABLE_NAME,
+			ServerConstants.ALL,
+			ServerConstants._ID + "=" + serverId,
+			null,
+			null,
+			null,
+			null
+		);
+		
+		if (cursor.moveToNext()) {
+			return cursor.getInt(cursor.getColumnIndex(ServerConstants.IDENTITY));
+		}
+		
+		return -1;
 	}
 }
