@@ -177,7 +177,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     	
     	// inflate from xml
     	MenuInflater inflater = getMenuInflater();
-    	inflater.inflate(R.menu.server, menu);
+    	inflater.inflate(R.menu.conversations, menu);
     	
     	return true;
 	}
