@@ -1,7 +1,7 @@
 /*
 Yaaic - Yet Another Android IRC Client
 
-Copyright 2009 Sebastian Kaspari
+Copyright 2009-2010 Sebastian Kaspari
 
 This file is part of Yaaic.
 
