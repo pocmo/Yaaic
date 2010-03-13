@@ -21,7 +21,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 package org.yaaic.model;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import org.yaaic.R;
 
@@ -38,7 +38,7 @@ public class Server
 	private int port;
 	private Identity identity;
 	
-	private HashMap<String, Conversation> conversations = new HashMap<String, Conversation>();
+	private LinkedHashMap<String, Conversation> conversations = new LinkedHashMap<String, Conversation>();
 	
 	private int status = Status.DISCONNECTED;
 	private String selected = "";
