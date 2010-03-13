@@ -31,6 +31,7 @@ import org.yaaic.command.handler.KickHandler;
 import org.yaaic.command.handler.MeHandler;
 import org.yaaic.command.handler.NamesHandler;
 import org.yaaic.command.handler.NickHandler;
+import org.yaaic.command.handler.NoticeHandler;
 import org.yaaic.command.handler.OpHandler;
 import org.yaaic.command.handler.PartHandler;
 import org.yaaic.command.handler.QueryHandler;
@@ -80,6 +81,7 @@ public class CommandParser
 		commands.put("query", new QueryHandler());
 		commands.put("part", new PartHandler());
 		commands.put("close", new CloseHandler());
+		commands.put("notice", new NoticeHandler());
 		
 		// Aliases
 		commands.put("j", commands.get("join"));
