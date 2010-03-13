@@ -28,7 +28,6 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -50,7 +49,6 @@ import android.widget.TableLayout.LayoutParams;
 import org.yaaic.R;
 import org.yaaic.Yaaic;
 import org.yaaic.adapter.DeckAdapter;
-import org.yaaic.adapter.MessageListAdapter;
 import org.yaaic.command.CommandParser;
 import org.yaaic.irc.IRCBinder;
 import org.yaaic.irc.IRCService;
@@ -234,6 +232,14 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		Conversation conversation = server.getConversation(target);
 		
 		while(conversation.hasBufferedMessages()) {
+			// XXX: I wrote all this beautiful code but the view sometimes has
+			//      not all children like the adapter so getChildAt() will return
+			//      no child view or not the view that is logical connected to
+			//      the item in the adapter at the same position. So we just
+			//      notify the whole deck adapter.
+			deckAdapter.notifyDataSetChanged();
+			
+			/*
 			Message message = conversation.pollBufferedMessage();
 			
 			int position = deckAdapter.getPositionByName(target);
@@ -247,8 +253,10 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 					Log.d(TAG, "MessageListView Adapter is null (position: " + position + ")");
 				}
 			}
+			*/
 			
 			if (deckAdapter.isSwitched() && target.equals(deckAdapter.getSwitchedName())) {
+				Message message = conversation.pollBufferedMessage();
 				MessageListView switchedView = deckAdapter.getSwitchedView();
 				switchedView.getAdapter().addMessage(message);
 			}
