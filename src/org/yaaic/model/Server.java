@@ -36,6 +36,7 @@ public class Server
 	private String title;
 	private String host;
 	private int port;
+	private Identity identity;
 	
 	private HashMap<String, Conversation> conversations = new HashMap<String, Conversation>();
 	
@@ -49,6 +50,26 @@ public class Server
 	{
 		conversations.put(ServerInfo.DEFAULT_NAME, new ServerInfo());
 		this.selected = ServerInfo.DEFAULT_NAME;
+	}
+	
+	/**
+	 * Set the identity for this server
+	 * 
+	 * @param identity The identity for this server
+	 */
+	public void setIdentity(Identity identity)
+	{
+		this.identity = identity;
+	}
+	
+	/**
+	 * Get the identity for this server
+	 * 
+	 * @return identity
+	 */
+	public Identity getIdentity()
+	{
+		return identity;
 	}
 	
 	/**
