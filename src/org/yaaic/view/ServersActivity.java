@@ -62,6 +62,9 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 	private ServerReceiver receiver;
 	private ServerListAdapter adapter;
 	
+	/**
+	 * On create
+	 */
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -74,6 +77,9 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
         getListView().setOnItemLongClickListener(this);
     }
 
+    /**
+     * On resume
+     */
     @Override
     public void onResume()
     {
@@ -90,6 +96,9 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
     	adapter.loadServers();
     }
     
+    /**
+     * On pause
+     */
     @Override
     public void onPause()
     {
@@ -185,6 +194,9 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
     	return true;
     }
 
+    /**
+     * On menu item selected
+     */
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item)
 	{
@@ -200,6 +212,9 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 		return true;
 	}
 
+	/**
+	 * On activity result
+	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
