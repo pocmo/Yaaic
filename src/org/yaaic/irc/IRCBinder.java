@@ -58,7 +58,12 @@ public class IRCBinder extends Binder
 		new Thread() {
 			public void run() {
 				try {
-					getService().getConnection(server.getId()).connect(server.getHost());
+					IRCConnection connection = getService().getConnection(server.getId());
+
+					connection.setNickname(server.getIdentity().getNickname());
+					connection.setIdent(server.getIdentity().getIdent());
+					
+					connection.connect(server.getHost());
 				}
 				catch (Exception e) {
 					Log.d(TAG, "Exception: " + e.getMessage());

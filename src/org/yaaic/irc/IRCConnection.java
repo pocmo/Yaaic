@@ -60,10 +60,28 @@ public class IRCConnection extends PircBot
 		this.server = Yaaic.getInstance().getServerById(serverId);
 		this.service = service;
 		
-		this.setName("Yaaic");
-		this.setLogin("Yaaic");
 		this.setAutoNickChange(true);
 		this.setVersion("Yaaic - Yet another Android IRC client - http://www.yaaic.org");
+	}
+	
+	/**
+	 * Set the nickname of the user
+	 * 
+	 * @param nickname The nickname to use
+	 */
+	public void setNickname(String nickname)
+	{
+		this.setName(nickname);
+	}
+
+	/**
+	 * Set the ident of the user
+	 * 
+	 * @param ident The ident to use
+	 */
+	public void setIdent(String ident)
+	{
+		this.setLogin(ident);
 	}
 
 	/**
