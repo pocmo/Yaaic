@@ -61,7 +61,7 @@ public abstract class Conversation
 	{
 		this.buffer = Collections.synchronizedList(new LinkedList<Message>());
 		this.history = Collections.synchronizedList(new LinkedList<Message>());
-		this.name = name;
+		this.name = name.toLowerCase();
 	}
 	
 	/**

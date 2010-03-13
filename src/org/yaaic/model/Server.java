@@ -229,7 +229,7 @@ public class Server
 	 */
 	public Conversation getConversation(String name)
 	{
-		return conversations.get(name);
+		return conversations.get(name.toLowerCase());
 	}
 	
 	/**
@@ -239,7 +239,7 @@ public class Server
 	 */
 	public void addConversationl(Conversation conversation)
 	{
-		conversations.put(conversation.getName(), conversation);
+		conversations.put(conversation.getName().toLowerCase(), conversation);
 	}
 	
 	/**
@@ -249,7 +249,7 @@ public class Server
 	 */
 	public void removeConversation(String name)
 	{
-		conversations.remove(name);
+		conversations.remove(name.toLowerCase());
 	}
 	
 	/**

@@ -103,7 +103,7 @@ public class DeckAdapter extends BaseAdapter
 	public int getPositionByName(String name)
 	{
 		for (int i = 0; i <  conversations.size(); i++) {
-			if (conversations.get(i).getName().equals(name)) {
+			if (conversations.get(i).getName().equalsIgnoreCase(name)) {
 				return i;
 			}
 		}
