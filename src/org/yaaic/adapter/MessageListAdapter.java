@@ -78,6 +78,11 @@ public class MessageListAdapter extends BaseAdapter
 	public synchronized void addMessage(Message message)
 	{
 		messages.add(message.renderTextView(context));
+		
+		if (messages.size() > Conversation.HISTORY_SIZE) {
+			messages.remove(0);
+		}
+		
 		notifyDataSetChanged();
 	}
 	

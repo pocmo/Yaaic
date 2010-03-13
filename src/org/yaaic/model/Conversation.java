@@ -39,7 +39,7 @@ public abstract class Conversation
 	public static final int TYPE_QUERY   = 2;
 	public static final int TYPE_SERVER  = 3;
 	
-	private static final int HISTORY_SIZE = 30;
+	public static final int HISTORY_SIZE = 30;
 	
 	private List<Message> buffer;
 	private List<Message> history;
