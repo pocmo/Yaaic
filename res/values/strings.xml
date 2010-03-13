@@ -7,6 +7,7 @@
     <string name="app_copyright">(C) 2009-2010 Sebastian Kaspari</string>
     
     <string name="add_server_menu">Add server</string>
+    <string name="settings_menu">Settings</string>
     <string name="about_menu">About</string>
     
     <string name="add_server_label">Add new server</string>
@@ -34,4 +35,6 @@
     	Yaaic is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 		Yaaic is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 	</string>
+	
+	<string name="settings_label">Settings</string>
 </resources>

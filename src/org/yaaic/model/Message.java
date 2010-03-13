@@ -108,15 +108,18 @@ public class Message {
 	 */
 	public SpannableString render(Context context)
 	{
+		Settings settings = new Settings(context);
+		
 		if (canvas == null) {
-			String prefix = hasIcon() ? "  " : "";
+			String prefix = hasIcon() && settings.showIcons() ? "  " : "";
 			canvas = new SpannableString(prefix + text);
-			if (hasIcon()) {
+			
+			if (hasIcon() && settings.showIcons()) {
 				Drawable drawable = context.getResources().getDrawable(icon);
 				drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
 				canvas.setSpan(new ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
-			if (color != -1) {
+			if (color != -1 && settings.showTimestamp()) {
 				canvas.setSpan(new ForegroundColorSpan(color), 0, canvas.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
 		}

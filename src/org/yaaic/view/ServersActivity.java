@@ -207,6 +207,9 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 			case R.id.about:
 				startActivity(new Intent(this, AboutActivity.class));
 				break;
+			case R.id.settings:
+				startActivity(new Intent(this, SettingsActivity.class));
+				break;
 		}
 		
 		return true;

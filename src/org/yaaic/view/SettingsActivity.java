@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+/*
 Yaaic - Yet Another Android IRC Client
 
 Copyright 2009-2010 Sebastian Kaspari
@@ -18,18 +17,29 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
--->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/add"
-        android:title="@string/add_server_menu"
-        android:icon="@android:drawable/ic_menu_add" />
-	<item
-		android:id="@+id/settings"
-		android:title="@string/settings_menu"
-		android:icon="@android:drawable/ic_menu_preferences" />
-	<item
-		android:id="@+id/about"
-		android:title="@string/about_menu"
-		android:icon="@android:drawable/ic_menu_help" />
-</menu>
+*/
+package org.yaaic.view;
+
+import org.yaaic.R;
+
+import android.os.Bundle;
+import android.preference.PreferenceActivity;
+
+/**
+ * Settings
+ * 
+ * @author Sebastian Kaspari <sebastian@yaaic.org>
+ */
+public class SettingsActivity extends PreferenceActivity
+{
+	/**
+	 * On create
+	 */
+	@Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        
+        addPreferencesFromResource(R.xml.preferences);
+    }
+}

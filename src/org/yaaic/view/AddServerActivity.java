@@ -44,6 +44,9 @@ public class AddServerActivity extends Activity implements OnClickListener
 {
 	public static final String TAG = "Yaaic/AddServerActivity";
 	
+	/**
+	 * On create
+	 */
 	@Override
     public void onCreate(Bundle savedInstanceState)
     {

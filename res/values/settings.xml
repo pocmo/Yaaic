@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="key_show_timestamp">show_timestamp</string>
+	<string name="default_show_timestamp">false</string>
+	
+	<string name="key_show_icons">show_icons</string>
+	<string name="default_show_icons">true</string>
+	
+	<string name="key_show_colors">show_colors</string>
+	<string name="default_show_colors">true</string>
+</resources>
