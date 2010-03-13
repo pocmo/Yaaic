@@ -60,6 +60,5 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 	   android:layout_width="fill_parent"
 	   android:layout_height="wrap_content"
 	   android:singleLine="true"
-	   android:inputType="textCapWords"
 	   android:imeOptions="actionSend" />
 </LinearLayout>
