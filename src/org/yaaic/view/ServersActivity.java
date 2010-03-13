@@ -191,7 +191,10 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 		switch (item.getItemId()) {
 			case R.id.add:
 				startActivityForResult(new Intent(this, AddServerActivity.class), 0);
-			break;
+				break;
+			case R.id.about:
+				startActivity(new Intent(this, AboutActivity.class));
+				break;
 		}
 		
 		return true;
