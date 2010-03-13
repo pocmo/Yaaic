@@ -113,6 +113,7 @@ public class Database extends SQLiteOpenHelper
 	 * @param password Password if needed
 	 * @param autoConnect Autoconnect to this server on startup?
 	 * @param useSSL Does the server use SSL?
+	 * @param identityId The id of the identity record
 	 */
 	public long addServer(String title, String host, int port, String password, boolean autoConnect, boolean useSSL, long identityId)
 	{
@@ -127,6 +128,37 @@ public class Database extends SQLiteOpenHelper
 		values.put(ServerConstants.IDENTITY, identityId);
 		
 		return this.getWritableDatabase().insert(ServerConstants.TABLE_NAME, null, values);
+	}
+	
+	/**
+	 * Update the server record in the database
+	 * 
+	 * @param serverId
+	 * @param title Unique title of the server
+	 * @param host Hostname of the server
+	 * @param port Port (default: 3337)
+	 * @param password Password if needed
+	 * @param autoConnect Autoconnect to this server on startup?
+	 * @param useSSL Does the server use SSL?
+	 * @param identityId The identity of the server record
+	 */
+	public void updateServer(int serverId, String title, String host, int port, String password, boolean autoConnect, boolean useSSL, long identityId)
+	{
+		ContentValues values = new ContentValues();
+		
+		values.put(ServerConstants.TITLE, title);
+		values.put(ServerConstants.HOST, host);
+		values.put(ServerConstants.PORT, port);
+		values.put(ServerConstants.PASSWORD, password);
+		values.put(ServerConstants.AUTOCONNECT, autoConnect);
+		values.put(ServerConstants.USE_SSL, useSSL);
+		values.put(ServerConstants.IDENTITY, identityId);
+		
+		this.getWritableDatabase().update(
+			ServerConstants.TABLE_NAME,
+			values, ServerConstants._ID + " = " + serverId,
+			null
+		);
 	}
 	
 	/**
