@@ -258,6 +258,10 @@ public class Server
 	public void clearConversations()
 	{
 		conversations.clear();
+		
+		// reset defaults
+		conversations.put(ServerInfo.DEFAULT_NAME, new ServerInfo());
+		this.selected = ServerInfo.DEFAULT_NAME;
 	}
 	
 	/**
