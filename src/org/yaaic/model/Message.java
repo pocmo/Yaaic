@@ -41,6 +41,7 @@ public class Message {
 	public static final int COLOR_RED    = 0xFFcc0000;
 	public static final int COLOR_BLUE   = 0xFF729fcf;
 	public static final int COLOR_YELLOW = 0xFFbe9b01;
+	public static final int COLOR_GREY   = 0xFFaaaaaa;
 	
 	private int icon = -1;
 	private String text;

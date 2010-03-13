@@ -73,6 +73,11 @@ public class IRCConnection extends PircBot
 		this.setName(nickname);
 	}
 	
+	/**
+	 * Set the real name of the user
+	 * 
+	 * @param realname The realname to use
+	 */
 	public void setRealName(String realname)
 	{
 		// XXX: Pircbot uses the version for "real name" and "version".
@@ -86,7 +91,8 @@ public class IRCConnection extends PircBot
 	 * This is a fix for pircbot as pircbot uses the version as "real name" and as "version"
 	 */
 	@Override
-	protected void onVersion(String sourceNick, String sourceLogin,	String sourceHostname, String target) {
+	protected void onVersion(String sourceNick, String sourceLogin,	String sourceHostname, String target)
+	{
 		this.sendRawLine(
 				"NOTICE " + sourceNick + " :\u0001VERSION " +
 				"Yaaic - Yet another Android IRC client - http://www.yaaic.org" +
@@ -543,6 +549,23 @@ public class IRCConnection extends PircBot
 		service.sendBroadcast(intent);
 	}
 	
+	/**
+	 * On unknown
+	 */
+	@Override
+	protected void onUnknown(String line)
+	{
+		Message message = new Message(line);
+		message.setIcon(R.drawable.action);
+		message.setColor(Message.COLOR_GREY);
+		server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(message);
+		
+		Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
+		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+		intent.putExtra(Broadcast.EXTRA_CONVERSATION, ServerInfo.DEFAULT_NAME);
+		service.sendBroadcast(intent);
+	}
+
 	/**
 	 * On disconnect
 	 */
