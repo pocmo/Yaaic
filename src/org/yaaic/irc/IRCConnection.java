@@ -555,6 +555,12 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onUnknown(String line)
 	{
+		debug("Unknown", line);
+		return;
+		
+		/*
+		// Currently disabled... to much text
+		
 		Message message = new Message(line);
 		message.setIcon(R.drawable.action);
 		message.setColor(Message.COLOR_GREY);
@@ -564,6 +570,28 @@ public class IRCConnection extends PircBot
 		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
 		intent.putExtra(Broadcast.EXTRA_CONVERSATION, ServerInfo.DEFAULT_NAME);
 		service.sendBroadcast(intent);
+		*/
+	}
+
+	/**
+	 * On server response
+	 */
+	@Override
+	protected void onServerResponse(int code, String response)
+	{
+		debug("ServerResponse", code + " " + response);
+		return;
+		
+		/*
+		// Currently disabled... to much text
+		Message message = new Message(response);
+		server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(message);
+		
+		Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
+		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+		intent.putExtra(Broadcast.EXTRA_CONVERSATION, ServerInfo.DEFAULT_NAME);
+		service.sendBroadcast(intent);
+		*/
 	}
 
 	/**
