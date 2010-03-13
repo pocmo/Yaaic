@@ -26,15 +26,28 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+/**
+ * A server receiver for receiving server updates
+ * 
+ * @author Sebastian Kaspari <sebastian@yaaic.org>
+ */
 public class ServerReceiver extends BroadcastReceiver
 {
 	private ServerListener listener;
 	
+	/**
+	 * Create a new server receiver
+	 * 
+	 * @param listener
+	 */
 	public ServerReceiver(ServerListener listener)
 	{
 		this.listener = listener;
 	}
 
+	/**
+	 * On receive broadcast
+	 */
 	@Override
 	public void onReceive(Context context, Intent intent)
 	{

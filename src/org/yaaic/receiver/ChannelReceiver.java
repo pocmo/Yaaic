@@ -27,6 +27,11 @@ import android.content.Intent;
 import org.yaaic.listener.ChannelListener;
 import org.yaaic.model.Broadcast;
 
+/**
+ * A channel receiver for receiving channel updates
+ * 
+ * @author Sebastian Kaspari <sebastian@yaaic.org>
+ */
 public class ChannelReceiver extends BroadcastReceiver
 {
 	public static final String TAG = "Yaaic/ChannelReceiver";
@@ -35,7 +40,7 @@ public class ChannelReceiver extends BroadcastReceiver
 	private int serverId;
 	
 	/**
-	 * Create a new channel reciever
+	 * Create a new channel receiver
 	 *  
 	 * @param serverId Only listen on channels of this server
 	 * @param listener 
@@ -46,6 +51,12 @@ public class ChannelReceiver extends BroadcastReceiver
 		this.serverId = serverId;
 	}
 
+	/**
+	 * On receive broadcast
+	 * 
+	 * @param context
+	 * @param intent
+	 */
 	@Override
 	public void onReceive(Context context, Intent intent)
 	{
