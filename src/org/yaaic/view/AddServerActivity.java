@@ -32,6 +32,7 @@ import android.widget.EditText;
 import org.yaaic.R;
 import org.yaaic.Yaaic;
 import org.yaaic.db.Database;
+import org.yaaic.model.Identity;
 import org.yaaic.model.Server;
 import org.yaaic.model.Status;
 
@@ -93,6 +94,13 @@ public class AddServerActivity extends Activity implements OnClickListener
 				server.setPort(port);
 				server.setTitle(title);
 				server.setStatus(Status.DISCONNECTED);
+				
+				Identity identity = new Identity();
+				identity.setNickname(nickname);
+				identity.setIdent(ident);
+				identity.setRealName(realname);
+				server.setIdentity(identity);
+				
 				Yaaic.getInstance().addServer(server);
 				
 				Log.d(TAG, "Saved server " + title);
