@@ -204,6 +204,7 @@ public class Database extends SQLiteOpenHelper
 			server.setTitle(cursor.getString(cursor.getColumnIndex((ServerConstants.TITLE))));
 			server.setHost(cursor.getString(cursor.getColumnIndex((ServerConstants.HOST))));
 			server.setPort(cursor.getInt(cursor.getColumnIndex((ServerConstants.PORT))));
+			server.setPassword(cursor.getString(cursor.getColumnIndex(ServerConstants.PASSWORD)));
 			server.setId(cursor.getInt(cursor.getColumnIndex((ServerConstants._ID))));
 			server.setStatus(Status.DISCONNECTED);
 			
