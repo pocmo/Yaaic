@@ -27,7 +27,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 			android:title="Show icons"
 			android:summary="Show icons to highlight special events"
 			android:key="@string/key_show_icons"
-			android:defaultValue="" />
+			android:defaultValue="@string/default_show_icons" />
 		<CheckBoxPreference
 			android:title="Show colors"
 			android:summary="Show colors to highlight special events"
@@ -38,5 +38,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 			android:summary="Prefix all messages with a timestamp"
 			android:key="@string/key_show_timestamp"
 			android:defaultValue="@string/default_show_timestamp" />
+		<CheckBoxPreference
+			android:title="24 hour format"
+			android:summary="Use 24 hour format for timestamps"
+			android:key="@string/key_24h_format"
+			android:defaultValue="@string/default_24h_format"
+			android:dependency="@string/key_show_timestamp" />
 	</PreferenceCategory>
 </PreferenceScreen>

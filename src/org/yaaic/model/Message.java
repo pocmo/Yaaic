@@ -20,6 +20,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.model;
 
+import java.util.Date;
+
 import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -112,14 +114,16 @@ public class Message {
 		
 		if (canvas == null) {
 			String prefix = hasIcon() && settings.showIcons() ? "  " : "";
-			canvas = new SpannableString(prefix + text);
+			String timestamp = settings.showTimestamp() ? Message.generateTimestamp(settings.use24hFormat()) : "";
+			
+			canvas = new SpannableString(prefix + timestamp + text);
 			
 			if (hasIcon() && settings.showIcons()) {
 				Drawable drawable = context.getResources().getDrawable(icon);
 				drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
 				canvas.setSpan(new ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
-			if (color != -1 && settings.showTimestamp()) {
+			if (color != -1 && settings.showColors()) {
 				canvas.setSpan(new ForegroundColorSpan(color), 0, canvas.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
 		}
@@ -127,6 +131,12 @@ public class Message {
 		return canvas;
 	}
 	
+	/**
+	 * Render message as text view
+	 * 
+	 * @param context
+	 * @return
+	 */
 	public TextView renderTextView(Context context)
 	{
 		TextView canvas = new TextView(context);
@@ -137,5 +147,24 @@ public class Message {
 		canvas.setTextColor(0xffeeeeee);
 		
 		return canvas;
+	}
+	
+	/**
+	 * Generate a timestamp
+	 * 
+	 * @param use24hFormat
+	 * @return
+	 */
+	public static String generateTimestamp(boolean use24hFormat)
+	{
+		Date date = new Date();
+		
+		int hours = date.getHours();
+		
+		if (!use24hFormat) {
+			hours = Math.abs(24 - hours);
+		}
+		
+		return "[" + hours + ":" + date.getMinutes() + "] ";
 	}
 }

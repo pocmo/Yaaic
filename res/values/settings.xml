@@ -8,4 +8,7 @@
 	
 	<string name="key_show_colors">show_colors</string>
 	<string name="default_show_colors">true</string>
+	
+	<string name="key_24h_format">24h_format</string>
+	<string name="default_24h_format">true</string>
 </resources>

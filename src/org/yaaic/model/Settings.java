@@ -93,4 +93,17 @@ public class Settings
 			Boolean.parseBoolean(resources.getString(R.string.default_show_colors))
 		);
 	}
+	
+	/**
+	 * Use 24 hour format for timestamps?
+	 * 
+	 * @return
+	 */
+	public boolean use24hFormat()
+	{
+		return preferences.getBoolean(
+			resources.getString(R.string.key_24h_format),
+			Boolean.parseBoolean(resources.getString(R.string.default_24h_format))
+		);
+	}
 }
