@@ -175,6 +175,10 @@ public class Database extends SQLiteOpenHelper
 			server.setId(cursor.getInt(cursor.getColumnIndex((ServerConstants._ID))));
 			server.setStatus(Status.DISCONNECTED);
 			
+			// Load identity for server
+			Identity identity = this.getIdentityById(cursor.getInt(cursor.getColumnIndex(ServerConstants.IDENTITY)));
+			server.setIdentity(identity);
+			
 			servers.put(server.getId(), server);
 		}
 		cursor.close();
