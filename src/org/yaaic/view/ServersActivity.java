@@ -170,6 +170,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 						binder.getService().getConnection(server.getId()).quitServer();
 			        	break;
 			        case 2: // Delete
+			        	binder.getService().getConnection(server.getId()).quitServer();
 		        		deleteServer(server.getId());
 			        	break;
 		        }
