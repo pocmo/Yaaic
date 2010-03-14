@@ -20,6 +20,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.command;
 
+import org.yaaic.exception.CommandException;
 import org.yaaic.irc.IRCService;
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Server;

@@ -38,6 +38,7 @@ import org.yaaic.command.handler.QueryHandler;
 import org.yaaic.command.handler.QuitHandler;
 import org.yaaic.command.handler.TopicHandler;
 import org.yaaic.command.handler.VoiceHandler;
+import org.yaaic.exception.CommandException;
 import org.yaaic.irc.IRCService;
 import org.yaaic.model.Broadcast;
 import org.yaaic.model.Conversation;

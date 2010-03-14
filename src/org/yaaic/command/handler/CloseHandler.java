@@ -21,7 +21,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 package org.yaaic.command.handler;
 
 import org.yaaic.command.BaseHandler;
-import org.yaaic.command.CommandException;
+import org.yaaic.exception.CommandException;
 import org.yaaic.irc.IRCService;
 import org.yaaic.model.Broadcast;
 import org.yaaic.model.Conversation;
