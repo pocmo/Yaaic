@@ -94,9 +94,9 @@ public class IRCBinder extends Binder
 					if (e instanceof NickAlreadyInUseException) {
 						message = new Message("Nickname " + connection.getNick() + " already in use");
 					} else if (e instanceof IrcException) {
-						message = new Message("Could not log into the IRC server " + server.getHost());
+						message = new Message("Could not log into the IRC server " + server.getHost() + ":" + server.getPort());
 					} else {
-						message = new Message("Could not connect to IRC server (" + e.getMessage() + ")");
+						message = new Message("Could not connect to " + server.getHost() + ":" + server.getPort());
 					}
 					
 					message.setColor(Message.COLOR_RED);
