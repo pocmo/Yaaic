@@ -487,6 +487,22 @@ public class IRCConnection extends PircBot
 				intent.putExtra(Broadcast.EXTRA_CONVERSATION, target);
 				service.sendBroadcast(intent);
 			}
+			
+			// Look if there's a query to update
+			Conversation conversation = server.getConversation(sourceNick);
+			
+			if (conversation != null) {
+				Message message = new Message(sourceNick + " quitted (" + reason + ")");
+				message.setColor(Message.COLOR_GREEN);
+				message.setIcon(R.drawable.quit);
+				conversation.addMessage(message);
+				
+				Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
+				intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+				intent.putExtra(Broadcast.EXTRA_CONVERSATION, conversation.getName());
+				service.sendBroadcast(intent);
+			}
+			
 		} else {
 			// XXX: We quitted
 		}
