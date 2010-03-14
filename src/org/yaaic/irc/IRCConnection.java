@@ -617,7 +617,19 @@ public class IRCConnection extends PircBot
 	public void onDisconnect()
 	{
 		server.setStatus(Status.DISCONNECTED);
-		service.sendBroadcast(new Intent(Broadcast.SERVER_UPDATE));
+		Intent sIntent = new Intent(Broadcast.SERVER_UPDATE);
+		sIntent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+		service.sendBroadcast(sIntent);		
+		
+		Message message = new Message("Disconnected");
+		message.setIcon(R.drawable.error);
+		message.setColor(Message.COLOR_RED);
+		server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(message);
+		
+		Intent cIntent = new Intent(Broadcast.CONVERSATION_MESSAGE);
+		cIntent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+		cIntent.putExtra(Broadcast.EXTRA_CONVERSATION, ServerInfo.DEFAULT_NAME);
+		service.sendBroadcast(cIntent);
 	}
 
 	/**
