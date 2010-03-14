@@ -192,7 +192,7 @@ public class IRCConnection extends PircBot
 	{
 		debug("Deop", target + " " + recipient + "(" + sourceNick + ")");
 		
-		Message message = new Message(sourceNick + " deoped " + recipient);
+		Message message = new Message(sourceNick + " deopped " + recipient);
 		message.setIcon(R.drawable.op);
 		message.setColor(Message.COLOR_BLUE);
 		server.getConversation(target).addMessage(message);
@@ -392,7 +392,7 @@ public class IRCConnection extends PircBot
 	{
 		debug("Op", target + " " + recipient + "(" + sourceNick + ")");
 		
-		Message message = new Message(sourceNick + " oped " + recipient);
+		Message message = new Message(sourceNick + " opped " + recipient);
 		message.setColor(Message.COLOR_BLUE);
 		message.setIcon(R.drawable.op);
 		server.getConversation(target).addMessage(message);
