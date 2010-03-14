@@ -96,11 +96,12 @@ public class IRCBinder extends Binder
 					} else if (e instanceof IrcException) {
 						message = new Message("Could not log into the IRC server " + server.getHost());
 					} else {
-						message = new Message("Could not connect to IRC server " + server.getHost());
+						message = new Message("Could not connect to IRC server (" + e.getMessage() + ")");
 					}
 					
 					message.setColor(Message.COLOR_RED);
 					message.setIcon(R.drawable.error);
+					server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(message);
 					
 					Intent cIntent = new Intent(Broadcast.CONVERSATION_MESSAGE);
 					cIntent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
