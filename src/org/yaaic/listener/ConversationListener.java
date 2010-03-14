@@ -20,7 +20,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.listener;
 
-public interface ChannelListener
+public interface ConversationListener
 {
 	public void onConversationMessage(String target);
 	public void onNewConversation(String target);
