@@ -60,7 +60,10 @@ public class IRCConnection extends PircBot
 		this.server = Yaaic.getInstance().getServerById(serverId);
 		this.service = service;
 		
+		// XXX: Should be configurable via settings
 		this.setAutoNickChange(true);
+		
+		this.setFinger("http://www.youtube.com/watch?v=oHg5SJYRHA0");
 	}
 	
 	/**
