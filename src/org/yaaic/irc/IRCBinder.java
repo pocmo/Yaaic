@@ -20,12 +20,16 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.irc;
 
-import java.io.IOException;
-
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.NickAlreadyInUseException;
+import org.yaaic.R;
+import org.yaaic.model.Broadcast;
+import org.yaaic.model.Message;
 import org.yaaic.model.Server;
+import org.yaaic.model.ServerInfo;
+import org.yaaic.model.Status;
 
+import android.content.Intent;
 import android.os.Binder;
 import android.util.Log;
 
@@ -74,14 +78,34 @@ public class IRCBinder extends Binder
 						connection.connect(server.getHost(), server.getPort());
 					}
 				}
-				catch (NickAlreadyInUseException e) {
-					Log.d(TAG, "NickAlreadyInUseException: " + e.getMessage());
-				}
-				catch (IrcException e) {
-					Log.d(TAG, "IrcException: " + e.getMessage());
-				}
-				catch (IOException e) {
-					Log.d(TAG, "IOException: " + e.getMessage());
+				catch (Exception e) {
+					Log.d(TAG, "Exception: " + e.getMessage());
+					
+					
+					server.setStatus(Status.DISCONNECTED);
+					Intent sIntent = new Intent(Broadcast.SERVER_UPDATE);
+					sIntent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+					service.sendBroadcast(sIntent);
+					
+					IRCConnection connection = getService().getConnection(server.getId());
+					
+					Message message;
+					
+					if (e instanceof NickAlreadyInUseException) {
+						message = new Message("Nickname " + connection.getNick() + " already in use");
+					} else if (e instanceof IrcException) {
+						message = new Message("Could not log into the IRC server " + server.getHost());
+					} else {
+						message = new Message("Could not connect to IRC server " + server.getHost());
+					}
+					
+					message.setColor(Message.COLOR_RED);
+					message.setIcon(R.drawable.error);
+					
+					Intent cIntent = new Intent(Broadcast.CONVERSATION_MESSAGE);
+					cIntent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+					cIntent.putExtra(Broadcast.EXTRA_CONVERSATION, ServerInfo.DEFAULT_NAME);
+					service.sendBroadcast(cIntent);
 				}
 			}
 		}.start();
