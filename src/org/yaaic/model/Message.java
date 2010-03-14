@@ -161,11 +161,12 @@ public class Message {
 		Date date = new Date();
 		
 		int hours = date.getHours();
-		
+		int minutes = date.getMinutes();
+
 		if (!use24hFormat) {
 			hours = Math.abs(24 - hours);
 		}
 		
-		return "[" + hours + ":" + date.getMinutes() + "] ";
+		return "[" + (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + "] ";
 	}
 }
