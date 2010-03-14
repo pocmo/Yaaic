@@ -167,7 +167,7 @@ public class AddServerActivity extends Activity implements OnClickListener
 	{
 		String nickname = ((EditText) findViewById(R.id.nickname)).getText().toString();
 		String ident = ((EditText) findViewById(R.id.ident)).getText().toString();
-		//String realname = ((EditText) findViewById(R.id.realname)).getText().toString();
+		String realname = ((EditText) findViewById(R.id.realname)).getText().toString();
 		
 		if (nickname.trim().equals("")) {
 			throw new ValidationException("Nickname cannot be blank");
@@ -175,6 +175,10 @@ public class AddServerActivity extends Activity implements OnClickListener
 		
 		if (ident.trim().equals("")) {
 			throw new ValidationException("Ident cannot be blank");
+		}
+		
+		if (realname.trim().equals("")) {
+			throw new ValidationException("Realname cannot be blank");
 		}
 		
 		// RFC 1459:  <nick> ::= <letter> { <letter> | <number> | <special> }
