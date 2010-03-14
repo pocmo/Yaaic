@@ -25,7 +25,7 @@ package org.yaaic.model;
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class Broadcast
+public abstract class Broadcast
 {
 	public static final String SERVER_UPDATE 		= "org.yaaic.server.status";
 	
@@ -35,4 +35,15 @@ public class Broadcast
 
 	public static final String EXTRA_SERVER			= "server";
 	public static final String EXTRA_CONVERSATION	= "conversation";
+	
+	/**
+	 * Create an intent for conversation broadcasting
+	 * @param serverId
+	 * @param conversationName
+	 * @return
+	 */
+	public static Intent createConversationIntent(int serverId, String conversationName)
+	{
+		
+	}
 }

@@ -24,7 +24,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import org.yaaic.listener.ChannelListener;
+import org.yaaic.listener.ConversationListener;
 import org.yaaic.model.Broadcast;
 
 /**
@@ -32,11 +32,11 @@ import org.yaaic.model.Broadcast;
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class ChannelReceiver extends BroadcastReceiver
+public class ConversationReceiver extends BroadcastReceiver
 {
 	public static final String TAG = "Yaaic/ChannelReceiver";
 	
-	private ChannelListener listener;
+	private ConversationListener listener;
 	private int serverId;
 	
 	/**
@@ -45,7 +45,7 @@ public class ChannelReceiver extends BroadcastReceiver
 	 * @param serverId Only listen on channels of this server
 	 * @param listener 
 	 */
-	public ChannelReceiver(int serverId, ChannelListener listener)
+	public ConversationReceiver(int serverId, ConversationListener listener)
 	{
 		this.listener = listener;
 		this.serverId = serverId;

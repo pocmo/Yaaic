@@ -54,13 +54,13 @@ import org.yaaic.adapter.MessageListAdapter;
 import org.yaaic.command.CommandParser;
 import org.yaaic.irc.IRCBinder;
 import org.yaaic.irc.IRCService;
-import org.yaaic.listener.ChannelListener;
+import org.yaaic.listener.ConversationListener;
 import org.yaaic.listener.ServerListener;
 import org.yaaic.model.Broadcast;
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Message;
 import org.yaaic.model.Server;
-import org.yaaic.receiver.ChannelReceiver;
+import org.yaaic.receiver.ConversationReceiver;
 import org.yaaic.receiver.ServerReceiver;
 
 /**
@@ -68,14 +68,14 @@ import org.yaaic.receiver.ServerReceiver;
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class ConversationActivity extends Activity implements ServiceConnection, ServerListener, ChannelListener, OnItemClickListener, OnKeyListener, OnItemSelectedListener
+public class ConversationActivity extends Activity implements ServiceConnection, ServerListener, ConversationListener, OnItemClickListener, OnKeyListener, OnItemSelectedListener
 {
 	public static final String TAG = "Yaaic/ConversationActivity";
 	
 	private int serverId;
 	private Server server;
 	private IRCBinder binder;
-	private ChannelReceiver channelReceiver;
+	private ConversationReceiver channelReceiver;
 	private ServerReceiver serverReceiver;
 	
 	private ViewSwitcher switcher;
@@ -125,7 +125,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         Intent intent = new Intent(this, IRCService.class);
         bindService(intent, this, 0);
         
-    	channelReceiver = new ChannelReceiver(server.getId(), this);
+    	channelReceiver = new ConversationReceiver(server.getId(), this);
     	registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_MESSAGE));
     	registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_NEW));
     	registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_REMOVE));
