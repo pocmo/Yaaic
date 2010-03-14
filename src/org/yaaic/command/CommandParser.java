@@ -23,6 +23,7 @@ package org.yaaic.command;
 import java.util.HashMap;
 
 import org.yaaic.command.handler.CloseHandler;
+import org.yaaic.command.handler.DCCHandler;
 import org.yaaic.command.handler.DeopHandler;
 import org.yaaic.command.handler.DevoiceHandler;
 import org.yaaic.command.handler.EchoHandler;
@@ -83,6 +84,7 @@ public class CommandParser
 		commands.put("part", new PartHandler());
 		commands.put("close", new CloseHandler());
 		commands.put("notice", new NoticeHandler());
+		commands.put("dcc", new DCCHandler());
 		
 		// Aliases
 		commands.put("j", commands.get("join"));
