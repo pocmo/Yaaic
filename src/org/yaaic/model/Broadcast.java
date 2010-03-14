@@ -20,6 +20,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.model;
 
+import android.content.Intent;
+
 /**
  * Constants and helpers for Broadcasts
  * 
@@ -38,12 +40,19 @@ public abstract class Broadcast
 	
 	/**
 	 * Create an intent for conversation broadcasting
-	 * @param serverId
-	 * @param conversationName
+	 * 
+	 * @param broadcastType The type of the broadcast, some constant of Broadcast.*
+	 * @param serverId The id of the server
+	 * @param conversationName The unique name of the conversation
 	 * @return
 	 */
-	public static Intent createConversationIntent(int serverId, String conversationName)
+	public static Intent createConversationIntent(String broadcastType, int serverId, String conversationName)
 	{
+		Intent intent = new Intent(broadcastType);
 		
+		intent.putExtra(Broadcast.EXTRA_SERVER, serverId);
+		intent.putExtra(Broadcast.EXTRA_CONVERSATION, conversationName);
+		
+		return intent;
 	}
 }
