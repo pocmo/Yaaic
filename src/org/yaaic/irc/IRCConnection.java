@@ -593,7 +593,41 @@ public class IRCConnection extends PircBot
 	{
 		debug("onSetChannelKey", target + " " + sourceNick + " " + key);
 		
-		Message message = new Message(sourceNick + " set channel key: " + key);
+		Message message = new Message(sourceNick + " sets channel key: " + key);
+		message.setColor(Message.COLOR_BLUE);
+		server.getConversation(target).addMessage(message);
+		
+		service.sendBroadcast(
+			Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
+		);
+	}
+	
+	/**
+	 * On set secret
+	 */
+	@Override
+	protected void onSetSecret(String target, String sourceNick, String sourceLogin, String sourceHostname)
+	{
+		debug("onSetSecret", sourceNick + " " + target);
+		
+		Message message = new Message(sourceNick + " sets channel secret");
+		message.setColor(Message.COLOR_BLUE);
+		server.getConversation(target).addMessage(message);
+		
+		service.sendBroadcast(
+			Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
+		);
+	}
+	
+	/**
+	 * On remove secret
+	 */
+	@Override
+	protected void onRemoveSecret(String target, String sourceNick, String sourceLogin, String sourceHostname)
+	{
+		debug("onRemoveSecret", sourceNick + " " + target);
+		
+		Message message = new Message(sourceNick + " sets channel public");
 		message.setColor(Message.COLOR_BLUE);
 		server.getConversation(target).addMessage(message);
 		
