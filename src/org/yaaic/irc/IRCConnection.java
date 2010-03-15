@@ -635,6 +635,40 @@ public class IRCConnection extends PircBot
 			Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
 		);
 	}
+	
+	/**
+	 * On set channel limit
+	 */
+	@Override
+	protected void onSetChannelLimit(String target, String sourceNick, String sourceLogin, String sourceHostname, int limit)
+	{
+		debug("onSetChannelLimit", sourceNick + " " + target);
+		
+		Message message = new Message(sourceNick + " sets limit: " + limit);
+		message.setColor(Message.COLOR_BLUE);
+		server.getConversation(target).addMessage(message);
+		
+		service.sendBroadcast(
+			Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
+		);
+	}
+	
+	/**
+	 * On remove channel limit
+	 */
+	@Override
+	protected void onRemoveChannelLimit(String target, String sourceNick, String sourceLogin, String sourceHostname)
+	{
+		debug("onRemoveChannelLimit", sourceNick + " " + target);
+		
+		Message message = new Message(sourceNick + " removes limit");
+		message.setColor(Message.COLOR_BLUE);
+		server.getConversation(target).addMessage(message);
+		
+		service.sendBroadcast(
+			Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
+		);
+	}
 
 	/**
 	 * On unknown
