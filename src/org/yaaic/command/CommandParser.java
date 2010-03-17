@@ -30,6 +30,7 @@ import org.yaaic.command.handler.EchoHandler;
 import org.yaaic.command.handler.JoinHandler;
 import org.yaaic.command.handler.KickHandler;
 import org.yaaic.command.handler.MeHandler;
+import org.yaaic.command.handler.ModeHandler;
 import org.yaaic.command.handler.NamesHandler;
 import org.yaaic.command.handler.NickHandler;
 import org.yaaic.command.handler.NoticeHandler;
@@ -85,6 +86,7 @@ public class CommandParser
 		commands.put("close", new CloseHandler());
 		commands.put("notice", new NoticeHandler());
 		commands.put("dcc", new DCCHandler());
+		commands.put("mode", new ModeHandler());
 		
 		// Aliases
 		commands.put("j", commands.get("join"));
