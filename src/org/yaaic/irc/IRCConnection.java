@@ -40,14 +40,20 @@ import org.yaaic.model.Server;
 import org.yaaic.model.ServerInfo;
 import org.yaaic.model.Status;
 
+/**
+ * The class that actually handles the connection to an IRC server
+ * 
+ * @author Sebastian Kaspari <sebastian@yaaic.org>
+ */
 public class IRCConnection extends PircBot
 {
+	public static final String TAG = "Yaaic/IRCConnection";
+	
 	private IRCService service;
 	private Server server;
 	
 	// XXX: Print all IRC events to the debug console
-	private static final boolean DEBUG_EVENTS = true;
-	public static final String TAG = "Yaaic/IRCConnection";
+	private static final boolean DEBUG_EVENTS = false;
 	
 	/**
 	 * Create a new connection
