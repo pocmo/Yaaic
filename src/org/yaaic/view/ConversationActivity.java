@@ -54,6 +54,7 @@ import org.yaaic.adapter.MessageListAdapter;
 import org.yaaic.command.CommandParser;
 import org.yaaic.irc.IRCBinder;
 import org.yaaic.irc.IRCService;
+import org.yaaic.layout.NonScalingBackgroundDrawable;
 import org.yaaic.listener.ConversationListener;
 import org.yaaic.listener.ServerListener;
 import org.yaaic.model.Broadcast;
@@ -100,12 +101,13 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		((ImageView) findViewById(R.id.status)).setImageResource(server.getStatusIcon());
 		
 		((EditText) findViewById(R.id.input)).setOnKeyListener(this);
-		
+
+        deckAdapter = new DeckAdapter();
 		deck = (Gallery) findViewById(R.id.deck);
 		deck.setOnItemSelectedListener(this);
-        deckAdapter = new DeckAdapter();
 		deck.setAdapter(deckAdapter);
 		deck.setOnItemClickListener(this);
+		deck.setBackgroundDrawable(new NonScalingBackgroundDrawable(this, deck, R.drawable.icon));
 
 		switcher = (ViewSwitcher) findViewById(R.id.switcher);
 		
