@@ -44,6 +44,7 @@ import org.yaaic.adapter.ServerListAdapter;
 import org.yaaic.db.Database;
 import org.yaaic.irc.IRCBinder;
 import org.yaaic.irc.IRCService;
+import org.yaaic.layout.NonScalingBackgroundDrawable;
 import org.yaaic.listener.ServerListener;
 import org.yaaic.model.Broadcast;
 import org.yaaic.model.Server;
@@ -75,6 +76,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
         setListAdapter(adapter);
         
         getListView().setOnItemLongClickListener(this);
+        getListView().setBackgroundDrawable(new NonScalingBackgroundDrawable(this, getListView(), R.drawable.icon));
     }
 
     /**
