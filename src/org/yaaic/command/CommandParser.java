@@ -151,15 +151,22 @@ public class CommandParser
 			}
 		} else {
 			// Unknown command
-			if (conversation != null) {
-				Message message = new Message("Unknown command: " + type);
-				message.setColor(Message.COLOR_RED);
-				conversation.addMessage(message);
-				
-				Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-				intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-				intent.putExtra(Broadcast.EXTRA_CONVERSATION, conversation.getName());
-				service.sendBroadcast(intent);
+			if (params.length > 1) {
+				// Send command to server
+				service.getConnection(server.getId()).sendRawLineViaQueue(
+					params[0].toUpperCase() + " " + BaseHandler.mergeParams(params)
+				);
+			} else {
+				if (conversation != null) {
+					Message message = new Message("Unknown command: " + type);
+					message.setColor(Message.COLOR_RED);
+					conversation.addMessage(message);
+					
+					Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
+					intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+					intent.putExtra(Broadcast.EXTRA_CONVERSATION, conversation.getName());
+					service.sendBroadcast(intent);
+				}
 			}
 		}
 	}
