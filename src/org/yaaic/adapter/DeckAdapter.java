@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.yaaic.R;
 import org.yaaic.model.Conversation;
 import org.yaaic.view.MessageListView;
 
@@ -200,7 +201,7 @@ public class DeckAdapter extends BaseAdapter
 			parent.getWidth() / 100 * 85,
 			parent.getHeight() / 100 * 95
 		));
-		list.setBackgroundColor(0xff222222);
+		list.setBackgroundResource(R.layout.rounded);
 		list.setPadding(5, 5, 5, 5);
 		list.setVerticalFadingEdgeEnabled(false);
 		list.setScrollBarStyle(ListView.SCROLLBARS_OUTSIDE_INSET);
