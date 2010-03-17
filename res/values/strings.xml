@@ -37,4 +37,6 @@
 	</string>
 	
 	<string name="settings_label">Settings</string>
+	
+	<string name="join_label">Join channel</string>
 </resources>

@@ -21,7 +21,6 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 package org.yaaic.view;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -34,10 +33,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.ImageView;
@@ -198,20 +195,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 				finish();
 				break;
 			case R.id.join:
-				final Dialog dialog = new Dialog(this);
-				dialog.setContentView(R.layout.channeldialog);
-				dialog.setTitle(R.string.channel);
-
-				Button button = (Button) dialog.findViewById(R.id.join);
-				button.setOnClickListener(new OnClickListener() {
-					public void onClick(View v) {
-						String channel = ((EditText) v.getRootView().findViewById(R.id.channel)).getText().toString();
-						binder.getService().getConnection(serverId).joinChannel(channel);
-						dialog.cancel();
-					}
-				});
-				
-				dialog.show();
+				startActivityForResult(new Intent(this, JoinActivity.class), 0);
 				break;
 		}
 		
@@ -379,6 +363,20 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * On activity result
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		if (resultCode == RESULT_OK) {
+			// currently there's only the "join channel" activity
+			binder.getService().getConnection(serverId).joinChannel(
+				data.getExtras().getString("channel")
+			);
+		}
 	}
 
 	/**

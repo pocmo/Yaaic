@@ -48,6 +48,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:name=".view.SettingsActivity"
             android:label="@string/settings_label">
         </activity>
+        <activity
+            android:name=".view.JoinActivity"
+            android:label="@string/join_label"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
         <service android:name=".irc.IRCService"></service>
     </application>
     
