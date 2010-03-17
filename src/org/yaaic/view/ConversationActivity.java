@@ -232,33 +232,15 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	public void onConversationMessage(String target)
 	{
 		Conversation conversation = server.getConversation(target);
+		MessageListAdapter adapter = conversation.getMessageListAdapter();
 		
 		while(conversation.hasBufferedMessages()) {
-			// XXX: I wrote all this beautiful code but the view sometimes has
-			//      not all children like the adapter so getChildAt() will return
-			//      no child view or not the view that is logical connected to
-			//      the item in the adapter at the same position. So we just
-			//      notify the whole deck adapter (as fallback).
-			
 			Message message = conversation.pollBufferedMessage();
 			
-			int position = deckAdapter.getPositionByName(target);
-			
-			if (position != -1) {
-				MessageListView view = (MessageListView) deck.getChildAt(position);
-				if (view != null) {
-					MessageListAdapter adapter = view.getAdapter();
-					adapter.addMessage(message);
-				} else {
-					Log.d(TAG, "MessageListView Adapter is null (position: " + position + ")");
-					// Fallback: We could not get the MessageListAdapter. Notify the whole deck
-					deckAdapter.notifyDataSetChanged();
-				}
-			}
-			
-			if (deckAdapter.isSwitched() && target.equals(deckAdapter.getSwitchedName())) {
-				MessageListView switchedView = deckAdapter.getSwitchedView();
-				switchedView.getAdapter().addMessage(message);
+			if (adapter != null) {
+				adapter.addMessage(message);
+			} else {
+				Log.d(TAG, "MessageListAdapter is null (conversation " + conversation.getName() + " has no adapter assigned)");
 			}
 		}
 	}

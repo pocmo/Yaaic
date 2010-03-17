@@ -24,6 +24,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.yaaic.adapter.MessageListAdapter;
+
 /**
  * Base class for conversations
  * 
@@ -44,6 +46,7 @@ public abstract class Conversation
 	private List<Message> buffer;
 	private List<Message> history;
 	private String name;
+	private MessageListAdapter adapter;
 	
 	/**
 	 * Get the type of conversation (channel, query, ..)
@@ -130,5 +133,21 @@ public abstract class Conversation
 	public void clearBuffer()
 	{
 		buffer.clear();
+	}
+	
+	/**
+	 * Store the adapter of this conversation
+	 */
+	public void setMessageListAdapter(MessageListAdapter adapter)
+	{
+		this.adapter = adapter;
+	}
+	
+	/**
+	 * Get the MessageList Adapter of this conversation if known
+	 */
+	public MessageListAdapter getMessageListAdapter()
+	{
+		return adapter;
 	}
 }

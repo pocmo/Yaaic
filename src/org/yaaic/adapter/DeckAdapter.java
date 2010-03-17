@@ -186,7 +186,14 @@ public class DeckAdapter extends BaseAdapter
 	public MessageListView renderConversation(Conversation conversation, ViewGroup parent)
 	{
 		MessageListView list = new MessageListView(parent.getContext());
-		list.setAdapter(new MessageListAdapter(conversation, parent.getContext()));
+		
+		MessageListAdapter adapter = conversation.getMessageListAdapter();
+		if (adapter == null) {
+			adapter = new MessageListAdapter(conversation, parent.getContext());
+			conversation.setMessageListAdapter(adapter);
+		}
+		
+		list.setAdapter(adapter);
 		
 		list.setDivider(null);
 		list.setLayoutParams(new Gallery.LayoutParams(
