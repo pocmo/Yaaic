@@ -22,9 +22,12 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 <shape
 	xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
+	<solid
+		android:color="#ee000000" />
    	<corners
    		android:bottomRightRadius="10dp"
    		android:bottomLeftRadius="10dp"
    		android:topLeftRadius="10dp"
    		android:topRightRadius="10dp" />
+		
 </shape>
