@@ -683,10 +683,6 @@ public class IRCConnection extends PircBot
 	protected void onUnknown(String line)
 	{
 		debug("Unknown", line);
-		return;
-		
-		/*
-		// Currently disabled... to much text
 		
 		Message message = new Message(line);
 		message.setIcon(R.drawable.action);
@@ -697,7 +693,6 @@ public class IRCConnection extends PircBot
 		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
 		intent.putExtra(Broadcast.EXTRA_CONVERSATION, ServerInfo.DEFAULT_NAME);
 		service.sendBroadcast(intent);
-		*/
 	}
 
 	/**
@@ -707,8 +702,7 @@ public class IRCConnection extends PircBot
 	protected void onServerResponse(int code, String response)
 	{
 		debug("ServerResponse", code + " " + response);
-		return;
-		
+
 		/*
 		// Currently disabled... to much text
 		Message message = new Message(response);
