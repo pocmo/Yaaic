@@ -845,6 +845,40 @@ public class IRCConnection extends PircBot
 			Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
 		);
 	}
+	
+	/**
+	 * On set private
+	 */
+	@Override
+	protected void onSetPrivate(String target, String sourceNick, String sourceLogin, String sourceHostname)
+	{
+		debug("onSetPrivate", sourceNick + " " + target);
+		
+		Message message = new Message(sourceNick + " sets private");
+		message.setColor(Message.COLOR_BLUE);
+		server.getConversation(target).addMessage(message);
+		
+		service.sendBroadcast(
+			Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
+		);
+	}
+	
+	/**
+	 * On remove private
+	 */
+	@Override
+	protected void onRemovePrivate(String target, String sourceNick, String sourceLogin, String sourceHostname)
+	{
+		debug("onRemovePrivate", sourceNick + " " + target);
+		
+		Message message = new Message(sourceNick + " removes private");
+		message.setColor(Message.COLOR_BLUE);
+		server.getConversation(target).addMessage(message);
+		
+		service.sendBroadcast(
+			Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
+		);
+	}
 
 	/**
 	 * On unknown
