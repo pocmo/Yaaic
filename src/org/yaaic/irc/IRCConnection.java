@@ -239,13 +239,25 @@ public class IRCConnection extends PircBot
 	{
 		debug("Invite", target + " " + targetNick + "(" + sourceNick + ")");
 		
-		Message message = new Message(sourceNick + " invited " + targetNick);
-		server.getConversation(target).addMessage(message);
-		
-		Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-		intent.putExtra(Broadcast.EXTRA_CONVERSATION, target);
-		service.sendBroadcast(intent);
+		if (targetNick.equals(this.getNick())) {
+			// We are invited
+			Message message = new Message(sourceNick + " invites you into " + target);
+			server.getConversation(server.getSelectedConversation()).addMessage(message);
+			
+			Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
+			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+			intent.putExtra(Broadcast.EXTRA_CONVERSATION, server.getSelectedConversation());
+			service.sendBroadcast(intent);
+		} else {
+			// Someone is invited
+			Message message = new Message(sourceNick + " invites " + targetNick + " into " + target);
+			server.getConversation(target).addMessage(message);
+			
+			Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
+			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+			intent.putExtra(Broadcast.EXTRA_CONVERSATION, target);
+			service.sendBroadcast(intent);
+		}
 	}
 
 	/**
