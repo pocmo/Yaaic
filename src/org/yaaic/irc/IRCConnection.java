@@ -677,6 +677,40 @@ public class IRCConnection extends PircBot
 	}
 
 	/**
+	 * On set channel ban
+	 */
+	@Override
+	protected void onSetChannelBan(String target, String sourceNick, String sourceLogin, String sourceHostname, String hostmask)
+	{
+		debug("onSetChannelBan", sourceNick + " " + target);
+		
+		Message message = new Message(sourceNick + " sets ban: " + hostmask);
+		message.setColor(Message.COLOR_BLUE);
+		server.getConversation(target).addMessage(message);
+		
+		service.sendBroadcast(
+			Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
+		);
+	}
+	
+	/**
+	 * On remove channel ban
+	 */
+	@Override
+	protected void onRemoveChannelBan(String target, String sourceNick, String sourceLogin, String sourceHostname, String hostmask)
+	{
+		debug("onRemoveChannelBan", sourceNick + " " + target);
+		
+		Message message = new Message(sourceNick + " removes ban: " + hostmask);
+		message.setColor(Message.COLOR_BLUE);
+		server.getConversation(target).addMessage(message);
+		
+		service.sendBroadcast(
+			Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
+		);
+	}
+
+	/**
 	 * On unknown
 	 */
 	@Override
