@@ -136,6 +136,13 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		if (!server.isConnected()) {
 			 ((EditText) findViewById(R.id.input)).setEnabled(false);
 		}
+		
+		// Fill view with messages that have been buffered while paused
+		for (Conversation conversation : server.getConversations()) {
+			while (conversation.hasBufferedMessages()) {
+				conversation.getMessageListAdapter().addMessage(conversation.pollBufferedMessage());
+			}
+		}
 	}
 	
 	/**
