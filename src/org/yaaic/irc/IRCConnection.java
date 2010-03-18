@@ -813,6 +813,40 @@ public class IRCConnection extends PircBot
 	}
 
 	/**
+	 * On set moderated
+	 */
+	@Override
+	protected void onSetModerated(String target, String sourceNick, String sourceLogin, String sourceHostname)
+	{
+		debug("onSetModerated", sourceNick + " " + target);
+		
+		Message message = new Message(sourceNick + " sets moderated");
+		message.setColor(Message.COLOR_BLUE);
+		server.getConversation(target).addMessage(message);
+		
+		service.sendBroadcast(
+			Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
+		);
+	}
+	
+	/**
+	 * On remove moderated
+	 */
+	@Override
+	protected void onRemoveModerated(String target, String sourceNick, String sourceLogin, String sourceHostname)
+	{
+		debug("onRemoveModerated", sourceNick + " " + target);
+		
+		Message message = new Message(sourceNick + " removes moderated");
+		message.setColor(Message.COLOR_BLUE);
+		server.getConversation(target).addMessage(message);
+		
+		service.sendBroadcast(
+			Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
+		);
+	}
+
+	/**
 	 * On unknown
 	 */
 	@Override
