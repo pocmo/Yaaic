@@ -205,7 +205,7 @@ public class DeckAdapter extends BaseAdapter
 		list.setPadding(5, 5, 5, 5);
 		list.setVerticalFadingEdgeEnabled(false);
 		list.setScrollBarStyle(ListView.SCROLLBARS_OUTSIDE_INSET);
-		list.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
+		list.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
 		list.setSelection(list.getAdapter().getCount() - 1); // scroll to bottom
 		
 		return list;

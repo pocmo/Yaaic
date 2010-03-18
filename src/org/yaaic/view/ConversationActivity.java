@@ -38,6 +38,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 import android.widget.AdapterView.OnItemClickListener;
@@ -279,6 +280,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		Conversation conversation = deckAdapter.getItem(position);
 		
 		MessageListView canvas = deckAdapter.renderConversation(conversation, switcher);
+		canvas.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
 		canvas.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 		canvas.setDelegateTouchEvents(false); // Do not delegate
 		
