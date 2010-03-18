@@ -47,6 +47,7 @@ public class Message {
 	private String text;
 	private SpannableString canvas;
 	private int color = -1;
+	private long timestamp;
 	
 	/**
 	 * Create a new message without an icon
@@ -56,6 +57,7 @@ public class Message {
 	public Message(String text)
 	{
 		this.text = text;
+		this.timestamp = new Date().getTime();
 	}
 	
 	/**
@@ -115,7 +117,7 @@ public class Message {
 		
 		if (canvas == null) {
 			String prefix = hasIcon() && settings.showIcons() ? "  " : "";
-			String timestamp = settings.showTimestamp() ? Message.generateTimestamp(settings.use24hFormat()) : "";
+			String timestamp = settings.showTimestamp() ? Message.generateTimestamp(this.timestamp, settings.use24hFormat()) : "";
 			
 			canvas = new SpannableString(prefix + timestamp + text);
 			
@@ -156,9 +158,9 @@ public class Message {
 	 * @param use24hFormat
 	 * @return
 	 */
-	public static String generateTimestamp(boolean use24hFormat)
+	public static String generateTimestamp(long timestamp, boolean use24hFormat)
 	{
-		Date date = new Date();
+		Date date = new Date(timestamp);
 		
 		int hours = date.getHours();
 		int minutes = date.getMinutes();
