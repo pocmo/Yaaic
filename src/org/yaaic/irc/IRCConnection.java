@@ -777,6 +777,40 @@ public class IRCConnection extends PircBot
 			Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
 		);
 	}
+	
+	/**
+	 * On set invite only
+	 */
+	@Override
+	protected void onSetInviteOnly(String target, String sourceNick, String sourceLogin, String sourceHostname)
+	{
+		debug("onSetInviteOnly", sourceNick + " " + target);
+		
+		Message message = new Message(sourceNick + " sets invite only");
+		message.setColor(Message.COLOR_BLUE);
+		server.getConversation(target).addMessage(message);
+		
+		service.sendBroadcast(
+			Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
+		);
+	}
+	
+	/**
+	 * On remove invite only
+	 */
+	@Override
+	protected void onRemoveInviteOnly(String target, String sourceNick, String sourceLogin, String sourceHostname)
+	{
+		debug("onRemoveInviteOnly", sourceNick + " " + target);
+		
+		Message message = new Message(sourceNick + " removes invite only");
+		message.setColor(Message.COLOR_BLUE);
+		server.getConversation(target).addMessage(message);
+		
+		service.sendBroadcast(
+			Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
+		);
+	}
 
 	/**
 	 * On unknown
