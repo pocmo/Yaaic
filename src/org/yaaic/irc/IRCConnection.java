@@ -918,17 +918,30 @@ public class IRCConnection extends PircBot
 	protected void onServerResponse(int code, String response)
 	{
 		debug("ServerResponse", code + " " + response);
+		
+		if (code == 372 || code == 375 || code == 376) {
+			// Skip MOTD
+			return;
+		}
+		
+		if (code >= 200 && code < 300) {
+			// Skip 2XX responses
+			return;
+		}
+		
+		if (code < 10) {
+			// Skip server info
+			return;
+		}
 
-		/*
 		// Currently disabled... to much text
-		Message message = new Message(response);
+		Message message = new Message("(" + code + ")" + response);
 		server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
 		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
 		intent.putExtra(Broadcast.EXTRA_CONVERSATION, ServerInfo.DEFAULT_NAME);
 		service.sendBroadcast(intent);
-		*/
 	}
 
 	/**
