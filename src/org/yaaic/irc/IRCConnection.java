@@ -745,6 +745,40 @@ public class IRCConnection extends PircBot
 	}
 
 	/**
+	 * On set no external messages
+	 */
+	@Override
+	protected void onSetNoExternalMessages(String target, String sourceNick, String sourceLogin, String sourceHostname)
+	{
+		debug("onSetNoExternalMessages", sourceNick + " " + target);
+		
+		Message message = new Message(sourceNick + " disables external messages");
+		message.setColor(Message.COLOR_BLUE);
+		server.getConversation(target).addMessage(message);
+		
+		service.sendBroadcast(
+			Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
+		);
+	}
+
+	/**
+	 * On remove no external messages
+	 */
+	@Override
+	protected void onRemoveNoExternalMessages(String target, String sourceNick, String sourceLogin, String sourceHostname)
+	{
+		debug("onRemoveNoExternalMessages", sourceNick + " " + target);
+		
+		Message message = new Message(sourceNick + " enables external messages");
+		message.setColor(Message.COLOR_BLUE);
+		server.getConversation(target).addMessage(message);
+		
+		service.sendBroadcast(
+			Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
+		);
+	}
+
+	/**
 	 * On unknown
 	 */
 	@Override
