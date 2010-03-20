@@ -161,6 +161,11 @@ public class IRCConnection extends PircBot
 		Message message = new Message(sender + " " + action);
 		message.setIcon(R.drawable.action);
 		
+		if (action.contains(getNick())) {
+			// highlight
+			message.setColor(Message.COLOR_RED);
+		}
+		
 		if (target.equals(this.getNick())) {
 			// We are the target - this is an action in a query
 			Conversation conversation = server.getConversation(sender); 
@@ -336,6 +341,12 @@ public class IRCConnection extends PircBot
 		text = Colors.removeFormattingAndColors(text);
 
 		Message message = new Message("<" + sender + "> " + text);
+		
+		if (text.contains(getNick())) {
+			// highlight
+			message.setColor(Message.COLOR_RED);
+		}
+		
 		server.getConversation(target).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
@@ -472,6 +483,10 @@ public class IRCConnection extends PircBot
 		text = Colors.removeFormattingAndColors(text);
 
 		Message message = new Message("<" + sender + "> " + text);
+		
+		if (text.contains(getNick())) {
+			message.setColor(Message.COLOR_RED);
+		}
 
 		Conversation conversation = server.getConversation(sender);
 
