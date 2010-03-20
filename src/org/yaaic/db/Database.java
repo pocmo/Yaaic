@@ -97,11 +97,14 @@ public class Database extends SQLiteOpenHelper
 	{
 		// XXX: We delete the database currently, in future versions we want to
 		// migrate the database to the new version (add or remove rows..)
-		db.execSQL("DROP TABLE IF EXISTS " + ServerConstants.TABLE_NAME + ";");
-		db.execSQL("DROP TABLE IF EXISTS " + ChannelConstants.TABLE_NAME + ";");
-		db.execSQL("DROP TABLE IF EXISTS " + IdentityConstants.TABLE_NAME + ";");
 		
-		onCreate(db);
+		// XXX: Do not delete databases (release version)
+		
+		// db.execSQL("DROP TABLE IF EXISTS " + ServerConstants.TABLE_NAME + ";");
+		// db.execSQL("DROP TABLE IF EXISTS " + ChannelConstants.TABLE_NAME + ";");
+		// db.execSQL("DROP TABLE IF EXISTS " + IdentityConstants.TABLE_NAME + ";");
+		
+		// onCreate(db);
 	}
 	
 	/**
@@ -228,6 +231,35 @@ public class Database extends SQLiteOpenHelper
 		cursor.close();
 		
 		return server;
+	}
+	
+	/**
+	 * Check if the given server title is currently used
+	 * 
+	 * @param title The server title
+	 * @return true if there's a server with this title, false otherwise
+	 */
+	public boolean isTitleUsed(String title)
+	{
+		boolean isTitleUsed = false;
+		
+		Cursor cursor = this.getReadableDatabase().query(
+			ServerConstants.TABLE_NAME,
+			ServerConstants.ALL,
+			ServerConstants.TITLE + " = '" + title + "'",
+			null,
+			null,
+			null,
+			null
+		);
+		
+		if (cursor.moveToNext()) {
+			isTitleUsed = true;
+		}
+		
+		cursor.close();
+		
+		return isTitleUsed;
 	}
 	
 	/**

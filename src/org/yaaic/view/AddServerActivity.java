@@ -263,6 +263,13 @@ public class AddServerActivity extends Activity implements OnClickListener
 		} catch (NumberFormatException e) {
 			throw new ValidationException("Enter a numeric port");
 		}
+		
+		Database db = new Database(this);
+		if (db.isTitleUsed(title) && (server == null || !server.getTitle().equals(title))) {
+			db.close();
+			throw new ValidationException("There is already a server with this title");
+		}
+		db.close();
 	}
 	
 	/**
