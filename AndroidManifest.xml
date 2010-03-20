@@ -34,6 +34,12 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         <activity
             android:name=".view.AddServerActivity"
             android:label="@string/add_server_label">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data android:scheme="irc"/>
+			</intent-filter>
         </activity>
         <activity
             android:name=".view.ConversationActivity"
@@ -53,6 +59,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:label="@string/join_label"
             android:theme="@android:style/Theme.Dialog">
         </activity>
+        <activity
+        	android:name=".view.ImportActivity"
+        	android:theme="@android:style/Theme.Dialog"
+        	android:label="@string/import_label">
+		</activity>
         <service android:name=".irc.IRCService"></service>
     </application>
     

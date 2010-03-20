@@ -23,6 +23,7 @@ package org.yaaic.view;
 import java.util.regex.Pattern;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -63,7 +64,7 @@ public class AddServerActivity extends Activity implements OnClickListener
         ((Button) findViewById(R.id.cancel)).setOnClickListener(this);
         
         Bundle extras = getIntent().getExtras();
-        if (extras.containsKey(Broadcast.EXTRA_SERVER)) {
+        if (extras != null && extras.containsKey(Broadcast.EXTRA_SERVER)) {
         	// Request to edit an existing server
         	Database db = new Database(this);
         	this.server = db.getServerById(extras.getInt(Broadcast.EXTRA_SERVER));
@@ -80,6 +81,16 @@ public class AddServerActivity extends Activity implements OnClickListener
         	((EditText) findViewById(R.id.realname)).setText(server.getIdentity().getRealName());
         	
         	((Button) findViewById(R.id.add)).setText("Save");
+        }
+        
+        Uri uri = getIntent().getData();
+        if (uri != null && uri.getScheme().equals("irc")) {
+        	// handling an irc:// uri
+        	
+        	((EditText) findViewById(R.id.host)).setText(uri.getHost());
+        	if (uri.getPort() != -1) {
+        		((EditText) findViewById(R.id.port)).setText(String.valueOf(uri.getPort()));
+        	}
         }
     }
 
@@ -223,7 +234,6 @@ public class AddServerActivity extends Activity implements OnClickListener
 		identity.setNickname(nickname);
 		identity.setIdent(ident);
 		identity.setRealName(realname);
-		server.setIdentity(identity);
 		
 		return identity;
 	}
