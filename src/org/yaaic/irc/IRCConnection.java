@@ -946,7 +946,8 @@ public class IRCConnection extends PircBot
 		}
 
 		// Currently disabled... to much text
-		Message message = new Message("(" + code + ")" + response);
+		Message message = new Message(response);
+		message.setColor(Message.COLOR_GREY);
 		server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(message);
 		
 		Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
