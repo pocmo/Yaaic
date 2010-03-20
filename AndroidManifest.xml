@@ -21,7 +21,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="org.yaaic"
-	android:versionCode="1" android:versionName="@string/app_version">
+	android:versionCode="2"
+	android:versionName="@string/app_version">
     <application android:icon="@drawable/icon" android:label="@string/app_name">
         <activity
             android:name=".view.ServersActivity"
@@ -43,7 +44,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         </activity>
         <activity
             android:name=".view.ConversationActivity"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize|stateHidden">
         </activity>
         <activity
             android:name=".view.AboutActivity"
