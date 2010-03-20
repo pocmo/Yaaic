@@ -138,13 +138,17 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		}
 		
 		// Fill view with messages that have been buffered while paused
-		for (Conversation conversation : server.getConversations()) {
-			while (conversation.hasBufferedMessages()) {
-				if (conversation.getMessageListAdapter() != null) {
-					conversation.getMessageListAdapter().addMessage(conversation.pollBufferedMessage());
+		new Thread() {
+			public void run() {
+				for (Conversation conversation : server.getConversations()) {
+					while (conversation.hasBufferedMessages()) {
+						if (conversation.getMessageListAdapter() != null) {
+							conversation.getMessageListAdapter().addMessage(conversation.pollBufferedMessage());
+						}
+					}
 				}
 			}
-		}
+		}.start();
 	}
 	
 	/**
@@ -361,9 +365,9 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 			if (conversation != null) {
 				if (!text.trim().startsWith("/")) {
 					if (conversation.getType() != Conversation.TYPE_SERVER) {
-						String nickname = this.binder.getService().getConnection(serverId).getNick();
+						String nickname = binder.getService().getConnection(serverId).getNick();
 						conversation.addMessage(new Message("<" + nickname + "> " + text));
-						this.binder.getService().getConnection(serverId).sendMessage(conversation.getName(), text);
+						binder.getService().getConnection(serverId).sendMessage(conversation.getName(), text);
 					} else {
 						Message message = new Message("You can only chat from within a channel or a query");
 						message.setColor(Message.COLOR_YELLOW);
@@ -387,11 +391,16 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
+		// currently there's only the "join channel" activity
 		if (resultCode == RESULT_OK) {
-			// currently there's only the "join channel" activity
-			binder.getService().getConnection(serverId).joinChannel(
-				data.getExtras().getString("channel")
-			);
+			final String channel = data.getExtras().getString("channel");
+			
+			// run on own thread
+			new Thread() {
+				public void run() {
+					binder.getService().getConnection(serverId).joinChannel(channel);
+				}
+			}.start();
 		}
 	}
 
