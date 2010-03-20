@@ -199,24 +199,58 @@ public class Database extends SQLiteOpenHelper
 		);
 		
 		while (cursor.moveToNext()) {
-			Server server = new Server();
-			
-			server.setTitle(cursor.getString(cursor.getColumnIndex((ServerConstants.TITLE))));
-			server.setHost(cursor.getString(cursor.getColumnIndex((ServerConstants.HOST))));
-			server.setPort(cursor.getInt(cursor.getColumnIndex((ServerConstants.PORT))));
-			server.setPassword(cursor.getString(cursor.getColumnIndex(ServerConstants.PASSWORD)));
-			server.setId(cursor.getInt(cursor.getColumnIndex((ServerConstants._ID))));
-			server.setStatus(Status.DISCONNECTED);
-			
-			// Load identity for server
-			Identity identity = this.getIdentityById(cursor.getInt(cursor.getColumnIndex(ServerConstants.IDENTITY)));
-			server.setIdentity(identity);
-			
+			Server server = populateServer(cursor);
 			servers.put(server.getId(), server);
 		}
 		cursor.close();
 		
 		return servers;
+	}
+	
+	public Server getServerById(int serverId)
+	{
+		Server server = null;
+		
+		Cursor cursor = this.getReadableDatabase().query(
+			ServerConstants.TABLE_NAME,
+			ServerConstants.ALL,
+			ServerConstants._ID + "=" + serverId,
+			null,
+			null,
+			null,
+			ServerConstants.TITLE + " ASC"
+		);
+		
+		if (cursor.moveToNext()) {
+			server = populateServer(cursor);
+		}
+		
+		cursor.close();
+		
+		return server;
+	}
+	
+	/**
+	 * Populate a server object from the given database cursor
+	 * @param cursor
+	 * @return
+	 */
+	private Server populateServer(Cursor cursor)
+	{
+		Server server = new Server();
+		
+		server.setTitle(cursor.getString(cursor.getColumnIndex((ServerConstants.TITLE))));
+		server.setHost(cursor.getString(cursor.getColumnIndex((ServerConstants.HOST))));
+		server.setPort(cursor.getInt(cursor.getColumnIndex((ServerConstants.PORT))));
+		server.setPassword(cursor.getString(cursor.getColumnIndex(ServerConstants.PASSWORD)));
+		server.setId(cursor.getInt(cursor.getColumnIndex((ServerConstants._ID))));
+		server.setStatus(Status.DISCONNECTED);
+		
+		// Load identity for server
+		Identity identity = this.getIdentityById(cursor.getInt(cursor.getColumnIndex(ServerConstants.IDENTITY)));
+		server.setIdentity(identity);
+		
+		return server;
 	}
 	
 	/**
@@ -347,6 +381,8 @@ public class Database extends SQLiteOpenHelper
 	 */
 	public Identity getIdentityById(int identityId)
 	{
+		Identity identity = null;
+		
 		Cursor cursor = this.getReadableDatabase().query(
 			IdentityConstants.TABLE_NAME,
 			IdentityConstants.ALL,
@@ -358,18 +394,16 @@ public class Database extends SQLiteOpenHelper
 		);
 		
 		if (cursor.moveToNext()) {
-			Identity identity = new Identity();
+			identity = new Identity();
 			
 			identity.setNickname(cursor.getString(cursor.getColumnIndex(IdentityConstants.NICKNAME)));
 			identity.setIdent(cursor.getString(cursor.getColumnIndex(IdentityConstants.IDENT)));
 			identity.setRealName(cursor.getString(cursor.getColumnIndex(IdentityConstants.REALNAME)));
-			
-			cursor.close();
-			
-			return identity;
 		}
 		
-		return null;
+		cursor.close();
+		
+		return identity;
 	}
 	
 	/**
@@ -378,8 +412,10 @@ public class Database extends SQLiteOpenHelper
 	 * @param serverId
 	 * @return
 	 */
-	private int getIdentityIdByServerId(int serverId)
+	public int getIdentityIdByServerId(int serverId)
 	{
+		int identityId = -1;
+		
 		Cursor cursor = this.getReadableDatabase().query(
 			ServerConstants.TABLE_NAME,
 			ServerConstants.ALL,
@@ -391,9 +427,11 @@ public class Database extends SQLiteOpenHelper
 		);
 		
 		if (cursor.moveToNext()) {
-			return cursor.getInt(cursor.getColumnIndex(ServerConstants.IDENTITY));
+			identityId = cursor.getInt(cursor.getColumnIndex(ServerConstants.IDENTITY));
 		}
 		
-		return -1;
+		cursor.close();
+		
+		return identityId;
 	}
 }

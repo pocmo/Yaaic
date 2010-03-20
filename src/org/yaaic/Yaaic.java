@@ -99,6 +99,14 @@ public class Yaaic
 	}
 	
 	/**
+	 * Update a server in list
+	 */
+	public void updateServer(Server server)
+	{
+		servers.put(server.getId(), server);
+	}
+	
+	/**
 	 * Get list of servers
 	 * 
 	 * @return list of servers

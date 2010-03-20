@@ -36,6 +36,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemLongClickListener;
 
 import org.yaaic.R;
@@ -154,6 +155,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 		final CharSequence[] items = {
 			getString(R.string.connect),
 			getString(R.string.disconnect),
+			getString(R.string.edit),
 			getString(R.string.delete)
 		};
 
@@ -171,7 +173,10 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 			        	server.clearConversations();
 						binder.getService().getConnection(server.getId()).quitServer();
 			        	break;
-			        case 2: // Delete
+			        case 2: // Edit
+			        	editServer(server.getId());
+			        	break;
+			        case 3: // Delete
 			        	binder.getService().getConnection(server.getId()).quitServer();
 		        		deleteServer(server.getId());
 			        	break;
@@ -181,6 +186,25 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 		AlertDialog alert = builder.create();
 		alert.show();
 		return true;
+	}
+	
+	/**
+	 * Start activity to edit server with given id
+	 * 
+	 * @param serverId The id of the server
+	 */
+	private void editServer(int serverId)
+	{
+		Server server = Yaaic.getInstance().getServerById(serverId);
+		
+		if (server.getStatus() != Status.DISCONNECTED) {
+			Toast.makeText(this, "Disconnect from server before editing", Toast.LENGTH_SHORT).show();
+		}
+		else {
+	    	Intent intent = new Intent(this, AddServerActivity.class);
+	    	intent.putExtra(Broadcast.EXTRA_SERVER, serverId);
+	    	startActivityForResult(intent, 0);
+		}
 	}
 	
 	/**

@@ -24,11 +24,9 @@ import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -36,6 +34,7 @@ import org.yaaic.R;
 import org.yaaic.Yaaic;
 import org.yaaic.db.Database;
 import org.yaaic.exception.ValidationException;
+import org.yaaic.model.Broadcast;
 import org.yaaic.model.Identity;
 import org.yaaic.model.Server;
 import org.yaaic.model.Status;
@@ -48,6 +47,7 @@ import org.yaaic.model.Status;
 public class AddServerActivity extends Activity implements OnClickListener
 {
 	public static final String TAG = "Yaaic/AddServerActivity";
+	private Server server;
 	
 	/**
 	 * On create
@@ -61,6 +61,26 @@ public class AddServerActivity extends Activity implements OnClickListener
         
         ((Button) findViewById(R.id.add)).setOnClickListener(this);
         ((Button) findViewById(R.id.cancel)).setOnClickListener(this);
+        
+        Bundle extras = getIntent().getExtras();
+        if (extras.containsKey(Broadcast.EXTRA_SERVER)) {
+        	// Request to edit an existing server
+        	Database db = new Database(this);
+        	this.server = db.getServerById(extras.getInt(Broadcast.EXTRA_SERVER));
+        	db.close();
+        	
+        	// Set server values
+        	((EditText) findViewById(R.id.title)).setText(server.getTitle());
+        	((EditText) findViewById(R.id.host)).setText(server.getHost());
+        	((EditText) findViewById(R.id.port)).setText(String.valueOf(server.getPort()));
+        	((EditText) findViewById(R.id.password)).setText(server.getPassword());
+        	
+        	((EditText) findViewById(R.id.nickname)).setText(server.getIdentity().getNickname());
+        	((EditText) findViewById(R.id.ident)).setText(server.getIdentity().getIdent());
+        	((EditText) findViewById(R.id.realname)).setText(server.getIdentity().getRealName());
+        	
+        	((Button) findViewById(R.id.add)).setText("Save");
+        }
     }
 
 	/**
@@ -73,7 +93,11 @@ public class AddServerActivity extends Activity implements OnClickListener
 				try {
 					validateServer();
 					validateIdentity();
-					addServer();
+					if (server == null) {
+						addServer();
+					} else {
+						updateServer();
+					}
 					setResult(RESULT_OK);
 					finish();
 				} catch(ValidationException e) {
@@ -92,33 +116,108 @@ public class AddServerActivity extends Activity implements OnClickListener
 	 */
 	private void addServer()
 	{
-		// server
+		Database db = new Database(this);
+		
+		Identity identity = getIdentityFromView();
+		long identityId = db.addIdentity(
+			identity.getNickname(),
+			identity.getIdent(),
+			identity.getRealName()
+		);
+		
+		Server server = getServerFromView();
+		long serverId = db.addServer(
+			server.getTitle(),
+			server.getHost(),
+			server.getPort(),
+			server.getPassword(),
+			false, // auto connect
+			false, // use ssl
+			identityId
+		);
+		
+		db.close();
+		
+		server.setId((int) serverId);
+		server.setIdentity(identity);
+		
+		Yaaic.getInstance().addServer(server);
+	}
+	
+	/**
+	 * Update server
+	 */
+	private void updateServer()
+	{
+		Database db = new Database(this);
+		
+		int serverId = this.server.getId();
+		int identityId = db.getIdentityIdByServerId(serverId);
+		
+		Server server = getServerFromView();
+		db.updateServer(
+			serverId,
+			server.getTitle(),
+			server.getHost(),
+			server.getPort(),
+			server.getPassword(),
+			false, // auto connect
+			false, // use ssl
+			identityId
+		);
+		
+		Identity identity = getIdentityFromView();
+		db.updateIdentity(
+			identityId,
+			identity.getNickname(),
+			identity.getIdent(),
+			identity.getNickname()
+		);
+		
+		db.close();
+		
+		server.setId(this.server.getId());
+		server.setIdentity(identity);
+		
+		Yaaic.getInstance().updateServer(server);
+	}
+	
+	/**
+	 * Populate a server object from the data in the view
+	 * 
+	 * @return The server object
+	 */
+	private Server getServerFromView()
+	{
 		String title = ((EditText) findViewById(R.id.title)).getText().toString();
 		String host = ((EditText) findViewById(R.id.host)).getText().toString();
 		int port = Integer.parseInt(((EditText) findViewById(R.id.port)).getText().toString());
 		String password = ((EditText) findViewById(R.id.password)).getText().toString();
-		boolean autoConnect = ((CheckBox) findViewById(R.id.autoconnect)).isChecked();
-		boolean useSSL = ((CheckBox) findViewById(R.id.useSSL)).isChecked();
 		
-		// identity
+		// not in use yet
+		//boolean autoConnect = ((CheckBox) findViewById(R.id.autoconnect)).isChecked();
+		//boolean useSSL = ((CheckBox) findViewById(R.id.useSSL)).isChecked();
+		
+		Server server = new Server();
+		server.setHost(host);
+		server.setPort(port);
+		server.setPassword(password);
+		server.setTitle(title);
+		server.setStatus(Status.DISCONNECTED);
+
+		return server;
+	}
+	
+	/**
+	 * Populate an identity object from the data in the view
+	 * 
+	 * @return The identity object
+	 */
+	private Identity getIdentityFromView()
+	{
 		String nickname = ((EditText) findViewById(R.id.nickname)).getText().toString();
 		String ident = ((EditText) findViewById(R.id.ident)).getText().toString();
 		String realname = ((EditText) findViewById(R.id.realname)).getText().toString();
-						
-		Database db = new Database(this);
-		long identityId = db.addIdentity(nickname, ident, realname);
-		
-		Log.d(TAG, "New Identity with Id " + identityId + " (" + nickname + ", " + ident + ", " + realname + ")");
-		
-		long serverId = db.addServer(title, host, port, password, autoConnect, useSSL, identityId);
-		db.close();
-		
-		Server server = new Server();
-		server.setId((int) serverId);
-		server.setHost(host);
-		server.setPort(port);
-		server.setTitle(title);
-		server.setStatus(Status.DISCONNECTED);
 		
 		Identity identity = new Identity();
 		identity.setNickname(nickname);
@@ -126,9 +225,7 @@ public class AddServerActivity extends Activity implements OnClickListener
 		identity.setRealName(realname);
 		server.setIdentity(identity);
 		
-		Yaaic.getInstance().addServer(server);
-		
-		Log.d(TAG, "Saved server " + title);
+		return identity;
 	}
 	
 	/**
