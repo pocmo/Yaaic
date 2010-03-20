@@ -20,6 +20,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.irc;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.Vector;
 
 import android.content.Intent;
@@ -68,6 +70,12 @@ public class IRCConnection extends PircBot
 		
 		// XXX: Should be configurable via settings
 		this.setAutoNickChange(true);
+		
+		try {
+			this.setEncoding("UTF-8");
+		} catch(UnsupportedEncodingException e) {
+			Log.d(TAG, "Unsupported charset - " + e.getMessage());
+		}
 		
 		this.setFinger("http://www.youtube.com/watch?v=oHg5SJYRHA0");
 	}
