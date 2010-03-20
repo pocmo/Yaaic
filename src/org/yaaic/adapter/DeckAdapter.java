@@ -186,7 +186,7 @@ public class DeckAdapter extends BaseAdapter
 	 */
 	public MessageListView renderConversation(Conversation conversation, ViewGroup parent)
 	{
-		MessageListView list = new MessageListView(parent.getContext());
+		MessageListView list = new MessageListView(parent.getContext(), parent);
 		
 		MessageListAdapter adapter = conversation.getMessageListAdapter();
 		if (adapter == null) {
@@ -201,6 +201,7 @@ public class DeckAdapter extends BaseAdapter
 			parent.getWidth() / 100 * 85,
 			parent.getHeight()
 		));
+		
 		list.setBackgroundResource(R.layout.rounded);
 		list.setPadding(5, 5, 5, 5);
 		list.setVerticalFadingEdgeEnabled(false);

@@ -23,7 +23,10 @@ package org.yaaic.view;
 import org.yaaic.adapter.MessageListAdapter;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Gallery;
 import android.widget.ListView;
 
 /**
@@ -36,15 +39,23 @@ public class MessageListView extends ListView
 	public static final String TAG = "Yaaic/MessageListView";
 	
 	private boolean delegate = true;
+	private View parent;
+	private int parentWidth;
+	private int parentHeight;
 	
 	/**
 	 * Create a new MessageListView
 	 * 
 	 * @param context
 	 */
-	public MessageListView(Context context)
+	public MessageListView(Context context, View parent)
 	{
 		super(context);
+		
+		this.parent = parent;
+		
+		parentWidth = parent.getWidth();
+		parentHeight = parent.getHeight();
 	}
 	
 	/**
@@ -69,6 +80,27 @@ public class MessageListView extends ListView
 		} else {
 			return super.onTouchEvent(event);
 		}
+	}
+
+	/**
+	 * On draw
+	 */
+	@Override
+	protected void onDraw(Canvas canvas)
+	{
+		if (parent.getWidth() != parentWidth || parent.getHeight() != parentHeight) {
+			// parent size changed, resizing this child too
+			
+			parentWidth = parent.getWidth();
+			parentHeight = parent.getHeight();
+			
+			this.setLayoutParams(new Gallery.LayoutParams(
+				parent.getWidth() / 100 * 85,
+				parent.getHeight()
+			));
+		}
+		
+		super.onDraw(canvas);
 	}
 	
 	/**
