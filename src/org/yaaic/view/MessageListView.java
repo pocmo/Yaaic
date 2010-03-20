@@ -88,7 +88,7 @@ public class MessageListView extends ListView
 	@Override
 	protected void onDraw(Canvas canvas)
 	{
-		if (parent.getWidth() != parentWidth || parent.getHeight() != parentHeight) {
+		if (delegate && (parent.getWidth() != parentWidth || parent.getHeight() != parentHeight)) {
 			// parent size changed, resizing this child too
 			
 			parentWidth = parent.getWidth();
