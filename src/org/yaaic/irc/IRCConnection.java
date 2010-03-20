@@ -936,6 +936,10 @@ public class IRCConnection extends PircBot
 			return;
 		}
 		
+		if (code == 353 || code == 366) {
+			return;
+		}
+		
 		if (code < 10) {
 			// Skip server info
 			return;
