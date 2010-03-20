@@ -96,8 +96,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		setContentView(R.layout.conversations);
 		
 		((TextView) findViewById(R.id.title)).setText(server.getTitle());
-		((ImageView) findViewById(R.id.status)).setImageResource(server.getStatusIcon());
-		
 		((EditText) findViewById(R.id.input)).setOnKeyListener(this);
 
         deckAdapter = new DeckAdapter();
@@ -122,6 +120,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	{
 		super.onResume();
 		
+		((ImageView) findViewById(R.id.status)).setImageResource(server.getStatusIcon());
+		
         Intent intent = new Intent(this, IRCService.class);
         bindService(intent, this, 0);
         
@@ -135,6 +135,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
 		if (!server.isConnected()) {
 			 ((EditText) findViewById(R.id.input)).setEnabled(false);
+		} else {
+			 ((EditText) findViewById(R.id.input)).setEnabled(true);
 		}
 		
 		// Fill view with messages that have been buffered while paused
