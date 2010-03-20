@@ -203,6 +203,7 @@ public class DeckAdapter extends BaseAdapter
 		));
 		
 		list.setBackgroundResource(R.layout.rounded);
+		list.setCacheColorHint(0xee000000);
 		list.setPadding(5, 5, 5, 5);
 		list.setVerticalFadingEdgeEnabled(false);
 		list.setScrollBarStyle(ListView.SCROLLBARS_OUTSIDE_INSET);
