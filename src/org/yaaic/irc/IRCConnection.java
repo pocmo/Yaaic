@@ -557,6 +557,9 @@ public class IRCConnection extends PircBot
 	@Override
 	public void onTopic(String target, String topic, String setBy, long date, boolean changed)
 	{
+		// strip mIRC colors
+		topic = Colors.removeFormattingAndColors(topic);
+		
 		debug("Topic", target + " " + setBy + " " + topic);
 		
 		if (changed) {
