@@ -954,7 +954,7 @@ public class IRCConnection extends PircBot
 			return;
 		}
 		
-		if (code == 353 || code == 366) {
+		if (code == 353 || code == 366 || code == 332 || code == 333) {
 			return;
 		}
 		
