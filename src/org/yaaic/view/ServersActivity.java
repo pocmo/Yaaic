@@ -136,7 +136,6 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 		
 		if (server.getStatus() == Status.DISCONNECTED) {
 			server.setStatus(Status.CONNECTING);
-			adapter.notifyDataSetChanged();
 			binder.connect(server);
 		}
 
