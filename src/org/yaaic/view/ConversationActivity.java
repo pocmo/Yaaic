@@ -140,7 +140,9 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		// Fill view with messages that have been buffered while paused
 		for (Conversation conversation : server.getConversations()) {
 			while (conversation.hasBufferedMessages()) {
-				conversation.getMessageListAdapter().addMessage(conversation.pollBufferedMessage());
+				if (conversation.getMessageListAdapter() != null) {
+					conversation.getMessageListAdapter().addMessage(conversation.pollBufferedMessage());
+				}
 			}
 		}
 	}
