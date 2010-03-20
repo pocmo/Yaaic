@@ -166,6 +166,11 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	public void onServiceConnected(ComponentName name, IBinder service)
 	{
 		this.binder = (IRCBinder) service;
+		
+		// connect to irc server if connect has been requested
+		if (!server.isConnected() && getIntent().hasExtra("connect")) {
+			binder.connect(server);
+		}
 	}
 
 	/**

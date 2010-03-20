@@ -134,12 +134,13 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		Server server = adapter.getItem(position);
 		
+		Intent intent = new Intent(this, ConversationActivity.class);
+		
 		if (server.getStatus() == Status.DISCONNECTED) {
 			server.setStatus(Status.CONNECTING);
-			binder.connect(server);
-		}
-
-		Intent intent = new Intent(this, ConversationActivity.class);
+			intent.putExtra("connect", true);
+		}		
+		
 		intent.putExtra("serverId", server.getId());
 		startActivity(intent);
 	}
