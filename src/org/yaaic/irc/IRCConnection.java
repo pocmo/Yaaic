@@ -47,8 +47,6 @@ import org.yaaic.model.Status;
  */
 public class IRCConnection extends PircBot
 {
-	public static final String TAG = "Yaaic/IRCConnection";
-	
 	private IRCService service;
 	private Server server;
 	

@@ -36,8 +36,6 @@ import android.widget.ListView;
  */
 public class MessageListView extends ListView
 {
-	public static final String TAG = "Yaaic/MessageListView";
-	
 	private boolean delegate = true;
 	private View parent;
 	private int parentWidth;

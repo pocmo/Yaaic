@@ -39,8 +39,6 @@ import android.widget.ListView;
  */
 public class DeckAdapter extends BaseAdapter
 {
-	public static final String TAG = "Yaaic/DeckAdapter";
-	
 	private LinkedList<Conversation> conversations;
 	private MessageListView currentView;
 	private String currentChannel;

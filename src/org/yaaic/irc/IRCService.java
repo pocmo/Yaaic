@@ -36,8 +36,6 @@ import android.content.Intent;
  */
 public class IRCService extends Service
 {
-	public final static String TAG = "Yaaic/IRCService";
-	
 	private IRCBinder binder;
 	private HashMap<Integer, IRCConnection> connections;
 	

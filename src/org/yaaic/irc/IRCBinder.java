@@ -39,8 +39,6 @@ import android.os.Binder;
  */
 public class IRCBinder extends Binder
 {
-	public static final String TAG = "Yaaic/IRCBinder";
-	
 	private IRCService service;
 	
 	/**

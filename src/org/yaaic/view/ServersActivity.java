@@ -57,8 +57,6 @@ import org.yaaic.receiver.ServerReceiver;
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
 public class ServersActivity extends ListActivity implements ServiceConnection, ServerListener, OnItemLongClickListener {
-	public static final String TAG = "Yaaic/ServersActivity";
-	
 	private IRCBinder binder;
 	private ServerReceiver receiver;
 	private ServerListAdapter adapter;

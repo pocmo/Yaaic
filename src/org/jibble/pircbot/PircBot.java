@@ -65,7 +65,6 @@ import java.util.StringTokenizer;
  * @version    1.4.6 (Build time: Wed Apr 11 19:20:59 2007)
  */
 public abstract class PircBot implements ReplyConstants {
-	public static final String TAG = "Yaaic/PircBot";
     /**
      * The definitive version number of this release of PircBot.
      * (Note: Change this before automatically building releases)

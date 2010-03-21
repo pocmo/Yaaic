@@ -34,8 +34,6 @@ import org.yaaic.model.Broadcast;
  */
 public class ConversationReceiver extends BroadcastReceiver
 {
-	public static final String TAG = "Yaaic/ChannelReceiver";
-	
 	private ConversationListener listener;
 	private int serverId;
 	

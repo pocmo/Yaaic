@@ -69,8 +69,6 @@ import org.yaaic.receiver.ServerReceiver;
  */
 public class ConversationActivity extends Activity implements ServiceConnection, ServerListener, ConversationListener, OnItemClickListener, OnKeyListener, OnItemSelectedListener
 {
-	public static final String TAG = "Yaaic/ConversationActivity";
-	
 	private int serverId;
 	private Server server;
 	private IRCBinder binder;

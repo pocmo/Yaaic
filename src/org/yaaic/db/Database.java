@@ -39,8 +39,6 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class Database extends SQLiteOpenHelper
 {
-	public static final String TAG = "Yaaic/Database";
-	
 	private static final String DATABASE_NAME = "servers.db";
 	private static final int DATABASE_VERSION = 1;
 	

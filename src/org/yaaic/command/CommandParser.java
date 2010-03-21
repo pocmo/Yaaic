@@ -56,8 +56,6 @@ import android.content.Intent;
  */
 public class CommandParser
 {
-	public static final String TAG = "Yaaic/CommandParser";
-	
 	private HashMap<String, BaseHandler> commands;
 	private static CommandParser instance;
 

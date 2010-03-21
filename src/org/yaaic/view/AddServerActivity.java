@@ -47,7 +47,6 @@ import org.yaaic.model.Status;
  */
 public class AddServerActivity extends Activity implements OnClickListener
 {
-	public static final String TAG = "Yaaic/AddServerActivity";
 	private Server server;
 	
 	/**
