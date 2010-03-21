@@ -49,8 +49,7 @@ public class MessageListAdapter extends BaseAdapter
 	 */
 	public MessageListAdapter(Conversation conversation, Context context)
 	{
-		this.messages = new LinkedList<TextView>();
-		this.context = context;
+		LinkedList<TextView> messages = new LinkedList<TextView>();
 		
 		// Render channel name as first message in channel
 		if (conversation.getType() != Conversation.TYPE_SERVER) {
@@ -59,13 +58,20 @@ public class MessageListAdapter extends BaseAdapter
 			messages.add(header.renderTextView(context));
 		}
 		
-		for (int i = 0; i < conversation.getHistorySize(); i++) {
-			messages.add(conversation.getHistoryMessage(i).renderTextView(context));
+		// Optimization - cache field lookups
+		LinkedList<Message> mHistory =  conversation.getHistory();
+		int mSize = mHistory.size();
+		
+		for (int i = 0; i < mSize; i++) {
+			messages.add(mHistory.get(i).renderTextView(context));
 		}
 		
 		// XXX: We don't want to clear the buffer, we want to add only
 		//      buffered messages that are not already added (history)
 		conversation.clearBuffer();
+		
+		this.messages = messages;
+		this.context = context;
 	}
 
 	/**
