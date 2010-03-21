@@ -137,7 +137,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 		Intent intent = new Intent(this, ConversationActivity.class);
 		
 		if (server.getStatus() == Status.DISCONNECTED) {
-			server.setStatus(Status.CONNECTING);
+			server.setStatus(Status.PRE_CONNECTING);
 			intent.putExtra("connect", true);
 		}		
 		

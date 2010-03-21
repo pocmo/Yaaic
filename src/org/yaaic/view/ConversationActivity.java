@@ -59,6 +59,7 @@ import org.yaaic.model.Broadcast;
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Message;
 import org.yaaic.model.Server;
+import org.yaaic.model.Status;
 import org.yaaic.receiver.ConversationReceiver;
 import org.yaaic.receiver.ServerReceiver;
 
@@ -170,7 +171,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		this.binder = (IRCBinder) service;
 		
 		// connect to irc server if connect has been requested
-		if (!server.isConnected() && getIntent().hasExtra("connect")) {
+		if (server.getStatus() == Status.PRE_CONNECTING && getIntent().hasExtra("connect")) {
+			server.setStatus(Status.CONNECTING);
 			binder.connect(server);
 		}
 	}

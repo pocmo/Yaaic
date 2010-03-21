@@ -296,6 +296,7 @@ public class Server
 				return R.drawable.connected;
 			case Status.DISCONNECTED:
 				return R.drawable.disconnected;
+			case Status.PRE_CONNECTING:
 			case Status.CONNECTING:
 				return R.drawable.connecting;
 		}
