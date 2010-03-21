@@ -99,8 +99,12 @@ public class DeckAdapter extends BaseAdapter
 	 */
 	public int getPositionByName(String name)
 	{
-		for (int i = 0; i <  conversations.size(); i++) {
-			if (conversations.get(i).getName().equalsIgnoreCase(name)) {
+		// Optimization - cache field lookups
+		int mSize = conversations.size();
+		LinkedList<Conversation> mItems = this.conversations;
+		
+		for (int i = 0; i <  mSize; i++) {
+			if (mItems.get(i).getName().equalsIgnoreCase(name)) {
 				return i;
 			}
 		}
