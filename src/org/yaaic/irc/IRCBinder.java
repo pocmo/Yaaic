@@ -31,7 +31,6 @@ import org.yaaic.model.Status;
 
 import android.content.Intent;
 import android.os.Binder;
-import android.util.Log;
 
 /**
  * Binder for service communication
@@ -79,9 +78,6 @@ public class IRCBinder extends Binder
 					}
 				}
 				catch (Exception e) {
-					Log.d(TAG, "Exception: " + e.getMessage());
-					
-					
 					server.setStatus(Status.DISCONNECTED);
 					Intent sIntent = new Intent(Broadcast.SERVER_UPDATE);
 					sIntent.putExtra(Broadcast.EXTRA_SERVER, server.getId());

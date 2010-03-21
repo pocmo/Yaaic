@@ -27,7 +27,6 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -245,7 +244,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 			if (adapter != null) {
 				adapter.addMessage(message);
 			} else {
-				Log.d(TAG, "MessageListAdapter is null (conversation " + conversation.getName() + " has no adapter assigned)");
+				//"MessageListAdapter is null (conversation " + conversation.getName() + " has no adapter assigned)"
 			}
 		}
 	}

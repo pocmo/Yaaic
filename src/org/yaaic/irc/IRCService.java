@@ -28,7 +28,6 @@ import org.yaaic.model.Broadcast;
 
 import android.app.Service;
 import android.content.Intent;
-import android.util.Log;
 
 /**
  * The background service for managing the irc connections
@@ -49,8 +48,6 @@ public class IRCService extends Service
 	{
 		super();
 		
-		Log.d(TAG, "Service created...");
-		
 		this.connections = new HashMap<Integer, IRCConnection>();
 		this.binder = new IRCBinder(this);
 	}
@@ -59,8 +56,6 @@ public class IRCService extends Service
 	public void onCreate()
 	{
 		super.onCreate();
-		
-		Log.d(TAG, "Loading servers from database");
 		
 		// Load servers from Database
 		Database db = new Database(this);
@@ -74,7 +69,6 @@ public class IRCService extends Service
 	@Override
 	public void onStart(Intent intent, int startId)
 	{
-		Log.d(TAG, "onStart()");
 		super.onStart(intent, startId);
 	}
 	

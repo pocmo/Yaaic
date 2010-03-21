@@ -29,7 +29,6 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -274,7 +273,6 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 	 */
 	public void onStatusUpdate()
 	{
-		Log.d(TAG, "Received server status update");
 		adapter.loadServers();
 	}
    

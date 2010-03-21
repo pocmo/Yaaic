@@ -24,7 +24,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.Vector;
 
 import android.content.Intent;
-import android.util.Log;
 
 import org.jibble.pircbot.Colors;
 import org.jibble.pircbot.PircBot;
@@ -53,9 +52,6 @@ public class IRCConnection extends PircBot
 	private IRCService service;
 	private Server server;
 	
-	// XXX: Print all IRC events to the debug console
-	private static final boolean DEBUG_EVENTS = false;
-	
 	/**
 	 * Create a new connection
 	 * 
@@ -73,7 +69,7 @@ public class IRCConnection extends PircBot
 		try {
 			this.setEncoding("UTF-8");
 		} catch(UnsupportedEncodingException e) {
-			Log.d(TAG, "Unsupported charset - " + e.getMessage());
+			// Use default charset
 		}
 		
 		this.setFinger("http://www.youtube.com/watch?v=oHg5SJYRHA0");
@@ -132,8 +128,6 @@ public class IRCConnection extends PircBot
 	@Override
 	public void onConnect()
 	{
-		debug("Connect", "");
-		
 		server.setStatus(Status.CONNECTED);
 		service.sendBroadcast(new Intent(Broadcast.SERVER_UPDATE));
 		
@@ -153,8 +147,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onAction(String sender, String login, String hostname, String target, String action)
 	{
-		debug("Action", target + " " + sender + " " + action);
-
 		// Strip mIRC colors and formatting
 		action = Colors.removeFormattingAndColors(action);
 
@@ -202,7 +194,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onChannelInfo(String channel, int userCount, String topic)
 	{
-		debug("ChannelInfo", channel + " " + userCount);
 	}
 
 	/**
@@ -211,8 +202,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onDeop(String target, String sourceNick, String sourceLogin, String sourceHostname, String recipient)
 	{
-		debug("Deop", target + " " + recipient + "(" + sourceNick + ")");
-		
 		Message message = new Message(sourceNick + " deops " + recipient);
 		message.setIcon(R.drawable.op);
 		message.setColor(Message.COLOR_BLUE);
@@ -230,8 +219,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onDeVoice(String target, String sourceNick, String sourceLogin, String sourceHostname, String recipient)
 	{
-		debug("DeVoice", target + " " + recipient + "(" + sourceNick + ")");
-		
 		Message message = new Message(sourceNick + " devoices " + recipient);
 		message.setColor(Message.COLOR_BLUE);
 		message.setIcon(R.drawable.voice);
@@ -249,8 +236,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onInvite(String targetNick, String sourceNick, String sourceLogin, String sourceHostname, String target)
 	{
-		debug("Invite", target + " " + targetNick + "(" + sourceNick + ")");
-		
 		if (targetNick.equals(this.getNick())) {
 			// We are invited
 			Message message = new Message(sourceNick + " invites you into " + target);
@@ -278,8 +263,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onJoin(String target, String sender, String login, String hostname)
 	{
-		debug("Join", target + " " + sender);
-		
 		if (sender.equals(getNick())) {
 			// We joined a new channel
 			server.addConversationl(new Channel(target));
@@ -307,8 +290,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onKick(String target, String kickerNick, String kickerLogin, String kickerHostname, String recipientNick, String reason)
 	{
-		debug("Kick", target + " " + recipientNick + "(" + kickerNick + ")");
-		
 		if (recipientNick.equals(getNick())) {
 			// We are kicked
 			server.removeConversation(target);
@@ -335,8 +316,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onMessage(String target, String sender, String login, String hostname, String text)
 	{
-		debug("Message", target + " " + sender + " " + text);
-		
 		// Strip mIRC colors and formatting
 		text = Colors.removeFormattingAndColors(text);
 
@@ -361,8 +340,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onMode(String target, String sourceNick, String sourceLogin, String sourceHostname, String mode)
 	{
-		debug("Mode", target + " " + sourceNick + " " + mode);
-		
 		/*//Disabled as it doubles events (e.g. onOp and onMode will be called)
 		Message message = new Message(sourceNick + " sets mode " + mode);
 		server.getChannel(target).addMessage(message);
@@ -380,8 +357,7 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onNickChange(String oldNick, String login, String hostname, String newNick)
 	{
-		debug("Nick", oldNick + " " + newNick);
-		
+		// XXX: Optimization : No getter in for loop
 		for (String target : getChannelsByNickname(newNick)) {
 			Message message = new Message(oldNick + " is now known as " + newNick);
 			message.setColor(Message.COLOR_GREEN);
@@ -400,8 +376,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onNotice(String sourceNick, String sourceLogin, String sourceHostname, String target, String notice)
 	{
-		debug("Notice", sourceNick + " " + notice);
-
 		// Strip mIRC colors and formatting
 		notice = Colors.removeFormattingAndColors(notice);
 		
@@ -429,8 +403,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onOp(String target, String sourceNick, String sourceLogin, String sourceHostname, String recipient)
 	{
-		debug("Op", target + " " + recipient + "(" + sourceNick + ")");
-		
 		Message message = new Message(sourceNick + " ops " + recipient);
 		message.setColor(Message.COLOR_BLUE);
 		message.setIcon(R.drawable.op);
@@ -448,8 +420,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onPart(String target, String sender, String login, String hostname)
 	{
-		debug("Part", target + " " + sender);
-		
 		if (sender.equals(getNick())) {
 			// We parted a channel
 			server.removeConversation(target);
@@ -477,8 +447,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onPrivateMessage(String sender, String login, String hostname, String text)
 	{
-		debug("PrivateMessage", sender + " " + text);
-		
 		// Strip mIRC colors and formatting
 		text = Colors.removeFormattingAndColors(text);
 
@@ -516,9 +484,8 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onQuit(String sourceNick, String sourceLogin, String sourceHostname, String reason)
 	{
-		debug("Quit", sourceNick);
-		
 		if (!sourceNick.equals(this.getNick())) {
+			// XXX: Optimization : No getter in for loop
 			for (String target : getChannelsByNickname(sourceNick)) {
 				Message message = new Message(sourceNick + " quits (" + reason + ")");
 				message.setColor(Message.COLOR_GREEN);
@@ -560,8 +527,6 @@ public class IRCConnection extends PircBot
 		// strip mIRC colors
 		topic = Colors.removeFormattingAndColors(topic);
 		
-		debug("Topic", target + " " + setBy + " " + topic);
-		
 		if (changed) {
 			Message message = new Message(setBy + " sets topic: " + topic);
 			message.setColor(Message.COLOR_YELLOW);
@@ -587,8 +552,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onUserList(String channel, User[] users)
 	{
-		debug("UserList", channel + " (" + users.length + ")");
-		
 		// XXX: Store user list somewhere and keep it updated or just broadcast some event?
 	}
 
@@ -598,8 +561,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onVoice(String target, String sourceNick, String sourceLogin, String sourceHostname, String recipient)
 	{
-		debug("Voice", target + " " + recipient + "(" + sourceNick + ")");
-		
 		Message message = new Message(sourceNick + " voices " + recipient);
 		message.setIcon(R.drawable.voice);
 		message.setColor(Message.COLOR_BLUE);
@@ -617,8 +578,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onRemoveChannelKey(String target, String sourceNick, String sourceLogin, String sourceHostname, String key)
 	{
-		debug("onRemoveChannelKey", target + " " + sourceNick + " " + key);
-		
 		Message message = new Message(sourceNick + " removes channel key");
 		message.setColor(Message.COLOR_BLUE);
 		server.getConversation(target).addMessage(message);
@@ -634,8 +593,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onSetChannelKey(String target, String sourceNick, String sourceLogin, String sourceHostname, String key)
 	{
-		debug("onSetChannelKey", target + " " + sourceNick + " " + key);
-		
 		Message message = new Message(sourceNick + " sets channel key: " + key);
 		message.setColor(Message.COLOR_BLUE);
 		server.getConversation(target).addMessage(message);
@@ -651,8 +608,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onSetSecret(String target, String sourceNick, String sourceLogin, String sourceHostname)
 	{
-		debug("onSetSecret", sourceNick + " " + target);
-		
 		Message message = new Message(sourceNick + " sets channel secret");
 		message.setColor(Message.COLOR_BLUE);
 		server.getConversation(target).addMessage(message);
@@ -668,8 +623,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onRemoveSecret(String target, String sourceNick, String sourceLogin, String sourceHostname)
 	{
-		debug("onRemoveSecret", sourceNick + " " + target);
-		
 		Message message = new Message(sourceNick + " sets channel public");
 		message.setColor(Message.COLOR_BLUE);
 		server.getConversation(target).addMessage(message);
@@ -685,8 +638,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onSetChannelLimit(String target, String sourceNick, String sourceLogin, String sourceHostname, int limit)
 	{
-		debug("onSetChannelLimit", sourceNick + " " + target);
-		
 		Message message = new Message(sourceNick + " sets limit: " + limit);
 		message.setColor(Message.COLOR_BLUE);
 		server.getConversation(target).addMessage(message);
@@ -702,8 +653,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onRemoveChannelLimit(String target, String sourceNick, String sourceLogin, String sourceHostname)
 	{
-		debug("onRemoveChannelLimit", sourceNick + " " + target);
-		
 		Message message = new Message(sourceNick + " removes limit");
 		message.setColor(Message.COLOR_BLUE);
 		server.getConversation(target).addMessage(message);
@@ -719,8 +668,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onSetChannelBan(String target, String sourceNick, String sourceLogin, String sourceHostname, String hostmask)
 	{
-		debug("onSetChannelBan", sourceNick + " " + target);
-		
 		Message message = new Message(sourceNick + " sets ban: " + hostmask);
 		message.setColor(Message.COLOR_BLUE);
 		server.getConversation(target).addMessage(message);
@@ -736,8 +683,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onRemoveChannelBan(String target, String sourceNick, String sourceLogin, String sourceHostname, String hostmask)
 	{
-		debug("onRemoveChannelBan", sourceNick + " " + target);
-		
 		Message message = new Message(sourceNick + " removes ban: " + hostmask);
 		message.setColor(Message.COLOR_BLUE);
 		server.getConversation(target).addMessage(message);
@@ -753,8 +698,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onSetTopicProtection(String target, String sourceNick, String sourceLogin, String sourceHostname)
 	{
-		debug("onSetTopicProtection", sourceNick + " " + target);
-		
 		Message message = new Message(sourceNick + " sets topic protection");
 		message.setColor(Message.COLOR_BLUE);
 		server.getConversation(target).addMessage(message);
@@ -770,8 +713,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onRemoveTopicProtection(String target, String sourceNick, String sourceLogin, String sourceHostname)
 	{
-		debug("onRemoveTopicProtection", sourceNick + " " + target);
-		
 		Message message = new Message(sourceNick + " removes topic protection");
 		message.setColor(Message.COLOR_BLUE);
 		server.getConversation(target).addMessage(message);
@@ -787,8 +728,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onSetNoExternalMessages(String target, String sourceNick, String sourceLogin, String sourceHostname)
 	{
-		debug("onSetNoExternalMessages", sourceNick + " " + target);
-		
 		Message message = new Message(sourceNick + " disables external messages");
 		message.setColor(Message.COLOR_BLUE);
 		server.getConversation(target).addMessage(message);
@@ -804,8 +743,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onRemoveNoExternalMessages(String target, String sourceNick, String sourceLogin, String sourceHostname)
 	{
-		debug("onRemoveNoExternalMessages", sourceNick + " " + target);
-		
 		Message message = new Message(sourceNick + " enables external messages");
 		message.setColor(Message.COLOR_BLUE);
 		server.getConversation(target).addMessage(message);
@@ -821,8 +758,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onSetInviteOnly(String target, String sourceNick, String sourceLogin, String sourceHostname)
 	{
-		debug("onSetInviteOnly", sourceNick + " " + target);
-		
 		Message message = new Message(sourceNick + " sets invite only");
 		message.setColor(Message.COLOR_BLUE);
 		server.getConversation(target).addMessage(message);
@@ -838,8 +773,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onRemoveInviteOnly(String target, String sourceNick, String sourceLogin, String sourceHostname)
 	{
-		debug("onRemoveInviteOnly", sourceNick + " " + target);
-		
 		Message message = new Message(sourceNick + " removes invite only");
 		message.setColor(Message.COLOR_BLUE);
 		server.getConversation(target).addMessage(message);
@@ -855,8 +788,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onSetModerated(String target, String sourceNick, String sourceLogin, String sourceHostname)
 	{
-		debug("onSetModerated", sourceNick + " " + target);
-		
 		Message message = new Message(sourceNick + " sets moderated");
 		message.setColor(Message.COLOR_BLUE);
 		server.getConversation(target).addMessage(message);
@@ -872,8 +803,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onRemoveModerated(String target, String sourceNick, String sourceLogin, String sourceHostname)
 	{
-		debug("onRemoveModerated", sourceNick + " " + target);
-		
 		Message message = new Message(sourceNick + " removes moderated");
 		message.setColor(Message.COLOR_BLUE);
 		server.getConversation(target).addMessage(message);
@@ -889,8 +818,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onSetPrivate(String target, String sourceNick, String sourceLogin, String sourceHostname)
 	{
-		debug("onSetPrivate", sourceNick + " " + target);
-		
 		Message message = new Message(sourceNick + " sets channel private");
 		message.setColor(Message.COLOR_BLUE);
 		server.getConversation(target).addMessage(message);
@@ -906,8 +833,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onRemovePrivate(String target, String sourceNick, String sourceLogin, String sourceHostname)
 	{
-		debug("onRemovePrivate", sourceNick + " " + target);
-		
 		Message message = new Message(sourceNick + " sets channel public");
 		message.setColor(Message.COLOR_BLUE);
 		server.getConversation(target).addMessage(message);
@@ -923,8 +848,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onUnknown(String line)
 	{
-		debug("Unknown", line);
-		
 		Message message = new Message(line);
 		message.setIcon(R.drawable.action);
 		message.setColor(Message.COLOR_GREY);
@@ -942,8 +865,6 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onServerResponse(int code, String response)
 	{
-		debug("ServerResponse", code + " " + response);
-		
 		if (code == 372 || code == 375 || code == 376) {
 			// Skip MOTD
 			return;
@@ -995,16 +916,6 @@ public class IRCConnection extends PircBot
 		cIntent.putExtra(Broadcast.EXTRA_CONVERSATION, ServerInfo.DEFAULT_NAME);
 		service.sendBroadcast(cIntent);
 	}
-
-	/**
-	 * Print an event to the debug console 
-	 */
-	private void debug(String event, String params)
-	{
-		if (DEBUG_EVENTS) {
-			Log.d(TAG, "(" + server.getTitle() + ") [" + event + "]: " + params);
-		}
-	}
 	
 	/**
 	 * Get all channels where the user with the given nickname is online
@@ -1016,7 +927,9 @@ public class IRCConnection extends PircBot
 	{
 		Vector<String> channels = new Vector<String>();
 		
+		// XXX: Optimization : No getter in for loop
 		for (String channel : this.getChannels()) {
+			// XXX: Optimization : No getter in for loop
 			for (User user : this.getUsers(channel)) {
 				if (user.getNick().equals(nickname)) {
 					channels.add(channel);
@@ -1024,8 +937,6 @@ public class IRCConnection extends PircBot
 				}
 			}
 		}
-		
-		Log.d(TAG, "Found " + channels.size() + " channels for nickname " + nickname);
 		
 		return channels;
 	}
