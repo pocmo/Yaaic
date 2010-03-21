@@ -20,9 +20,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.model;
 
-import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
 
 import org.yaaic.adapter.MessageListAdapter;
 
@@ -43,8 +41,8 @@ public abstract class Conversation
 	
 	public static final int HISTORY_SIZE = 30;
 	
-	private List<Message> buffer;
-	private List<Message> history;
+	private LinkedList<Message> buffer;
+	private LinkedList<Message> history;
 	private String name;
 	private MessageListAdapter adapter;
 	
@@ -62,8 +60,8 @@ public abstract class Conversation
 	 */
 	public Conversation(String name)
 	{
-		this.buffer = Collections.synchronizedList(new LinkedList<Message>());
-		this.history = Collections.synchronizedList(new LinkedList<Message>());
+		this.buffer = new LinkedList<Message>();
+		this.history = new LinkedList<Message>();
 		this.name = name.toLowerCase();
 	}
 	
