@@ -85,11 +85,11 @@ public abstract class Conversation
 	}
 	
 	/**
-	 * Get size of the current history
+	 * Get the history
 	 */
-	public int getHistorySize()
+	public LinkedList<Message> getHistory()
 	{
-		return history.size();
+		return history;
 	}
 	
 	/**
