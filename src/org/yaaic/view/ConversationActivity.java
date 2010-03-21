@@ -20,6 +20,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.view;
 
+import java.util.Collection;
+
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -105,7 +107,10 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
 		switcher = (ViewSwitcher) findViewById(R.id.switcher);
 		
-		for (Conversation conversation : server.getConversations()) {
+		// Optimization : cache field lookups 
+		Collection<Conversation> mConversations = server.getConversations();
+		
+		for (Conversation conversation : mConversations) {
 			onNewConversation(conversation.getName());
 		}
 	}
@@ -120,8 +125,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		
 		((ImageView) findViewById(R.id.status)).setImageResource(server.getStatusIcon());
 		
-        Intent intent = new Intent(this, IRCService.class);
-        bindService(intent, this, 0);
+        bindService(new Intent(this, IRCService.class), this, 0);
         
     	channelReceiver = new ConversationReceiver(server.getId(), this);
     	registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_MESSAGE));
@@ -136,13 +140,17 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		} else {
 			 ((EditText) findViewById(R.id.input)).setEnabled(true);
 		}
+
+		// Optimization - cache field lookup
+		Collection<Conversation> mConversations = server.getConversations();
+		MessageListAdapter mAdapter;
 		
 		// Fill view with messages that have been buffered while paused
-		for (Conversation conversation : server.getConversations()) {
-			while (conversation.hasBufferedMessages()) {
-				if (conversation.getMessageListAdapter() != null) {
-					conversation.getMessageListAdapter().addMessage(conversation.pollBufferedMessage());
-				}
+		for (Conversation conversation : mConversations) {
+			mAdapter = conversation.getMessageListAdapter();
+			
+			if (mAdapter != null) {
+				mAdapter.addBulkMessages(conversation.getBuffer());
 			}
 		}
 	}
