@@ -116,6 +116,16 @@ public abstract class Conversation
 	}
 	
 	/**
+	 * Get the buffer
+	 * 
+	 * @return
+	 */
+	public LinkedList<Message> getBuffer()
+	{
+		return buffer;
+	}
+	
+	/**
 	 * Does the channel have buffered messages?
 	 */
 	public boolean hasBufferedMessages()
