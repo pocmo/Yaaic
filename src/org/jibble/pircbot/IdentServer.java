@@ -56,8 +56,7 @@ public class IdentServer extends Thread {
      * @param bot The PircBot instance that will be used to log to.
      * @param login The login that the ident server will respond with.
      */
-    IdentServer(PircBot bot, String login) {
-        _bot = bot;
+    IdentServer(String login) {
         _login = login;
 
         try {
@@ -65,11 +64,9 @@ public class IdentServer extends Thread {
             _ss.setSoTimeout(60000);
         }
         catch (Exception e) {
-            _bot.log("*** Could not start the ident server on port 113.");
             return;
         }
         
-        _bot.log("*** Ident server running on port 113 for the next 60 seconds...");
         this.setName(this.getClass() + "-Thread");
         this.start();
     }
@@ -90,11 +87,9 @@ public class IdentServer extends Thread {
             
             String line = reader.readLine();
             if (line != null) {
-                _bot.log("*** Ident request received: " + line);
                 line = line + " : USERID : UNIX : " + _login;
                 writer.write(line + "\r\n");
                 writer.flush();
-                _bot.log("*** Ident reply sent: " + line);
                 writer.close();
             }
         }
@@ -109,10 +104,8 @@ public class IdentServer extends Thread {
             // Doesn't really matter...
         }
         
-        _bot.log("*** The Ident server has been shut down.");
     }
     
-    private PircBot _bot;
     private String _login;
     private ServerSocket _ss = null;
     

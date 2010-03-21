@@ -16,7 +16,6 @@ package org.jibble.pircbot;
 
 import java.io.*;
 import java.net.*;
-import java.util.*;
 
 /**
  * A Thread which reads lines from the IRC server.  It then
@@ -97,17 +96,6 @@ public class InputThread extends Thread {
                             PrintWriter pw = new PrintWriter(sw);
                             t.printStackTrace(pw);
                             pw.flush();
-                            StringTokenizer tokenizer = new StringTokenizer(sw.toString(), "\r\n");
-                            synchronized (_bot) {
-                                _bot.log("### Your implementation of PircBot is faulty and you have");
-                                _bot.log("### allowed an uncaught Exception or Error to propagate in your");
-                                _bot.log("### code. It may be possible for PircBot to continue operating");
-                                _bot.log("### normally. Here is the stack trace that was produced: -");
-                                _bot.log("### ");
-                                while (tokenizer.hasMoreTokens()) {
-                                    _bot.log("### " + tokenizer.nextToken());
-                                }
-                            }
                         }
                     }
                     if (line == null) {
@@ -136,7 +124,6 @@ public class InputThread extends Thread {
         }
 
         if (!_disposed) {
-            _bot.log("*** Disconnected.");        
             _isConnected = false;
             _bot.onDisconnect();
         }
