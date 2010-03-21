@@ -50,10 +50,13 @@ public class NamesHandler extends BaseHandler
 		}
 		
 		StringBuffer userList = new StringBuffer("Users " + conversation.getName() + ":");
-		for (User user : service.getConnection(server.getId()).getUsers(conversation.getName())) {
+		
+		User[] mUsers = service.getConnection(server.getId()).getUsers(conversation.getName());
+		int mSize = mUsers.length;
+		for (int i = 0; i < mSize; i++) {
 			userList.append(" ");
-			userList.append(user.getPrefix());
-			userList.append(user.getNick());
+			userList.append(mUsers[i].getPrefix());
+			userList.append(mUsers[i].getNick());
 		}
 		
 		Message message = new Message(userList.toString());
