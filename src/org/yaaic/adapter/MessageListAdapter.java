@@ -91,6 +91,28 @@ public class MessageListAdapter extends BaseAdapter
 	}
 	
 	/**
+	 * Add a list of messages to the list
+	 * 
+	 * @param messages
+	 */
+	public void addBulkMessages(LinkedList<Message> messages)
+	{
+		LinkedList<TextView> mMessages = this.messages;
+		Context mContext = this.context;
+		int mSize = messages.size();
+		
+		for (int i = 0; i < mSize; i++) {
+			mMessages.add(messages.get(i).renderTextView(mContext));
+			
+			if (mMessages.size() > Conversation.HISTORY_SIZE) {
+				mMessages.remove(0);
+			}
+		}
+		
+		notifyDataSetChanged();
+	}
+	
+	/**
 	 * Get number of items
 	 * 
 	 * @return
