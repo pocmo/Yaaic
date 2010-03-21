@@ -22,6 +22,7 @@ package org.yaaic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import org.yaaic.model.Server;
 
@@ -115,7 +116,8 @@ public class Yaaic
 	{
 		ArrayList<Server> serverList = new ArrayList<Server>();
 		
-		for (int key : servers.keySet()) {
+		Set<Integer> mKeys = servers.keySet();
+		for (int key : mKeys) {
 			serverList.add(servers.get(key));
 		}
 		
