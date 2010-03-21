@@ -60,7 +60,7 @@ import org.yaaic.receiver.ServerReceiver;
 public class ServersActivity extends ListActivity implements ServiceConnection, ServerListener, OnItemLongClickListener {
 	public static final String TAG = "Yaaic/ServersActivity";
 	
-	private IRCBinder binder;
+	//private IRCBinder binder;
 	private ServerReceiver receiver;
 	private ServerListAdapter adapter;
 	
@@ -72,6 +72,8 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.servers);
+        
+        Yaaic.getInstance().loadServers(this);
         
         adapter = new ServerListAdapter();
         setListAdapter(adapter);
@@ -89,9 +91,9 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
     	super.onResume();
     	
         // Start and connect to service
-        Intent intent = new Intent(this, IRCService.class);
-        startService(intent);
-        bindService(intent, this, 0);
+        //Intent intent = new Intent(this, IRCService.class);
+        //startService(intent);
+        //bindService(intent, this, 0);
 
     	receiver = new ServerReceiver(this);
     	registerReceiver(receiver, new IntentFilter(Broadcast.SERVER_UPDATE));
@@ -107,7 +109,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
     {
     	super.onPause();
     	
-    	unbindService(this);
+    	//unbindService(this);
     	unregisterReceiver(receiver);
     }
     
@@ -116,7 +118,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
      */
 	public void onServiceConnected(ComponentName name, IBinder service)
 	{
-		binder = (IRCBinder) service;
+		//binder = (IRCBinder) service;
 	}
 
 	/**
@@ -124,7 +126,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 	 */
 	public void onServiceDisconnected(ComponentName name)
 	{
-		binder = null;
+		//binder = null;
 	}
 
 	/**
@@ -165,19 +167,19 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 		    public void onClick(DialogInterface dialog, int item) {
 		        switch (item) {
 			        case 0: // Connect
-			        	binder.connect(server);
+			        	//binder.connect(server);
 			        	server.setStatus(Status.CONNECTING);
 			        	adapter.notifyDataSetChanged();
 			        	break;
 			        case 1: // Disconnect
 			        	server.clearConversations();
-						binder.getService().getConnection(server.getId()).quitServer();
+						//binder.getService().getConnection(server.getId()).quitServer();
 			        	break;
 			        case 2: // Edit
 			        	editServer(server.getId());
 			        	break;
 			        case 3: // Delete
-			        	binder.getService().getConnection(server.getId()).quitServer();
+			        	//binder.getService().getConnection(server.getId()).quitServer();
 		        		deleteServer(server.getId());
 			        	break;
 		        }

@@ -1036,6 +1036,10 @@ public class IRCConnection extends PircBot
 	@Override
 	public void quitServer()
 	{
-		quitServer("Yaaic - Yet another Android IRC client - http://www.yaaic.org");
+		new Thread() {
+			public void run() {
+				quitServer("Yaaic - Yet another Android IRC client - http://www.yaaic.org");
+			}
+		}.start();
 	}
 }

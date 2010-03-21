@@ -98,7 +98,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		
 		((TextView) findViewById(R.id.title)).setText(server.getTitle());
 		((EditText) findViewById(R.id.input)).setOnKeyListener(this);
-
+		
         deckAdapter = new DeckAdapter();
 		deck = (Gallery) findViewById(R.id.deck);
 		deck.setOnItemSelectedListener(this);
@@ -123,7 +123,9 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		
 		((ImageView) findViewById(R.id.status)).setImageResource(server.getStatusIcon());
 		
+		// Start service
         Intent intent = new Intent(this, IRCService.class);
+        startService(intent);
         bindService(intent, this, 0);
         
     	channelReceiver = new ConversationReceiver(server.getId(), this);
@@ -145,6 +147,10 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 			while (conversation.hasBufferedMessages()) {
 				if (conversation.getMessageListAdapter() != null) {
 					conversation.getMessageListAdapter().addMessage(conversation.pollBufferedMessage());
+				} else {
+					// There's no adapter... so let's remove the buffer
+					conversation.clearBuffer();
+					Log.d("Yaaic", "No MessageListAdapter found - clear buffer");
 				}
 			}
 		}
@@ -158,6 +164,15 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	{
 		super.onPause();
 		
+		binder.getService().checkServiceStatus();
+		
+		/*if (!binder.getService().hasConnections()) {
+			Log.d("Yaaic", "Stopping service");
+			//binder.getService().stopSelf();
+		} else {
+			Log.d("Yaaic", "Unbinding service");
+		}*/
+
 		unbindService(this);
 		unregisterReceiver(channelReceiver);
 		unregisterReceiver(serverReceiver);
@@ -209,10 +224,12 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		switch (item.getItemId()) {
 			case R.id.disconnect:
 				binder.getService().getConnection(serverId).quitServer();
+				server.setStatus(Status.DISCONNECTED);
 				server.clearConversations();
 				setResult(RESULT_OK);
 				finish();
 				break;
+				
 			case R.id.join:
 				startActivityForResult(new Intent(this, JoinActivity.class), 0);
 				break;
