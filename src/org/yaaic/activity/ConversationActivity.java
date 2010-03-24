@@ -18,7 +18,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.yaaic.view;
+package org.yaaic.activity;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -62,6 +62,7 @@ import org.yaaic.model.Server;
 import org.yaaic.model.Status;
 import org.yaaic.receiver.ConversationReceiver;
 import org.yaaic.receiver.ServerReceiver;
+import org.yaaic.view.MessageListView;
 
 /**
  * The server view with a scrollable list of all channels
