@@ -24,6 +24,7 @@ import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.NickAlreadyInUseException;
 import org.yaaic.R;
 import org.yaaic.model.Broadcast;
+import org.yaaic.model.Extra;
 import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 import org.yaaic.model.ServerInfo;
@@ -83,8 +84,8 @@ public class IRCBinder extends Binder
 					
 					
 					server.setStatus(Status.DISCONNECTED);
-					Intent sIntent = new Intent(Broadcast.SERVER_UPDATE);
-					sIntent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+					
+					Intent sIntent = Broadcast.createServerIntent(Broadcast.SERVER_UPDATE, server.getId());
 					service.sendBroadcast(sIntent);
 					
 					IRCConnection connection = getService().getConnection(server.getId());
@@ -103,9 +104,11 @@ public class IRCBinder extends Binder
 					message.setIcon(R.drawable.error);
 					server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(message);
 					
-					Intent cIntent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-					cIntent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-					cIntent.putExtra(Broadcast.EXTRA_CONVERSATION, ServerInfo.DEFAULT_NAME);
+					Intent cIntent = Broadcast.createConversationIntent(
+						Extra.CONVERSATION,
+						server.getId(),
+						ServerInfo.DEFAULT_NAME
+					);
 					service.sendBroadcast(cIntent);
 				}
 			}

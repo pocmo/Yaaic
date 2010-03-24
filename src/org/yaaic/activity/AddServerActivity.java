@@ -35,7 +35,7 @@ import org.yaaic.R;
 import org.yaaic.Yaaic;
 import org.yaaic.db.Database;
 import org.yaaic.exception.ValidationException;
-import org.yaaic.model.Broadcast;
+import org.yaaic.model.Extra;
 import org.yaaic.model.Identity;
 import org.yaaic.model.Server;
 import org.yaaic.model.Status;
@@ -64,10 +64,10 @@ public class AddServerActivity extends Activity implements OnClickListener
         ((Button) findViewById(R.id.cancel)).setOnClickListener(this);
         
         Bundle extras = getIntent().getExtras();
-        if (extras != null && extras.containsKey(Broadcast.EXTRA_SERVER)) {
+        if (extras != null && extras.containsKey(Extra.SERVER)) {
         	// Request to edit an existing server
         	Database db = new Database(this);
-        	this.server = db.getServerById(extras.getInt(Broadcast.EXTRA_SERVER));
+        	this.server = db.getServerById(extras.getInt(Extra.SERVER));
         	db.close();
         	
         	// Set server values
