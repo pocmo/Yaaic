@@ -43,8 +43,6 @@ import org.yaaic.R;
 import org.yaaic.Yaaic;
 import org.yaaic.adapter.ServerListAdapter;
 import org.yaaic.db.Database;
-import org.yaaic.irc.IRCBinder;
-import org.yaaic.irc.IRCService;
 import org.yaaic.layout.NonScalingBackgroundDrawable;
 import org.yaaic.listener.ServerListener;
 import org.yaaic.model.Broadcast;

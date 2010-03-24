@@ -24,11 +24,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.yaaic.db.Database;
-import org.yaaic.model.Broadcast;
 import org.yaaic.model.Server;
 
 import android.content.Context;
-import android.content.Intent;
 
 /**
  * Global Master Class :)
