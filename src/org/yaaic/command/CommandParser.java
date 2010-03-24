@@ -108,14 +108,106 @@ public class CommandParser
 	}
 	
 	/**
-	 * Is the given command a valid command?
+	 * Is the given command a valid client command?
 	 * 
-	 * @param command
-	 * @return
+	 * @param command The (client) command to check (/command)
+	 * @return true if the command can be handled by the client, false otherwise
 	 */
-	public boolean isCommand(String command)
+	public boolean isClientCommand(String command)
 	{
-		return commands.containsKey(command);
+		return commands.containsKey(command.toLowerCase());
+	}
+	
+	/**
+	 * Is the given command a valid server command?
+	 * 
+	 * @param command The (server) command to check (/command)
+	 * @return true if the command can be handled by a server, false otherwise
+	 */
+	public boolean isServerCommand(String command)
+	{
+		 // XXX: Implement white list
+		return true;
+	}
+	
+	/**
+	 * Handle a client command
+	 * 
+	 * @param type Type of the command (/type param1 param2 ..)
+	 * @param params The parameters of the command (0 is the command itself)
+	 * @param server The current server
+	 * @param conversation The selected conversation
+	 * @param service The service handling the connections
+	 */
+	public void handleClientCommand(String type, String[] params, Server server, Conversation conversation, IRCService service)
+	{
+		BaseHandler command = commands.get(type);
+		try {
+			command.execute(params, server, conversation, service);
+		} catch(CommandException e) {
+			// Command could not be executed
+			if (conversation != null) {
+				Message errorMessage = new Message(type + ": " + e.getMessage());
+				errorMessage.setColor(Message.COLOR_RED);
+				conversation.addMessage(errorMessage);
+				
+				Message usageMessage = new Message("Syntax: " + command.getUsage());
+				conversation.addMessage(usageMessage);
+				
+				Intent intent = Broadcast.createConversationIntent(
+					Broadcast.CONVERSATION_MESSAGE,
+					server.getId(),
+					conversation.getName()
+				);
+
+				service.sendBroadcast(intent);
+			}
+		}
+	}
+	
+	/**
+	 * Handle a server command
+	 * 
+	 * @param type Type of the command (/type param1 param2 ..)
+	 * @param params The parameters of the command (0 is the command itself)
+	 * @param server The current server
+	 * @param conversation The selected conversation
+	 * @param service The service handling the connections
+	 */
+	public void handleServerCommand(String type, String[] params, Server server, Conversation conversation, IRCService service)
+	{
+		if (params.length > 1) {
+			service.getConnection(server.getId()).sendRawLineViaQueue(
+				type.toUpperCase() + " " + BaseHandler.mergeParams(params)
+			);
+		} else {
+			service.getConnection(server.getId()).sendRawLineViaQueue(type.toUpperCase());
+		}
+	}
+	
+	/**
+	 * Handle an unknown command
+	 * 
+	 * @param type Type of the command (/type param1 param2 ..)
+	 * @param server The current server
+	 * @param conversation The selected conversation
+	 * @param service The service handling the connections
+	 */
+	public void handleUnknownCommand(String type, Server server, Conversation conversation, IRCService service)
+	{
+		if (conversation != null) {
+			Message message = new Message("Unknown command: " + type);
+			message.setColor(Message.COLOR_RED);
+			conversation.addMessage(message);
+			
+			Intent intent = Broadcast.createConversationIntent(
+				Broadcast.CONVERSATION_MESSAGE,
+				server.getId(),
+				conversation.getName()
+			);
+			
+			service.sendBroadcast(intent);
+		}
 	}
 	
 	/**
@@ -129,51 +221,12 @@ public class CommandParser
 		String[] params = line.split(" ");
 		String type = params[0];
 		
-		if (isCommand(type)) {
-			BaseHandler command = commands.get(type);
-			try {
-				command.execute(params, server, conversation, service);
-			} catch(CommandException e) {
-				// Wrong number of params
-				if (conversation != null) {
-					Message errorMessage = new Message(type + ": " + e.getMessage());
-					errorMessage.setColor(Message.COLOR_RED);
-					conversation.addMessage(errorMessage);
-					
-					Message usageMessage = new Message("Syntax: " + command.getUsage());
-					conversation.addMessage(usageMessage);
-					
-					Intent intent = Broadcast.createConversationIntent(
-						Broadcast.CONVERSATION_MESSAGE,
-						server.getId(),
-						conversation.getName()
-					);
-
-					service.sendBroadcast(intent);
-				}
-			}
+		if (isClientCommand(type)) {
+			handleClientCommand(type, params, server, conversation, service);
+		} else if (isServerCommand(type)) {
+			handleServerCommand(type, params, server, conversation, service);
 		} else {
-			// Unknown command
-			if (params.length > 1) {
-				// Send command to server
-				service.getConnection(server.getId()).sendRawLineViaQueue(
-					params[0].toUpperCase() + " " + BaseHandler.mergeParams(params)
-				);
-			} else {
-				if (conversation != null) {
-					Message message = new Message("Unknown command: " + type);
-					message.setColor(Message.COLOR_RED);
-					conversation.addMessage(message);
-					
-					Intent intent = Broadcast.createConversationIntent(
-						Broadcast.CONVERSATION_MESSAGE,
-						server.getId(),
-						conversation.getName()
-					);
-					
-					service.sendBroadcast(intent);
-				}
-			}
+			handleUnknownCommand(type, server, conversation, service);
 		}
 	}
 }
