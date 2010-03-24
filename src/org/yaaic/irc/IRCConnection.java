@@ -141,9 +141,12 @@ public class IRCConnection extends PircBot
 		message.setColor(Message.COLOR_GREEN);
 		server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(message);
 		
-		Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-		intent.putExtra(Broadcast.EXTRA_CONVERSATION, ServerInfo.DEFAULT_NAME);
+		Intent intent = Broadcast.createConversationIntent(
+			Broadcast.CONVERSATION_MESSAGE,
+			server.getId(),
+			ServerInfo.DEFAULT_NAME
+		);
+		
 		service.sendBroadcast(intent);
 	}
 	
@@ -174,24 +177,30 @@ public class IRCConnection extends PircBot
 				conversation = new Query(sender);
 				server.addConversationl(conversation);
 				conversation.addMessage(message);
-				
-				Intent intent = new Intent(Broadcast.CONVERSATION_NEW);
-				intent.putExtra(Broadcast.EXTRA_CONVERSATION, sender);
-				intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+
+				Intent intent = Broadcast.createConversationIntent(
+					Broadcast.CONVERSATION_NEW,
+					server.getId(),
+					sender
+				);
 				service.sendBroadcast(intent);
 			} else {
-				Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-				intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-				intent.putExtra(Broadcast.EXTRA_CONVERSATION, sender);
+				Intent intent = Broadcast.createConversationIntent(
+					Broadcast.CONVERSATION_MESSAGE,
+					server.getId(),
+					sender
+				);
 				service.sendBroadcast(intent);
 			}
 		} else {
 			// A action in a channel
 			server.getConversation(target).addMessage(message);
 			
-			Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-			intent.putExtra(Broadcast.EXTRA_CONVERSATION, target);
+			Intent intent = Broadcast.createConversationIntent(
+				Broadcast.CONVERSATION_MESSAGE,
+				server.getId(),
+				target
+			);
 			service.sendBroadcast(intent);
 		}
 	}
@@ -218,9 +227,12 @@ public class IRCConnection extends PircBot
 		message.setColor(Message.COLOR_BLUE);
 		server.getConversation(target).addMessage(message);
 		
-		Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-		intent.putExtra(Broadcast.EXTRA_CONVERSATION, target);
+		Intent intent = Broadcast.createConversationIntent(
+			Broadcast.CONVERSATION_MESSAGE,
+			server.getId(),
+			target
+		);
+
 		service.sendBroadcast(intent);
 	}
 
@@ -237,9 +249,12 @@ public class IRCConnection extends PircBot
 		message.setIcon(R.drawable.voice);
 		server.getConversation(target).addMessage(message);
 		
-		Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-		intent.putExtra(Broadcast.EXTRA_CONVERSATION, target);
+		Intent intent = Broadcast.createConversationIntent(
+			Broadcast.CONVERSATION_MESSAGE,
+			server.getId(),
+			target
+		);
+	
 		service.sendBroadcast(intent);
 	}
 
@@ -256,18 +271,22 @@ public class IRCConnection extends PircBot
 			Message message = new Message(sourceNick + " invites you into " + target);
 			server.getConversation(server.getSelectedConversation()).addMessage(message);
 			
-			Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-			intent.putExtra(Broadcast.EXTRA_CONVERSATION, server.getSelectedConversation());
+			Intent intent = Broadcast.createConversationIntent(
+				Broadcast.CONVERSATION_MESSAGE,
+				server.getId(),
+				server.getSelectedConversation()
+			);
 			service.sendBroadcast(intent);
 		} else {
 			// Someone is invited
 			Message message = new Message(sourceNick + " invites " + targetNick + " into " + target);
 			server.getConversation(target).addMessage(message);
 			
-			Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-			intent.putExtra(Broadcast.EXTRA_CONVERSATION, target);
+			Intent intent = Broadcast.createConversationIntent(
+				Broadcast.CONVERSATION_MESSAGE,
+				server.getId(),
+				target
+			);
 			service.sendBroadcast(intent);
 		}
 	}
@@ -284,9 +303,11 @@ public class IRCConnection extends PircBot
 			// We joined a new channel
 			server.addConversationl(new Channel(target));
 			
-			Intent intent = new Intent(Broadcast.CONVERSATION_NEW);
-			intent.putExtra(Broadcast.EXTRA_CONVERSATION, target);
-			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+			Intent intent = Broadcast.createConversationIntent(
+				Broadcast.CONVERSATION_NEW,
+				server.getId(),
+				target
+			);
 			service.sendBroadcast(intent);
 		} else {
 			Message message = new Message(sender + " joins");
@@ -294,9 +315,11 @@ public class IRCConnection extends PircBot
 			message.setColor(Message.COLOR_GREEN);
 			server.getConversation(target).addMessage(message);
 			
-			Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-			intent.putExtra(Broadcast.EXTRA_CONVERSATION, target);
+			Intent intent = Broadcast.createConversationIntent(
+				Broadcast.CONVERSATION_MESSAGE,
+				server.getId(),
+				target
+			);
 			service.sendBroadcast(intent);
 		}
 	}
@@ -313,18 +336,22 @@ public class IRCConnection extends PircBot
 			// We are kicked
 			server.removeConversation(target);
 			
-			Intent intent = new Intent(Broadcast.CONVERSATION_REMOVE);
-			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-			intent.putExtra(Broadcast.EXTRA_CONVERSATION, target);
+			Intent intent = Broadcast.createConversationIntent(
+				Broadcast.CONVERSATION_REMOVE,
+				server.getId(),
+				target
+			);
 			service.sendBroadcast(intent);
 		} else {
 			Message message = new Message(kickerNick + " kicks " + recipientNick);
 			message.setColor(Message.COLOR_GREEN);
 			server.getConversation(target).addMessage(message);
 
-			Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-			intent.putExtra(Broadcast.EXTRA_CONVERSATION, target);
+			Intent intent = Broadcast.createConversationIntent(
+				Broadcast.CONVERSATION_MESSAGE,
+				server.getId(),
+				target
+			);
 			service.sendBroadcast(intent);			
 		}
 	}
@@ -349,9 +376,11 @@ public class IRCConnection extends PircBot
 		
 		server.getConversation(target).addMessage(message);
 		
-		Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-		intent.putExtra(Broadcast.EXTRA_CONVERSATION, target);
+		Intent intent = Broadcast.createConversationIntent(
+			Broadcast.CONVERSATION_MESSAGE,
+			server.getId(),
+			target
+		);
 		service.sendBroadcast(intent);
 	}
 
@@ -387,9 +416,11 @@ public class IRCConnection extends PircBot
 			message.setColor(Message.COLOR_GREEN);
 			server.getConversation(target).addMessage(message);
 			
-			Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-			intent.putExtra(Broadcast.EXTRA_CONVERSATION, target);
+			Intent intent = Broadcast.createConversationIntent(
+				Broadcast.CONVERSATION_MESSAGE,
+				server.getId(),
+				target
+			);
 			service.sendBroadcast(intent);
 		}
 	}
@@ -417,9 +448,11 @@ public class IRCConnection extends PircBot
 		message.setIcon(R.drawable.info);
 		conversation.addMessage(message);
 		
-		Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-		intent.putExtra(Broadcast.EXTRA_CONVERSATION, conversation.getName());
+		Intent intent = Broadcast.createConversationIntent(
+			Broadcast.CONVERSATION_MESSAGE,
+			server.getId(),
+			conversation.getName()
+		);
 		service.sendBroadcast(intent);
 	}
 
@@ -436,9 +469,11 @@ public class IRCConnection extends PircBot
 		message.setIcon(R.drawable.op);
 		server.getConversation(target).addMessage(message);
 		
-		Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-		intent.putExtra(Broadcast.EXTRA_CONVERSATION, target);
+		Intent intent = Broadcast.createConversationIntent(
+			Broadcast.CONVERSATION_MESSAGE,
+			server.getId(),
+			target
+		);
 		service.sendBroadcast(intent);
 	}
 
@@ -454,9 +489,11 @@ public class IRCConnection extends PircBot
 			// We parted a channel
 			server.removeConversation(target);
 			
-			Intent intent = new Intent(Broadcast.CONVERSATION_REMOVE);
-			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-			intent.putExtra(Broadcast.EXTRA_CONVERSATION, target);
+			Intent intent = Broadcast.createConversationIntent(
+				Broadcast.CONVERSATION_REMOVE,
+				server.getId(),
+				target
+			);
 			service.sendBroadcast(intent);
 		} else {
 			Message message = new Message(sender + " parts");
@@ -464,9 +501,11 @@ public class IRCConnection extends PircBot
 			message.setIcon(R.drawable.part);
 			server.getConversation(target).addMessage(message);
 			
-			Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-			intent.putExtra(Broadcast.EXTRA_CONVERSATION, target);
+			Intent intent = Broadcast.createConversationIntent(
+				Broadcast.CONVERSATION_MESSAGE,
+				server.getId(),
+				target
+			);
 			service.sendBroadcast(intent);
 		}
 	}
@@ -496,16 +535,20 @@ public class IRCConnection extends PircBot
 			conversation.addMessage(message);
 			server.addConversationl(conversation);
 			
-			Intent intent = new Intent(Broadcast.CONVERSATION_NEW);
-			intent.putExtra(Broadcast.EXTRA_CONVERSATION, sender);
-			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+			Intent intent = Broadcast.createConversationIntent(
+				Broadcast.CONVERSATION_NEW,
+				server.getId(),
+				sender
+			);
 			service.sendBroadcast(intent);
 		} else {
 			conversation.addMessage(message);
 			
-			Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-			intent.putExtra(Broadcast.EXTRA_CONVERSATION, sender);
+			Intent intent = Broadcast.createConversationIntent(
+				Broadcast.CONVERSATION_MESSAGE,
+				server.getId(),
+				sender
+			);
 			service.sendBroadcast(intent);
 		}
 	}
@@ -525,9 +568,11 @@ public class IRCConnection extends PircBot
 				message.setIcon(R.drawable.quit);
 				server.getConversation(target).addMessage(message);
 				
-				Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-				intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-				intent.putExtra(Broadcast.EXTRA_CONVERSATION, target);
+				Intent intent = Broadcast.createConversationIntent(
+					Broadcast.CONVERSATION_MESSAGE,
+					server.getId(),
+					target
+				);
 				service.sendBroadcast(intent);
 			}
 			
@@ -540,9 +585,11 @@ public class IRCConnection extends PircBot
 				message.setIcon(R.drawable.quit);
 				conversation.addMessage(message);
 				
-				Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-				intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-				intent.putExtra(Broadcast.EXTRA_CONVERSATION, conversation.getName());
+				Intent intent = Broadcast.createConversationIntent(
+					Broadcast.CONVERSATION_MESSAGE,
+					server.getId(),
+					conversation.getName()
+				);
 				service.sendBroadcast(intent);
 			}
 			
@@ -575,9 +622,11 @@ public class IRCConnection extends PircBot
 		// remember channel's topic
 		((Channel) server.getConversation(target)).setTopic(topic);
 		
-		Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-		intent.putExtra(Broadcast.EXTRA_CONVERSATION, target);
+		Intent intent = Broadcast.createConversationIntent(
+			Broadcast.CONVERSATION_MESSAGE,
+			server.getId(),
+			target
+		);
 		service.sendBroadcast(intent);
 	}
 
@@ -605,9 +654,11 @@ public class IRCConnection extends PircBot
 		message.setColor(Message.COLOR_BLUE);
 		server.getConversation(target).addMessage(message);
 		
-		Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-		intent.putExtra(Broadcast.EXTRA_CONVERSATION, target);
+		Intent intent = Broadcast.createConversationIntent(
+			Broadcast.CONVERSATION_MESSAGE,
+			server.getId(),
+			target
+		);
 		service.sendBroadcast(intent);
 	}
 	
@@ -930,9 +981,11 @@ public class IRCConnection extends PircBot
 		message.setColor(Message.COLOR_GREY);
 		server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(message);
 		
-		Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-		intent.putExtra(Broadcast.EXTRA_CONVERSATION, ServerInfo.DEFAULT_NAME);
+		Intent intent = Broadcast.createConversationIntent(
+			Broadcast.CONVERSATION_MESSAGE,
+			server.getId(),
+			ServerInfo.DEFAULT_NAME
+		);
 		service.sendBroadcast(intent);
 	}
 
@@ -968,9 +1021,11 @@ public class IRCConnection extends PircBot
 		message.setColor(Message.COLOR_GREY);
 		server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(message);
 		
-		Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-		intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-		intent.putExtra(Broadcast.EXTRA_CONVERSATION, ServerInfo.DEFAULT_NAME);
+		Intent intent = Broadcast.createConversationIntent(
+			Broadcast.CONVERSATION_MESSAGE,
+			server.getId(),
+			ServerInfo.DEFAULT_NAME
+		);
 		service.sendBroadcast(intent);
 	}
 
@@ -981,8 +1036,8 @@ public class IRCConnection extends PircBot
 	public void onDisconnect()
 	{
 		server.setStatus(Status.DISCONNECTED);
-		Intent sIntent = new Intent(Broadcast.SERVER_UPDATE);
-		sIntent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
+		
+		Intent sIntent = Broadcast.createServerIntent(Broadcast.SERVER_UPDATE, server.getId());
 		service.sendBroadcast(sIntent);		
 		
 		Message message = new Message("Disconnected");
@@ -990,9 +1045,11 @@ public class IRCConnection extends PircBot
 		message.setColor(Message.COLOR_RED);
 		server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(message);
 		
-		Intent cIntent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-		cIntent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-		cIntent.putExtra(Broadcast.EXTRA_CONVERSATION, ServerInfo.DEFAULT_NAME);
+		Intent cIntent = Broadcast.createConversationIntent(
+			Broadcast.CONVERSATION_MESSAGE,
+			server.getId(),
+			ServerInfo.DEFAULT_NAME
+		);
 		service.sendBroadcast(cIntent);
 	}
 
