@@ -22,6 +22,8 @@ package org.yaaic.command;
 
 import java.util.HashMap;
 
+import android.content.Intent;
+
 import org.yaaic.command.handler.CloseHandler;
 import org.yaaic.command.handler.DCCHandler;
 import org.yaaic.command.handler.DeopHandler;
@@ -47,8 +49,6 @@ import org.yaaic.model.Conversation;
 import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 
-import android.content.Intent;
-
 /**
  * Parser for commands
  *  
@@ -60,6 +60,14 @@ public class CommandParser
 	
 	private HashMap<String, BaseHandler> commands;
 	private static CommandParser instance;
+	
+	private final static String[] serverCommands = {
+		"admin", "motd",    "version", "away",    "knock",   "rules",
+		"vhost", "credits", "license", "setname", "watch",   "pong",
+		"cycle", "links",   "silence", "who",     "dalinfo", "userhost",
+		"list",  "stats",   "whois",   "invite",  "lusers",  "ping",
+		"time",  "whowas",  "ison",    "map",    
+	};
 
 	/**
 	 * Create a new CommandParser instance
@@ -126,8 +134,14 @@ public class CommandParser
 	 */
 	public boolean isServerCommand(String command)
 	{
-		 // XXX: Implement white list
-		return true;
+		command = command.toLowerCase();
+		for (String validCommand : serverCommands) {
+			if (validCommand.equals(command)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	/**
