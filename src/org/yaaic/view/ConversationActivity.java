@@ -271,7 +271,9 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		deckAdapter.removeItem(target);
 		
 		if (deckAdapter.isSwitched()) {
-			onBackPressed();
+			switcher.showNext();
+			switcher.removeView(deckAdapter.getSwitchedView());
+			deckAdapter.setSwitched(null, null);
 		}
 	}
 
@@ -309,32 +311,21 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	
 	/**
 	 * On key down
-	 * 
-	 * This is glue code to call onBackPressed() which
-	 * will be automatically called by later android releases
+	 *
+	 * XXX: As we only track the back key: Android >= 2.0 will call a method called onBackPressed()
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event)
 	{
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			onBackPressed();
-			return true;
+		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+			if (deckAdapter.isSwitched()) {
+				switcher.showNext();
+				switcher.removeView(deckAdapter.getSwitchedView());
+				deckAdapter.setSwitched(null, null);
+				return true;
+			}
 		}
-		return false;
-	}
-	
-	/**
-	 * On back key pressed
-	 */
-	public void onBackPressed()
-	{
-		if (deckAdapter.isSwitched()) {
-			switcher.showNext();
-			switcher.removeView(deckAdapter.getSwitchedView());
-			deckAdapter.setSwitched(null, null);
-		} else {
-			finish();
-		}
+		return super.onKeyDown(keyCode, event);
 	}
 
 	/**
