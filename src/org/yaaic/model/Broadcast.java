@@ -34,9 +34,6 @@ public abstract class Broadcast
 	public static final String CONVERSATION_MESSAGE	= "org.yaaic.conversation.message";
 	public static final String CONVERSATION_NEW		= "org.yaaic.conversation.new";
 	public static final String CONVERSATION_REMOVE	= "org.yaaic.conversation.remove";
-
-	public static final String EXTRA_SERVER			= "server";
-	public static final String EXTRA_CONVERSATION	= "conversation";
 	
 	/**
 	 * Create an Intent for conversation broadcasting
@@ -50,8 +47,8 @@ public abstract class Broadcast
 	{
 		Intent intent = new Intent(broadcastType);
 		
-		intent.putExtra(Broadcast.EXTRA_SERVER, serverId);
-		intent.putExtra(Broadcast.EXTRA_CONVERSATION, conversationName);
+		intent.putExtra(Extra.SERVER, serverId);
+		intent.putExtra(Extra.CONVERSATION, conversationName);
 		
 		return intent;
 	}
@@ -67,7 +64,7 @@ public abstract class Broadcast
 	{
 		Intent intent = new Intent(broadcastType);
 		
-		intent.putExtra(Broadcast.EXTRA_SERVER, serverId);
+		intent.putExtra(Extra.SERVER, serverId);
 		
 		return intent;
 	}
