@@ -47,9 +47,11 @@ public class EchoHandler extends BaseHandler
 			Message message = new Message(BaseHandler.mergeParams(params));
 			conversation.addMessage(message);
 			
-			Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-			intent.putExtra(Broadcast.EXTRA_CONVERSATION, conversation.getName());
+			Intent intent = Broadcast.createConversationIntent(
+				Broadcast.CONVERSATION_REMOVE,
+				server.getId(),
+				conversation.getName()
+			);
 			service.sendBroadcast(intent);
 		} else {
 			throw new CommandException("Text is missing");

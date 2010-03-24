@@ -56,9 +56,11 @@ public class MeHandler extends BaseHandler
 			message.setIcon(R.drawable.action);
 			server.getConversation(conversation.getName()).addMessage(message);
 			
-			Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-			intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-			intent.putExtra(Broadcast.EXTRA_CONVERSATION, conversation.getName());
+			Intent intent = Broadcast.createConversationIntent(
+				Broadcast.CONVERSATION_REMOVE,
+				server.getId(),
+				conversation.getName()
+			);
 			service.sendBroadcast(intent);
 			
 			service.getConnection(server.getId()).sendAction(conversation.getName(), action);

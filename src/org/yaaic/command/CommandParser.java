@@ -143,9 +143,12 @@ public class CommandParser
 					Message usageMessage = new Message("Syntax: " + command.getUsage());
 					conversation.addMessage(usageMessage);
 					
-					Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-					intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-					intent.putExtra(Broadcast.EXTRA_CONVERSATION, conversation.getName());
+					Intent intent = Broadcast.createConversationIntent(
+						Broadcast.CONVERSATION_MESSAGE,
+						server.getId(),
+						conversation.getName()
+					);
+
 					service.sendBroadcast(intent);
 				}
 			}
@@ -162,9 +165,12 @@ public class CommandParser
 					message.setColor(Message.COLOR_RED);
 					conversation.addMessage(message);
 					
-					Intent intent = new Intent(Broadcast.CONVERSATION_MESSAGE);
-					intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-					intent.putExtra(Broadcast.EXTRA_CONVERSATION, conversation.getName());
+					Intent intent = Broadcast.createConversationIntent(
+						Broadcast.CONVERSATION_MESSAGE,
+						server.getId(),
+						conversation.getName()
+					);
+					
 					service.sendBroadcast(intent);
 				}
 			}
