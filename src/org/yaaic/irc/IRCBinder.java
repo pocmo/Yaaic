@@ -105,7 +105,7 @@ public class IRCBinder extends Binder
 					server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(message);
 					
 					Intent cIntent = Broadcast.createConversationIntent(
-						Extra.CONVERSATION,
+						Broadcast.CONVERSATION_MESSAGE,
 						server.getId(),
 						ServerInfo.DEFAULT_NAME
 					);
