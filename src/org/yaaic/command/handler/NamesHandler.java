@@ -63,7 +63,7 @@ public class NamesHandler extends BaseHandler
 		conversation.addMessage(message);
 		
 		Intent intent = Broadcast.createConversationIntent(
-			Broadcast.CONVERSATION_REMOVE,
+			Broadcast.CONVERSATION_MESSAGE,
 			server.getId(),
 			conversation.getName()
 		);

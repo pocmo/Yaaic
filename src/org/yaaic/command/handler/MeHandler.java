@@ -59,7 +59,7 @@ public class MeHandler extends BaseHandler
 			server.getConversation(conversation.getName()).addMessage(message);
 			
 			Intent intent = Broadcast.createConversationIntent(
-				Broadcast.CONVERSATION_REMOVE,
+				Broadcast.CONVERSATION_MESSAGE,
 				server.getId(),
 				conversation.getName()
 			);
