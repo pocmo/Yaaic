@@ -33,6 +33,7 @@ import org.yaaic.model.Server;
  */
 public class JoinHandler extends BaseHandler
 {
+	private String desc = "join a channel";
 	/**
 	 * Execute /join
 	 */
@@ -55,5 +56,13 @@ public class JoinHandler extends BaseHandler
 	public String getUsage()
 	{
 		return "/join <channel> [<key>]";
+	}
+
+	/**
+	 * Description of /join
+	 */
+	@Override
+	public String getDescription() {
+		return desc;
 	}
 }

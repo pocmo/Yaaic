@@ -35,6 +35,8 @@ import org.yaaic.model.Server;
  */
 public class ModeHandler extends BaseHandler
 {
+	private String desc = "";
+	
 	/**
 	 * Execute /mode
 	 */
@@ -57,5 +59,10 @@ public class ModeHandler extends BaseHandler
 	public String getUsage()
 	{
 		return "/mode <channel> <mode>";
+	}
+
+	@Override
+	public String getDescription() {
+		return desc;
 	}
 }

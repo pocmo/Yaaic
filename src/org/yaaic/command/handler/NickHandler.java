@@ -33,6 +33,8 @@ import org.yaaic.model.Server;
  */
 public class NickHandler extends BaseHandler
 {
+	private String desc = "change own nickname";
+	
 	/**
 	 * Execute /nick
 	 */
@@ -53,5 +55,14 @@ public class NickHandler extends BaseHandler
 	public String getUsage()
 	{
 		return "/nick <nickname>";
+	}
+	
+
+	/**
+	 * Description of /nick
+	 */
+	@Override
+	public String getDescription() {
+		return desc;
 	}
 }

@@ -33,6 +33,7 @@ import org.yaaic.model.Server;
  */
 public class DevoiceHandler extends BaseHandler
 {
+	private String desc = "";
 	/**
 	 * Execute /devoice
 	 */
@@ -57,5 +58,14 @@ public class DevoiceHandler extends BaseHandler
 	public String getUsage()
 	{
 		return "/devoice <nickname>";
+	}
+
+
+	/**
+	 * Description of /devoice
+	 */
+	@Override
+	public String getDescription() {
+		return desc;
 	}
 }
