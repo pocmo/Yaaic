@@ -38,6 +38,8 @@ import android.content.Intent;
  */
 public class MeHandler extends BaseHandler
 {
+	private String desc = "";
+	
 	/**
 	 * Execute /me
 	 */
@@ -76,5 +78,10 @@ public class MeHandler extends BaseHandler
 	public String getUsage()
 	{
 		return "/me <text>";
+	}
+
+	@Override
+	public String getDescription() {
+		return desc;
 	}
 }

@@ -37,6 +37,7 @@ import android.content.Intent;
  */
 public class EchoHandler extends BaseHandler
 {
+	private String desc = "";
 	/**
 	 * Execute /echo
 	 */
@@ -65,5 +66,14 @@ public class EchoHandler extends BaseHandler
 	public String getUsage()
 	{
 		return "/echo <text>";
+	}
+
+
+	/**
+	 * Description of /echo
+	 */
+	@Override
+	public String getDescription() {
+		return desc;
 	}
 }

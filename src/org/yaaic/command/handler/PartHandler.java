@@ -35,6 +35,8 @@ import org.yaaic.model.Server;
  */
 public class PartHandler extends BaseHandler
 {
+	private String desc = "leave the current channel";
+	
 	/**
 	 * Execute /part
 	 */
@@ -61,5 +63,10 @@ public class PartHandler extends BaseHandler
 	public String getUsage()
 	{
 		return "/part [<channel>]";
+	}
+
+	@Override
+	public String getDescription() {
+		return desc;
 	}
 }

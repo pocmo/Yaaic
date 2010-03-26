@@ -33,6 +33,8 @@ import org.yaaic.model.Server;
  */
 public class OpHandler extends BaseHandler
 {
+	private String desc = "";
+	
 	/**
 	 * Execute /deop
 	 */
@@ -57,5 +59,14 @@ public class OpHandler extends BaseHandler
 	public String getUsage()
 	{
 		return "/op <nickname>";
+	}
+
+
+	/**
+	 * Description of /deop
+	 */
+	@Override
+	public String getDescription() {
+		return desc;
 	}
 }

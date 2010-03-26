@@ -40,6 +40,8 @@ import android.content.Intent;
  */
 public class NoticeHandler extends BaseHandler
 {
+	private String desc = "Send a notice to an other user";
+	
 	/**
 	 * Execute /notice
 	 */
@@ -73,5 +75,14 @@ public class NoticeHandler extends BaseHandler
 	public String getUsage()
 	{
 		return "/notice <nickname> <message>";
+	}
+
+
+	/**
+	 * Description of /notice
+	 */
+	@Override
+	public String getDescription() {
+		return desc;
 	}
 }

@@ -21,6 +21,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 package org.yaaic.command;
 
 import java.util.HashMap;
+import java.util.Set;
 
 import android.content.Intent;
 
@@ -29,6 +30,7 @@ import org.yaaic.command.handler.DCCHandler;
 import org.yaaic.command.handler.DeopHandler;
 import org.yaaic.command.handler.DevoiceHandler;
 import org.yaaic.command.handler.EchoHandler;
+import org.yaaic.command.handler.HelpHandler;
 import org.yaaic.command.handler.JoinHandler;
 import org.yaaic.command.handler.KickHandler;
 import org.yaaic.command.handler.MeHandler;
@@ -95,6 +97,7 @@ public class CommandParser
 		commands.put("notice", new NoticeHandler());
 		commands.put("dcc", new DCCHandler());
 		commands.put("mode", new ModeHandler());
+		commands.put("help", new HelpHandler());
 		
 		// Aliases
 		commands.put("j", commands.get("join"));
@@ -113,6 +116,16 @@ public class CommandParser
 		}
 		
 		return instance;
+	}
+	
+	/**
+	 * Get the commands HashMap
+	 * 
+	 * @return HashMap - command, commandHandler
+	 */
+	public HashMap<String, BaseHandler> getCommands() {
+		
+		return commands;
 	}
 	
 	/**
