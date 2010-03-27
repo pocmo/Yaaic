@@ -24,7 +24,6 @@ import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.NickAlreadyInUseException;
 import org.yaaic.R;
 import org.yaaic.model.Broadcast;
-import org.yaaic.model.Extra;
 import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 import org.yaaic.model.ServerInfo;
