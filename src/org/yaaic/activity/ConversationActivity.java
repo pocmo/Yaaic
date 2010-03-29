@@ -18,7 +18,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.yaaic.view;
+package org.yaaic.activity;
 
 import java.util.Collection;
 
@@ -63,6 +63,7 @@ import org.yaaic.model.Server;
 import org.yaaic.model.Status;
 import org.yaaic.receiver.ConversationReceiver;
 import org.yaaic.receiver.ServerReceiver;
+import org.yaaic.view.MessageListView;
 
 /**
  * The server view with a scrollable list of all channels
@@ -97,7 +98,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		
 		((TextView) findViewById(R.id.title)).setText(server.getTitle());
 		((EditText) findViewById(R.id.input)).setOnKeyListener(this);
-
+		
         deckAdapter = new DeckAdapter();
 		deck = (Gallery) findViewById(R.id.deck);
 		deck.setOnItemSelectedListener(this);
@@ -125,7 +126,11 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		
 		((ImageView) findViewById(R.id.status)).setImageResource(server.getStatusIcon());
 		
-        bindService(new Intent(this, IRCService.class), this, 0);
+		// Start service
+        Intent intent = new Intent(this, IRCService.class);
+        intent.setAction(IRCService.ACTION_FOREGROUND);
+        startService(intent);
+        bindService(intent, this, 0);
         
     	channelReceiver = new ConversationReceiver(server.getId(), this);
     	registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_MESSAGE));
@@ -163,6 +168,15 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	{
 		super.onPause();
 		
+		binder.getService().checkServiceStatus();
+		
+		/*if (!binder.getService().hasConnections()) {
+			Log.d("Yaaic", "Stopping service");
+			//binder.getService().stopSelf();
+		} else {
+			Log.d("Yaaic", "Unbinding service");
+		}*/
+
 		unbindService(this);
 		unregisterReceiver(channelReceiver);
 		unregisterReceiver(serverReceiver);
@@ -214,10 +228,12 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		switch (item.getItemId()) {
 			case R.id.disconnect:
 				binder.getService().getConnection(serverId).quitServer();
+				server.setStatus(Status.DISCONNECTED);
 				server.clearConversations();
 				setResult(RESULT_OK);
 				finish();
 				break;
+				
 			case R.id.join:
 				startActivityForResult(new Intent(this, JoinActivity.class), 0);
 				break;
@@ -276,7 +292,9 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		deckAdapter.removeItem(target);
 		
 		if (deckAdapter.isSwitched()) {
-			onBackPressed();
+			switcher.showNext();
+			switcher.removeView(deckAdapter.getSwitchedView());
+			deckAdapter.setSwitched(null, null);
 		}
 	}
 
@@ -314,32 +332,21 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	
 	/**
 	 * On key down
-	 * 
-	 * This is glue code to call onBackPressed() which
-	 * will be automatically called by later android releases
+	 *
+	 * XXX: As we only track the back key: Android >= 2.0 will call a method called onBackPressed()
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event)
 	{
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			onBackPressed();
-			return true;
+		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+			if (deckAdapter.isSwitched()) {
+				switcher.showNext();
+				switcher.removeView(deckAdapter.getSwitchedView());
+				deckAdapter.setSwitched(null, null);
+				return true;
+			}
 		}
-		return false;
-	}
-	
-	/**
-	 * On back key pressed
-	 */
-	public void onBackPressed()
-	{
-		if (deckAdapter.isSwitched()) {
-			switcher.showNext();
-			switcher.removeView(deckAdapter.getSwitchedView());
-			deckAdapter.setSwitched(null, null);
-		} else {
-			finish();
-		}
+		return super.onKeyDown(keyCode, event);
 	}
 
 	/**

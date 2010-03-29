@@ -18,28 +18,15 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.yaaic.view;
-
-import org.yaaic.R;
-
-import android.os.Bundle;
-import android.preference.PreferenceActivity;
+package org.yaaic.model;
 
 /**
- * Settings
+ * Helper class for constants used for bundle params (extras)
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class SettingsActivity extends PreferenceActivity
+public class Extra
 {
-	/**
-	 * On create
-	 */
-	@Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        
-        addPreferencesFromResource(R.xml.preferences);
-    }
+	public static final String SERVER 		= "server";
+	public static final String CONVERSATION = "conversation";
 }

@@ -55,9 +55,11 @@ public class CloseHandler extends BaseHandler
 			if (conversation.getType() == Conversation.TYPE_QUERY) {
 				server.removeConversation(conversation.getName());
 				
-				Intent intent = new Intent(Broadcast.CONVERSATION_REMOVE);
-				intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
-				intent.putExtra(Broadcast.EXTRA_CONVERSATION, conversation.getName());
+				Intent intent = Broadcast.createConversationIntent(
+					Broadcast.CONVERSATION_REMOVE,
+					server.getId(),
+					conversation.getName()
+				);
 				service.sendBroadcast(intent);
 			}
 		}

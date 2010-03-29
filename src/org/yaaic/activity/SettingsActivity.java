@@ -18,31 +18,28 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.yaaic.view;
+package org.yaaic.activity;
 
 import org.yaaic.R;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.Window;
+import android.preference.PreferenceActivity;
 
 /**
- * About activity
+ * Settings
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class AboutActivity extends Activity
+public class SettingsActivity extends PreferenceActivity
 {
 	/**
 	 * On create
 	 */
-    @Override
+	@Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         
-    	requestWindowFeature(Window.FEATURE_NO_TITLE);
-        
-        setContentView(R.layout.about);
+        addPreferencesFromResource(R.xml.preferences);
     }
 }

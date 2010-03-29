@@ -18,7 +18,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.yaaic.view;
+package org.yaaic.activity;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -47,6 +47,7 @@ import org.yaaic.irc.IRCService;
 import org.yaaic.layout.NonScalingBackgroundDrawable;
 import org.yaaic.listener.ServerListener;
 import org.yaaic.model.Broadcast;
+import org.yaaic.model.Extra;
 import org.yaaic.model.Server;
 import org.yaaic.model.Status;
 import org.yaaic.receiver.ServerReceiver;
@@ -87,6 +88,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
     	
         // Start and connect to service
         Intent intent = new Intent(this, IRCService.class);
+        intent.setAction(IRCService.ACTION_BACKGROUND);
         startService(intent);
         bindService(intent, this, 0);
 
@@ -199,7 +201,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 		}
 		else {
 	    	Intent intent = new Intent(this, AddServerActivity.class);
-	    	intent.putExtra(Broadcast.EXTRA_SERVER, serverId);
+	    	intent.putExtra(Extra.SERVER, serverId);
 	    	startActivityForResult(intent, 0);
 		}
 	}

@@ -26,6 +26,7 @@ import android.content.Intent;
 
 import org.yaaic.listener.ConversationListener;
 import org.yaaic.model.Broadcast;
+import org.yaaic.model.Extra;
 
 /**
  * A channel receiver for receiving channel updates
@@ -58,7 +59,7 @@ public class ConversationReceiver extends BroadcastReceiver
 	@Override
 	public void onReceive(Context context, Intent intent)
 	{
-		int serverId = intent.getExtras().getInt(Broadcast.EXTRA_SERVER);
+		int serverId = intent.getExtras().getInt(Extra.SERVER);
 		if (serverId != this.serverId) {
 			return;
 		}
@@ -66,11 +67,11 @@ public class ConversationReceiver extends BroadcastReceiver
 		String action = intent.getAction();
 
 		if (action.equals(Broadcast.CONVERSATION_MESSAGE)) {
-			listener.onConversationMessage(intent.getExtras().getString(Broadcast.EXTRA_CONVERSATION));
+			listener.onConversationMessage(intent.getExtras().getString(Extra.CONVERSATION));
 		} else if (action.equals(Broadcast.CONVERSATION_NEW)) {
-			listener.onNewConversation(intent.getExtras().getString(Broadcast.EXTRA_CONVERSATION));
+			listener.onNewConversation(intent.getExtras().getString(Extra.CONVERSATION));
 		} else if (action.equals(Broadcast.CONVERSATION_REMOVE)) {
-			listener.onRemoveConversation(intent.getExtras().getString(Broadcast.EXTRA_CONVERSATION));
+			listener.onRemoveConversation(intent.getExtras().getString(Extra.CONVERSATION));
 		}
 		
 	}
