@@ -91,6 +91,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
     	
         // Start and connect to service
         Intent intent = new Intent(this, IRCService.class);
+        intent.setAction(IRCService.ACTION_BACKGROUND);
         startService(intent);
         bindService(intent, this, 0);
 

@@ -23,7 +23,10 @@ package org.yaaic;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.yaaic.db.Database;
 import org.yaaic.model.Server;
+
+import android.content.Context;
 
 /**
  * Global Master Class :)
@@ -35,6 +38,7 @@ public class Yaaic
 	public static Yaaic instance;
 	
 	private HashMap<Integer, Server> servers;
+	private boolean serversLoaded = false;
 	
 	/**
 	 * Private constructor, you may want to use static getInstance()
@@ -42,6 +46,23 @@ public class Yaaic
 	private Yaaic()
 	{
 		servers = new HashMap<Integer, Server>();
+	}
+	
+	/**
+	 * Load servers from database
+	 * 
+	 * @param context
+	 */
+	public void loadServers(Context context)
+	{
+		if (!serversLoaded) {
+	        Database db = new Database(context);
+			servers = db.getServers();
+			db.close();
+			
+			//context.sendBroadcast(new Intent(Broadcast.SERVER_UPDATE));
+			serversLoaded = true;
+		}
 	}
 	
 	/**
