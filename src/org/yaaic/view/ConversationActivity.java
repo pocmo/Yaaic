@@ -125,6 +125,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		
 		// Start service
         Intent intent = new Intent(this, IRCService.class);
+        intent.setAction(IRCService.ACTION_FOREGROUND);
         startService(intent);
         bindService(intent, this, 0);
         
