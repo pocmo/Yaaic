@@ -25,6 +25,7 @@
     <string name="channel">Channel</string>
     <string name="join">Join</string>
     <string name="join_channel">Join Channel</string>
+    <string name="close">Close</string>
     <string name="connect">Connect</string>
     <string name="disconnect">Disconnect</string>
     <string name="edit">Edit</string>

@@ -41,6 +41,7 @@ import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -233,7 +234,14 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 				setResult(RESULT_OK);
 				finish();
 				break;
-				
+			case R.id.close:
+				Conversation conversation = deckAdapter.getItem(deck.getSelectedItemPosition());
+				if (conversation.getType() != Conversation.TYPE_SERVER) {
+					onRemoveConversation(conversation.getName());
+				} else {
+					Toast.makeText(this, "You can not close the server info window", Toast.LENGTH_SHORT).show();
+				}
+				break;
 			case R.id.join:
 				startActivityForResult(new Intent(this, JoinActivity.class), 0);
 				break;
