@@ -384,8 +384,9 @@ public class IRCConnection extends PircBot
 	@Override
 	protected void onNickChange(String oldNick, String login, String hostname, String newNick)
 	{
-		// XXX: Optimization : No getter in for loop
-		for (String target : getChannelsByNickname(newNick)) {
+		Vector<String> channels = getChannelsByNickname(newNick);
+		
+		for (String target : channels) {
 			Message message = new Message(oldNick + " is now known as " + newNick);
 			message.setColor(Message.COLOR_GREEN);
 			server.getConversation(target).addMessage(message);
@@ -526,8 +527,9 @@ public class IRCConnection extends PircBot
 	protected void onQuit(String sourceNick, String sourceLogin, String sourceHostname, String reason)
 	{
 		if (!sourceNick.equals(this.getNick())) {
-			// XXX: Optimization : No getter in for loop
-			for (String target : getChannelsByNickname(sourceNick)) {
+			Vector<String> channels = getChannelsByNickname(sourceNick);
+			
+			for (String target : channels) {
 				Message message = new Message(sourceNick + " quits (" + reason + ")");
 				message.setColor(Message.COLOR_GREEN);
 				message.setIcon(R.drawable.quit);
@@ -981,11 +983,11 @@ public class IRCConnection extends PircBot
 	private Vector<String> getChannelsByNickname(String nickname)
 	{
 		Vector<String> channels = new Vector<String>();
+		String[] channelArray = getChannels();
 		
-		// XXX: Optimization : No getter in for loop
-		for (String channel : this.getChannels()) {
-			// XXX: Optimization : No getter in for loop
-			for (User user : this.getUsers(channel)) {
+		for (String channel : channelArray) {
+			User[] userArray = getUsers(channel);
+			for (User user : userArray) {
 				if (user.getNick().equals(nickname)) {
 					channels.add(channel);
 					break;
