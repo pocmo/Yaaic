@@ -79,16 +79,6 @@ public class Message {
 	}
 	
 	/**
-	 * Does this message have an icon?
-	 * 
-	 * @return
-	 */
-	public boolean hasIcon()
-	{
-		return icon != -1;
-	}
-	
-	/**
 	 * Get the text of this message
 	 * 
 	 * @return
@@ -116,12 +106,12 @@ public class Message {
 		Settings settings = new Settings(context);
 		
 		if (canvas == null) {
-			String prefix = hasIcon() && settings.showIcons() ? "  " : "";
+			String prefix = icon != -1 && settings.showIcons() ? "  " : "";
 			String timestamp = settings.showTimestamp() ? Message.generateTimestamp(this.timestamp, settings.use24hFormat()) : "";
 			
 			canvas = new SpannableString(prefix + timestamp + text);
 			
-			if (hasIcon() && settings.showIcons()) {
+			if (icon != -1 && settings.showIcons()) {
 				Drawable drawable = context.getResources().getDrawable(icon);
 				drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
 				canvas.setSpan(new ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
