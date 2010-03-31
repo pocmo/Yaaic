@@ -220,7 +220,6 @@ public class Server
 	 */
 	public Collection<Conversation> getConversations()
 	{
-		// XXX: This is a bad idea as this is not sorted.
 		return conversations.values();
 	}
 	
