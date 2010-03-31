@@ -13,6 +13,10 @@ our repository at github:
 
 http://github.com/pocmo/Yaaic
 
+See also the "test package" for unit tests & co.:
+
+http://github.com/pocmo/Yaaic-Test
+
 --------------------------------------------------------------------
 
 Yaaic includes the PircBot IRC API written by Paul Mutton available
