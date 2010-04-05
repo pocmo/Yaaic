@@ -362,6 +362,16 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	 */
 	public boolean onKey(View view, int keyCode, KeyEvent event)
 	{
+		if (keyCode == KeyEvent.KEYCODE_DPAD_UP && event.getAction() == KeyEvent.ACTION_UP) {
+			// XXX: History up (Implement me..)
+			return true;
+		}
+		
+		if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN && event.getAction() == KeyEvent.ACTION_UP) {
+			// XXX: History down (Implement me..)
+			return true;
+		}
+		
 		if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
 			if (!server.isConnected()) {
 				Message message = new Message("Not connected");
