@@ -69,6 +69,10 @@ public class IRCBinder extends Binder
 					connection.setIdent(server.getIdentity().getIdent());
 					connection.setRealName(server.getIdentity().getRealName());
 					
+					if (server.getCharset() != null) {
+						connection.setEncoding(server.getCharset());
+					}
+					
 					if (server.getPassword() != "") {
 						connection.connect(server.getHost(), server.getPort(), server.getPassword());
 					} else {
