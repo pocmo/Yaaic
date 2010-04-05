@@ -32,6 +32,7 @@ import org.yaaic.model.Server;
  */
 public abstract class BaseHandler
 {
+	private String desc;
 	/**
 	 * Execute the command
 	 * 
@@ -49,6 +50,13 @@ public abstract class BaseHandler
 	 * @return The usage description
 	 */
 	public abstract String getUsage();
+	
+	/**
+	 * Get the description for this command
+	 * 
+	 * @return
+	 */
+	public abstract String getDescription();
 	
 	/**
 	 * Merge params to a string

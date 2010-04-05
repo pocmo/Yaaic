@@ -33,6 +33,8 @@ import org.yaaic.model.Server;
  */
 public class VoiceHandler extends BaseHandler
 {
+	private String desc = "";
+	
 	/**
 	 * Execute /voice
 	 */
@@ -57,5 +59,14 @@ public class VoiceHandler extends BaseHandler
 	public String getUsage()
 	{
 		return "/voice <nickname>";
+	}
+
+
+	/**
+	 * Description of /voice
+	 */
+	@Override
+	public String getDescription() {
+		return desc;
 	}
 }

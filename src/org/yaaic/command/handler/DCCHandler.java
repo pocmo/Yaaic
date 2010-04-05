@@ -39,6 +39,8 @@ import org.yaaic.model.Server;
  */
 public class DCCHandler extends BaseHandler
 {
+	private String desc = "Send a file to a user";
+	
 	/**
 	 * Execute /dcc
 	 */
@@ -75,5 +77,14 @@ public class DCCHandler extends BaseHandler
 	public String getUsage()
 	{
 		return "/dcc SEND <nickname> <file>";
+	}
+
+
+	/**
+	 * Description of /dcc
+	 */
+	@Override
+	public String getDescription() {
+		return desc;
 	}
 }

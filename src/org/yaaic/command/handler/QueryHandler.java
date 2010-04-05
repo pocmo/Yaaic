@@ -39,6 +39,8 @@ import android.content.Intent;
  */
 public class QueryHandler extends BaseHandler
 {
+	private String desc = "opens a private chat with a user";
+	
 	/**
 	 * Execute /query
 	 */
@@ -77,5 +79,10 @@ public class QueryHandler extends BaseHandler
 	public String getUsage()
 	{
 		return "/query <nickname>";
+	}
+
+	@Override
+	public String getDescription() {
+		return desc;
 	}
 }
