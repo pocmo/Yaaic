@@ -21,6 +21,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 package org.yaaic.irc;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Collection;
 import java.util.Vector;
 
 import android.content.Intent;
@@ -961,17 +962,21 @@ public class IRCConnection extends PircBot
 		Intent sIntent = Broadcast.createServerIntent(Broadcast.SERVER_UPDATE, server.getId());
 		service.sendBroadcast(sIntent);		
 		
-		Message message = new Message("Disconnected");
-		message.setIcon(R.drawable.error);
-		message.setColor(Message.COLOR_RED);
-		server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(message);
+		Collection<Conversation> conversations = server.getConversations();
 		
-		Intent cIntent = Broadcast.createConversationIntent(
-			Broadcast.CONVERSATION_MESSAGE,
-			server.getId(),
-			ServerInfo.DEFAULT_NAME
-		);
-		service.sendBroadcast(cIntent);
+		for (Conversation conversation : conversations) {
+			Message message = new Message("Disconnected");
+			message.setIcon(R.drawable.error);
+			message.setColor(Message.COLOR_RED);
+			server.getConversation(conversation.getName()).addMessage(message);
+			
+			Intent cIntent = Broadcast.createConversationIntent(
+				Broadcast.CONVERSATION_MESSAGE,
+				server.getId(),
+				conversation.getName()
+			);
+			service.sendBroadcast(cIntent);
+		}
 	}
 	
 	/**
