@@ -20,6 +20,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.activity;
 
+import java.io.UnsupportedEncodingException;
 import java.util.regex.Pattern;
 
 import android.app.Activity;
@@ -27,8 +28,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.yaaic.R;
@@ -61,6 +64,12 @@ public class AddServerActivity extends Activity implements OnClickListener
         
         ((Button) findViewById(R.id.add)).setOnClickListener(this);
         ((Button) findViewById(R.id.cancel)).setOnClickListener(this);
+
+        Spinner spinner = (Spinner) findViewById(R.id.charset);
+        String[] charsets = getResources().getStringArray(R.array.charsets);
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, charsets);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
         
         Bundle extras = getIntent().getExtras();
         if (extras != null && extras.containsKey(Extra.SERVER)) {
@@ -80,6 +89,16 @@ public class AddServerActivity extends Activity implements OnClickListener
         	((EditText) findViewById(R.id.realname)).setText(server.getIdentity().getRealName());
         	
         	((Button) findViewById(R.id.add)).setText("Save");
+        	
+        	// Select charset
+        	if (server.getCharset() != null) {
+        		for (int i = 0; i < charsets.length; i++) {
+        			if (server.getCharset().equals(charsets[i])) {
+        				spinner.setSelection(i);
+        				break;
+        			}
+        		}
+        	}
         }
         
         Uri uri = getIntent().getData();
@@ -144,7 +163,7 @@ public class AddServerActivity extends Activity implements OnClickListener
 			false, // auto connect
 			false, // use ssl
 			identityId,
-			null // XXX: Soft migration until view has a charset component
+			server.getCharset()
 		);
 		
 		db.close();
@@ -175,7 +194,7 @@ public class AddServerActivity extends Activity implements OnClickListener
 			false, // auto connect
 			false, // use ssl
 			identityId,
-			null // XXX: Softmigration until the view has a charset component
+			server.getCharset()
 		);
 		
 		Identity identity = getIdentityFromView();
@@ -205,6 +224,7 @@ public class AddServerActivity extends Activity implements OnClickListener
 		String host = ((EditText) findViewById(R.id.host)).getText().toString();
 		int port = Integer.parseInt(((EditText) findViewById(R.id.port)).getText().toString());
 		String password = ((EditText) findViewById(R.id.password)).getText().toString();
+		String charset = ((Spinner) findViewById(R.id.charset)).getSelectedItem().toString();
 		
 		// not in use yet
 		//boolean autoConnect = ((CheckBox) findViewById(R.id.autoconnect)).isChecked();
@@ -215,6 +235,7 @@ public class AddServerActivity extends Activity implements OnClickListener
 		server.setPort(port);
 		server.setPassword(password);
 		server.setTitle(title);
+		server.setCharset(charset);
 		server.setStatus(Status.DISCONNECTED);
 
 		return server;
@@ -249,6 +270,7 @@ public class AddServerActivity extends Activity implements OnClickListener
 		String title = ((EditText) findViewById(R.id.title)).getText().toString();
 		String host = ((EditText) findViewById(R.id.host)).getText().toString();
 		String port = ((EditText) findViewById(R.id.port)).getText().toString();
+		String charset = ((Spinner) findViewById(R.id.charset)).getSelectedItem().toString();
 		
 		if (title.trim().equals("")) {
 			throw new ValidationException("Title cannot be blank");
@@ -263,6 +285,13 @@ public class AddServerActivity extends Activity implements OnClickListener
 			Integer.parseInt(port);
 		} catch (NumberFormatException e) {
 			throw new ValidationException("Enter a numeric port");
+		}
+		
+		try {
+			"".getBytes(charset);
+		}
+		catch (UnsupportedEncodingException e) {
+			throw new ValidationException("Charset is not supported by your device");
 		}
 		
 		Database db = new Database(this);

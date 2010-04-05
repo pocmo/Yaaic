@@ -128,6 +128,24 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:layout_height="wrap_content"
             android:text=""
             android:singleLine="true" />
+		<TextView
+		     android:text="Preferences"
+		     android:layout_width="fill_parent"
+		     android:layout_height="wrap_content"
+		     android:background="#ff333333"
+		     android:textSize="14px"
+		     android:gravity="center_horizontal"
+		     android:padding="3px"
+		     android:layout_margin="2px" />
+        <TextView
+            android:text="Charset"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+        <Spinner
+			android:id="@+id/charset"
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:prompt="@string/select_charset" />
 		<LinearLayout
 		    android:orientation="horizontal"
             android:layout_width="fill_parent"
