@@ -157,6 +157,9 @@ public class Message {
 
 		if (!use24hFormat) {
 			hours = Math.abs(24 - hours);
+			if (hours == 24) {
+				hours = 0;
+			}
 		}
 		
 		return "[" + (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + "] ";
