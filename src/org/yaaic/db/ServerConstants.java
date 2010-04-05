@@ -38,6 +38,7 @@ public interface ServerConstants extends BaseColumns
 	public static final String PASSWORD 	= "password";
 	public static final String AUTOCONNECT  = "autoConnect";
 	public static final String USE_SSL		= "useSSL";
+	public static final String CHARSET      = "charset";
 	public static final String IDENTITY     = "identity";
 	
 	/**
@@ -51,6 +52,7 @@ public interface ServerConstants extends BaseColumns
 		PASSWORD,
 		AUTOCONNECT,
 		USE_SSL,
+		CHARSET,
 		IDENTITY
 	};
 }
