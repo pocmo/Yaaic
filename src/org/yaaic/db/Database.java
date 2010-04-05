@@ -31,6 +31,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Database Helper for the servers and channels tables  
@@ -40,7 +41,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class Database extends SQLiteOpenHelper
 {
 	private static final String DATABASE_NAME = "servers.db";
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 	
 	/**
 	 * Create a new helper for database access
@@ -66,6 +67,7 @@ public class Database extends SQLiteOpenHelper
 				+ ServerConstants.PASSWORD + " TEXT, "
 				+ ServerConstants.AUTOCONNECT + " BOOLEAN, " // XXX: Does SQLLite support boolean?
 				+ ServerConstants.USE_SSL + " BOOLEAN, "
+				+ ServerConstants.CHARSET + " TEXT, "
 				+ ServerConstants.IDENTITY + " INTEGER"
 				+ ");"
 		);
@@ -93,9 +95,6 @@ public class Database extends SQLiteOpenHelper
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 	{
-		// XXX: We delete the database currently, in future versions we want to
-		// migrate the database to the new version (add or remove rows..)
-		
 		// XXX: Do not delete databases (release version)
 		
 		// db.execSQL("DROP TABLE IF EXISTS " + ServerConstants.TABLE_NAME + ";");
@@ -103,6 +102,11 @@ public class Database extends SQLiteOpenHelper
 		// db.execSQL("DROP TABLE IF EXISTS " + IdentityConstants.TABLE_NAME + ";");
 		
 		// onCreate(db);
+		
+		if (oldVersion == 1) {
+			// Add charset field to server table
+			db.execSQL("ALTER TABLE " + ServerConstants.TABLE_NAME + " ADD " + ServerConstants.CHARSET + " TEXT AFTER " + ServerConstants.USE_SSL + ";");
+		}
 	}
 	
 	/**
