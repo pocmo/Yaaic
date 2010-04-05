@@ -143,7 +143,8 @@ public class AddServerActivity extends Activity implements OnClickListener
 			server.getPassword(),
 			false, // auto connect
 			false, // use ssl
-			identityId
+			identityId,
+			null // XXX: Soft migration until view has a charset component
 		);
 		
 		db.close();
@@ -173,7 +174,8 @@ public class AddServerActivity extends Activity implements OnClickListener
 			server.getPassword(),
 			false, // auto connect
 			false, // use ssl
-			identityId
+			identityId,
+			null // XXX: Softmigration until the view has a charset component
 		);
 		
 		Identity identity = getIdentityFromView();
