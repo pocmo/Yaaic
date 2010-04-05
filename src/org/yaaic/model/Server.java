@@ -37,6 +37,7 @@ public class Server
 	private String host;
 	private int port;
 	private String password;
+	private String charset;
 	private Identity identity;
 	
 	private LinkedHashMap<String, Conversation> conversations = new LinkedHashMap<String, Conversation>();
@@ -171,6 +172,26 @@ public class Server
 	public void setPort(int port)
 	{
 		this.port = port;
+	}
+	
+	/**
+	 * Set the charset to be used for all messages sent to the server
+	 * 
+	 * @param charset The name of the charset
+	 */
+	public void setCharset(String charset)
+	{
+		this.charset = charset;
+	}
+	
+	/**
+	 * Get the charset to be used with this server
+	 * 
+	 * @return String charset The name of the charset
+	 */
+	public String getCharset()
+	{
+		return charset;
 	}
 	
 	/**
