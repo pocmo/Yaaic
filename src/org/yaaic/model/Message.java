@@ -156,8 +156,8 @@ public class Message {
 		int minutes = date.getMinutes();
 
 		if (!use24hFormat) {
-			hours = Math.abs(24 - hours);
-			if (hours == 24) {
+			hours = Math.abs(12 - hours);
+			if (hours == 12) {
 				hours = 0;
 			}
 		}
