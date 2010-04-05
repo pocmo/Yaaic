@@ -65,12 +65,6 @@ public class IRCConnection extends PircBot
 		// XXX: Should be configurable via settings
 		this.setAutoNickChange(true);
 		
-		try {
-			this.setEncoding("UTF-8");
-		} catch(UnsupportedEncodingException e) {
-			// Use default charset
-		}
-		
 		this.setFinger("http://www.youtube.com/watch?v=oHg5SJYRHA0");
 	}
 	
