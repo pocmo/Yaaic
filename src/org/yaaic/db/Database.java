@@ -31,7 +31,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 /**
  * Database Helper for the servers and channels tables  
@@ -120,7 +119,7 @@ public class Database extends SQLiteOpenHelper
 	 * @param useSSL Does the server use SSL?
 	 * @param identityId The id of the identity record
 	 */
-	public long addServer(String title, String host, int port, String password, boolean autoConnect, boolean useSSL, long identityId)
+	public long addServer(String title, String host, int port, String password, boolean autoConnect, boolean useSSL, long identityId, String charset)
 	{
 		ContentValues values = new ContentValues();
 		
@@ -131,6 +130,7 @@ public class Database extends SQLiteOpenHelper
 		values.put(ServerConstants.AUTOCONNECT, autoConnect);
 		values.put(ServerConstants.USE_SSL, useSSL);
 		values.put(ServerConstants.IDENTITY, identityId);
+		values.put(ServerConstants.CHARSET, charset);
 		
 		return this.getWritableDatabase().insert(ServerConstants.TABLE_NAME, null, values);
 	}
@@ -147,7 +147,7 @@ public class Database extends SQLiteOpenHelper
 	 * @param useSSL Does the server use SSL?
 	 * @param identityId The identity of the server record
 	 */
-	public void updateServer(int serverId, String title, String host, int port, String password, boolean autoConnect, boolean useSSL, long identityId)
+	public void updateServer(int serverId, String title, String host, int port, String password, boolean autoConnect, boolean useSSL, long identityId, String charset)
 	{
 		ContentValues values = new ContentValues();
 		
@@ -158,6 +158,7 @@ public class Database extends SQLiteOpenHelper
 		values.put(ServerConstants.AUTOCONNECT, autoConnect);
 		values.put(ServerConstants.USE_SSL, useSSL);
 		values.put(ServerConstants.IDENTITY, identityId);
+		values.put(ServerConstants.CHARSET, charset);
 		
 		this.getWritableDatabase().update(
 			ServerConstants.TABLE_NAME,
@@ -278,6 +279,7 @@ public class Database extends SQLiteOpenHelper
 		server.setPort(cursor.getInt(cursor.getColumnIndex((ServerConstants.PORT))));
 		server.setPassword(cursor.getString(cursor.getColumnIndex(ServerConstants.PASSWORD)));
 		server.setId(cursor.getInt(cursor.getColumnIndex((ServerConstants._ID))));
+		server.setCharset(cursor.getString(cursor.getColumnIndex(ServerConstants.CHARSET)));
 		server.setStatus(Status.DISCONNECTED);
 		
 		// Load identity for server
