@@ -1,7 +1,6 @@
 package org.yaaic.command.handler;
 
 import java.util.HashMap;
-import java.util.Set;
 
 import org.yaaic.command.BaseHandler;
 import org.yaaic.command.CommandParser;
@@ -28,19 +27,26 @@ public class HelpHandler extends BaseHandler {
 	 */
 	@Override
 	public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException {
-		if (conversation.getType() != Conversation.TYPE_CHANNEL) {
-			throw new CommandException("Only usable from within a channel");
-		}
 		
 		CommandParser cp = CommandParser.getInstance();
 		
 		StringBuffer commandList = new StringBuffer("available commands: \n");
 		HashMap<String, BaseHandler> commands = cp.getCommands();
+		HashMap<String, String> aliases = cp.getAliases();
 		
 		Object[] commandKeys = commands.keySet().toArray();
+		Object[] aliasesKeys = aliases.keySet().toArray();
 		
 		for (Object command: commandKeys) {
-			commandList.append("/"+command.toString() + " - "+commands.get(command).getDescription()+"\n");
+			String alias = "";
+			for (Object aliasCommand: aliasesKeys) {
+				System.out.println("alias: "+aliases.get(aliasCommand));
+				if (command.equals(aliases.get(aliasCommand))) {
+					alias = " or /"+aliasCommand;
+					break;
+				}
+			}
+			commandList.append("/"+command.toString() + alias+" - "+commands.get(command).getDescription()+"\n");
 		}
 		
 		Message message = new Message(commandList.toString());
@@ -48,10 +54,10 @@ public class HelpHandler extends BaseHandler {
 		conversation.addMessage(message);
 
 		Intent intent = Broadcast.createConversationIntent(
-				Broadcast.CONVERSATION_MESSAGE,
-				server.getId(),
-				conversation.getName()
-			);
+			Broadcast.CONVERSATION_MESSAGE,
+			server.getId(),
+			conversation.getName()
+		);
 		service.sendBroadcast(intent);
 	}
 
@@ -60,7 +66,8 @@ public class HelpHandler extends BaseHandler {
 	 *Usage of /help
 	 */
 	@Override
-	public String getUsage() {
+	public String getUsage()
+	{
 		return "/help";
 	}
 
@@ -68,7 +75,8 @@ public class HelpHandler extends BaseHandler {
 	 * Description of /help
 	 */
 	@Override
-	public String getDescription() {
+	public String getDescription()
+	{
 		return desc;
 	}
 
