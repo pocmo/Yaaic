@@ -147,13 +147,7 @@ public class CommandParser
 	 */
 	public boolean isClientCommand(String command)
 	{
-		if (commands.containsKey(command.toLowerCase())) {
-			return true;
-		} else if (aliases.containsKey(command.toLowerCase())) {
-			return true;
-		} else {
-			return false;
-		}
+		return commands.containsKey(command.toLowerCase()) || aliases.containsKey(command.toLowerCase());
 	}
 	
 	/**
