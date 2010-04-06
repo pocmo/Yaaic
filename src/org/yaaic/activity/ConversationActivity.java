@@ -237,9 +237,9 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 				finish();
 				break;
 			case R.id.close:
-				Conversation conversation = deckAdapter.getItem(deck.getSelectedItemPosition());
-				if (conversation.getType() != Conversation.TYPE_SERVER) {
-					onRemoveConversation(conversation.getName());
+				Conversation conversationToClose = deckAdapter.getItem(deck.getSelectedItemPosition());
+				if (conversationToClose.getType() != Conversation.TYPE_SERVER) {
+					onRemoveConversation(conversationToClose.getName());
 				} else {
 					Toast.makeText(this, "You can not close the server info window", Toast.LENGTH_SHORT).show();
 				}
@@ -248,7 +248,12 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 				startActivityForResult(new Intent(this, JoinActivity.class), 0);
 				break;
 			case R.id.users:
-				// XXX: Todo, launch an user activity..
+				Conversation conversationForUserList = deckAdapter.getItem(deck.getSelectedItemPosition());
+				if (conversationForUserList.getType() == Conversation.TYPE_CHANNEL) {
+					startActivity(new Intent(this, UsersActivity.class));
+				} else {
+					Toast.makeText(this, "Only usable from within a channel", Toast.LENGTH_SHORT).show();
+				}
 				break;
 		}
 		
