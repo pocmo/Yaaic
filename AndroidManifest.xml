@@ -63,6 +63,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:label="@string/join_label"
             android:theme="@android:style/Theme.Dialog">
         </activity>
+        <activity
+            android:name=".activity.UsersActivity"
+            android:label="@string/users"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
         <service android:name=".irc.IRCService"></service>
     </application>
     

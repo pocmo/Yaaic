@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- 
+/*
 Yaaic - Yet Another Android IRC Client
 
 Copyright 2009-2010 Sebastian Kaspari
@@ -18,22 +17,17 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
--->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/join"
-        android:title="@string/join_channel"
-        android:icon="@android:drawable/ic_menu_add" />
-	<item
-		android:id="@+id/users"
-		android:title="@string/users"
-		android:icon="@drawable/menu_users" />
-    <item
-        android:id="@+id/close"
-        android:title="@string/close"
-        android:icon="@android:drawable/ic_menu_close_clear_cancel" />
-    <item
-        android:id="@+id/disconnect"
-        android:title="@string/disconnect"
-        android:icon="@android:drawable/ic_menu_revert" />
-</menu>
+*/
+package org.yaaic.activity;
+
+import android.app.Activity;
+
+/**
+ * User Activity - Shows a list of users in the current channel
+ * 
+ * @author Sebastian Kaspari <sebastian@yaaic.org>
+ */
+public class UsersActivity extends Activity
+{
+	
+}

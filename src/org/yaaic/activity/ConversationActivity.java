@@ -169,7 +169,9 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	{
 		super.onPause();
 		
-		binder.getService().checkServiceStatus();
+		if (binder != null && binder.getService() != null) {
+			binder.getService().checkServiceStatus();
+		}
 		
 		/*if (!binder.getService().hasConnections()) {
 			Log.d("Yaaic", "Stopping service");
@@ -235,15 +237,23 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 				finish();
 				break;
 			case R.id.close:
-				Conversation conversation = deckAdapter.getItem(deck.getSelectedItemPosition());
-				if (conversation.getType() != Conversation.TYPE_SERVER) {
-					onRemoveConversation(conversation.getName());
+				Conversation conversationToClose = deckAdapter.getItem(deck.getSelectedItemPosition());
+				if (conversationToClose.getType() != Conversation.TYPE_SERVER) {
+					onRemoveConversation(conversationToClose.getName());
 				} else {
 					Toast.makeText(this, "You can not close the server info window", Toast.LENGTH_SHORT).show();
 				}
 				break;
 			case R.id.join:
 				startActivityForResult(new Intent(this, JoinActivity.class), 0);
+				break;
+			case R.id.users:
+				Conversation conversationForUserList = deckAdapter.getItem(deck.getSelectedItemPosition());
+				if (conversationForUserList.getType() == Conversation.TYPE_CHANNEL) {
+					startActivity(new Intent(this, UsersActivity.class));
+				} else {
+					Toast.makeText(this, "Only usable from within a channel", Toast.LENGTH_SHORT).show();
+				}
 				break;
 		}
 		
@@ -362,6 +372,16 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	 */
 	public boolean onKey(View view, int keyCode, KeyEvent event)
 	{
+		if (keyCode == KeyEvent.KEYCODE_DPAD_UP && event.getAction() == KeyEvent.ACTION_UP) {
+			// XXX: History up (Implement me..)
+			return true;
+		}
+		
+		if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN && event.getAction() == KeyEvent.ACTION_UP) {
+			// XXX: History down (Implement me..)
+			return true;
+		}
+		
 		if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
 			if (!server.isConnected()) {
 				Message message = new Message("Not connected");
