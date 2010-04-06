@@ -34,6 +34,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnKeyListener;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -91,6 +92,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		
 		serverId = getIntent().getExtras().getInt("serverId");
 		server = (Server) Yaaic.getInstance().getServerById(serverId);
