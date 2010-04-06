@@ -32,7 +32,6 @@ import org.yaaic.model.Server;
  */
 public abstract class BaseHandler
 {
-	private String desc;
 	/**
 	 * Execute the command
 	 * 
