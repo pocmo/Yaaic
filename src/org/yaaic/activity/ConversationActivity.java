@@ -59,6 +59,7 @@ import org.yaaic.listener.ConversationListener;
 import org.yaaic.listener.ServerListener;
 import org.yaaic.model.Broadcast;
 import org.yaaic.model.Conversation;
+import org.yaaic.model.Extra;
 import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 import org.yaaic.model.Status;
@@ -250,7 +251,14 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 			case R.id.users:
 				Conversation conversationForUserList = deckAdapter.getItem(deck.getSelectedItemPosition());
 				if (conversationForUserList.getType() == Conversation.TYPE_CHANNEL) {
-					startActivity(new Intent(this, UsersActivity.class));
+					Intent intent = new Intent(this, UsersActivity.class);
+					intent.putExtra(
+						Extra.USERS,
+						binder.getService().getConnection(server.getId()).getUsersAsStringArray(
+							conversationForUserList.getName()
+						)
+					);
+					startActivity(intent);
 				} else {
 					Toast.makeText(this, "Only usable from within a channel", Toast.LENGTH_SHORT).show();
 				}

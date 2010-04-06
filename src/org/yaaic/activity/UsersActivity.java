@@ -20,14 +20,34 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.activity;
 
-import android.app.Activity;
+import org.yaaic.R;
+import org.yaaic.model.Extra;
+
+import android.app.ListActivity;
+import android.os.Bundle;
+import android.view.Window;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 /**
  * User Activity - Shows a list of users in the current channel
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class UsersActivity extends Activity
+public class UsersActivity extends ListActivity
 {
-	
+	/**
+	 * On create
+	 */
+	@Override
+	public void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
+		setContentView(R.layout.users);
+		
+		String[] users = getIntent().getExtras().getStringArray(Extra.USERS);
+		getListView().setAdapter(new ArrayAdapter<String>(this, R.layout.useritem, users));
+	}
 }

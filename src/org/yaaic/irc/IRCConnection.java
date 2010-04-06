@@ -997,6 +997,24 @@ public class IRCConnection extends PircBot
 	}
 	
 	/**
+	 * Get list of users in a channel as array of strings
+	 * 
+	 * @param channel Name of the channel
+	 */
+	public String[] getUsersAsStringArray(String channel)
+	{
+		User[] userArray = getUsers(channel);
+		int mLength = userArray.length;
+		String[] users = new String[mLength];
+		
+		for (int i = 0; i < mLength; i++) {
+			users[i] = userArray[i].getPrefix() + userArray[i].getNick();
+		}
+		
+		return users;
+	}
+	
+	/**
 	 * Quits from the IRC server with default reason.
 	 */
 	@Override

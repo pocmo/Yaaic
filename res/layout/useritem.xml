@@ -1,4 +1,5 @@
-/*
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
 Yaaic - Yet Another Android IRC Client
 
 Copyright 2009-2010 Sebastian Kaspari
@@ -17,17 +18,11 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
-package org.yaaic.model;
-
-/**
- * Helper class for constants used for bundle params (extras)
- * 
- * @author Sebastian Kaspari <sebastian@yaaic.org>
- */
-public class Extra
-{
-	public static final String SERVER 		= "server";
-	public static final String CONVERSATION = "conversation";
-	public static final String USERS        = "users";
-}
+-->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/host"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:padding="7px"
+	android:text=""
+	android:textSize="12px" />
