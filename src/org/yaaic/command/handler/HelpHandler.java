@@ -1,6 +1,7 @@
 package org.yaaic.command.handler;
 
 import java.util.HashMap;
+import java.util.Set;
 
 import org.yaaic.command.BaseHandler;
 import org.yaaic.command.CommandParser;
@@ -32,8 +33,8 @@ public class HelpHandler extends BaseHandler
 		HashMap<String, BaseHandler> commands = cp.getCommands();
 		HashMap<String, String> aliases = cp.getAliases();
 		
-		Object[] commandKeys = commands.keySet().toArray();
-		Object[] aliasesKeys = aliases.keySet().toArray();
+		Set<String> commandKeys = commands.keySet();
+		Set<String> aliasesKeys = aliases.keySet();
 		
 		for (Object command: commandKeys) {
 			String alias = "";
