@@ -33,8 +33,6 @@ import org.yaaic.model.Server;
  */
 public class QuitHandler extends BaseHandler
 {
-	private String desc = "leave current channel";
-	
 	/**
 	 * Execute /quit
 	 */
@@ -62,7 +60,8 @@ public class QuitHandler extends BaseHandler
 	 * Description of /quit
 	 */
 	@Override
-	public String getDescription() {
-		return desc;
+	public String getDescription()
+	{
+		return "disconnect from server";
 	}
 }

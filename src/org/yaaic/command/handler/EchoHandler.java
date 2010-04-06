@@ -37,7 +37,6 @@ import android.content.Intent;
  */
 public class EchoHandler extends BaseHandler
 {
-	private String desc = "";
 	/**
 	 * Execute /echo
 	 */
@@ -74,6 +73,6 @@ public class EchoHandler extends BaseHandler
 	 */
 	@Override
 	public String getDescription() {
-		return desc;
+		return "Print text to window";
 	}
 }

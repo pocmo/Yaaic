@@ -36,8 +36,6 @@ import org.yaaic.model.Server;
  */
 public class TopicHandler extends BaseHandler
 {
-	private String desc = "show or change the current topic";
-	
 	/**
 	 * Execute /topic
 	 */
@@ -73,7 +71,8 @@ public class TopicHandler extends BaseHandler
 	 * Description of /topic
 	 */
 	@Override
-	public String getDescription() {
-		return desc;
+	public String getDescription()
+	{
+		return "show or change the current topic";
 	}
 }

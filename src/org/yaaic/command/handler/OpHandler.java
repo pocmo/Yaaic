@@ -33,8 +33,6 @@ import org.yaaic.model.Server;
  */
 public class OpHandler extends BaseHandler
 {
-	private String desc = "";
-	
 	/**
 	 * Execute /deop
 	 */
@@ -67,6 +65,6 @@ public class OpHandler extends BaseHandler
 	 */
 	@Override
 	public String getDescription() {
-		return desc;
+		return "Give a user operator status";
 	}
 }

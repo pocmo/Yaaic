@@ -33,7 +33,6 @@ import org.yaaic.model.Server;
  */
 public class DevoiceHandler extends BaseHandler
 {
-	private String desc = "";
 	/**
 	 * Execute /devoice
 	 */
@@ -66,6 +65,6 @@ public class DevoiceHandler extends BaseHandler
 	 */
 	@Override
 	public String getDescription() {
-		return desc;
+		return "Remove voice status from a user";
 	}
 }

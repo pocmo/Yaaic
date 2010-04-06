@@ -38,8 +38,6 @@ import android.content.Intent;
  */
 public class CloseHandler extends BaseHandler
 {
-	private String desc ="Closes the current window";
-	
 	/**
 	 * Execute /close
 	 */
@@ -80,7 +78,8 @@ public class CloseHandler extends BaseHandler
 	 * Description of /close
 	 */
 	@Override
-	public String getDescription() {
-		return desc;
+	public String getDescription()
+	{
+		return "Closes the current window";
 	}
 }

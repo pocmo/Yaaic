@@ -35,8 +35,6 @@ import org.yaaic.model.Server;
  */
 public class ModeHandler extends BaseHandler
 {
-	private String desc = "";
-	
 	/**
 	 * Execute /mode
 	 */
@@ -62,7 +60,8 @@ public class ModeHandler extends BaseHandler
 	}
 
 	@Override
-	public String getDescription() {
-		return desc;
+	public String getDescription()
+	{
+		return "Change channel modes";
 	}
 }

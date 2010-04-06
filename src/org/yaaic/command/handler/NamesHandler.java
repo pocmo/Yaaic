@@ -39,8 +39,6 @@ import android.content.Intent;
  */
 public class NamesHandler extends BaseHandler
 {
-	private String desc = "lists all users in channel";
-	
 	/**
 	 * Execute /names
 	 */
@@ -87,7 +85,8 @@ public class NamesHandler extends BaseHandler
 	 * Description of /names
 	 */
 	@Override
-	public String getDescription() {
-		return desc;
+	public String getDescription()
+	{
+		return "lists all users in channel";
 	}
 }

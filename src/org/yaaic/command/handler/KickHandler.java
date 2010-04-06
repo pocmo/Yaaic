@@ -35,8 +35,6 @@ import org.yaaic.model.Server;
  */
 public class KickHandler extends BaseHandler
 {
-	private String desc = "kicks a user";
-	
 	/**
 	 * Execute /kick
 	 */
@@ -68,6 +66,6 @@ public class KickHandler extends BaseHandler
 	 */
 	@Override
 	public String getDescription() {
-		return desc;
+		return "kicks a user";
 	}
 }

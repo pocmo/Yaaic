@@ -33,7 +33,6 @@ import org.yaaic.model.Server;
  */
 public class DeopHandler extends BaseHandler
 {
-	private String desc = "";
 	/**
 	 * Execute /voice
 	 */
@@ -66,6 +65,6 @@ public class DeopHandler extends BaseHandler
 	 */
 	@Override
 	public String getDescription() {
-		return desc;
+		return "Give a user voice status";
 	}
 }
