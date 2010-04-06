@@ -18,16 +18,14 @@ import android.content.Intent;
  * 
  * @author Karol Gliniecki <karol.gliniecki@googlemail.com>
  */
-public class HelpHandler extends BaseHandler {
-	
-	private String desc = "lists all available commands";
-
+public class HelpHandler extends BaseHandler
+{
 	/**
 	 * Execute /help
 	 */
 	@Override
-	public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException {
-		
+	public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException
+	{
 		CommandParser cp = CommandParser.getInstance();
 		
 		StringBuffer commandList = new StringBuffer("available commands: \n");
@@ -40,13 +38,13 @@ public class HelpHandler extends BaseHandler {
 		for (Object command: commandKeys) {
 			String alias = "";
 			for (Object aliasCommand: aliasesKeys) {
-				System.out.println("alias: "+aliases.get(aliasCommand));
+				System.out.println("alias: " + aliases.get(aliasCommand));
 				if (command.equals(aliases.get(aliasCommand))) {
-					alias = " or /"+aliasCommand;
+					alias = " or /" + aliasCommand;
 					break;
 				}
 			}
-			commandList.append("/"+command.toString() + alias+" - "+commands.get(command).getDescription()+"\n");
+			commandList.append("/" + command.toString() + alias + " - "+commands.get(command).getDescription() + "\n");
 		}
 		
 		Message message = new Message(commandList.toString());
@@ -77,7 +75,6 @@ public class HelpHandler extends BaseHandler {
 	@Override
 	public String getDescription()
 	{
-		return desc;
+		return "lists all available commands";
 	}
-
 }
