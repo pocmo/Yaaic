@@ -27,7 +27,6 @@ import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 /**
  * User Activity - Shows a list of users in the current channel
