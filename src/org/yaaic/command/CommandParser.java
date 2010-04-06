@@ -21,7 +21,6 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 package org.yaaic.command;
 
 import java.util.HashMap;
-import java.util.Set;
 
 import android.content.Intent;
 
@@ -59,6 +58,7 @@ import org.yaaic.model.Server;
 public class CommandParser
 {
 	private HashMap<String, BaseHandler> commands;
+	private HashMap<String, String> aliases;
 	private static CommandParser instance;
 	
 	private final static String[] serverCommands = {
@@ -97,9 +97,11 @@ public class CommandParser
 		commands.put("mode", new ModeHandler());
 		commands.put("help", new HelpHandler());
 		
+		aliases = new HashMap<String, String>();
 		// Aliases
-		commands.put("j", commands.get("join"));
-		commands.put("q", commands.get("query"));
+		aliases.put("j","join");
+		aliases.put("q", "query");
+		aliases.put("h", "help");
 	}
 	
 	/**
@@ -121,10 +123,21 @@ public class CommandParser
 	 * 
 	 * @return HashMap - command, commandHandler
 	 */
-	public HashMap<String, BaseHandler> getCommands() {
-		
+	public HashMap<String, BaseHandler> getCommands()
+	{
 		return commands;
 	}
+	
+	/**
+	 * Get the command aliases HashMap
+	 * 
+	 * @return HashMap - alias, command the alias belogs to
+	 */
+	public HashMap<String, String> getAliases()
+	{
+		return aliases;
+	}
+	
 	
 	/**
 	 * Is the given command a valid client command?
@@ -134,7 +147,13 @@ public class CommandParser
 	 */
 	public boolean isClientCommand(String command)
 	{
-		return commands.containsKey(command.toLowerCase());
+		if (commands.containsKey(command.toLowerCase())) {
+			return true;
+		} else if (aliases.containsKey(command.toLowerCase())) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	/**
@@ -166,7 +185,13 @@ public class CommandParser
 	 */
 	public void handleClientCommand(String type, String[] params, Server server, Conversation conversation, IRCService service)
 	{
-		BaseHandler command = commands.get(type);
+		BaseHandler command = null;
+		if (commands.containsKey(type.toLowerCase())) {
+			command = commands.get(type);
+		} else if (aliases.containsKey(type.toLowerCase())) {
+			String commandInCommands = aliases.get(type.toLowerCase());
+			command = commands.get(commandInCommands);
+		}
 		try {
 			command.execute(params, server, conversation, service);
 		} catch(CommandException e) {
