@@ -80,7 +80,6 @@ public class NamesHandler extends BaseHandler
 		return "/names";
 	}
 
-
 	/**
 	 * Description of /names
 	 */

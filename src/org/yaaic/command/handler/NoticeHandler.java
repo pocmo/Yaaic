@@ -75,7 +75,6 @@ public class NoticeHandler extends BaseHandler
 		return "/notice <nickname> <message>";
 	}
 
-
 	/**
 	 * Description of /notice
 	 */

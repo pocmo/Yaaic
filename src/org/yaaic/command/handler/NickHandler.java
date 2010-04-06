@@ -55,7 +55,6 @@ public class NickHandler extends BaseHandler
 		return "/nick <nickname>";
 	}
 	
-
 	/**
 	 * Description of /nick
 	 */

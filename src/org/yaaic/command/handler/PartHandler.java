@@ -63,8 +63,12 @@ public class PartHandler extends BaseHandler
 		return "/part [<channel>]";
 	}
 
+	/**
+	 * Description of /part
+	 */
 	@Override
-	public String getDescription() {
+	public String getDescription()
+	{
 		return "leave the current channel";
 	}
 }

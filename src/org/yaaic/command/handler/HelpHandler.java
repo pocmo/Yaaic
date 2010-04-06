@@ -76,6 +76,6 @@ public class HelpHandler extends BaseHandler
 	@Override
 	public String getDescription()
 	{
-		return "lists all available commands";
+		return "Lists all available commands";
 	}
 }

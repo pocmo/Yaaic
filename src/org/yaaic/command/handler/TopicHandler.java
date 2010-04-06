@@ -66,7 +66,6 @@ public class TopicHandler extends BaseHandler
 		return "/topic [<topic>]";
 	}
 
-
 	/**
 	 * Description of /topic
 	 */

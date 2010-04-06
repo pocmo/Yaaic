@@ -59,12 +59,12 @@ public class DevoiceHandler extends BaseHandler
 		return "/devoice <nickname>";
 	}
 
-
 	/**
 	 * Description of /devoice
 	 */
 	@Override
-	public String getDescription() {
+	public String getDescription()
+	{
 		return "Remove voice status from a user";
 	}
 }

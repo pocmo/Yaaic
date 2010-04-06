@@ -55,7 +55,6 @@ public class QuitHandler extends BaseHandler
 		return "/quit [<reason>]";
 	}
 
-
 	/**
 	 * Description of /quit
 	 */

@@ -67,12 +67,12 @@ public class EchoHandler extends BaseHandler
 		return "/echo <text>";
 	}
 
-
 	/**
 	 * Description of /echo
 	 */
 	@Override
-	public String getDescription() {
+	public String getDescription()
+	{
 		return "Print text to window";
 	}
 }

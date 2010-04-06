@@ -59,6 +59,9 @@ public class ModeHandler extends BaseHandler
 		return "/mode <channel> <mode>";
 	}
 
+	/**
+	 * Description of /mode
+	 */
 	@Override
 	public String getDescription()
 	{

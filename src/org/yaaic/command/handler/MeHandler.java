@@ -78,6 +78,9 @@ public class MeHandler extends BaseHandler
 		return "/me <text>";
 	}
 
+	/**
+	 * Description of /me
+	 */
 	@Override
 	public String getDescription()
 	{

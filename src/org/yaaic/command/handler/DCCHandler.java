@@ -77,7 +77,6 @@ public class DCCHandler extends BaseHandler
 		return "/dcc SEND <nickname> <file>";
 	}
 
-
 	/**
 	 * Description of /dcc
 	 */

@@ -59,12 +59,12 @@ public class OpHandler extends BaseHandler
 		return "/op <nickname>";
 	}
 
-
 	/**
 	 * Description of /deop
 	 */
 	@Override
-	public String getDescription() {
+	public String getDescription() 
+	{
 		return "Give a user operator status";
 	}
 }

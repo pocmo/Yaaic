@@ -79,6 +79,9 @@ public class QueryHandler extends BaseHandler
 		return "/query <nickname>";
 	}
 
+	/**
+	 * Description of /query
+	 */
 	@Override
 	public String getDescription()
 	{

@@ -59,12 +59,12 @@ public class DeopHandler extends BaseHandler
 		return "/voice <nickname>";
 	}
 
-
 	/**
 	 * Description of /voice
 	 */
 	@Override
-	public String getDescription() {
+	public String getDescription()
+	{
 		return "Give a user voice status";
 	}
 }

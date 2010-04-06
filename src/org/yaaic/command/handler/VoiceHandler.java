@@ -59,7 +59,6 @@ public class VoiceHandler extends BaseHandler
 		return "/voice <nickname>";
 	}
 
-
 	/**
 	 * Description of /voice
 	 */

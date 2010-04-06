@@ -65,7 +65,8 @@ public class KickHandler extends BaseHandler
 	 * Description of /kick
 	 */
 	@Override
-	public String getDescription() {
-		return "kicks a user";
+	public String getDescription()
+	{
+		return "Kicks a user";
 	}
 }

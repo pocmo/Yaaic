@@ -63,6 +63,6 @@ public class JoinHandler extends BaseHandler
 	@Override
 	public String getDescription()
 	{
-		return "join a channel";
+		return "Join a channel";
 	}
 }
