@@ -169,7 +169,9 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	{
 		super.onPause();
 		
-		binder.getService().checkServiceStatus();
+		if (binder != null && binder.getService() != null) {
+			binder.getService().checkServiceStatus();
+		}
 		
 		/*if (!binder.getService().hasConnections()) {
 			Log.d("Yaaic", "Stopping service");
