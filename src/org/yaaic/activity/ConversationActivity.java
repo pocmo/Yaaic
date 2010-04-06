@@ -245,6 +245,9 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 			case R.id.join:
 				startActivityForResult(new Intent(this, JoinActivity.class), 0);
 				break;
+			case R.id.users:
+				// XXX: Todo, launch an user activity..
+				break;
 		}
 		
 		return true;

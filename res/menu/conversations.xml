@@ -24,6 +24,10 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/join"
         android:title="@string/join_channel"
         android:icon="@android:drawable/ic_menu_add" />
+	<item
+		android:id="@+id/users"
+		android:title="@string/users"
+		android:icon="@drawable/menu_users" />
     <item
         android:id="@+id/close"
         android:title="@string/close"
