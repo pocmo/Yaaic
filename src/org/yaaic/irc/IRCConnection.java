@@ -960,6 +960,8 @@ public class IRCConnection extends PircBot
 	{
 		server.setStatus(Status.DISCONNECTED);
 		
+		service.updateNotification("Disconnected from " + server.getTitle());
+		
 		Intent sIntent = Broadcast.createServerIntent(Broadcast.SERVER_UPDATE, server.getId());
 		service.sendBroadcast(sIntent);		
 		
