@@ -62,6 +62,7 @@ public class IRCService extends Service
     private Method mStopForeground;
     private Object[] mStartForegroundArgs = new Object[2];
     private Object[] mStopForegroundArgs = new Object[1];
+    private Notification notification;
     
 	/**
 	 * Create new service
@@ -138,10 +139,14 @@ public class IRCService extends Service
     private void handleCommand(Intent intent)
     {
     	if (ACTION_FOREGROUND.equals(intent.getAction())) {
+        	if (foreground) {
+        		return; // XXX: We are already in foreground...
+        	}
+    		
     		foreground = true;
     		
 	        // Set the icon, scrolling text and timestamp
-	        Notification notification = new Notification(R.drawable.icon, "Connected", System.currentTimeMillis());
+	        notification = new Notification(R.drawable.icon, "Connected", System.currentTimeMillis());
 	
 	        // The PendingIntent to launch our activity if the user selects this notification
 	        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, ServersActivity.class), 0);
@@ -155,7 +160,16 @@ public class IRCService extends Service
         }
     }
     
-    
+    public void updateNotification(String text)
+    {
+    	if (foreground) {
+    		mNM.cancel(R.string.app_name);
+    		notification = new Notification(R.drawable.icon, text, System.currentTimeMillis());
+    		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, ServersActivity.class), 0);
+    		notification.setLatestEventInfo(this, getText(R.string.app_name), text, contentIntent);
+    		mNM.notify(R.string.app_name, notification);
+    	}
+    }
 
     /**
      * This is a wrapper around the new startForeground method, using the older
