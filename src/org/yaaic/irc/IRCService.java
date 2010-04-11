@@ -146,13 +146,13 @@ public class IRCService extends Service
     		foreground = true;
     		
 	        // Set the icon, scrolling text and timestamp
-	        notification = new Notification(R.drawable.icon, "Connected", System.currentTimeMillis());
+	        notification = new Notification(R.drawable.icon, "", System.currentTimeMillis());
 	
 	        // The PendingIntent to launch our activity if the user selects this notification
 	        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, ServersActivity.class), 0);
 	
 	        // Set the info for the views that show in the notification panel.
-	        notification.setLatestEventInfo(this, getText(R.string.app_name), "Connected", contentIntent);
+	        notification.setLatestEventInfo(this, getText(R.string.app_name), "", contentIntent);
 	
 	        startForegroundCompat(R.string.app_name, notification);
     	} else if (ACTION_BACKGROUND.equals(intent.getAction()) && !foreground) {
