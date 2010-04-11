@@ -201,7 +201,7 @@ public abstract class PircBot implements ReplyConstants {
                         throw new NickAlreadyInUseException(line);
                     }
                 }
-                else if (code.startsWith("5") || code.startsWith("4")) {
+                else if ((code.startsWith("5") || code.startsWith("4")) && !code.equals("439")) {
                     socket.close();
                     _inputThread = null;
                     throw new IrcException("Could not log into the IRC server: " + line);
