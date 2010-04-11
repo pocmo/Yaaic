@@ -308,12 +308,14 @@ public class Database extends SQLiteOpenHelper
 	}
 	
 	/**
-	 * Get all channels
+	 * Get all (auto-join) channels of a server
 	 * 
 	 * @return
 	 */
-	public Cursor getChannels()
+	public Cursor getChannels(int serverId)
 	{
+		// XXX: Should no return a cursor but the populated objects
+		
 		return this.getReadableDatabase().query(
 			ChannelConstants.TABLE_NAME,
 			ChannelConstants.ALL,
@@ -331,8 +333,10 @@ public class Database extends SQLiteOpenHelper
 	 * @param server Unique id of server
 	 * @return
 	 */
-	public Cursor getChannelsById(int serverId)
+	public Cursor getChannelsByServerId(int serverId)
 	{
+		// XXX: Should no return a cursor but the populated objects
+		
 		return this.getReadableDatabase().query(
 			ChannelConstants.TABLE_NAME,
 			ChannelConstants.ALL,
