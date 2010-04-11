@@ -242,7 +242,11 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 			case R.id.close:
 				Conversation conversationToClose = deckAdapter.getItem(deck.getSelectedItemPosition());
 				if (conversationToClose.getType() != Conversation.TYPE_SERVER) {
-					onRemoveConversation(conversationToClose.getName());
+					if (conversationToClose.getType() == Conversation.TYPE_CHANNEL) {
+						binder.getService().getConnection(server.getId()).partChannel(conversationToClose.getName());
+					} else {
+						onRemoveConversation(conversationToClose.getName());
+					}
 				} else {
 					Toast.makeText(this, "You can not close the server info window", Toast.LENGTH_SHORT).show();
 				}
