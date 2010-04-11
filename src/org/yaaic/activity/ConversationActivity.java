@@ -241,6 +241,10 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 				break;
 			case R.id.close:
 				Conversation conversationToClose = deckAdapter.getItem(deck.getSelectedItemPosition());
+				// Make sure we part a channel when closing the channel conversation
+				if(conversationToClose.getType() == Conversation.TYPE_CHANNEL) {
+					binder.getService().getConnection(serverId).partChannel(conversationToClose.getName());
+				}
 				if (conversationToClose.getType() != Conversation.TYPE_SERVER) {
 					if (conversationToClose.getType() == Conversation.TYPE_CHANNEL) {
 						binder.getService().getConnection(server.getId()).partChannel(conversationToClose.getName());
