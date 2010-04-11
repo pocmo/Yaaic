@@ -151,6 +151,7 @@ public class IRCConnection extends PircBot
 		if (action.contains(getNick())) {
 			// highlight
 			message.setColor(Message.COLOR_RED);
+			service.updateNotification(target + ": " + sender + " " + action);
 		}
 		
 		if (target.equals(this.getNick())) {
@@ -337,12 +338,13 @@ public class IRCConnection extends PircBot
 	{
 		// Strip mIRC colors and formatting
 		text = Colors.removeFormattingAndColors(text);
-
+		
 		Message message = new Message("<" + sender + "> " + text);
 		
 		if (text.contains(getNick())) {
 			// highlight
 			message.setColor(Message.COLOR_RED);
+			service.updateNotification(target + ": <" + sender + "> " + text);
 		}
 		
 		server.getConversation(target).addMessage(message);
@@ -486,6 +488,7 @@ public class IRCConnection extends PircBot
 		
 		if (text.contains(getNick())) {
 			message.setColor(Message.COLOR_RED);
+			service.updateNotification("<" + sender + "> " + text);
 		}
 
 		Conversation conversation = server.getConversation(sender);
