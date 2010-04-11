@@ -121,7 +121,12 @@ public class IRCConnection extends PircBot
 	public void onConnect()
 	{
 		server.setStatus(Status.CONNECTED);
-		service.sendBroadcast(new Intent(Broadcast.SERVER_UPDATE));
+		
+		service.sendBroadcast(
+			Broadcast.createServerIntent(Broadcast.SERVER_UPDATE, server.getId())
+		);
+		
+		service.updateNotification("Connected to " + server.getTitle());
 		
 		Message message = new Message("Connected to " + server.getTitle());
 		message.setColor(Message.COLOR_GREEN);
