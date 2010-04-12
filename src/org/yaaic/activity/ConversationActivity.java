@@ -126,6 +126,15 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	@Override
 	public void onResume()
 	{
+		// register the receivers as early as possible, otherwise we may loose a broadcast message
+		channelReceiver = new ConversationReceiver(server.getId(), this);
+		registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_MESSAGE));
+		registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_NEW));
+		registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_REMOVE));
+		
+		serverReceiver = new ServerReceiver(this);
+		registerReceiver(serverReceiver, new IntentFilter(Broadcast.SERVER_UPDATE));
+		
 		super.onResume();
 		
 		((ImageView) findViewById(R.id.status)).setImageResource(server.getStatusIcon());
@@ -136,14 +145,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         startService(intent);
         bindService(intent, this, 0);
         
-    	channelReceiver = new ConversationReceiver(server.getId(), this);
-    	registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_MESSAGE));
-    	registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_NEW));
-    	registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_REMOVE));
-
-    	serverReceiver = new ServerReceiver(this);
-    	registerReceiver(serverReceiver, new IntentFilter(Broadcast.SERVER_UPDATE));
-
 		if (!server.isConnected()) {
 			 ((EditText) findViewById(R.id.input)).setEnabled(false);
 		} else {
