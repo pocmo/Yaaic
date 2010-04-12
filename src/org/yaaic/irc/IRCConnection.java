@@ -49,6 +49,7 @@ public class IRCConnection extends PircBot
 {
 	private IRCService service;
 	private Server server;
+	private String[] autojoinChannels;
 	
 	/**
 	 * Create a new connection
@@ -87,6 +88,16 @@ public class IRCConnection extends PircBot
 		// XXX: Pircbot uses the version for "real name" and "version".
 		//      The real "version" value is provided by onVersion() 
 		this.setVersion(realname);
+	}
+	
+	/**
+	 * Set channels to autojoin after connect
+	 * 
+	 * @param channels
+	 */
+	public void setAutojoinChannels(String[] channels)
+	{
+		autojoinChannels = channels;
 	}
 
 	/**
@@ -139,6 +150,13 @@ public class IRCConnection extends PircBot
 		);
 		
 		service.sendBroadcast(intent);
+		
+		if (autojoinChannels != null) {
+			for (String channel : autojoinChannels) {
+				// Add support for channel keys
+				joinChannel(channel);
+			}
+		}
 	}
 	
 	/**
