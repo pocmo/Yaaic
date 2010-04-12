@@ -311,14 +311,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		Conversation conversation = server.getConversation(target);
 		MessageListAdapter adapter = conversation.getMessageListAdapter();
 		
-		while(conversation.hasBufferedMessages()) {
-			Message message = conversation.pollBufferedMessage();
-			
-			if (adapter != null) {
-				adapter.addMessage(message);
-			} else {
-				//"MessageListAdapter is null (conversation " + conversation.getName() + " has no adapter assigned)"
-			}
+		if (conversation.hasBufferedMessages() && adapter != null) {
+			adapter.addBulkMessages(conversation.getBuffer());
 		}
 	}
 
