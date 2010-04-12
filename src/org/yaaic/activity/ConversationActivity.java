@@ -316,8 +316,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 			
 			if (adapter != null) {
 				adapter.addMessage(message);
-			} else {
-				//"MessageListAdapter is null (conversation " + conversation.getName() + " has no adapter assigned)"
 			}
 		}
 	}
