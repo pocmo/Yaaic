@@ -23,7 +23,9 @@ package org.yaaic.activity;
 import java.util.Collection;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -359,6 +361,22 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 			input.setEnabled(true); 
 		} else {
 			input.setEnabled(false);
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage("You disconnected from " + server.getTitle() + ". Do you want to reconnect?")
+			.setCancelable(false)
+			.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					binder.connect(server);
+				}
+			})
+			.setNegativeButton("No", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					dialog.cancel();
+				}
+			});
+			AlertDialog alert = builder.create();
+			alert.show();
 		}
 	}
 
