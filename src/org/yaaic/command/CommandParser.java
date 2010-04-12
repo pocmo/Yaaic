@@ -24,6 +24,7 @@ import java.util.HashMap;
 
 import android.content.Intent;
 
+import org.yaaic.command.handler.AwayHandler;
 import org.yaaic.command.handler.CloseHandler;
 import org.yaaic.command.handler.DCCHandler;
 import org.yaaic.command.handler.DeopHandler;
@@ -62,7 +63,7 @@ public class CommandParser
 	private static CommandParser instance;
 	
 	private final static String[] serverCommands = {
-		"admin", "motd",    "version", "away",    "knock",   "rules",
+		"admin", "motd",    "version",            "knock",   "rules",
 		"vhost", "credits", "license", "setname", "watch",   "pong",
 		"cycle", "links",   "silence", "who",     "dalinfo", "userhost",
 		"list",  "stats",   "whois",   "invite",  "lusers",  "ping",
@@ -96,6 +97,7 @@ public class CommandParser
 		commands.put("dcc", new DCCHandler());
 		commands.put("mode", new ModeHandler());
 		commands.put("help", new HelpHandler());
+		commands.put("away", new AwayHandler());
 		
 		aliases = new HashMap<String, String>();
 		// Aliases
