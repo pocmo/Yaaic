@@ -44,6 +44,7 @@ import org.yaaic.command.handler.QueryHandler;
 import org.yaaic.command.handler.QuitHandler;
 import org.yaaic.command.handler.TopicHandler;
 import org.yaaic.command.handler.VoiceHandler;
+import org.yaaic.command.handler.WhoisHandler;
 import org.yaaic.exception.CommandException;
 import org.yaaic.irc.IRCService;
 import org.yaaic.model.Broadcast;
@@ -66,7 +67,7 @@ public class CommandParser
 		"admin", "motd",    "version",            "knock",   "rules",
 		"vhost", "credits", "license", "setname", "watch",   "pong",
 		"cycle", "links",   "silence", "who",     "dalinfo", "userhost",
-		"list",  "stats",   "whois",   "invite",  "lusers",  "ping",
+		"list",  "stats",              "invite",  "lusers",  "ping",
 		"time",  "whowas",  "ison",    "map",    
 	};
 
@@ -98,6 +99,7 @@ public class CommandParser
 		commands.put("mode", new ModeHandler());
 		commands.put("help", new HelpHandler());
 		commands.put("away", new AwayHandler());
+		commands.put("whois", new WhoisHandler());
 		
 		aliases = new HashMap<String, String>();
 		// Aliases
