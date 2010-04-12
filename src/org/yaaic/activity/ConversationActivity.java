@@ -62,6 +62,7 @@ import org.yaaic.model.Broadcast;
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Extra;
 import org.yaaic.model.Message;
+import org.yaaic.model.Scrollback;
 import org.yaaic.model.Server;
 import org.yaaic.model.Status;
 import org.yaaic.receiver.ConversationReceiver;
@@ -84,6 +85,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	private ViewSwitcher switcher;
 	private Gallery deck;
 	private DeckAdapter deckAdapter;
+	private Scrollback scrollback;
 	
 	/**
 	 * On create
@@ -118,6 +120,9 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		for (Conversation conversation : mConversations) {
 			onNewConversation(conversation.getName());
 		}
+		
+		// Create a new scrollback history
+		scrollback = new Scrollback();
 	}
 	
 	/**
@@ -400,13 +405,21 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	 */
 	public boolean onKey(View view, int keyCode, KeyEvent event)
 	{
-		if (keyCode == KeyEvent.KEYCODE_DPAD_UP && event.getAction() == KeyEvent.ACTION_UP) {
-			// XXX: History up (Implement me..)
+		EditText input = (EditText) view;
+		
+		if (keyCode == KeyEvent.KEYCODE_DPAD_UP && event.getAction() == KeyEvent.ACTION_DOWN) {
+			String message = scrollback.goBack();
+			if (message != null) {
+				input.setText(message);
+			}
 			return true;
 		}
 		
-		if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN && event.getAction() == KeyEvent.ACTION_UP) {
-			// XXX: History down (Implement me..)
+		if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN && event.getAction() == KeyEvent.ACTION_DOWN) {
+			String message = scrollback.goForward();
+			if (message != null) {
+				input.setText(message);
+			}
 			return true;
 		}
 		
@@ -419,7 +432,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 				onConversationMessage(server.getSelectedConversation());
 			}
 			
-			EditText input = (EditText) view;
 			String text = input.getText().toString();
 			input.setText("");
 			
@@ -427,6 +439,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 				// ignore empty messages
 				return true;
 			}
+			
+			scrollback.addMessage(text);
 			
 			Conversation conversation = deckAdapter.getItem(deck.getSelectedItemPosition());
 			
