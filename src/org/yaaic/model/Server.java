@@ -310,7 +310,7 @@ public class Server
 	 * 
 	 * @return
 	 */
-	public String[] getCurrentChannelNames()
+	public ArrayList<String> getCurrentChannelNames()
 	{
 		ArrayList<String> channels = new ArrayList<String>();
 		Collection<Conversation> mConversations = conversations.values();
@@ -321,7 +321,7 @@ public class Server
 			}
 		}
 		
-		return (String[]) channels.toArray();		
+		return channels;
 	}
 	
 	/**
