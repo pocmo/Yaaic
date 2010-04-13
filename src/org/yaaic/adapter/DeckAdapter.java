@@ -52,6 +52,14 @@ public class DeckAdapter extends BaseAdapter
 	}
 	
 	/**
+	 * Clear conversations
+	 */
+	public void clearConversations()
+	{
+		conversations = new LinkedList<Conversation>();
+	}
+	
+	/**
 	 * Get number of item
 	 */
 	public int getCount()
