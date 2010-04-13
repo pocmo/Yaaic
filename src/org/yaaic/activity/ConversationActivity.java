@@ -451,7 +451,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 			String text = input.getText().toString();
 			input.setText("");
 			
-			if (text == "") {
+			if (text.equals("")) {
 				// ignore empty messages
 				return true;
 			}
