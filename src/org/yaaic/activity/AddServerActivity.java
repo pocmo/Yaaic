@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -87,6 +88,7 @@ public class AddServerActivity extends Activity implements OnClickListener
         	((EditText) findViewById(R.id.nickname)).setText(server.getIdentity().getNickname());
         	((EditText) findViewById(R.id.ident)).setText(server.getIdentity().getIdent());
         	((EditText) findViewById(R.id.realname)).setText(server.getIdentity().getRealName());
+        	((CheckBox) findViewById(R.id.useSSL)).setChecked(server.useSSL());
         	
         	((Button) findViewById(R.id.add)).setText("Save");
         	
@@ -225,6 +227,7 @@ public class AddServerActivity extends Activity implements OnClickListener
 		int port = Integer.parseInt(((EditText) findViewById(R.id.port)).getText().toString());
 		String password = ((EditText) findViewById(R.id.password)).getText().toString();
 		String charset = ((Spinner) findViewById(R.id.charset)).getSelectedItem().toString();
+		Boolean useSSL = ((CheckBox) findViewById(R.id.useSSL)).isSelected();
 		
 		// not in use yet
 		//boolean autoConnect = ((CheckBox) findViewById(R.id.autoconnect)).isChecked();
@@ -236,6 +239,7 @@ public class AddServerActivity extends Activity implements OnClickListener
 		server.setPassword(password);
 		server.setTitle(title);
 		server.setCharset(charset);
+		server.setUseSSL(useSSL);
 		server.setStatus(Status.DISCONNECTED);
 
 		return server;
