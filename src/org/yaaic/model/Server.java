@@ -20,6 +20,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 
@@ -302,6 +303,25 @@ public class Server
 	public String getSelectedConversation()
 	{
 		return selected;
+	}
+	
+	/**
+	 * Get names of the currently joined channels
+	 * 
+	 * @return
+	 */
+	public String[] getCurrentChannelNames()
+	{
+		ArrayList<String> channels = new ArrayList<String>();
+		Collection<Conversation> mConversations = conversations.values();
+		
+		for (Conversation conversation : mConversations) {
+			if (conversation.getType() == Conversation.TYPE_CHANNEL) {
+				channels.add(conversation.getName());
+			}
+		}
+		
+		return (String[]) channels.toArray();		
 	}
 	
 	/**
