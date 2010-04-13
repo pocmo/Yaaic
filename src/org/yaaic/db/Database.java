@@ -280,6 +280,7 @@ public class Database extends SQLiteOpenHelper
 		server.setPassword(cursor.getString(cursor.getColumnIndex(ServerConstants.PASSWORD)));
 		server.setId(cursor.getInt(cursor.getColumnIndex((ServerConstants._ID))));
 		server.setCharset(cursor.getString(cursor.getColumnIndex(ServerConstants.CHARSET)));
+		server.setUseSSL(Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(ServerConstants.USE_SSL))));
 		server.setStatus(Status.DISCONNECTED);
 		
 		// Load identity for server
