@@ -31,7 +31,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 		android:right="3px"
 		android:bottom="3px" />  
 	<solid
-		android:color="#ee000000" />
+		android:color="#cc000000" />
    	<corners
    		android:bottomRightRadius="10dp"
    		android:bottomLeftRadius="10dp"
