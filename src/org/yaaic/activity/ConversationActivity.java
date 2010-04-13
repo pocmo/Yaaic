@@ -368,6 +368,9 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 			.setCancelable(false)
 			.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
+					binder.getService().getConnection(server.getId()).setAutojoinChannels(
+						server.getCurrentChannelNames()
+					);
 					server.clearConversations();
 					deckAdapter.clearConversations();
 					deckAdapter.addItem(server.getConversation(ServerInfo.DEFAULT_NAME));
