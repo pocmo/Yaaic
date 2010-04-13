@@ -66,6 +66,7 @@ import org.yaaic.model.Extra;
 import org.yaaic.model.Message;
 import org.yaaic.model.Scrollback;
 import org.yaaic.model.Server;
+import org.yaaic.model.ServerInfo;
 import org.yaaic.model.Status;
 import org.yaaic.receiver.ConversationReceiver;
 import org.yaaic.receiver.ServerReceiver;
@@ -367,6 +368,9 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 			.setCancelable(false)
 			.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
+					server.clearConversations();
+					deckAdapter.clearConversations();
+					deckAdapter.addItem(server.getConversation(ServerInfo.DEFAULT_NAME));
 					binder.connect(server);
 				}
 			})
