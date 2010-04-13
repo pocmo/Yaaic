@@ -163,7 +163,7 @@ public class AddServerActivity extends Activity implements OnClickListener
 			server.getPort(),
 			server.getPassword(),
 			false, // auto connect
-			false, // use ssl
+			server.useSSL(),
 			identityId,
 			server.getCharset()
 		);
@@ -194,7 +194,7 @@ public class AddServerActivity extends Activity implements OnClickListener
 			server.getPort(),
 			server.getPassword(),
 			false, // auto connect
-			false, // use ssl
+			server.useSSL(),
 			identityId,
 			server.getCharset()
 		);
@@ -227,11 +227,10 @@ public class AddServerActivity extends Activity implements OnClickListener
 		int port = Integer.parseInt(((EditText) findViewById(R.id.port)).getText().toString());
 		String password = ((EditText) findViewById(R.id.password)).getText().toString();
 		String charset = ((Spinner) findViewById(R.id.charset)).getSelectedItem().toString();
-		Boolean useSSL = ((CheckBox) findViewById(R.id.useSSL)).isSelected();
+		Boolean useSSL = ((CheckBox) findViewById(R.id.useSSL)).isChecked();
 		
 		// not in use yet
 		//boolean autoConnect = ((CheckBox) findViewById(R.id.autoconnect)).isChecked();
-		//boolean useSSL = ((CheckBox) findViewById(R.id.useSSL)).isChecked();
 		
 		Server server = new Server();
 		server.setHost(host);
