@@ -200,7 +200,7 @@ public class Server
 	 */
 	public void setUseSSL(boolean useSSL)
 	{
-		this.setUseSSL(useSSL);
+		this.useSSL = useSSL;
 	}
 	
 	/**
