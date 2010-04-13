@@ -269,7 +269,9 @@ public class IRCService extends Service
     public void onDestroy()
     {
         // Make sure our notification is gone.
-        stopForegroundCompat(R.string.app_name);
+    	if (foreground) {
+    		stopForegroundCompat(R.string.app_name);
+    	}
     }
 
 	
