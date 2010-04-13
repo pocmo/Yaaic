@@ -201,6 +201,8 @@ public class IRCService extends Service
      */
     private void stopForegroundCompat(int id)
     {
+    	foreground = false;
+    	
         // If we have the new stopForeground API, then use it.
         if (mStopForeground != null) {
             mStopForegroundArgs[0] = Boolean.TRUE;
