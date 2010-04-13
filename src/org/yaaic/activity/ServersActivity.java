@@ -164,9 +164,11 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 		    public void onClick(DialogInterface dialog, int item) {
 		        switch (item) {
 			        case 0: // Connect
-			        	binder.connect(server);
-			        	server.setStatus(Status.CONNECTING);
-			        	adapter.notifyDataSetChanged();
+			        	if (server.getStatus() == Status.DISCONNECTED) {
+				        	binder.connect(server);
+				        	server.setStatus(Status.CONNECTING);
+				        	adapter.notifyDataSetChanged();
+			        	}
 			        	break;
 			        case 1: // Disconnect
 			        	server.clearConversations();
