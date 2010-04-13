@@ -20,6 +20,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.irc;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Vector;
 
@@ -49,7 +50,7 @@ public class IRCConnection extends PircBot
 {
 	private IRCService service;
 	private Server server;
-	private String[] autojoinChannels;
+	private ArrayList<String> autojoinChannels;
 	
 	/**
 	 * Create a new connection
@@ -95,7 +96,7 @@ public class IRCConnection extends PircBot
 	 * 
 	 * @param channels
 	 */
-	public void setAutojoinChannels(String[] channels)
+	public void setAutojoinChannels(ArrayList<String> channels)
 	{
 		autojoinChannels = channels;
 	}
