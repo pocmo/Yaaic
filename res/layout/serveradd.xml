@@ -88,8 +88,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 			android:id="@+id/useSSL"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/server_useSSL"
-			android:visibility="gone" />
+			android:text="@string/server_useSSL" />
         <TextView
             android:text="User"
             android:layout_width="fill_parent"
