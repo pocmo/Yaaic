@@ -38,6 +38,7 @@ public class Server
 	private int port;
 	private String password;
 	private String charset;
+	private boolean useSSL = false;
 	private Identity identity;
 	
 	private LinkedHashMap<String, Conversation> conversations = new LinkedHashMap<String, Conversation>();
@@ -192,6 +193,24 @@ public class Server
 	public String getCharset()
 	{
 		return charset;
+	}
+	
+	/**
+	 * Set if this connections needs to use ssl
+	 */
+	public void setUseSSL(boolean useSSL)
+	{
+		this.setUseSSL(useSSL);
+	}
+	
+	/**
+	 * Does this connection use SSL?
+	 * 
+	 * @return true if SSL should be used, false otherwise
+	 */
+	public boolean useSSL()
+	{
+		return useSSL;
 	}
 	
 	/**
