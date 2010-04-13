@@ -29,7 +29,12 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.X509TrustManager;
+
+import org.yaaic.ssl.NaiveTrustManager;
 
 /**
  * PircBot is a Java framework for writing IRC bots quickly and easily.
@@ -149,7 +154,19 @@ public abstract class PircBot implements ReplyConstants {
         // XXX: PircBot Patch for SSL
         Socket socket;
         if (_useSSL) {
-        	socket = SSLSocketFactory.getDefault().createSocket(hostname, port);
+        	try {
+        		SSLContext context = SSLContext.getInstance("TLS");
+        		context.init(null, new X509TrustManager[] { new NaiveTrustManager() }, null);
+        		SSLSocketFactory factory = context.getSocketFactory();
+        		SSLSocket ssocket = (SSLSocket) factory.createSocket(hostname, port);
+        		ssocket.startHandshake();
+        		socket = ssocket;
+        	}
+        	catch(Exception e)
+        	{
+        		// XXX: It's not really an IOException :)
+        		throw new IOException("Cannot open SSL socket");
+        	}
         } else {
         	socket =  new Socket(hostname, port);
         }
