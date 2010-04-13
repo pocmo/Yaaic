@@ -29,6 +29,8 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
+import javax.net.ssl.SSLSocketFactory;
+
 /**
  * PircBot is a Java framework for writing IRC bots quickly and easily.
  *  <p>
@@ -143,7 +145,14 @@ public abstract class PircBot implements ReplyConstants {
         this.removeAllChannels();
         
         // Connect to the server.
-        Socket socket =  new Socket(hostname, port);
+        
+        // XXX: PircBot Patch for SSL
+        Socket socket;
+        if (_useSSL) {
+        	socket = SSLSocketFactory.getDefault().createSocket(hostname, port);
+        } else {
+        	socket =  new Socket(hostname, port);
+        }
         
         _inetAddress = socket.getLocalAddress();
         
