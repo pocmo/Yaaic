@@ -247,6 +247,17 @@ public abstract class PircBot implements ReplyConstants {
         }
         connect(getServer(), getPort(), getPassword());
     }
+    
+    
+    /**
+     * Set wether SSL should be used to connect to the server
+     * 
+     * @author Sebastian Kaspari <sebastian@yaaic.org>
+     */
+    public void setUseSSL(boolean useSSL)
+    {
+    	_useSSL = useSSL;
+    }
 
 
     /**
@@ -3010,6 +3021,8 @@ public abstract class PircBot implements ReplyConstants {
     
     // Default settings for the PircBot.
     private boolean _autoNickChange = false;
+    private boolean _useSSL = false;
+
     private String _name = "PircBot";
     private String _nick = _name;
     private String _login = "PircBot";
