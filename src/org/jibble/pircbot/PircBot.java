@@ -29,6 +29,13 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.X509TrustManager;
+
+import org.yaaic.ssl.NaiveTrustManager;
+
 /**
  * PircBot is a Java framework for writing IRC bots quickly and easily.
  *  <p>
@@ -143,7 +150,26 @@ public abstract class PircBot implements ReplyConstants {
         this.removeAllChannels();
         
         // Connect to the server.
-        Socket socket =  new Socket(hostname, port);
+        
+        // XXX: PircBot Patch for SSL
+        Socket socket;
+        if (_useSSL) {
+        	try {
+        		SSLContext context = SSLContext.getInstance("TLS");
+        		context.init(null, new X509TrustManager[] { new NaiveTrustManager() }, null);
+        		SSLSocketFactory factory = context.getSocketFactory();
+        		SSLSocket ssocket = (SSLSocket) factory.createSocket(hostname, port);
+        		ssocket.startHandshake();
+        		socket = ssocket;
+        	}
+        	catch(Exception e)
+        	{
+        		// XXX: It's not really an IOException :)
+        		throw new IOException("Cannot open SSL socket");
+        	}
+        } else {
+        	socket =  new Socket(hostname, port);
+        }
         
         _inetAddress = socket.getLocalAddress();
         
@@ -249,6 +275,17 @@ public abstract class PircBot implements ReplyConstants {
             throw new IrcException("Cannot reconnect to an IRC server because we were never connected to one previously!");
         }
         connect(getServer(), getPort(), getPassword());
+    }
+    
+    
+    /**
+     * Set wether SSL should be used to connect to the server
+     * 
+     * @author Sebastian Kaspari <sebastian@yaaic.org>
+     */
+    public void setUseSSL(boolean useSSL)
+    {
+    	_useSSL = useSSL;
     }
 
 
@@ -3013,6 +3050,8 @@ public abstract class PircBot implements ReplyConstants {
     
     // Default settings for the PircBot.
     private boolean _autoNickChange = false;
+    private boolean _useSSL = false;
+
     private String _name = "PircBot";
     private String _nick = _name;
     private String _login = "PircBot";

@@ -162,7 +162,8 @@ public class Database extends SQLiteOpenHelper
 		
 		this.getWritableDatabase().update(
 			ServerConstants.TABLE_NAME,
-			values, ServerConstants._ID + " = " + serverId,
+			values,
+			ServerConstants._ID + " = " + serverId,
 			null
 		);
 	}
@@ -280,6 +281,12 @@ public class Database extends SQLiteOpenHelper
 		server.setPassword(cursor.getString(cursor.getColumnIndex(ServerConstants.PASSWORD)));
 		server.setId(cursor.getInt(cursor.getColumnIndex((ServerConstants._ID))));
 		server.setCharset(cursor.getString(cursor.getColumnIndex(ServerConstants.CHARSET)));
+		
+		String useSSLvalue = cursor.getString(cursor.getColumnIndex(ServerConstants.USE_SSL));
+		if (useSSLvalue != null && useSSLvalue.equals("1")) {
+			server.setUseSSL(true);
+		}
+		
 		server.setStatus(Status.DISCONNECTED);
 		
 		// Load identity for server
