@@ -67,7 +67,7 @@ public class Scrollback
 			pointer--;
 		}
 		
-		if (messages.size() >= 0) {
+		if (messages.size() > 0) {
 			return messages.get(pointer);
 		}
 	
