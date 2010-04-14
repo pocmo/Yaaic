@@ -176,6 +176,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 			
 			if (mAdapter != null) {
 				mAdapter.addBulkMessages(conversation.getBuffer());
+				conversation.clearBuffer();
 			}
 		}
 		

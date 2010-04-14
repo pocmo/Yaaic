@@ -101,7 +101,7 @@ public class MessageListAdapter extends BaseAdapter
 		Context mContext = this.context;
 		int mSize = messages.size();
 		
-		for (int i = 0; i < mSize; i++) {
+		for (int i = mSize - 1; i > -1; i--) {
 			mMessages.add(messages.get(i).renderTextView(mContext));
 			
 			if (mMessages.size() > Conversation.HISTORY_SIZE) {
