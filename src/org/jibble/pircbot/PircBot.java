@@ -208,7 +208,10 @@ public abstract class PircBot implements ReplyConstants {
                 }
             }
             this.setNick(nick);
-            
+        }
+        
+        if (line == null) {
+        	throw new IOException("Could not connect to server");
         }
         
         // This makes the socket timeout on read operations after 5 minutes.
