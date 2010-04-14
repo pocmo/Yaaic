@@ -90,6 +90,13 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	private DeckAdapter deckAdapter;
 	private Scrollback scrollback;
 	
+	// XXX: This is ugly. This is a buffer for a channel that should be joined after showing the
+	//      JoinActivity. As onActivityResult() is called before onResume() a "channel joined"
+	//      broadcast may get lost as the broadcast receivers are registered in onResume() but the
+	//      join command would be called in onActivityResult(). joinChannelBuffer will save the
+	//      channel name in onActivityResult() and run the join command in onResume().
+	private String joinChannelBuffer;
+	
 	/**
 	 * On create
 	 */
@@ -170,6 +177,16 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 			if (mAdapter != null) {
 				mAdapter.addBulkMessages(conversation.getBuffer());
 			}
+		}
+		
+		// Join channel that has been selected in JoinActivity (onActivityResult())
+		if (joinChannelBuffer != null) {
+			new Thread() {
+				public void run() {
+					binder.getService().getConnection(serverId).joinChannel(joinChannelBuffer);
+					joinChannelBuffer = null;
+				}
+			}.start();
 		}
 	}
 	
@@ -498,14 +515,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	{
 		// currently there's only the "join channel" activity
 		if (resultCode == RESULT_OK) {
-			final String channel = data.getExtras().getString("channel");
-			
-			// run on own thread
-			new Thread() {
-				public void run() {
-					binder.getService().getConnection(serverId).joinChannel(channel);
-				}
-			}.start();
+			joinChannelBuffer = data.getExtras().getString("channel");
 		}
 	}
 
