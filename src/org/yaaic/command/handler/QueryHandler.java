@@ -57,12 +57,13 @@ public class QueryHandler extends BaseHandler
 				throw new CommandException("Query already exists");
 			}
 			
-			server.addConversationl(new Query(params[1]));
+			query = new Query(params[1]);
+			server.addConversationl(query);
 			
 			Intent intent = Broadcast.createConversationIntent(
-				Broadcast.CONVERSATION_MESSAGE,
+				Broadcast.CONVERSATION_NEW,
 				server.getId(),
-				conversation.getName()
+				query.getName()
 			);
 			service.sendBroadcast(intent);
 		} else {
