@@ -57,7 +57,7 @@ public class IRCService extends Service
     public static final String ACTION_FOREGROUND = "org.yaaic.service.foreground";
     public static final String ACTION_BACKGROUND = "org.yaaic.service.background";
 	
-    private NotificationManager mNM;
+    private NotificationManager notificationManager;
     private Method mStartForeground;
     private Method mStopForeground;
     private Object[] mStartForegroundArgs = new Object[2];
@@ -82,7 +82,7 @@ public class IRCService extends Service
 	public void onCreate()
 	{
 		super.onCreate();
-        mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         
         try {
             mStartForeground = getClass().getMethod("startForeground", mStartForegroundSignature);
@@ -160,14 +160,19 @@ public class IRCService extends Service
         }
     }
     
+    /**
+     * Update the notification
+     * 
+     * @param text The text to display
+     */
     public void updateNotification(String text)
     {
     	if (foreground) {
-    		mNM.cancel(R.string.app_name);
+    		notificationManager.cancel(R.string.app_name);
     		notification = new Notification(R.drawable.icon, text, System.currentTimeMillis());
     		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, ServersActivity.class), 0);
     		notification.setLatestEventInfo(this, getText(R.string.app_name), text, contentIntent);
-    		mNM.notify(R.string.app_name, notification);
+    		notificationManager.notify(R.string.app_name, notification);
     	}
     }
 
@@ -191,7 +196,7 @@ public class IRCService extends Service
         } else {
 	        // Fall back on the old API.
 	        setForeground(true);
-	        mNM.notify(id, notification);
+	        notificationManager.notify(id, notification);
         }
     }
 
@@ -216,7 +221,7 @@ public class IRCService extends Service
         } else {
 	        // Fall back on the old API.  Note to cancel BEFORE changing the
 	        // foreground state, since we could be killed at that point.
-	        mNM.cancel(id);
+	        notificationManager.cancel(id);
 	        setForeground(false);
         }
     }
@@ -276,7 +281,6 @@ public class IRCService extends Service
     	}
     }
 
-	
 	/**
 	 * On Activity binding to this service
 	 * 
