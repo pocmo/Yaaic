@@ -11,4 +11,7 @@
 	
 	<string name="key_24h_format">24h_format</string>
 	<string name="default_24h_format">true</string>
+	
+	<string name="key_reconnect">reconnect</string>
+	<string name="default_reconnect">false</string>
 </resources>

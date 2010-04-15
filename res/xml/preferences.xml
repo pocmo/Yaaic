@@ -22,6 +22,14 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 <PreferenceScreen
 	xmlns:android="http://schemas.android.com/apk/res/android">
 	<PreferenceCategory
+		android:title="Connection">
+		<CheckBoxPreference
+			android:title="Reconnect"
+			android:summary="Automatically reconnect on disconnect"
+			android:key="@string/key_reconnect"
+			android:defaultValue="@string/default_reconnect" />
+	</PreferenceCategory>
+	<PreferenceCategory
 		android:title="Chat">
 		<CheckBoxPreference
 			android:title="Show icons"
