@@ -271,11 +271,16 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 	}
 
 	/**
-	 * On server status updat
+	 * On server status update
 	 */
 	public void onStatusUpdate()
 	{
 		adapter.loadServers();
+		
+		if (!adapter.isEmpty()) {
+			// Hide background if there are servers in the list
+			getListView().setBackgroundDrawable(null);
+		}
 	}
    
 }
