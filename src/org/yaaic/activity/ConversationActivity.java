@@ -121,6 +121,12 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		deck.setAdapter(deckAdapter);
 		deck.setOnItemClickListener(this);
 		deck.setBackgroundDrawable(new NonScalingBackgroundDrawable(this, deck, R.drawable.background));
+		
+		if (server.getStatus() == Status.PRE_CONNECTING) {
+			server.clearConversations();
+			deckAdapter.clearConversations();
+		}
+
 
 		switcher = (ViewSwitcher) findViewById(R.id.switcher);
 		
