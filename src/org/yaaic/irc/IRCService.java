@@ -75,7 +75,7 @@ public class IRCService extends Service
 		
 		this.connections = new HashMap<Integer, IRCConnection>();
 		this.binder = new IRCBinder(this);
-		this.settings = new Settings(getApplicationContext());
+		//this.settings = new Settings(this.getApplicationContext());
 	}
 	
 	/**
