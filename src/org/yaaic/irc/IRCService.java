@@ -27,10 +27,11 @@ import java.util.HashMap;
 
 import org.yaaic.R;
 import org.yaaic.Yaaic;
+import org.yaaic.activity.ServersActivity;
 import org.yaaic.db.Database;
 import org.yaaic.model.Broadcast;
 import org.yaaic.model.Server;
-import org.yaaic.activity.ServersActivity;
+import org.yaaic.model.Settings;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -63,6 +64,7 @@ public class IRCService extends Service
     private Object[] mStartForegroundArgs = new Object[2];
     private Object[] mStopForegroundArgs = new Object[1];
     private Notification notification;
+    private Settings settings;
     
 	/**
 	 * Create new service
@@ -73,6 +75,7 @@ public class IRCService extends Service
 		
 		this.connections = new HashMap<Integer, IRCConnection>();
 		this.binder = new IRCBinder(this);
+		this.settings = new Settings(getApplicationContext());
 	}
 	
 	/**
@@ -99,6 +102,16 @@ public class IRCService extends Service
 
 		// Broadcast changed server list
 		sendBroadcast(new Intent(Broadcast.SERVER_UPDATE));
+	}
+	
+	/**
+	 * Get Settings object
+	 * 
+	 * @return the settings helper object
+	 */
+	public Settings getSettings()
+	{
+		return settings;
 	}
 
 	/**
