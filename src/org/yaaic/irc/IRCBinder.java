@@ -20,16 +20,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.irc;
 
-import org.jibble.pircbot.IrcException;
-import org.jibble.pircbot.NickAlreadyInUseException;
-import org.yaaic.R;
-import org.yaaic.model.Broadcast;
-import org.yaaic.model.Message;
 import org.yaaic.model.Server;
-import org.yaaic.model.ServerInfo;
-import org.yaaic.model.Status;
 
-import android.content.Intent;
 import android.os.Binder;
 
 /**
@@ -60,57 +52,7 @@ public class IRCBinder extends Binder
 	 */
 	public void connect(final Server server)
 	{
-		new Thread() {
-			public void run() {
-				try {
-					IRCConnection connection = getService().getConnection(server.getId());
-
-					connection.setNickname(server.getIdentity().getNickname());
-					connection.setIdent(server.getIdentity().getIdent());
-					connection.setRealName(server.getIdentity().getRealName());
-					connection.setUseSSL(server.useSSL());
-					
-					if (server.getCharset() != null) {
-						connection.setEncoding(server.getCharset());
-					}
-					
-					if (server.getPassword() != "") {
-						connection.connect(server.getHost(), server.getPort(), server.getPassword());
-					} else {
-						connection.connect(server.getHost(), server.getPort());
-					}
-				}
-				catch (Exception e) {
-					server.setStatus(Status.DISCONNECTED);
-					
-					Intent sIntent = Broadcast.createServerIntent(Broadcast.SERVER_UPDATE, server.getId());
-					service.sendBroadcast(sIntent);
-					
-					IRCConnection connection = getService().getConnection(server.getId());
-					
-					Message message;
-					
-					if (e instanceof NickAlreadyInUseException) {
-						message = new Message("Nickname " + connection.getNick() + " already in use");
-					} else if (e instanceof IrcException) {
-						message = new Message("Could not log into the IRC server " + server.getHost() + ":" + server.getPort());
-					} else {
-						message = new Message("Could not connect to " + server.getHost() + ":" + server.getPort());
-					}
-					
-					message.setColor(Message.COLOR_RED);
-					message.setIcon(R.drawable.error);
-					server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(message);
-					
-					Intent cIntent = Broadcast.createConversationIntent(
-						Broadcast.CONVERSATION_MESSAGE,
-						server.getId(),
-						ServerInfo.DEFAULT_NAME
-					);
-					service.sendBroadcast(cIntent);
-				}
-			}
-		}.start();
+		service.connect(server);
 	}
 	
 	/**
