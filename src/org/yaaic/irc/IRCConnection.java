@@ -977,12 +977,17 @@ public class IRCConnection extends PircBot
 	@Override
 	public void onDisconnect()
 	{
-		server.setStatus(Status.DISCONNECTED);
+		if (service.getSettings().isReconnectEnabled()) {
+			server.setStatus(Status.CONNECTING);
+			service.connect(server);
+		} else {
+			server.setStatus(Status.DISCONNECTED);
+		}
 		
 		service.updateNotification("Disconnected from " + server.getTitle());
-		
+
 		Intent sIntent = Broadcast.createServerIntent(Broadcast.SERVER_UPDATE, server.getId());
-		service.sendBroadcast(sIntent);		
+		service.sendBroadcast(sIntent);
 		
 		Collection<Conversation> conversations = server.getConversations();
 		
