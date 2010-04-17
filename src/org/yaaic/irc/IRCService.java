@@ -342,6 +342,7 @@ public class IRCService extends Service
 		
 		if (shutDown) {
 			foreground = false;
+			stopForegroundCompat(R.string.app_name);
 			stopSelf();
 		}
 	}
