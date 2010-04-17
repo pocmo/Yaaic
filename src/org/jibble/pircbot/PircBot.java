@@ -905,7 +905,7 @@ public abstract class PircBot implements ReplyConstants {
                         target = token;
 
                         // XXX: PircBot Patch - (Needed for BIP IRC Proxy)
-                        //      If this is a JOIN command, use next token as target
+                        //      If this is a NICK command, use next token as target
                         if (command.equalsIgnoreCase("nick")) {
                             target = tokenizer.nextToken();
                         }
