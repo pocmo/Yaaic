@@ -382,10 +382,17 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		((ImageView) findViewById(R.id.status)).setImageResource(server.getStatusIcon());
 		
 		EditText input = (EditText) findViewById(R.id.input);
+
 		if (server.isConnected()) {
 			input.setEnabled(true); 
 		} else {
 			input.setEnabled(false);
+
+			if (server.getStatus() == Status.CONNECTING) {
+				deckAdapter.clearConversations();
+				deckAdapter.addItem(server.getConversation(ServerInfo.DEFAULT_NAME));
+				return;
+			}
 
 			if (!binder.getService().getSettings().isReconnectEnabled()) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
