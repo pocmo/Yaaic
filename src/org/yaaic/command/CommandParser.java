@@ -64,11 +64,16 @@ public class CommandParser
 	private static CommandParser instance;
 	
 	private final static String[] serverCommands = {
+		// whitelist of server commands
 		"admin", "motd",    "version",            "knock",   "rules",
 		"vhost", "credits", "license", "setname", "watch",   "pong",
 		"cycle", "links",   "silence", "who",     "dalinfo", "userhost",
 		"list",  "stats",              "invite",  "lusers",  "ping",
-		"time",  "whowas",  "ison",    "map",    
+		"time",  "whowas",  "ison",    "map",
+		
+		// services
+		"nickserv", "ns", "chanserv", "cs", "authserv", "hostserv",
+		"memoserv", "operserv"
 	};
 
 	/**
