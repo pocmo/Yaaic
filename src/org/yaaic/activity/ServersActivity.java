@@ -106,6 +106,10 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
     {
     	super.onPause();
     	
+		if (binder != null && binder.getService() != null) {
+			binder.getService().checkServiceStatus();
+		}
+		
     	unbindService(this);
     	unregisterReceiver(receiver);
     }
