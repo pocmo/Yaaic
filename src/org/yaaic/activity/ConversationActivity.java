@@ -386,28 +386,30 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 			input.setEnabled(true); 
 		} else {
 			input.setEnabled(false);
-			
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage("You disconnected from " + server.getTitle() + ". Do you want to reconnect?")
-			.setCancelable(false)
-			.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					binder.getService().getConnection(server.getId()).setAutojoinChannels(
-						server.getCurrentChannelNames()
-					);
-					server.clearConversations();
-					deckAdapter.clearConversations();
-					deckAdapter.addItem(server.getConversation(ServerInfo.DEFAULT_NAME));
-					binder.connect(server);
-				}
-			})
-			.setNegativeButton("No", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					dialog.cancel();
-				}
-			});
-			AlertDialog alert = builder.create();
-			alert.show();
+
+			if (!binder.getService().getSettings().isReconnectEnabled()) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setMessage("You disconnected from " + server.getTitle() + ". Do you want to reconnect?")
+				.setCancelable(false)
+				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						binder.getService().getConnection(server.getId()).setAutojoinChannels(
+							server.getCurrentChannelNames()
+						);
+						server.clearConversations();
+						deckAdapter.clearConversations();
+						deckAdapter.addItem(server.getConversation(ServerInfo.DEFAULT_NAME));
+						binder.connect(server);
+					}
+				})
+				.setNegativeButton("No", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+				AlertDialog alert = builder.create();
+				alert.show();
+			}
 		}
 	}
 
