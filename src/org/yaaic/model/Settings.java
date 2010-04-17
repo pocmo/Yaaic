@@ -106,4 +106,17 @@ public class Settings
 			Boolean.parseBoolean(resources.getString(R.string.default_24h_format))
 		);
 	}
+	
+	/**
+	 * Is reconnect on disconnect enabled?
+	 * 
+	 * @return 
+	 */
+	public boolean isReconnectEnabled()
+	{
+		return preferences.getBoolean(
+			resources.getString(R.string.key_reconnect),
+			Boolean.parseBoolean(resources.getString(R.string.default_reconnect))
+		);
+	}
 }
