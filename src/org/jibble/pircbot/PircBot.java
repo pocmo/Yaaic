@@ -235,7 +235,8 @@ public abstract class PircBot implements ReplyConstants {
             }
             this.setNick(nick);
         }
-        
+
+        // XXX: PircBot patch - We are not connected to server if nothing received
         if (line == null) {
         	throw new IOException("Could not connect to server");
         }
@@ -902,6 +903,12 @@ public abstract class PircBot implements ReplyConstants {
                         // (or maybe a NOTICE or suchlike from the server)
                         sourceNick = senderInfo;
                         target = token;
+
+                        // XXX: PircBot Patch - (Needed for BIP IRC Proxy)
+                        //      If this is a JOIN command, use next token as target
+                        if (command.equalsIgnoreCase("nick")) {
+                            target = tokenizer.nextToken();
+                        }
                     }
                 }
                 else {
