@@ -75,7 +75,6 @@ public class IRCService extends Service
 		
 		this.connections = new HashMap<Integer, IRCConnection>();
 		this.binder = new IRCBinder(this);
-		//this.settings = new Settings(this.getApplicationContext());
 	}
 	
 	/**
@@ -85,6 +84,8 @@ public class IRCService extends Service
 	public void onCreate()
 	{
 		super.onCreate();
+		
+		settings = new Settings(getBaseContext());
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         
         try {
