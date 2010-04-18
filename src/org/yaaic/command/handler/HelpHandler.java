@@ -55,21 +55,31 @@ public class HelpHandler extends BaseHandler
 		
 		Set<String> commandKeys = commands.keySet();
 		Set<String> aliasesKeys = aliases.keySet();
-		
-		for (Object command: commandKeys) {
-			String alias = "";
-			for (Object aliasCommand: aliasesKeys) {
-				System.out.println("alias: " + aliases.get(aliasCommand));
-				if (command.equals(aliases.get(aliasCommand))) {
-					alias = " or /" + aliasCommand;
-					break;
-				}
+
+		Message message;
+		if (params.length == 2) {
+			try { 
+				message = new Message("Usage:\n"+commands.get(params[1]).getUsage());
+				message.setColor(Message.COLOR_YELLOW);
+			} catch (Exception e) {
+				message = new Message(params[1]+" is not a valid command");
+				message.setColor(Message.COLOR_RED);
 			}
-			commandList.append("/" + command.toString() + alias + " - "+commands.get(command).getDescription() + "\n");
+		} else {
+			for (Object command: commandKeys) {
+				String alias = "";
+				for (Object aliasCommand: aliasesKeys) {
+					if (command.equals(aliases.get(aliasCommand))) {
+						alias = " or /" + aliasCommand;
+						break;
+					}
+				}
+				commandList.append("/" + command.toString() + alias + " - "+commands.get(command).getDescription() + "\n");
+			}
+			message = new Message(commandList.toString());
+			message.setColor(Message.COLOR_YELLOW);
 		}
 		
-		Message message = new Message(commandList.toString());
-		message.setColor(Message.COLOR_YELLOW);
 		conversation.addMessage(message);
 
 		Intent intent = Broadcast.createConversationIntent(
@@ -87,7 +97,7 @@ public class HelpHandler extends BaseHandler
 	@Override
 	public String getUsage()
 	{
-		return "/help";
+		return "/help \n/help [<command>]";
 	}
 
 	/**
