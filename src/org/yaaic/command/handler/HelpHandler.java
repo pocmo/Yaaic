@@ -97,7 +97,7 @@ public class HelpHandler extends BaseHandler
 	@Override
 	public String getUsage()
 	{
-		return "/help \n/help [<command>]";
+		return "/help [<command>]";
 	}
 
 	/**
