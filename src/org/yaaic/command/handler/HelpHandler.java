@@ -38,6 +38,7 @@ import android.content.Intent;
  * Command: /help 
  * 
  * @author Karol Gliniecki <karol.gliniecki@googlemail.com>
+ * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
 public class HelpHandler extends BaseHandler
 {
@@ -47,52 +48,90 @@ public class HelpHandler extends BaseHandler
 	@Override
 	public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException
 	{
+		if (params.length == 2) {
+			showCommandDetails(service, server, conversation, params[1]);		
+		} else if (params.length == 1) {
+			showAllCommands(service, server, conversation);
+		} else {
+			throw new CommandException("Invalid number of params");
+		}
+	}
+	
+	/**
+	 * Show all available commands
+	 * 
+	 * @param conversation
+	 * @param server
+	 * @param service
+	 */
+	private void showAllCommands(IRCService service, Server server, Conversation conversation)
+	{
 		CommandParser cp = CommandParser.getInstance();
 		
-		StringBuffer commandList = new StringBuffer("available commands: \n");
+		StringBuffer commandList = new StringBuffer("Available commands: \n");
 		HashMap<String, BaseHandler> commands = cp.getCommands();
 		HashMap<String, String> aliases = cp.getAliases();
-		
+
 		Set<String> commandKeys = commands.keySet();
 		Set<String> aliasesKeys = aliases.keySet();
-
-		Message message;
-		if (params.length == 2) {
-			try { 
-				message = new Message("Usage:\n"+commands.get(params[1]).getUsage());
-				message.setColor(Message.COLOR_YELLOW);
-			} catch (Exception e) {
-				message = new Message(params[1]+" is not a valid command");
-				message.setColor(Message.COLOR_RED);
-			}
-		} else {
-			for (Object command: commandKeys) {
-				String alias = "";
-				for (Object aliasCommand: aliasesKeys) {
-					if (command.equals(aliases.get(aliasCommand))) {
-						alias = " or /" + aliasCommand;
-						break;
-					}
+		
+		for (Object command : commandKeys) {
+			String alias = "";
+			for (Object aliasCommand : aliasesKeys) {
+				if (command.equals(aliases.get(aliasCommand))) {
+					alias = " or /" + aliasCommand;
+					break;
 				}
-				commandList.append("/" + command.toString() + alias + " - "+commands.get(command).getDescription() + "\n");
 			}
-			message = new Message(commandList.toString());
-			message.setColor(Message.COLOR_YELLOW);
+			commandList.append("/" + command.toString() + alias + " - "+commands.get(command).getDescription() + "\n");
 		}
 		
+		Message message = new Message(commandList.toString());
+		message.setColor(Message.COLOR_YELLOW);
 		conversation.addMessage(message);
-
+		
 		Intent intent = Broadcast.createConversationIntent(
 			Broadcast.CONVERSATION_MESSAGE,
 			server.getId(),
 			conversation.getName()
 		);
+		
 		service.sendBroadcast(intent);
 	}
 
 	/**
+	 * Show details of a single command
 	 * 
-	 *Usage of /help
+	 * @param conversation
+	 * @param server
+	 * @param service
+	 * @param command
+	 * @throws CommandException
+	 */
+	private void showCommandDetails(IRCService service, Server server, Conversation conversation, String command) throws CommandException
+	{
+		CommandParser cp = CommandParser.getInstance();
+		HashMap<String, BaseHandler> commands = cp.getCommands();
+		
+		if (commands.containsKey(command)) {
+			Message message = new Message("Help of /" + command + "\n" + commands.get(command).getUsage() + "\n" + commands.get(command).getDescription() + "\n");
+			message.setColor(Message.COLOR_YELLOW);
+			conversation.addMessage(message);
+			
+			Intent intent = Broadcast.createConversationIntent(
+				Broadcast.CONVERSATION_MESSAGE,
+				server.getId(),
+				conversation.getName()
+			);
+			
+			service.sendBroadcast(intent);
+		} else {
+			throw new CommandException("Unknown command: " + command);
+		}
+	}
+
+	/**
+	 * Usage of /help
 	 */
 	@Override
 	public String getUsage()
