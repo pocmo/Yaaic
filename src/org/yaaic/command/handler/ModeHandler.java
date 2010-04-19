@@ -27,7 +27,7 @@ import org.yaaic.model.Conversation;
 import org.yaaic.model.Server;
 
 /**
- * Command: /mode <channel> <mod>
+ * Command: /mode <channel> <mode>
  * 
  * Set or remove channel modes
  * 
