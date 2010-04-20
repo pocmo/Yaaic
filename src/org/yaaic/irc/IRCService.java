@@ -223,7 +223,7 @@ public class IRCService extends Service
      * This is a wrapper around the new stopForeground method, using the older
      * APIs if it is not available.
      */
-    private void stopForegroundCompat(int id)
+    public void stopForegroundCompat(int id)
     {
     	foreground = false;
     	
@@ -319,6 +319,16 @@ public class IRCService extends Service
 		}
 		
 		return connection;
+	}
+	
+	/**
+	 * Does the service keep a connection object for this server?
+	 * 
+	 * @return true if there's a connection object, false otherwise
+	 */
+	public boolean hasConnection(int serverId)
+	{
+		return connections.containsKey(serverId);
 	}
 	
 	/**
