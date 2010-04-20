@@ -35,6 +35,7 @@ import org.yaaic.command.handler.JoinHandler;
 import org.yaaic.command.handler.KickHandler;
 import org.yaaic.command.handler.MeHandler;
 import org.yaaic.command.handler.ModeHandler;
+import org.yaaic.command.handler.MsgHandler;
 import org.yaaic.command.handler.NamesHandler;
 import org.yaaic.command.handler.NickHandler;
 import org.yaaic.command.handler.NoticeHandler;
@@ -105,6 +106,7 @@ public class CommandParser
 		commands.put("help", new HelpHandler());
 		commands.put("away", new AwayHandler());
 		commands.put("whois", new WhoisHandler());
+		commands.put("msg", new MsgHandler());
 		
 		aliases = new HashMap<String, String>();
 		// Aliases
