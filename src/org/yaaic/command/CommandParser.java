@@ -24,6 +24,7 @@ import java.util.HashMap;
 
 import android.content.Intent;
 
+import org.yaaic.command.handler.AMsgHandler;
 import org.yaaic.command.handler.AwayHandler;
 import org.yaaic.command.handler.CloseHandler;
 import org.yaaic.command.handler.DCCHandler;
@@ -109,6 +110,7 @@ public class CommandParser
 		commands.put("whois", new WhoisHandler());
 		commands.put("msg", new MsgHandler());
 		commands.put("quote", new RawHandler());
+		commands.put("amsg", new AMsgHandler());
 		
 		aliases = new HashMap<String, String>();
 		
