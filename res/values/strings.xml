@@ -3,6 +3,7 @@
     <string name="add_server_menu">Add server</string>
     <string name="settings_menu">Settings</string>
     <string name="about_menu">About</string>
+    <string name="exit_menu">Exit</string>
     
     <string name="add_server_label">Add new server</string>
     <string name="server_title">Title</string>

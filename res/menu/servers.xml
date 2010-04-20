@@ -32,4 +32,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 		android:id="@+id/about"
 		android:title="@string/about_menu"
 		android:icon="@android:drawable/ic_menu_help" />
+	<item
+		android:id="@+id/exit"
+		android:title="@string/exit_menu"
+		android:icon="@android:drawable/ic_menu_close_clear_cancel" />
 </menu>

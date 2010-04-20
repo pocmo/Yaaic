@@ -20,6 +20,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.activity;
 
+import java.util.ArrayList;
+
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.ComponentName;
@@ -242,6 +244,16 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 			case R.id.settings:
 				startActivity(new Intent(this, SettingsActivity.class));
 				break;
+			case R.id.exit:
+				ArrayList<Server> mServers = Yaaic.getInstance().getServersAsArrayList();
+				for (Server server : mServers) {
+					if (binder.getService().hasConnection(server.getId())) {
+						binder.getService().getConnection(server.getId()).quitServer();
+					}
+				}
+				// ugly
+				binder.getService().stopForegroundCompat(R.string.app_name);
+				finish();
 		}
 		
 		return true;
