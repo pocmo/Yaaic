@@ -100,7 +100,7 @@ public class ServerListAdapter extends BaseAdapter
 		View v = inflater.inflate(R.layout.serveritem, null);
 		
 		((TextView) v.findViewById(R.id.title)).setText(server.getTitle());
-		((TextView) v.findViewById(R.id.host)).setText(server.getHost());
+		((TextView) v.findViewById(R.id.host)).setText(server.getIdentity().getNickname() + " @ " + server.getHost() + " : " + server.getPort());
 		
 		((ImageView) v.findViewById(R.id.status)).setImageResource(server.getStatusIcon());
 		
