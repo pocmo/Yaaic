@@ -23,8 +23,12 @@ package org.yaaic.command.handler;
 import org.yaaic.command.BaseHandler;
 import org.yaaic.exception.CommandException;
 import org.yaaic.irc.IRCService;
+import org.yaaic.model.Broadcast;
 import org.yaaic.model.Conversation;
+import org.yaaic.model.Message;
 import org.yaaic.model.Server;
+
+import android.content.Intent;
 
 /**
  * Command: /msg <target> <message>
@@ -42,8 +46,23 @@ public class MsgHandler extends BaseHandler
 	public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException 
 	{
 		if (params.length > 2) {
-			String message = BaseHandler.mergeParams(params, 2);
-			service.getConnection(server.getId()).sendMessage(params[1], message);
+			String text = BaseHandler.mergeParams(params, 2);
+			service.getConnection(server.getId()).sendMessage(params[1], text);
+			
+			Conversation targetConversation = server.getConversation(params[1]);
+			
+			if (targetConversation != null) {
+				Message message = new Message("<" + service.getConnection(server.getId()).getNick() + "> " + text);
+				targetConversation.addMessage(message);
+				
+				Intent intent = Broadcast.createConversationIntent(
+					Broadcast.CONVERSATION_MESSAGE,
+					server.getId(),
+					targetConversation.getName()
+				);
+				
+				service.sendBroadcast(intent);
+			}
 		} else {
 			throw new CommandException("Invalid number of params");
 		}
