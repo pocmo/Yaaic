@@ -72,7 +72,7 @@ public class CommandParser
 		"vhost", "credits", "license", "setname", "watch",   "pong",
 		"cycle", "links",   "silence", "who",     "dalinfo", "userhost",
 		"list",  "stats",              "invite",  "lusers",  "ping",
-		"time",  "whowas",  "ison",    "map",
+		"time",  "whowas",  "ison",    "map",     "oper"
 		
 		// services
 		"nickserv", "ns", "chanserv", "cs", "authserv", "hostserv",
