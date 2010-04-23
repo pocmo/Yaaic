@@ -292,6 +292,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 					binder.getService().getConnection(serverId).partChannel(conversationToClose.getName());
 				}
 				else if (conversationToClose.getType() == Conversation.TYPE_QUERY) {
+					server.removeConversation(conversationToClose.getName());
 					onRemoveConversation(conversationToClose.getName());
 				} else {
 					Toast.makeText(this, "You can not close the server info window", Toast.LENGTH_SHORT).show();
