@@ -315,6 +315,10 @@ public class Database extends SQLiteOpenHelper
 		Identity identity = this.getIdentityById(cursor.getInt(cursor.getColumnIndex(ServerConstants.IDENTITY)));
 		server.setIdentity(identity);
 		
+		// Load auto join channels
+		ArrayList<String> channels = this.getChannelsByServerId(server.getId());
+		server.setAutoJoinChannels(channels);
+		
 		return server;
 	}
 	
