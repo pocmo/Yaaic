@@ -35,4 +35,6 @@
 	<string name="join_label">Join channel</string>
 	
 	<string name="users_label">Users</string>
+	
+	<string name="channels_label">Channels</string>
 </resources>
