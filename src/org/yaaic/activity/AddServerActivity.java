@@ -304,9 +304,9 @@ public class AddServerActivity extends Activity implements OnClickListener
 	 */
 	private Identity getIdentityFromView()
 	{
-		String nickname = ((EditText) findViewById(R.id.nickname)).getText().toString();
-		String ident = ((EditText) findViewById(R.id.ident)).getText().toString();
-		String realname = ((EditText) findViewById(R.id.realname)).getText().toString();
+		String nickname = ((EditText) findViewById(R.id.nickname)).getText().toString().trim();
+		String ident = ((EditText) findViewById(R.id.ident)).getText().toString().trim();
+		String realname = ((EditText) findViewById(R.id.realname)).getText().toString().trim();
 		
 		Identity identity = new Identity();
 		identity.setNickname(nickname);
