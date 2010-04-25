@@ -26,21 +26,26 @@ import org.yaaic.R;
 import org.yaaic.model.Extra;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
 /**
- * Adding channels to a server
+ * Adding auto join channels to a server
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class AddChannelActivity extends Activity implements OnClickListener
+public class AddChannelActivity extends Activity implements OnClickListener, OnItemClickListener
 {
 	private EditText channelInput;
 	private ArrayAdapter<String> adapter;
@@ -53,13 +58,17 @@ public class AddChannelActivity extends Activity implements OnClickListener
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		
 		setContentView(R.layout.channeladd);
 		
 		channelInput = (EditText) findViewById(R.id.channel);
 		
 		adapter = new ArrayAdapter<String>(this, R.layout.channelitem);
-		((ListView) findViewById(R.id.channels)).setAdapter(adapter);
+		
+		ListView list = (ListView) findViewById(R.id.channels);
+		list.setAdapter(adapter);
+		list.setOnItemClickListener(this);
 		
 		((Button) findViewById(R.id.add)).setOnClickListener(this);
 		((Button) findViewById(R.id.ok)).setOnClickListener(this);
@@ -96,5 +105,30 @@ public class AddChannelActivity extends Activity implements OnClickListener
 				finish();
 				break;
 		}
+	}
+
+	/**
+	 * On item clicked
+	 */
+	public void onItemClick(AdapterView<?> list, View item, int position, long id)
+	{
+		final String channel = adapter.getItem(position);
+		
+		String[] items = { "Remove" };
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(channel);
+		builder.setItems(items, new DialogInterface.OnClickListener() {
+		    public void onClick(DialogInterface dialog, int item) {
+		        switch (item) {
+			        case 0: // Remove
+		        		adapter.remove(channel);
+		        		channels.remove(channel);
+		        		break;
+		        }
+		    }
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
 	}
 }
