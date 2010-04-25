@@ -20,6 +20,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.listener;
 
+import org.yaaic.activity.MessageActivity;
+import org.yaaic.adapter.MessageListAdapter;
+import org.yaaic.model.Extra;
+
+import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
@@ -32,8 +37,40 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class MessageClickListener implements OnItemClickListener
 {
+	private static MessageClickListener instance;
+	
+	/**
+	 * Private constructor
+	 */
+	private MessageClickListener()
+	{
+	}
+	
+	/**
+	 * Get global instance of message click listener 
+	 * 
+	 * @return
+	 */
+	public static synchronized MessageClickListener getInstance()
+	{
+		if (instance == null) {
+			instance = new MessageClickListener();
+		}
+		
+		return instance;
+	}
+	
+	/**
+	 * On message item clicked
+	 */
 	public void onItemClick(AdapterView<?> group, View view, int position, long id)
 	{
-		Toast.makeText(group.getContext(), "Message selected", Toast.LENGTH_SHORT).show();
+		MessageListAdapter adapter = (MessageListAdapter) group.getAdapter();
+		
+		Intent intent = new Intent(group.getContext(), MessageActivity.class);
+		intent.putExtra(Extra.MESSAGE, adapter.getItem(position).getText().toString());
+		group.getContext().startActivity(intent);
+		
+		
 	}
 }
