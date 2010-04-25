@@ -79,6 +79,10 @@ import org.yaaic.view.MessageListView;
  */
 public class ConversationActivity extends Activity implements ServiceConnection, ServerListener, ConversationListener, OnItemClickListener, OnKeyListener, OnItemSelectedListener
 {
+	private static final int REQUEST_CODE_JOIN = 1;
+	private static final int REQUEST_CODE_USERS = 2;
+	private static final int REQUEST_CODE_USER = 3;
+	
 	private int serverId;
 	private Server server;
 	private IRCBinder binder;
@@ -126,7 +130,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 			server.clearConversations();
 			deckAdapter.clearConversations();
 		}
-
 
 		switcher = (ViewSwitcher) findViewById(R.id.switcher);
 		
@@ -299,7 +302,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 				}
 				break;
 			case R.id.join:
-				startActivityForResult(new Intent(this, JoinActivity.class), 0);
+				startActivityForResult(new Intent(this, JoinActivity.class), REQUEST_CODE_JOIN);
 				break;
 			case R.id.users:
 				Conversation conversationForUserList = deckAdapter.getItem(deck.getSelectedItemPosition());
@@ -311,7 +314,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 							conversationForUserList.getName()
 						)
 					);
-					startActivity(intent);
+					startActivityForResult(intent, REQUEST_CODE_USERS);
 				} else {
 					Toast.makeText(this, "Only usable from within a channel", Toast.LENGTH_SHORT).show();
 				}
@@ -530,9 +533,24 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
+		if (resultCode != RESULT_OK) {
+			// ignore other result codes
+			return;
+		}
+		
 		// currently there's only the "join channel" activity
-		if (resultCode == RESULT_OK) {
-			joinChannelBuffer = data.getExtras().getString("channel");
+		switch (requestCode) {
+			case REQUEST_CODE_JOIN:
+				joinChannelBuffer = data.getExtras().getString("channel");
+				break;
+			case REQUEST_CODE_USERS:
+				Intent intent = new Intent(this, UserActivity.class);
+				intent.putExtra(Extra.USER, data.getStringExtra(Extra.USER));
+				startActivityForResult(intent, REQUEST_CODE_USER);
+				break;
+			case REQUEST_CODE_USER:
+				
+				break;
 		}
 	}
 
