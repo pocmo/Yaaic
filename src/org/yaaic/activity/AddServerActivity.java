@@ -21,6 +21,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 package org.yaaic.activity;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import android.app.Activity;
@@ -53,6 +54,7 @@ import org.yaaic.model.Status;
 public class AddServerActivity extends Activity implements OnClickListener
 {
 	private Server server;
+	private ArrayList<String> channels;
 	
 	/**
 	 * On create
@@ -63,6 +65,7 @@ public class AddServerActivity extends Activity implements OnClickListener
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.serveradd);
+        channels = new ArrayList<String>();
         
         ((Button) findViewById(R.id.add)).setOnClickListener(this);
         ((Button) findViewById(R.id.cancel)).setOnClickListener(this);
@@ -116,6 +119,17 @@ public class AddServerActivity extends Activity implements OnClickListener
         	}
         }
     }
+	
+	/**
+	 * On activity result
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		if (resultCode == RESULT_OK) {
+			channels = data.getExtras().getStringArrayList(Extra.CHANNELS);
+		}
+	}
 
 	/**
 	 * On click add server or cancel activity
@@ -124,7 +138,9 @@ public class AddServerActivity extends Activity implements OnClickListener
 	{
 		switch (v.getId()) {
 			case R.id.channels:
-				startActivityForResult(new Intent(this, AddChannelActivity.class), 0);
+				Intent intent = new Intent(this, AddChannelActivity.class);
+				intent.putExtra(Extra.CHANNELS, channels);
+				startActivityForResult(intent, 0);
 				break;
 			case R.id.add:
 				try {

@@ -30,4 +30,6 @@ public class Extra
 	public static final String SERVER 		= "server";
 	public static final String CONVERSATION = "conversation";
 	public static final String USERS        = "users";
+	
+	public static final String CHANNELS		= "channels";
 }

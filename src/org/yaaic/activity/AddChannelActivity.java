@@ -20,9 +20,13 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.activity;
 
+import java.util.ArrayList;
+
 import org.yaaic.R;
+import org.yaaic.model.Extra;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,7 +34,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 /**
  * Adding channels to a server
@@ -39,9 +42,9 @@ import android.widget.Toast;
  */
 public class AddChannelActivity extends Activity implements OnClickListener
 {
-	private ListView channelList;
 	private EditText channelInput;
 	private ArrayAdapter<String> adapter;
+	private ArrayList<String> channels;
 	
 	/**
 	 * On create
@@ -53,15 +56,20 @@ public class AddChannelActivity extends Activity implements OnClickListener
 		
 		setContentView(R.layout.channeladd);
 		
-		channelList = (ListView) findViewById(R.id.channels);
 		channelInput = (EditText) findViewById(R.id.channel);
 		
 		adapter = new ArrayAdapter<String>(this, R.layout.channelitem);
-		channelList.setAdapter(adapter);
+		((ListView) findViewById(R.id.channels)).setAdapter(adapter);
 		
 		((Button) findViewById(R.id.add)).setOnClickListener(this);
 		((Button) findViewById(R.id.save)).setOnClickListener(this);
 		((Button) findViewById(R.id.cancel)).setOnClickListener(this);
+		
+		channels = getIntent().getExtras().getStringArrayList(Extra.CHANNELS);
+		
+		for (String channel : channels) {
+			adapter.add(channel);
+		}
 	}
 
 	/**
@@ -71,7 +79,9 @@ public class AddChannelActivity extends Activity implements OnClickListener
 	{
 		switch (v.getId()) {
 			case R.id.add:
-				adapter.add(channelInput.getText().toString());
+				String channel = channelInput.getText().toString();
+				channels.add(channel);
+				adapter.add(channel);
 				break;
 			case R.id.cancel:
 				setResult(RESULT_CANCELED);
@@ -79,8 +89,9 @@ public class AddChannelActivity extends Activity implements OnClickListener
 				break;
 			case R.id.save:
 				// Get list and return as result
-				
-				setResult(RESULT_OK);
+				Intent intent = new Intent();
+				intent.putExtra(Extra.CHANNELS, channels);
+				setResult(RESULT_OK, intent);
 				finish();
 				break;
 		}
