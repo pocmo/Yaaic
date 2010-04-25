@@ -53,8 +53,12 @@ import org.yaaic.model.Status;
  */
 public class AddServerActivity extends Activity implements OnClickListener
 {
+	private static final int REQUEST_CODE_CHANNELS = 1;
+	private static final int REQUEST_CODE_COMMANDS = 2;
+	
 	private Server server;
 	private ArrayList<String> channels;
+	private ArrayList<String> commands;
 	
 	/**
 	 * On create
@@ -66,9 +70,12 @@ public class AddServerActivity extends Activity implements OnClickListener
         
         setContentView(R.layout.serveradd);
         channels = new ArrayList<String>();
+        commands = new ArrayList<String>();
         
         ((Button) findViewById(R.id.add)).setOnClickListener(this);
         ((Button) findViewById(R.id.cancel)).setOnClickListener(this);
+        ((Button) findViewById(R.id.channels)).setOnClickListener(this);
+        ((Button) findViewById(R.id.commands)).setOnClickListener(this);
 
         Spinner spinner = (Spinner) findViewById(R.id.charset);
         String[] charsets = getResources().getStringArray(R.array.charsets);
@@ -76,14 +83,13 @@ public class AddServerActivity extends Activity implements OnClickListener
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         
-        ((Button) findViewById(R.id.channels)).setOnClickListener(this);
-        
         Bundle extras = getIntent().getExtras();
         if (extras != null && extras.containsKey(Extra.SERVER)) {
         	// Request to edit an existing server
         	Database db = new Database(this);
         	this.server = db.getServerById(extras.getInt(Extra.SERVER));
         	this.channels = db.getChannelsByServerId(server.getId());
+        	this.commands = db.getCommandsByServerId(server.getId());
         	db.close();
         	
         	// Set server values
@@ -127,8 +133,17 @@ public class AddServerActivity extends Activity implements OnClickListener
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
-		if (resultCode == RESULT_OK) {
-			channels = data.getExtras().getStringArrayList(Extra.CHANNELS);
+		if (resultCode != RESULT_OK) {
+			return; // ignore everything else
+		}
+		
+		switch (requestCode) {
+			case REQUEST_CODE_CHANNELS:
+				channels = data.getExtras().getStringArrayList(Extra.CHANNELS);
+				break;
+			case REQUEST_CODE_COMMANDS:
+				commands = data.getExtras().getStringArrayList(Extra.COMMANDS);
+				break;
 		}
 	}
 
@@ -139,9 +154,14 @@ public class AddServerActivity extends Activity implements OnClickListener
 	{
 		switch (v.getId()) {
 			case R.id.channels:
-				Intent intent = new Intent(this, AddChannelActivity.class);
-				intent.putExtra(Extra.CHANNELS, channels);
-				startActivityForResult(intent, 0);
+				Intent channelIntent = new Intent(this, AddChannelActivity.class);
+				channelIntent.putExtra(Extra.CHANNELS, channels);
+				startActivityForResult(channelIntent, REQUEST_CODE_CHANNELS);
+				break;
+			case R.id.commands:
+				Intent commandsIntent = new Intent(this, AddCommandsActivity.class);
+				commandsIntent.putExtra(Extra.COMMANDS, commands);
+				startActivityForResult(commandsIntent, REQUEST_CODE_COMMANDS);
 				break;
 			case R.id.add:
 				try {
@@ -192,6 +212,7 @@ public class AddServerActivity extends Activity implements OnClickListener
 		);
 		
 		db.setChannels((int) serverId, channels);
+		db.setCommands((int) serverId, commands);
 		
 		db.close();
 		
@@ -234,6 +255,7 @@ public class AddServerActivity extends Activity implements OnClickListener
 		);
 		
 		db.setChannels(serverId, channels);
+		db.setCommands(serverId, commands);
 		
 		db.close();
 		
