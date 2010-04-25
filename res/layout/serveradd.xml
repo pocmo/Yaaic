@@ -128,6 +128,20 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:text=""
             android:singleLine="true" />
 		<TextView
+		     android:text="Channels"
+		     android:layout_width="fill_parent"
+		     android:layout_height="wrap_content"
+		     android:background="#ff333333"
+		     android:textSize="14px"
+		     android:gravity="center_horizontal"
+		     android:padding="3px"
+		     android:layout_margin="2px" />
+		<Button
+			android:id="@+id/channels"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="Channels" />
+		<TextView
 		     android:text="Preferences"
 		     android:layout_width="fill_parent"
 		     android:layout_height="wrap_content"
@@ -148,7 +162,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 		<LinearLayout
 		    android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingTop="10px">
 			<Button
 				android:id="@+id/add"
 				android:text="@string/add_server"

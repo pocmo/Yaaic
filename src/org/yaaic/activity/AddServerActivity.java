@@ -24,6 +24,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.regex.Pattern;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -71,6 +72,8 @@ public class AddServerActivity extends Activity implements OnClickListener
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, charsets);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+        
+        ((Button) findViewById(R.id.channels)).setOnClickListener(this);
         
         Bundle extras = getIntent().getExtras();
         if (extras != null && extras.containsKey(Extra.SERVER)) {
@@ -120,6 +123,9 @@ public class AddServerActivity extends Activity implements OnClickListener
 	public void onClick(View v)
 	{
 		switch (v.getId()) {
+			case R.id.channels:
+				startActivityForResult(new Intent(this, AddChannelActivity.class), 0);
+				break;
 			case R.id.add:
 				try {
 					validateServer();
