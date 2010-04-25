@@ -32,6 +32,7 @@ import org.jibble.pircbot.User;
 
 import org.yaaic.R;
 import org.yaaic.Yaaic;
+import org.yaaic.command.CommandParser;
 import org.yaaic.model.Broadcast;
 import org.yaaic.model.Channel;
 import org.yaaic.model.Conversation;
@@ -161,6 +162,13 @@ public class IRCConnection extends PircBot
 			for (String channel : server.getAutoJoinChannels()) {
 				joinChannel(channel);
 			}
+		}
+		
+		// execute commands
+		CommandParser parser = CommandParser.getInstance();
+		
+		for (String command : server.getConnectCommands()) {
+			parser.parse(command, server, server.getConversation(ServerInfo.DEFAULT_NAME), service);
 		}
 	}
 	
