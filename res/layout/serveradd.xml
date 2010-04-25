@@ -89,6 +89,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/server_useSSL" />
+<!-- ############################################################################ -->
         <TextView
             android:text="User"
             android:layout_width="fill_parent"
@@ -127,8 +128,9 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:layout_height="wrap_content"
             android:text=""
             android:singleLine="true" />
+<!-- ############################################################################ -->
 		<TextView
-		     android:text="Channels"
+		     android:text="On Connect"
 		     android:layout_width="fill_parent"
 		     android:layout_height="wrap_content"
 		     android:background="#ff333333"
@@ -141,6 +143,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:text="Channels" />
+<!-- ############################################################################ -->
 		<TextView
 		     android:text="Preferences"
 		     android:layout_width="fill_parent"
@@ -159,6 +162,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         	android:layout_width="fill_parent"
         	android:layout_height="wrap_content"
         	android:prompt="@string/select_charset" />
+<!-- ############################################################################ -->
 		<LinearLayout
 		    android:orientation="horizontal"
             android:layout_width="fill_parent"
