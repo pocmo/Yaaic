@@ -52,8 +52,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 	   	<Button
 	   		android:layout_width="wrap_content"
 	   		android:layout_height="wrap_content"
-	   		android:id="@+id/save"
-			android:text="Save" />
+	   		android:id="@+id/ok"
+			android:text="Ok" />
 	   	<Button
 	   		android:layout_width="wrap_content"
 	   		android:layout_height="wrap_content"

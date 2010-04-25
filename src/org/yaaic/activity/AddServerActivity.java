@@ -83,6 +83,7 @@ public class AddServerActivity extends Activity implements OnClickListener
         	// Request to edit an existing server
         	Database db = new Database(this);
         	this.server = db.getServerById(extras.getInt(Extra.SERVER));
+        	this.channels = db.getChannelsByServerId(server.getId());
         	db.close();
         	
         	// Set server values
@@ -190,6 +191,8 @@ public class AddServerActivity extends Activity implements OnClickListener
 			server.getCharset()
 		);
 		
+		db.setChannels(server.getId(), channels);
+		
 		db.close();
 		
 		server.setId((int) serverId);
@@ -228,6 +231,8 @@ public class AddServerActivity extends Activity implements OnClickListener
 			identity.getIdent(),
 			identity.getNickname()
 		);
+		
+		db.setChannels(server.getId(), channels);
 		
 		db.close();
 		

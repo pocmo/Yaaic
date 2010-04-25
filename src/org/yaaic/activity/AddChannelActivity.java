@@ -62,7 +62,7 @@ public class AddChannelActivity extends Activity implements OnClickListener
 		((ListView) findViewById(R.id.channels)).setAdapter(adapter);
 		
 		((Button) findViewById(R.id.add)).setOnClickListener(this);
-		((Button) findViewById(R.id.save)).setOnClickListener(this);
+		((Button) findViewById(R.id.ok)).setOnClickListener(this);
 		((Button) findViewById(R.id.cancel)).setOnClickListener(this);
 		
 		channels = getIntent().getExtras().getStringArrayList(Extra.CHANNELS);
@@ -87,7 +87,7 @@ public class AddChannelActivity extends Activity implements OnClickListener
 				setResult(RESULT_CANCELED);
 				finish();
 				break;
-			case R.id.save:
+			case R.id.ok:
 				// Get list and return as result
 				Intent intent = new Intent();
 				intent.putExtra(Extra.CHANNELS, channels);
