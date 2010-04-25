@@ -23,7 +23,7 @@ package org.yaaic.db;
 import android.provider.BaseColumns;
 
 /**
- * Constants for the channel database
+ * Constants for the channel table
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */

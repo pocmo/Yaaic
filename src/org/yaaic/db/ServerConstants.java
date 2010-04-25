@@ -23,7 +23,7 @@ package org.yaaic.db;
 import android.provider.BaseColumns;
 
 /**
- * Constants for the server database
+ * Constants for the server table
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
