@@ -41,7 +41,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class Database extends SQLiteOpenHelper
 {
 	private static final String DATABASE_NAME = "servers.db";
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
 	
 	/**
 	 * Create a new helper for database access
@@ -87,6 +87,13 @@ public class Database extends SQLiteOpenHelper
 				+ IdentityConstants.REALNAME + " TEXT NOT NULL"
 				+ ");"
 		);
+		
+		db.execSQL("CREATE TABLE " + CommandConstants.TABLE_NAME + " ("
+			+ CommandConstants._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+			+ CommandConstants.COMMAND + " TEXT NOT NULL, "
+			+ ChannelConstants.SERVER + " INTEGER"
+			+ ");"
+		);
 	}
 	
 	/**
@@ -106,6 +113,18 @@ public class Database extends SQLiteOpenHelper
 		if (oldVersion == 1) {
 			// Add charset field to server table
 			db.execSQL("ALTER TABLE " + ServerConstants.TABLE_NAME + " ADD " + ServerConstants.CHARSET + " TEXT AFTER " + ServerConstants.USE_SSL + ";");
+			
+			oldVersion = 2; // now do the updates for version 2
+		}
+		
+		if (oldVersion == 2) {
+			// Add new commands table (copy&paste from onCreate())
+			db.execSQL("CREATE TABLE " + CommandConstants.TABLE_NAME + " ("
+				+ CommandConstants._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+				+ CommandConstants.COMMAND + " TEXT NOT NULL, "
+				+ ChannelConstants.SERVER + " INTEGER"
+				+ ");"
+			);
 		}
 	}
 	
@@ -205,6 +224,73 @@ public class Database extends SQLiteOpenHelper
 		// Add new channels
 		for (String channel : channels) {
 			addChannel(serverId, channel, "");
+		}
+	}
+	
+	/**
+	 * Get all commands to execute on connect
+	 * 
+	 * @param serverId Unique id of server
+	 * @return List of commands
+	 */
+	public ArrayList<String> getCommandsByServerId(int serverId)
+	{
+		ArrayList<String> commands = new ArrayList<String>();
+		
+		Cursor cursor = this.getReadableDatabase().query(
+			CommandConstants.TABLE_NAME,
+			CommandConstants.ALL,
+			CommandConstants.SERVER + "=" + serverId,
+			null,
+			null,
+			null,
+			null
+		);
+		
+		while (cursor.moveToNext()) {
+			String command = cursor.getString(cursor.getColumnIndex(CommandConstants.COMMAND));
+			commands.add(command);
+		}
+		
+		cursor.close();
+		
+		return commands;
+	}
+	
+	/**
+	 * Add a command to a server
+	 * 
+	 * @param serverId Unique id of server
+	 * @param command The command to execute after connect
+	 */
+	public void addCommand(int serverId, String command)
+	{
+		ContentValues values = new ContentValues();
+		
+		values.put(CommandConstants.COMMAND, command);
+		values.put(CommandConstants.SERVER, serverId);
+		
+		this.getWritableDatabase().insert(CommandConstants.TABLE_NAME, null, values);
+	}
+	
+	/**
+	 * Replace list of commands for the given server
+	 * 
+	 * @param serverId Unique id of server
+	 * @param commands List of commands to execute after connect
+	 */
+	public void setCommands(int serverId, ArrayList<String> commands)
+	{
+		// Remove old commands
+		this.getWritableDatabase().delete(
+			CommandConstants.TABLE_NAME,
+			CommandConstants.SERVER + " = " + serverId,
+			null
+		);
+		
+		// Add new commands
+		for (String command : commands) {
+			addCommand(serverId, command);
 		}
 	}
 	
