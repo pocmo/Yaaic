@@ -219,6 +219,7 @@ public class AddServerActivity extends Activity implements OnClickListener
 		server.setId((int) serverId);
 		server.setIdentity(identity);
 		server.setAutoJoinChannels(channels);
+		server.setConnectCommands(commands);
 		
 		Yaaic.getInstance().addServer(server);
 	}
@@ -262,6 +263,7 @@ public class AddServerActivity extends Activity implements OnClickListener
 		server.setId(this.server.getId());
 		server.setIdentity(identity);
 		server.setAutoJoinChannels(channels);
+		server.setConnectCommands(commands);
 		
 		Yaaic.getInstance().updateServer(server);
 	}
