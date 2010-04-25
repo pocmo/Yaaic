@@ -249,10 +249,10 @@ public class AddServerActivity extends Activity implements OnClickListener
 	 */
 	private Server getServerFromView()
 	{
-		String title = ((EditText) findViewById(R.id.title)).getText().toString();
-		String host = ((EditText) findViewById(R.id.host)).getText().toString();
-		int port = Integer.parseInt(((EditText) findViewById(R.id.port)).getText().toString());
-		String password = ((EditText) findViewById(R.id.password)).getText().toString();
+		String title = ((EditText) findViewById(R.id.title)).getText().toString().trim();
+		String host = ((EditText) findViewById(R.id.host)).getText().toString().trim();
+		int port = Integer.parseInt(((EditText) findViewById(R.id.port)).getText().toString().trim());
+		String password = ((EditText) findViewById(R.id.password)).getText().toString().trim();
 		String charset = ((Spinner) findViewById(R.id.charset)).getSelectedItem().toString();
 		Boolean useSSL = ((CheckBox) findViewById(R.id.useSSL)).isChecked();
 		
