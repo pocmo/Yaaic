@@ -21,6 +21,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 package org.yaaic.view;
 
 import org.yaaic.adapter.MessageListAdapter;
+import org.yaaic.listener.MessageClickListener;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -51,6 +52,7 @@ public class MessageListView extends ListView
 		super(context);
 		
 		this.parent = parent;
+		this.setOnItemClickListener(MessageClickListener.getInstance());
 		
 		parentWidth = parent.getWidth();
 		parentHeight = parent.getHeight();
