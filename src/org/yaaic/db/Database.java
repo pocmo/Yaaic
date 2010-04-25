@@ -20,6 +20,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.db;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.yaaic.model.Identity;
@@ -171,19 +172,40 @@ public class Database extends SQLiteOpenHelper
 	/**
 	 * Add a channel to the database
 	 * 
-	 * @param server Unique id of server
+	 * @param serverId Unique id of server
 	 * @param name Name of channel
 	 * @param password Password to join (if needed)
 	 */
-	public void addChannel(int server, String name, String password)
+	public void addChannel(int serverId, String name, String password)
 	{
 		ContentValues values = new ContentValues();
 		
 		values.put(ChannelConstants.NAME, name);
 		values.put(ChannelConstants.PASSWORD, password);
-		values.put(ChannelConstants.SERVER, server);
+		values.put(ChannelConstants.SERVER, serverId);
 		
 		this.getWritableDatabase().insert(ServerConstants.TABLE_NAME, null, values);
+	}
+	
+	/**
+	 * Replace list of channels for the given server
+	 * 
+	 * @param serverId Unique id of server
+	 * @param channels List of channel names
+	 */
+	public void setChannels(int serverId, ArrayList<String> channels)
+	{
+		// Remove old channels
+		this.getWritableDatabase().delete(
+			ChannelConstants.TABLE_NAME,
+			ChannelConstants.SERVER + " = " + serverId,
+			null
+		);
+		
+		// Add new channels
+		for (String channel : channels) {
+			addChannel(serverId, channel, "");
+		}
 	}
 	
 	/**
@@ -318,13 +340,13 @@ public class Database extends SQLiteOpenHelper
 	 * Get all channels of server
 	 * 
 	 * @param server Unique id of server
-	 * @return
+	 * @return list of channel names
 	 */
-	public Cursor getChannelsByServerId(int serverId)
+	public ArrayList<String> getChannelsByServerId(int serverId)
 	{
-		// XXX: Should no return a cursor but the populated objects
+		ArrayList<String> channels = new ArrayList<String>();
 		
-		return this.getReadableDatabase().query(
+		Cursor cursor = this.getReadableDatabase().query(
 			ChannelConstants.TABLE_NAME,
 			ChannelConstants.ALL,
 			ChannelConstants.SERVER + "=" + serverId,
@@ -332,7 +354,16 @@ public class Database extends SQLiteOpenHelper
 			null,
 			null,
 			ChannelConstants.NAME + " ASC"
-		);	
+		);
+		
+		while (cursor.moveToNext()) {
+			String channel = cursor.getString(cursor.getColumnIndex(ChannelConstants.NAME));
+			channels.add(channel);
+		}
+		
+		cursor.close();
+		
+		return channels;
 	}
 	
 	/**
