@@ -70,7 +70,10 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         </activity>
         <activity
         	android:name=".activity.AddChannelActivity"
-        	android:label="@string/channels_label"
+        	android:theme="@android:style/Theme.Dialog">
+       	</activity>
+        <activity
+        	android:name=".activity.AddCommandsActivity"
         	android:theme="@android:style/Theme.Dialog">
        	</activity>
         <service android:name=".irc.IRCService"></service>
