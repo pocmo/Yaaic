@@ -82,6 +82,7 @@ public class AddChannelActivity extends Activity implements OnClickListener
 				String channel = channelInput.getText().toString();
 				channels.add(channel);
 				adapter.add(channel);
+				channelInput.setText("#");
 				break;
 			case R.id.cancel:
 				setResult(RESULT_CANCELED);
