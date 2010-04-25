@@ -34,4 +34,6 @@ public class Extra
 	public static final String CHANNELS		= "channels";
 	public static final String COMMANDS     = "commands";
 	public static final String MESSAGE      = "message";
+	public static final String USER         = "user";
+	public static final String ACTION       = "action";
 }
