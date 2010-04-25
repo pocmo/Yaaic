@@ -88,7 +88,7 @@ public class AddChannelActivity extends Activity implements OnClickListener, OnI
 	{
 		switch (v.getId()) {
 			case R.id.add:
-				String channel = channelInput.getText().toString();
+				String channel = channelInput.getText().toString().trim();
 				channels.add(channel);
 				adapter.add(channel);
 				channelInput.setText("#");
