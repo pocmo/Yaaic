@@ -157,6 +157,10 @@ public class IRCConnection extends PircBot
 				// Add support for channel keys
 				joinChannel(channel);
 			}
+		} else {
+			for (String channel : server.getAutoJoinChannels()) {
+				joinChannel(channel);
+			}
 		}
 	}
 	
