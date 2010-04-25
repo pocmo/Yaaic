@@ -27,7 +27,6 @@ import org.yaaic.model.Extra;
 import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 /**
