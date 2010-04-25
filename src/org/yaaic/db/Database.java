@@ -184,7 +184,7 @@ public class Database extends SQLiteOpenHelper
 		values.put(ChannelConstants.PASSWORD, password);
 		values.put(ChannelConstants.SERVER, serverId);
 		
-		this.getWritableDatabase().insert(ServerConstants.TABLE_NAME, null, values);
+		this.getWritableDatabase().insert(ChannelConstants.TABLE_NAME, null, values);
 	}
 	
 	/**
