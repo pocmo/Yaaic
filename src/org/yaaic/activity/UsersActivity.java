@@ -24,16 +24,20 @@ import org.yaaic.R;
 import org.yaaic.model.Extra;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * User Activity - Shows a list of users in the current channel
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class UsersActivity extends ListActivity
+public class UsersActivity extends ListActivity implements OnItemClickListener
 {
 	/**
 	 * On create
@@ -48,5 +52,17 @@ public class UsersActivity extends ListActivity
 		
 		String[] users = getIntent().getExtras().getStringArray(Extra.USERS);
 		getListView().setAdapter(new ArrayAdapter<String>(this, R.layout.useritem, users));
+		getListView().setOnItemClickListener(this);
+	}
+
+	/**
+	 * On user selected
+	 */
+	public void onItemClick(AdapterView<?> list, View item, int position, long id)
+	{
+		Intent intent = new Intent();
+		intent.putExtra(Extra.USER, (String) getListView().getAdapter().getItem(position));
+		setResult(RESULT_OK, intent);
+		finish();
 	}
 }
