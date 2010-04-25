@@ -155,6 +155,15 @@ public class CommandParser
 		return aliases;
 	}
 	
+	/**
+	 * Is the given command a valid (client or server) command?
+	 * 
+	 * @return true if the command is valid
+	 */
+	public boolean isValidCommand(String command)
+	{
+		return isClientCommand(command) || isServerCommand(command);
+	}
 	
 	/**
 	 * Is the given command a valid client command?
