@@ -191,7 +191,7 @@ public class AddServerActivity extends Activity implements OnClickListener
 			server.getCharset()
 		);
 		
-		db.setChannels(server.getId(), channels);
+		db.setChannels((int) serverId, channels);
 		
 		db.close();
 		
@@ -232,7 +232,7 @@ public class AddServerActivity extends Activity implements OnClickListener
 			identity.getNickname()
 		);
 		
-		db.setChannels(server.getId(), channels);
+		db.setChannels(serverId, channels);
 		
 		db.close();
 		
