@@ -126,7 +126,7 @@ public class CommandParser
 	 * 
 	 * @return
 	 */
-	public static CommandParser getInstance()
+	public static synchronized CommandParser getInstance()
 	{
 		if (instance == null) {
 			instance = new CommandParser();
