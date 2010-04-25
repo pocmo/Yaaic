@@ -405,6 +405,10 @@ public class Database extends SQLiteOpenHelper
 		ArrayList<String> channels = this.getChannelsByServerId(server.getId());
 		server.setAutoJoinChannels(channels);
 		
+		// Load commands to execute after connect
+		ArrayList<String> commands = this.getCommandsByServerId(server.getId());
+		server.setConnectCommands(commands);
+		
 		return server;
 	}
 	
