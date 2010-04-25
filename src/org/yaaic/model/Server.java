@@ -44,6 +44,7 @@ public class Server
 	
 	private LinkedHashMap<String, Conversation> conversations = new LinkedHashMap<String, Conversation>();
 	private ArrayList<String> autoJoinChannels;
+	private ArrayList<String> connectCommands;
 	
 	private int status = Status.DISCONNECTED;
 	private String selected = "";
@@ -253,6 +254,26 @@ public class Server
 	public ArrayList<String> getAutoJoinChannels()
 	{
 		return autoJoinChannels;
+	}
+	
+	/**
+	 * Set commands to execute after connect
+	 * 
+	 * @param commands List of commands
+	 */
+	public void setConnectCommands(ArrayList<String> connectCommands)
+	{
+		this.connectCommands = connectCommands;
+	}
+	
+	/**
+	 * Get commands to execute after connect
+	 * 
+	 * @return List of commands
+	 */
+	public ArrayList<String> getConnectCommands()
+	{
+		return connectCommands;
 	}
 	
 	/**
