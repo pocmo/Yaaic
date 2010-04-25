@@ -1064,6 +1064,30 @@ public class IRCConnection extends PircBot
 	}
 	
 	/**
+	 * Get a user by channel and nickname
+	 * 
+	 * @param channel The channel the user is in
+	 * @param nickname The nickname of the user (with or without prefix)
+	 * @return the User object or null if user was not found
+	 */
+	public User getUser(String channel, String nickname)
+	{
+		User[] users = getUsers(channel);
+		int mLength = users.length;
+		
+		for (int i = 0; i < mLength; i++) {
+			if (nickname.equals(users[i].getNick())) {
+				return users[i];
+			}
+			if (nickname.equals(users[i].getPrefix() + users[i].getNick())) {
+				return users[i];
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
 	 * Quits from the IRC server with default reason.
 	 */
 	@Override
