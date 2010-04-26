@@ -282,8 +282,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	{
 		switch (item.getItemId()) {
 			case R.id.disconnect:
-				binder.getService().getConnection(serverId).quitServer();
 				server.setStatus(Status.DISCONNECTED);
+				binder.getService().getConnection(serverId).quitServer();
 				server.clearConversations();
 				setResult(RESULT_OK);
 				finish();

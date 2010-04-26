@@ -989,7 +989,7 @@ public class IRCConnection extends PircBot
 	@Override
 	public void onDisconnect()
 	{
-		if (service.getSettings().isReconnectEnabled()) {
+		if (service.getSettings().isReconnectEnabled() && server.getStatus() != Status.DISCONNECTED) {
 			setAutojoinChannels(server.getCurrentChannelNames());
 
 			server.clearConversations();

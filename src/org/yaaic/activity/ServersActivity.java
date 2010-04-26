@@ -178,6 +178,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 			        	break;
 			        case 1: // Disconnect
 			        	server.clearConversations();
+						server.setStatus(Status.DISCONNECTED);
 						binder.getService().getConnection(server.getId()).quitServer();
 			        	break;
 			        case 2: // Edit
