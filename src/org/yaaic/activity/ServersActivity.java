@@ -249,6 +249,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 				ArrayList<Server> mServers = Yaaic.getInstance().getServersAsArrayList();
 				for (Server server : mServers) {
 					if (binder.getService().hasConnection(server.getId())) {
+						server.setStatus(Status.DISCONNECTED);
 						binder.getService().getConnection(server.getId()).quitServer();
 					}
 				}
