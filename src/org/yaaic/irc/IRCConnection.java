@@ -153,6 +153,14 @@ public class IRCConnection extends PircBot
 		
 		service.sendBroadcast(intent);
 		
+		// execute commands
+		CommandParser parser = CommandParser.getInstance();
+		
+		for (String command : server.getConnectCommands()) {
+			parser.parse(command, server, server.getConversation(ServerInfo.DEFAULT_NAME), service);
+		}
+		
+		// join channels
 		if (autojoinChannels != null) {
 			for (String channel : autojoinChannels) {
 				// Add support for channel keys
@@ -162,13 +170,6 @@ public class IRCConnection extends PircBot
 			for (String channel : server.getAutoJoinChannels()) {
 				joinChannel(channel);
 			}
-		}
-		
-		// execute commands
-		CommandParser parser = CommandParser.getInstance();
-		
-		for (String command : server.getConnectCommands()) {
-			parser.parse(command, server, server.getConversation(ServerInfo.DEFAULT_NAME), service);
 		}
 	}
 	
