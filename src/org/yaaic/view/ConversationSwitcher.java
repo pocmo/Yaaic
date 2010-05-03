@@ -22,6 +22,10 @@ package org.yaaic.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -31,14 +35,25 @@ import android.view.View;
  */
 public class ConversationSwitcher extends View
 {
+	private Paint paint;
+	
 	/**
 	 * Create a new ConversationSwitcher
 	 * 
 	 * @param context The Context the view is running in, through which it can access the current theme, resources, etc.
 	 */
-	public ConversationSwitcher(Context context)
+	public ConversationSwitcher(Context context, AttributeSet attributes)
 	{
-		super(context);
+		super(context, attributes);
+		
+		paint = new Paint();
+	}
+	
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
+	{
+		int width = MeasureSpec.getSize(widthMeasureSpec);
+		Log.d("Yaaic", width + " x " + 20);
+		setMeasuredDimension(width, 20);
 	}
 	
 	/**
@@ -46,6 +61,18 @@ public class ConversationSwitcher extends View
 	 */
 	protected void onDraw(Canvas canvas)
 	{
+		super.onDraw(canvas);
 		
+		// Draw debug lines
+		paint.setColor(0xFFFF0000);
+		paint.setStyle(Paint.Style.STROKE);
+		canvas.drawRect(new Rect(0, 0, getWidth() - 1, getHeight() - 1), paint);
+		
+		Log.d("Yaaic", "Circle at " + (getWidth() / 2) + " x " + (getHeight() / 2));
+
+		// Draw dots
+		paint.setColor(0xFFFFFFFF);
+		paint.setStyle(Paint.Style.FILL);
+		canvas.drawCircle(getWidth() / 2, getHeight() / 2, 5, paint);
 	}
 }
