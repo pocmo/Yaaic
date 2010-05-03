@@ -60,11 +60,9 @@ public class UsersActivity extends ListActivity implements OnItemClickListener
 	 */
 	public void onItemClick(AdapterView<?> list, View item, int position, long id)
 	{
-		/* XXX: Disabled due to 0.4.1 release
 		Intent intent = new Intent();
 		intent.putExtra(Extra.USER, (String) getListView().getAdapter().getItem(position));
 		setResult(RESULT_OK, intent);
 		finish();
-		*/
 	}
 }
