@@ -549,6 +549,11 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 				startActivityForResult(intent, REQUEST_CODE_USER);
 				break;
 			case REQUEST_CODE_USER:
+				int actionId = data.getExtras().getInt(Extra.ACTION);
+				String nickname = data.getExtras().getString(Extra.USER);
+
+				// XXX: Implement me - The action should be handled after onResume()
+				//                     to catch the broadcasts
 				
 				break;
 		}
