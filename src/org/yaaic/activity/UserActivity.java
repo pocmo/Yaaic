@@ -41,6 +41,8 @@ import android.widget.TextView;
  */
 public class UserActivity extends Activity implements OnClickListener
 {
+	private String nickname;
+	
 	/**
 	 * On create
 	 */
@@ -50,6 +52,7 @@ public class UserActivity extends Activity implements OnClickListener
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		
+		nickname = getIntent().getStringExtra(Extra.USER);
 		setContentView(R.layout.user);
 		
 		// Use full width
@@ -64,9 +67,7 @@ public class UserActivity extends Activity implements OnClickListener
 		((Button) findViewById(R.id.kick)).setOnClickListener(this);
 		((Button) findViewById(R.id.ban)).setOnClickListener(this);
 		
-		((TextView) findViewById(R.id.nickname)).setText(
-			getIntent().getStringExtra(Extra.USER)
-		);
+		((TextView) findViewById(R.id.nickname)).setText(nickname);
 	}
 
 	/**
@@ -76,6 +77,7 @@ public class UserActivity extends Activity implements OnClickListener
 	{
 		Intent intent = new Intent();
 		intent.putExtra(Extra.ACTION, v.getId());
+		intent.putExtra(Extra.USER, nickname);
 		setResult(RESULT_OK, intent);
 		finish();
 	}
