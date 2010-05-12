@@ -37,12 +37,18 @@ public abstract class Conversation
 	public static final int TYPE_QUERY   = 2;
 	public static final int TYPE_SERVER  = 3;
 	
+	public static final int STATUS_DEFAULT   = 1;
+	public static final int STATUS_SELECTED  = 2;
+	public static final int STATUS_MESSAGE   = 3;
+	public static final int STATUS_HIGHLIGHT = 4;
+	
 	public static final int HISTORY_SIZE = 30;
 	
 	private LinkedList<Message> buffer;
 	private LinkedList<Message> history;
 	private String name;
 	private MessageListAdapter adapter;
+	private int status = 1;
 	
 	/**
 	 * Get the type of conversation (channel, query, ..)
@@ -155,5 +161,25 @@ public abstract class Conversation
 	public MessageListAdapter getMessageListAdapter()
 	{
 		return adapter;
+	}
+	
+	/**
+	 * Set status of conversation
+	 * 
+	 * @param status
+	 */
+	public void setStatus(int status)
+	{
+		this.status = status;
+	}
+	
+	/**
+	 * Get status of conversation
+	 * 
+	 * @return
+	 */
+	public int getStatus()
+	{
+		return status;
 	}
 }
