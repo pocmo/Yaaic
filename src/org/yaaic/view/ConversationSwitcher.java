@@ -30,7 +30,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 /**
@@ -76,8 +75,7 @@ public class ConversationSwitcher extends View
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
 	{
 		int width = MeasureSpec.getSize(widthMeasureSpec);
-		Log.d("Yaaic", width + " x " + 20);
-		setMeasuredDimension(width, 20);
+		setMeasuredDimension(width, 16);
 	}
 	
 	/**
@@ -94,8 +92,6 @@ public class ConversationSwitcher extends View
 			canvas.drawRect(new Rect(0, 0, getWidth() - 1, getHeight() - 1), paint);
 		}
 		
-		//Log.d("Yaaic", "Drawing...");
-		
 		if (server == null) {
 			return;
 		}
@@ -106,7 +102,7 @@ public class ConversationSwitcher extends View
 		Collection<Conversation> conversations = server.getConversations();
 		int circles = conversations.size();
 		
-		int startX = width / 2 - circles * 14;
+		int startX = (width / 2) - (((circles + 1) / 2) * 14);
 		
 		paint.setColor(0xFFDDDDDD);
 		paint.setStyle(Paint.Style.FILL);
@@ -119,10 +115,10 @@ public class ConversationSwitcher extends View
 					paint.setColor(0xFF888888);
 					break;
 				case Conversation.STATUS_HIGHLIGHT:
-					paint.setColor(0xFFDD0000);
+					paint.setColor(0xFF880000);
 					break;
 				case Conversation.STATUS_MESSAGE:
-					paint.setColor(0xFF00DD00);
+					paint.setColor(0xFF008800);
 					break;
 				case Conversation.STATUS_SELECTED:
 					paint.setColor(0xFFFFFFFF);
