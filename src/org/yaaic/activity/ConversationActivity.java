@@ -38,17 +38,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnKeyListener;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.TableLayout.LayoutParams;
 
 import org.yaaic.R;
 import org.yaaic.Yaaic;
@@ -58,7 +53,9 @@ import org.yaaic.command.CommandParser;
 import org.yaaic.irc.IRCBinder;
 import org.yaaic.irc.IRCService;
 import org.yaaic.layout.NonScalingBackgroundDrawable;
+import org.yaaic.listener.ConversationClickListener;
 import org.yaaic.listener.ConversationListener;
+import org.yaaic.listener.ConversationSelectedListener;
 import org.yaaic.listener.ServerListener;
 import org.yaaic.model.Broadcast;
 import org.yaaic.model.Conversation;
@@ -70,7 +67,6 @@ import org.yaaic.model.ServerInfo;
 import org.yaaic.model.Status;
 import org.yaaic.receiver.ConversationReceiver;
 import org.yaaic.receiver.ServerReceiver;
-import org.yaaic.view.MessageListView;
 import org.yaaic.view.ConversationSwitcher;
 
 /**
@@ -78,7 +74,7 @@ import org.yaaic.view.ConversationSwitcher;
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class ConversationActivity extends Activity implements ServiceConnection, ServerListener, ConversationListener, OnItemClickListener, OnKeyListener, OnItemSelectedListener
+public class ConversationActivity extends Activity implements ServiceConnection, ServerListener, ConversationListener, OnKeyListener
 {
 	private static final int REQUEST_CODE_JOIN = 1;
 	private static final int REQUEST_CODE_USERS = 2;
@@ -123,9 +119,9 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		
         deckAdapter = new DeckAdapter();
 		deck = (Gallery) findViewById(R.id.deck);
-		deck.setOnItemSelectedListener(this);
+		deck.setOnItemSelectedListener(new ConversationSelectedListener(server, (TextView) findViewById(R.id.title)));
 		deck.setAdapter(deckAdapter);
-		deck.setOnItemClickListener(this);
+		deck.setOnItemClickListener(new ConversationClickListener(deckAdapter, switcher));
 		deck.setBackgroundDrawable(new NonScalingBackgroundDrawable(this, deck, R.drawable.background));
 		
 		if (server.getStatus() == Status.PRE_CONNECTING) {
@@ -435,23 +431,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	}
 
 	/**
-	 * On conversation item clicked
-	 */
-	public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
-	{
-		Conversation conversation = deckAdapter.getItem(position);
-		
-		MessageListView canvas = deckAdapter.renderConversation(conversation, switcher);
-		canvas.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
-		canvas.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-		canvas.setDelegateTouchEvents(false); // Do not delegate
-		
-		deckAdapter.setSwitched(conversation.getName(), canvas);
-		switcher.addView(canvas);
-		switcher.showNext();
-	}
-	
-	/**
 	 * On key down
 	 *
 	 * XXX: As we only track the back key: Android >= 2.0 will call a method called onBackPressed()
@@ -559,47 +538,13 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 				startActivityForResult(intent, REQUEST_CODE_USER);
 				break;
 			case REQUEST_CODE_USER:
-				int actionId = data.getExtras().getInt(Extra.ACTION);
-				String nickname = data.getExtras().getString(Extra.USER);
+				//int actionId = data.getExtras().getInt(Extra.ACTION);
+				//String nickname = data.getExtras().getString(Extra.USER);
 
 				// XXX: Implement me - The action should be handled after onResume()
 				//                     to catch the broadcasts
 				
 				break;
 		}
-	}
-
-	/**
-	 * On channel selected/focused
-	 */
-	public void onItemSelected(AdapterView<?> deck, View view, int position, long id)
-	{
-		Conversation conversation = (Conversation) deck.getItemAtPosition(position);
-		
-		if (conversation != null && conversation.getType() != Conversation.TYPE_SERVER) {
-			((TextView) findViewById(R.id.title)).setText(server.getTitle() + " - " + conversation.getName());
-		} else {
-			onNothingSelected(deck);
-		}
-		
-		// Remember selection
-		if (conversation != null) {
-			Conversation previousConversation = server.getConversation(server.getSelectedConversation());
-			
-			if (previousConversation != null) {
-				previousConversation.setStatus(Conversation.STATUS_DEFAULT);
-			}
-			
-			conversation.setStatus(Conversation.STATUS_SELECTED);
-			server.setSelectedConversation(conversation.getName());
-		}
-	}
-
-	/**
-	 * On no channel selected/focused
-	 */
-	public void onNothingSelected(AdapterView<?> deck)
-	{
-		((TextView) findViewById(R.id.title)).setText(server.getTitle());
 	}
 }
