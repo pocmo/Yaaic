@@ -170,6 +170,16 @@ public abstract class Conversation
 	 */
 	public void setStatus(int status)
 	{
+		// Selected status can only be changed by deselecting
+		if (this.status == STATUS_SELECTED && status != STATUS_DEFAULT) {
+			return;
+		}
+		
+		// Highlight status can only be changed by selecting
+		if (this.status == STATUS_HIGHLIGHT && status != STATUS_SELECTED) {
+			return;
+		}
+		
 		this.status = status;
 	}
 	
