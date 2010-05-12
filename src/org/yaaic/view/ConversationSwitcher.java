@@ -20,6 +20,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.view;
 
+import java.util.Collection;
+
+import org.yaaic.model.Conversation;
+import org.yaaic.model.Server;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -35,6 +40,9 @@ import android.view.View;
  */
 public class ConversationSwitcher extends View
 {
+	private static final boolean DEBUG_MODE = false;
+	
+	private Server server;
 	private Paint paint;
 	
 	/**
@@ -49,6 +57,22 @@ public class ConversationSwitcher extends View
 		paint = new Paint();
 	}
 	
+	/**
+	 * Set the server whos conversations should be displayed
+	 * 
+	 * @param server
+	 */
+	public void setServer(Server server)
+	{
+		this.server = server;
+	}
+	
+	/**
+	 * Measure the size of the view
+	 * 
+	 * @param widthMeasureSpec
+	 * @param heightMeasureSpec
+	 */
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
 	{
 		int width = MeasureSpec.getSize(widthMeasureSpec);
@@ -62,17 +86,52 @@ public class ConversationSwitcher extends View
 	protected void onDraw(Canvas canvas)
 	{
 		super.onDraw(canvas);
+	
+		if (DEBUG_MODE) {
+			// Draw debug lines
+			paint.setColor(0xFFFF0000);
+			paint.setStyle(Paint.Style.STROKE);
+			canvas.drawRect(new Rect(0, 0, getWidth() - 1, getHeight() - 1), paint);
+		}
 		
-		// Draw debug lines
-		paint.setColor(0xFFFF0000);
-		paint.setStyle(Paint.Style.STROKE);
-		canvas.drawRect(new Rect(0, 0, getWidth() - 1, getHeight() - 1), paint);
+		//Log.d("Yaaic", "Drawing...");
 		
-		Log.d("Yaaic", "Circle at " + (getWidth() / 2) + " x " + (getHeight() / 2));
+		if (server == null) {
+			return;
+		}
 
-		// Draw dots
-		paint.setColor(0xFFFFFFFF);
+		int width = getWidth();
+		int height = getHeight();
+		
+		Collection<Conversation> conversations = server.getConversations();
+		int circles = conversations.size();
+		
+		int startX = width / 2 - circles * 14;
+		
+		paint.setColor(0xFFDDDDDD);
 		paint.setStyle(Paint.Style.FILL);
-		canvas.drawCircle(getWidth() / 2, getHeight() / 2, 5, paint);
+		
+		int i = 0;
+		
+		for (Conversation conversation : conversations) {
+			switch (conversation.getStatus()) {
+				case Conversation.STATUS_DEFAULT:
+					paint.setColor(0xFF888888);
+					break;
+				case Conversation.STATUS_HIGHLIGHT:
+					paint.setColor(0xFFDD0000);
+					break;
+				case Conversation.STATUS_MESSAGE:
+					paint.setColor(0xFF00DD00);
+					break;
+				case Conversation.STATUS_SELECTED:
+					paint.setColor(0xFFFFFFFF);
+					break;
+			}
+			
+			canvas.drawCircle(startX + 14 * i, height / 2, 5, paint);
+			i++;
+		}
+		
 	}
 }
