@@ -584,7 +584,12 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		
 		// Remember selection
 		if (conversation != null) {
-			server.getConversation(server.getSelectedConversation()).setStatus(Conversation.STATUS_DEFAULT);
+			Conversation previousConversation = server.getConversation(server.getSelectedConversation());
+			
+			if (previousConversation != null) {
+				previousConversation.setStatus(Conversation.STATUS_DEFAULT);
+			}
+			
 			conversation.setStatus(Conversation.STATUS_SELECTED);
 			server.setSelectedConversation(conversation.getName());
 		}
