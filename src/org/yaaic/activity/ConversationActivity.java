@@ -347,11 +347,9 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		Conversation conversation = server.getConversation(target);
 		MessageListAdapter adapter = conversation.getMessageListAdapter();
 		
-		if (conversation.getStatus() != Conversation.STATUS_SELECTED) {
-			conversation.setStatus(Conversation.STATUS_MESSAGE);
-			if (dots != null) {
-				dots.invalidate();
-			}
+		conversation.setStatus(Conversation.STATUS_MESSAGE);
+		if (dots != null) {
+			dots.invalidate();
 		}
 		
 		while(conversation.hasBufferedMessages()) {
