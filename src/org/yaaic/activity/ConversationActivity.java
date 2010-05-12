@@ -94,6 +94,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	private Gallery deck;
 	private DeckAdapter deckAdapter;
 	private Scrollback scrollback;
+	private ConversationSwitcher dots;
 	
 	// XXX: This is ugly. This is a buffer for a channel that should be joined after showing the
 	//      JoinActivity. As onActivityResult() is called before onResume() a "channel joined"
@@ -176,7 +177,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 			 ((EditText) findViewById(R.id.input)).setEnabled(true);
 		}
 		
-		((ConversationSwitcher) findViewById(R.id.dots)).setServer(server);
+		dots = (ConversationSwitcher) findViewById(R.id.dots);
+		dots.setServer(server);
 
 		// Optimization - cache field lookup
 		Collection<Conversation> mConversations = server.getConversations();
@@ -344,6 +346,15 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	{
 		Conversation conversation = server.getConversation(target);
 		MessageListAdapter adapter = conversation.getMessageListAdapter();
+		
+		if (conversation.getStatus() != Conversation.STATUS_SELECTED) {
+			conversation.setStatus(Conversation.STATUS_MESSAGE);
+			if (dots != null) {
+				dots.refreshDrawableState();
+				dots.requestLayout();
+				dots.invalidate();
+			}
+		}
 		
 		while(conversation.hasBufferedMessages()) {
 			Message message = conversation.pollBufferedMessage();
