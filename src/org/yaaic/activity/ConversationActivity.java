@@ -350,8 +350,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		if (conversation.getStatus() != Conversation.STATUS_SELECTED) {
 			conversation.setStatus(Conversation.STATUS_MESSAGE);
 			if (dots != null) {
-				dots.refreshDrawableState();
-				dots.requestLayout();
 				dots.invalidate();
 			}
 		}
