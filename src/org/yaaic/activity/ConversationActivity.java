@@ -71,6 +71,7 @@ import org.yaaic.model.Status;
 import org.yaaic.receiver.ConversationReceiver;
 import org.yaaic.receiver.ServerReceiver;
 import org.yaaic.view.MessageListView;
+import org.yaaic.view.ConversationSwitcher;
 
 /**
  * The server view with a scrollable list of all channels
@@ -174,6 +175,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		} else {
 			 ((EditText) findViewById(R.id.input)).setEnabled(true);
 		}
+		
+		((ConversationSwitcher) findViewById(R.id.dots)).setServer(server);
 
 		// Optimization - cache field lookup
 		Collection<Conversation> mConversations = server.getConversations();
@@ -574,6 +577,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		
 		// Remember selection
 		if (conversation != null) {
+			server.getConversation(server.getSelectedConversation()).setStatus(Conversation.STATUS_DEFAULT);
+			conversation.setStatus(Conversation.STATUS_SELECTED);
 			server.setSelectedConversation(conversation.getName());
 		}
 	}
