@@ -160,6 +160,13 @@ public class IRCConnection extends PircBot
 			parser.parse(command, server, server.getConversation(ServerInfo.DEFAULT_NAME), service);
 		}
 		
+		// delay 1 sec before auto joining channels
+		try {
+			Thread.sleep(1000);
+		} catch(InterruptedException e) {
+			// do nothing
+		}
+		
 		// join channels
 		if (autojoinChannels != null) {
 			for (String channel : autojoinChannels) {
