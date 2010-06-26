@@ -117,6 +117,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		((TextView) findViewById(R.id.title)).setText(server.getTitle());
 		((EditText) findViewById(R.id.input)).setOnKeyListener(this);
 		
+		switcher = (ViewSwitcher) findViewById(R.id.switcher);
+		
         deckAdapter = new DeckAdapter();
 		deck = (Gallery) findViewById(R.id.deck);
 		deck.setOnItemSelectedListener(new ConversationSelectedListener(server, (TextView) findViewById(R.id.title)));
@@ -128,8 +130,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 			server.clearConversations();
 			deckAdapter.clearConversations();
 		}
-
-		switcher = (ViewSwitcher) findViewById(R.id.switcher);
 		
 		// Optimization : cache field lookups 
 		Collection<Conversation> mConversations = server.getConversations();
