@@ -36,8 +36,7 @@ import android.preference.PreferenceManager;
  * 		 be gone. Otherwise this could leak memory. 
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
- *
- */
+  */
 public class Settings
 {
 	private SharedPreferences preferences;
@@ -117,6 +116,19 @@ public class Settings
 		return preferences.getBoolean(
 			resources.getString(R.string.key_reconnect),
 			Boolean.parseBoolean(resources.getString(R.string.default_reconnect))
+		);
+	}
+	
+	/**
+	 * Get the quit message
+	 * 
+	 * @return The message to display when the user disconnects
+	 */
+	public String getQuitMessage()
+	{
+		return preferences.getString(
+			resources.getString(R.string.key_quitmessage),
+			resources.getString(R.string.default_quitmessage)
 		);
 	}
 }

@@ -53,4 +53,14 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 			android:defaultValue="@string/default_24h_format"
 			android:dependency="@string/key_show_timestamp" />
 	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="Misc">
+		<EditTextPreference
+			android:title="Quit message"
+			android:summary="Message to show when you disconnect"
+			android:key="@string/key_quitmessage"
+			android:defaultValue="@string/default_quitmessage"
+			android:dialogTitle="Quit message"
+			android:dialogMessage="Message to show when you disconnect:" />
+	</PreferenceCategory>
 </PreferenceScreen>

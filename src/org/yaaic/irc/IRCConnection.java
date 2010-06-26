@@ -1102,7 +1102,7 @@ public class IRCConnection extends PircBot
 	{
 		new Thread() {
 			public void run() {
-				quitServer("Yaaic - Yet another Android IRC client - http://www.yaaic.org");
+				quitServer(service.getSettings().getQuitMessage());
 			}
 		}.start();
 	}
