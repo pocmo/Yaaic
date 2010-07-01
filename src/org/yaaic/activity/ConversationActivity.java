@@ -472,7 +472,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 			return true;
 		}
 		
-		if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
+		if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
 			if (!server.isConnected()) {
 				Message message = new Message("Not connected");
 				message.setColor(Message.COLOR_RED);
