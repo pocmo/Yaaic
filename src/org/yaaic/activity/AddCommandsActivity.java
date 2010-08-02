@@ -52,6 +52,7 @@ public class AddCommandsActivity extends Activity implements OnClickListener, On
 	private EditText commandInput;
 	private ArrayAdapter<String> adapter;
 	private ArrayList<String> commands;
+	private Button okButton;
 	
 	/**
 	 * On create
@@ -75,6 +76,10 @@ public class AddCommandsActivity extends Activity implements OnClickListener, On
 		((Button) findViewById(R.id.add)).setOnClickListener(this);
 		((Button) findViewById(R.id.ok)).setOnClickListener(this);
 		((Button) findViewById(R.id.cancel)).setOnClickListener(this);
+
+		okButton = (Button) findViewById(R.id.ok);
+		okButton.setOnClickListener(this);
+		okButton.setEnabled(false);
 		
 		commands = getIntent().getExtras().getStringArrayList(Extra.COMMANDS);
 		
@@ -106,6 +111,7 @@ public class AddCommandsActivity extends Activity implements OnClickListener, On
 				commands.add("/" + command);
 				adapter.add("/" + command);
 				commandInput.setText("/");
+				okButton.setEnabled(true);
 				break;
 			case R.id.cancel:
 				setResult(RESULT_CANCELED);
@@ -138,6 +144,7 @@ public class AddCommandsActivity extends Activity implements OnClickListener, On
 			        case 0: // Remove
 		        		adapter.remove(command);
 		        		commands.remove(command);
+						okButton.setEnabled(true);
 		        		break;
 		        }
 		    }

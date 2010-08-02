@@ -50,6 +50,7 @@ public class AddChannelActivity extends Activity implements OnClickListener, OnI
 	private EditText channelInput;
 	private ArrayAdapter<String> adapter;
 	private ArrayList<String> channels;
+	private Button okButton;
 	
 	/**
 	 * On create
@@ -71,9 +72,12 @@ public class AddChannelActivity extends Activity implements OnClickListener, OnI
 		list.setOnItemClickListener(this);
 		
 		((Button) findViewById(R.id.add)).setOnClickListener(this);
-		((Button) findViewById(R.id.ok)).setOnClickListener(this);
 		((Button) findViewById(R.id.cancel)).setOnClickListener(this);
-		
+
+		okButton = (Button) findViewById(R.id.ok);
+		okButton.setOnClickListener(this);
+		okButton.setEnabled(false);
+
 		channels = getIntent().getExtras().getStringArrayList(Extra.CHANNELS);
 		
 		for (String channel : channels) {
@@ -92,6 +96,7 @@ public class AddChannelActivity extends Activity implements OnClickListener, OnI
 				channels.add(channel);
 				adapter.add(channel);
 				channelInput.setText("#");
+				okButton.setEnabled(true);
 				break;
 			case R.id.cancel:
 				setResult(RESULT_CANCELED);
@@ -124,6 +129,7 @@ public class AddChannelActivity extends Activity implements OnClickListener, OnI
 			        case 0: // Remove
 		        		adapter.remove(channel);
 		        		channels.remove(channel);
+						okButton.setEnabled(true);
 		        		break;
 		        }
 		    }
