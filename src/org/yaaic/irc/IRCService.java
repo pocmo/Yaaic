@@ -55,9 +55,9 @@ public class IRCService extends Service
 	private HashMap<Integer, IRCConnection> connections;
 	private boolean foreground = false;
 	
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	private static final Class[] mStartForegroundSignature = new Class[] { int.class, Notification.class };
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
     private static final Class[] mStopForegroundSignature = new Class[] { boolean.class };
     
     public static final String ACTION_FOREGROUND = "org.yaaic.service.foreground";
