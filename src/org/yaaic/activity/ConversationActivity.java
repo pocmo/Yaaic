@@ -119,9 +119,12 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		
 		switcher = (ViewSwitcher) findViewById(R.id.switcher);
 		
+		dots = (ConversationSwitcher) findViewById(R.id.dots);
+		dots.setServer(server);
+
         deckAdapter = new DeckAdapter();
 		deck = (Gallery) findViewById(R.id.deck);
-		deck.setOnItemSelectedListener(new ConversationSelectedListener(server, (TextView) findViewById(R.id.title)));
+		deck.setOnItemSelectedListener(new ConversationSelectedListener(server, (TextView) findViewById(R.id.title), dots));
 		deck.setAdapter(deckAdapter);
 		deck.setOnItemClickListener(new ConversationClickListener(deckAdapter, switcher));
 		deck.setBackgroundDrawable(new NonScalingBackgroundDrawable(this, deck, R.drawable.background));
@@ -172,9 +175,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		} else {
 			 ((EditText) findViewById(R.id.input)).setEnabled(true);
 		}
-		
-		dots = (ConversationSwitcher) findViewById(R.id.dots);
-		dots.setServer(server);
 
 		// Optimization - cache field lookup
 		Collection<Conversation> mConversations = server.getConversations();
@@ -344,6 +344,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		MessageListAdapter adapter = conversation.getMessageListAdapter();
 		
 		conversation.setStatus(Conversation.STATUS_MESSAGE);
+
 		if (dots != null) {
 			dots.invalidate();
 		}

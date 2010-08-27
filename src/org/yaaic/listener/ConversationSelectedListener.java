@@ -27,6 +27,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Server;
+import org.yaaic.view.ConversationSwitcher;
 
 /**
  * Listener for conversation selections
@@ -37,6 +38,7 @@ public class ConversationSelectedListener implements OnItemSelectedListener
 {
 	private Server server;
 	private TextView titleView;
+	private ConversationSwitcher switcher;
 	
 	/**
 	 * Create a new ConversationSelectedListener
@@ -44,10 +46,11 @@ public class ConversationSelectedListener implements OnItemSelectedListener
 	 * @param server
 	 * @param titleView
 	 */
-	public ConversationSelectedListener(Server server, TextView titleView)
+	public ConversationSelectedListener(Server server, TextView titleView, ConversationSwitcher switcher)
 	{
 		this.server = server;
 		this.titleView = titleView;
+		this.switcher = switcher;
 	}
 	
 	/**
@@ -74,6 +77,8 @@ public class ConversationSelectedListener implements OnItemSelectedListener
 			conversation.setStatus(Conversation.STATUS_SELECTED);
 			server.setSelectedConversation(conversation.getName());
 		}
+
+		switcher.invalidate();
 	}
 	
 	/**
