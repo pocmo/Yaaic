@@ -22,35 +22,13 @@ package org.yaaic.activity;
 
 import java.util.Collection;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.ComponentName;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
-import android.os.Bundle;
-import android.os.IBinder;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.view.View.OnKeyListener;
-import android.widget.EditText;
-import android.widget.Gallery;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ViewSwitcher;
-
 import org.yaaic.R;
 import org.yaaic.Yaaic;
 import org.yaaic.adapter.DeckAdapter;
 import org.yaaic.adapter.MessageListAdapter;
 import org.yaaic.command.CommandParser;
 import org.yaaic.irc.IRCBinder;
+import org.yaaic.irc.IRCConnection;
 import org.yaaic.irc.IRCService;
 import org.yaaic.layout.NonScalingBackgroundDrawable;
 import org.yaaic.listener.ConversationClickListener;
@@ -68,6 +46,29 @@ import org.yaaic.model.Status;
 import org.yaaic.receiver.ConversationReceiver;
 import org.yaaic.receiver.ServerReceiver;
 import org.yaaic.view.ConversationSwitcher;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ComponentName;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnKeyListener;
+import android.view.Window;
+import android.widget.EditText;
+import android.widget.Gallery;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 /**
  * The server view with a scrollable list of all channels
@@ -528,7 +529,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 			return;
 		}
 		
-		// currently there's only the "join channel" activity
 		switch (requestCode) {
 			case REQUEST_CODE_JOIN:
 				joinChannelBuffer = data.getExtras().getString("channel");
@@ -539,12 +539,46 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 				startActivityForResult(intent, REQUEST_CODE_USER);
 				break;
 			case REQUEST_CODE_USER:
-				//int actionId = data.getExtras().getInt(Extra.ACTION);
-				//String nickname = data.getExtras().getString(Extra.USER);
+				final int actionId = data.getExtras().getInt(Extra.ACTION);
+				final String nickname = data.getExtras().getString(Extra.USER);
+				final IRCConnection connection = binder.getService().getConnection(server.getId());
+				final String conversation = server.getSelectedConversation();
 
 				// XXX: Implement me - The action should be handled after onResume()
-				//                     to catch the broadcasts
+				//                     to catch the broadcasts... now we just wait a second
+				// Yes .. that's very ugly - we need some kind of queue that is handled after onResume()
 				
+				new Thread() {
+					public void run() {
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							// Do nothing
+						}
+						
+						switch (actionId) {
+							case R.id.op:
+								connection.op(conversation, nickname);
+								break;
+							case R.id.deop:
+								connection.deOp(conversation, nickname);
+								break;
+							case R.id.voice:
+								connection.voice(conversation, nickname);
+								break;
+							case R.id.devoice:
+								connection.deVoice(conversation, nickname);
+								break;
+							case R.id.kick:
+								connection.kick(conversation, nickname);
+								break;
+							case R.id.ban:
+								connection.ban(conversation, nickname + "!*@*");
+								break;
+						}
+					}
+				}.start();
+
 				break;
 		}
 	}
