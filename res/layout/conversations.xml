@@ -43,10 +43,6 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 	        android:textSize="12px"
 	        android:layout_weight="1" />
 	</LinearLayout>
-	<org.yaaic.view.ConversationSwitcher
-		android:id="@+id/dots"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" />
 	<ViewSwitcher
         android:id="@+id/switcher"
 	    android:layout_width="fill_parent"
@@ -56,10 +52,14 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 	       android:id="@+id/deck"
 	       android:layout_width="fill_parent"
 	       android:layout_height="fill_parent"
-           android:layout_margin="10px"
+           android:layout_margin="0px"
            android:spacing="5px"
            android:unselectedAlpha="100"/>
 	</ViewSwitcher>
+	<org.yaaic.view.ConversationSwitcher
+		android:id="@+id/dots"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" />
 	<EditText
 	   android:id="@+id/input"
 	   android:layout_width="fill_parent"

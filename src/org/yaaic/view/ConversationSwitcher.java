@@ -28,7 +28,6 @@ import org.yaaic.model.Server;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -39,8 +38,6 @@ import android.view.View;
  */
 public class ConversationSwitcher extends View
 {
-	private static final boolean DEBUG_MODE = false;
-	
 	private Server server;
 	private Paint paint;
 	
@@ -54,6 +51,7 @@ public class ConversationSwitcher extends View
 		super(context, attributes);
 		
 		paint = new Paint();
+		paint.setStyle(Paint.Style.STROKE);
 	}
 	
 	/**
@@ -74,8 +72,7 @@ public class ConversationSwitcher extends View
 	 */
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
 	{
-		int width = MeasureSpec.getSize(widthMeasureSpec);
-		setMeasuredDimension(width, 16);
+		setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec),	16);
 	}
 	
 	/**
@@ -85,29 +82,17 @@ public class ConversationSwitcher extends View
 	{
 		super.onDraw(canvas);
 	
-		if (DEBUG_MODE) {
-			// Draw debug lines
-			paint.setColor(0xFFFF0000);
-			paint.setStyle(Paint.Style.STROKE);
-			canvas.drawRect(new Rect(0, 0, getWidth() - 1, getHeight() - 1), paint);
-		}
-		
 		if (server == null) {
 			return;
 		}
 
-		int width = getWidth();
-		int height = getHeight();
-		
 		Collection<Conversation> conversations = server.getConversations();
+		
+		int i       = 0;
+		int width   = getWidth();
+		int height  = getHeight();
 		int circles = conversations.size();
-		
-		int startX = (width / 2) - (((circles + 1) / 2) * 14);
-		
-		paint.setColor(0xFFDDDDDD);
-		paint.setStyle(Paint.Style.FILL);
-		
-		int i = 0;
+		int startX  = (width / 2) - (((circles + 1) / 2) * 12);
 		
 		for (Conversation conversation : conversations) {
 			switch (conversation.getStatus()) {
@@ -125,7 +110,7 @@ public class ConversationSwitcher extends View
 					break;
 			}
 			
-			canvas.drawCircle(startX + 14 * i, height / 2, 5, paint);
+			canvas.drawCircle(startX + 12 * i, height / 2, 4, paint);
 			i++;
 		}
 		
