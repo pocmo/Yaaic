@@ -60,10 +60,21 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 		android:id="@+id/dots"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content" />
-	<EditText
-	   android:id="@+id/input"
-	   android:layout_width="fill_parent"
-	   android:layout_height="wrap_content"
-	   android:singleLine="true"
-	   android:imeOptions="actionSend" />
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+		<EditText
+			android:id="@+id/input"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:singleLine="true"
+            android:imeOptions="actionSend" />
+		<Button
+            android:id="@+id/speech"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@android:drawable/ic_btn_speak_now" />
+	</LinearLayout>
 </LinearLayout>

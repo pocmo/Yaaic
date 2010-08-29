@@ -20,7 +20,9 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.activity;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.yaaic.R;
 import org.yaaic.Yaaic;
@@ -35,6 +37,7 @@ import org.yaaic.listener.ConversationClickListener;
 import org.yaaic.listener.ConversationListener;
 import org.yaaic.listener.ConversationSelectedListener;
 import org.yaaic.listener.ServerListener;
+import org.yaaic.listener.SpeechClickListener;
 import org.yaaic.model.Broadcast;
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Extra;
@@ -54,8 +57,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.speech.RecognizerIntent;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -63,6 +69,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.ImageView;
@@ -77,6 +84,8 @@ import android.widget.ViewSwitcher;
  */
 public class ConversationActivity extends Activity implements ServiceConnection, ServerListener, ConversationListener, OnKeyListener
 {
+	public static final int REQUEST_CODE_SPEECH = 99;
+
 	private static final int REQUEST_CODE_JOIN = 1;
 	private static final int REQUEST_CODE_USERS = 2;
 	private static final int REQUEST_CODE_USER = 3;
@@ -135,6 +144,16 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 			deckAdapter.clearConversations();
 		}
 		
+		// Check if speech recognition is available
+		PackageManager pm = getPackageManager();
+		Button speechButton = (Button) findViewById(R.id.speech);
+		List<ResolveInfo> activities = pm.queryIntentActivities(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
+		if (activities.size() != 0) {
+			((Button) findViewById(R.id.speech)).setOnClickListener(new SpeechClickListener(this));
+		} else {
+			speechButton.setVisibility(View.GONE);
+		}
+
 		// Optimization : cache field lookups 
 		Collection<Conversation> mConversations = server.getConversations();
 		
@@ -530,6 +549,15 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		}
 		
 		switch (requestCode) {
+			case REQUEST_CODE_SPEECH:
+				ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+				StringBuffer buffer = new StringBuffer();
+				for (String partial : matches) {
+					buffer.append(" ");
+					buffer.append(partial);
+				}
+				((EditText) findViewById(R.id.input)).setText(buffer.toString().trim());
+				break;
 			case REQUEST_CODE_JOIN:
 				joinChannelBuffer = data.getExtras().getString("channel");
 				break;
