@@ -206,7 +206,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 		Server server = Yaaic.getInstance().getServerById(serverId);
 		
 		if (server.getStatus() != Status.DISCONNECTED) {
-			Toast.makeText(this, "Disconnect from server before editing", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, getResources().getString(R.string.disconnect_before_editing), Toast.LENGTH_SHORT).show();
 		}
 		else {
 	    	Intent intent = new Intent(this, AddServerActivity.class);
