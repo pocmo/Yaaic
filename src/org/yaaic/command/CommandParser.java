@@ -221,6 +221,7 @@ public class CommandParser
 				errorMessage.setColor(Message.COLOR_RED);
 				conversation.addMessage(errorMessage);
 				
+				// XXX:I18N - How to get a context here? (command_syntax)
 				Message usageMessage = new Message("Syntax: " + command.getUsage());
 				conversation.addMessage(usageMessage);
 				
@@ -266,6 +267,7 @@ public class CommandParser
 	public void handleUnknownCommand(String type, Server server, Conversation conversation, IRCService service)
 	{
 		if (conversation != null) {
+			// XXX:I18N - How to get a context here? (unknown_command)
 			Message message = new Message("Unknown command: " + type);
 			message.setColor(Message.COLOR_RED);
 			conversation.addMessage(message);
