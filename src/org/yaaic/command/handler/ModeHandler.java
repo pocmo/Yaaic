@@ -20,11 +20,14 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.command.handler;
 
+import org.yaaic.R;
 import org.yaaic.command.BaseHandler;
 import org.yaaic.exception.CommandException;
 import org.yaaic.irc.IRCService;
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Server;
+
+import android.content.Context;
 
 /**
  * Command: /mode <channel> <mode>
@@ -63,8 +66,8 @@ public class ModeHandler extends BaseHandler
 	 * Description of /mode
 	 */
 	@Override
-	public String getDescription()
+	public String getDescription(Context context)
 	{
-		return "Change channel modes";
+		return context.getString(R.string.command_desc_mode);
 	}
 }

@@ -29,6 +29,7 @@ import org.yaaic.model.Conversation;
 import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 
+import android.content.Context;
 import android.content.Intent;
 
 /**
@@ -79,8 +80,8 @@ public class NoticeHandler extends BaseHandler
 	 * Description of /notice
 	 */
 	@Override
-	public String getDescription()
+	public String getDescription(Context context)
 	{
-		return "Send a notice to an other user";
+		return context.getString(R.string.command_desc_notice);
 	}
 }

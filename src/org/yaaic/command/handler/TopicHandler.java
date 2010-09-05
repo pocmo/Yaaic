@@ -20,12 +20,15 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.command.handler;
 
+import org.yaaic.R;
 import org.yaaic.command.BaseHandler;
 import org.yaaic.exception.CommandException;
 import org.yaaic.irc.IRCService;
 import org.yaaic.model.Channel;
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Server;
+
+import android.content.Context;
 
 /**
  * Command: /topic [<topic>]
@@ -70,8 +73,8 @@ public class TopicHandler extends BaseHandler
 	 * Description of /topic
 	 */
 	@Override
-	public String getDescription()
+	public String getDescription(Context context)
 	{
-		return "show or change the current topic";
+		return context.getString(R.string.command_desc_topic);
 	}
 }

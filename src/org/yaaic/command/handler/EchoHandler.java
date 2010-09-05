@@ -20,6 +20,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.command.handler;
 
+import org.yaaic.R;
 import org.yaaic.command.BaseHandler;
 import org.yaaic.exception.CommandException;
 import org.yaaic.irc.IRCService;
@@ -28,6 +29,7 @@ import org.yaaic.model.Conversation;
 import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 
+import android.content.Context;
 import android.content.Intent;
 
 /**
@@ -71,8 +73,8 @@ public class EchoHandler extends BaseHandler
 	 * Description of /echo
 	 */
 	@Override
-	public String getDescription()
+	public String getDescription(Context context)
 	{
-		return "Print text to window";
+		return context.getString(R.string.command_desc_echo);
 	}
 }

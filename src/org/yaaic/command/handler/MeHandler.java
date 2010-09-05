@@ -29,6 +29,7 @@ import org.yaaic.model.Conversation;
 import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 
+import android.content.Context;
 import android.content.Intent;
 
 /**
@@ -82,8 +83,8 @@ public class MeHandler extends BaseHandler
 	 * Description of /me
 	 */
 	@Override
-	public String getDescription()
+	public String getDescription(Context context)
 	{
-		return "Perform an action";
+		return context.getString(R.string.command_desc_me);
 	}
 }

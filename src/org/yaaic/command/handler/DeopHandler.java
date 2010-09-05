@@ -20,21 +20,24 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.command.handler;
 
+import org.yaaic.R;
 import org.yaaic.command.BaseHandler;
 import org.yaaic.exception.CommandException;
 import org.yaaic.irc.IRCService;
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Server;
 
+import android.content.Context;
+
 /**
- * Command: /voice <nickname>
+ * Command: /deop <nickname>
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
 public class DeopHandler extends BaseHandler
 {
 	/**
-	 * Execute /voice
+	 * Execute /deop
 	 */
 	@Override
 	public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException 
@@ -51,20 +54,20 @@ public class DeopHandler extends BaseHandler
 	}
 	
 	/**
-	 * Usage of /voice
+	 * Usage of /deop
 	 */
 	@Override
 	public String getUsage()
 	{
-		return "/voice <nickname>";
+		return "/deop <nickname>";
 	}
 
 	/**
-	 * Description of /voice
+	 * Description of /deop
 	 */
 	@Override
-	public String getDescription()
+	public String getDescription(Context context)
 	{
-		return "Give a user voice status";
+		return context.getString(R.string.command_desc_deop);
 	}
 }

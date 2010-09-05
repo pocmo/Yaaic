@@ -21,6 +21,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 package org.yaaic.command.handler;
 
 import org.jibble.pircbot.User;
+import org.yaaic.R;
 import org.yaaic.command.BaseHandler;
 import org.yaaic.exception.CommandException;
 import org.yaaic.irc.IRCService;
@@ -29,6 +30,7 @@ import org.yaaic.model.Conversation;
 import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 
+import android.content.Context;
 import android.content.Intent;
 
 /**
@@ -84,8 +86,8 @@ public class NamesHandler extends BaseHandler
 	 * Description of /names
 	 */
 	@Override
-	public String getDescription()
+	public String getDescription(Context context)
 	{
-		return "lists all users in channel";
+		return context.getString(R.string.command_desc_names);
 	}
 }

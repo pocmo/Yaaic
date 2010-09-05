@@ -25,6 +25,8 @@ import org.yaaic.irc.IRCService;
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Server;
 
+import android.content.Context;
+
 /**
  * Base class for commands
  * 
@@ -53,9 +55,10 @@ public abstract class BaseHandler
 	/**
 	 * Get the description for this command
 	 * 
+	 * @param context The current context. Needed for getting string resources
 	 * @return
 	 */
-	public abstract String getDescription();
+	public abstract String getDescription(Context context);
 	
 	/**
 	 * Merge params to a string

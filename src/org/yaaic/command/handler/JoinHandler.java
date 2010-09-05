@@ -20,11 +20,14 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.command.handler;
 
+import org.yaaic.R;
 import org.yaaic.command.BaseHandler;
 import org.yaaic.exception.CommandException;
 import org.yaaic.irc.IRCService;
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Server;
+
+import android.content.Context;
 
 /**
  * Command: /join <channel> [<key>]
@@ -61,8 +64,8 @@ public class JoinHandler extends BaseHandler
 	 * Description of /join
 	 */
 	@Override
-	public String getDescription()
+	public String getDescription(Context context)
 	{
-		return "Join a channel";
+		return context.getString(R.string.command_desc_join);
 	}
 }

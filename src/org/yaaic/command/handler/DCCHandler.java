@@ -22,6 +22,7 @@ package org.yaaic.command.handler;
 
 import java.io.File;
 
+import org.yaaic.R;
 import org.yaaic.command.BaseHandler;
 import org.yaaic.exception.CommandException;
 import org.yaaic.irc.IRCService;
@@ -29,6 +30,8 @@ import org.yaaic.model.Broadcast;
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Message;
 import org.yaaic.model.Server;
+
+import android.content.Context;
 
 /**
  * Command: /dcc SEND <nickname> <file>
@@ -81,8 +84,8 @@ public class DCCHandler extends BaseHandler
 	 * Description of /dcc
 	 */
 	@Override
-	public String getDescription()
+	public String getDescription(Context context)
 	{
-		return "Send a file to a user";
+		return context.getString(R.string.command_desc_dcc);
 	}
 }

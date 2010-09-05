@@ -22,6 +22,7 @@ package org.yaaic.command.handler;
 
 import java.util.Collection;
 
+import org.yaaic.R;
 import org.yaaic.command.BaseHandler;
 import org.yaaic.exception.CommandException;
 import org.yaaic.irc.IRCService;
@@ -30,6 +31,7 @@ import org.yaaic.model.Conversation;
 import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 
+import android.content.Context;
 import android.content.Intent;
 
 /**
@@ -69,7 +71,7 @@ public class AMsgHandler extends BaseHandler
 				}
 			}
 		} else {
-			throw new CommandException("Invalid number of params");
+			throw new CommandException(service.getString(R.string.invalid_number_of_params));
 		}
 	}
 	
@@ -86,8 +88,8 @@ public class AMsgHandler extends BaseHandler
 	 * Description of /amsg
 	 */
 	@Override
-	public String getDescription()
+	public String getDescription(Context context)
 	{
-		return "Send a message to all channels";
+		return context.getString(R.string.command_desc_amsg);
 	}
 }

@@ -23,6 +23,7 @@ package org.yaaic.command.handler;
 import java.util.HashMap;
 import java.util.Set;
 
+import org.yaaic.R;
 import org.yaaic.command.BaseHandler;
 import org.yaaic.command.CommandParser;
 import org.yaaic.exception.CommandException;
@@ -32,6 +33,7 @@ import org.yaaic.model.Conversation;
 import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 
+import android.content.Context;
 import android.content.Intent;
 
 /**
@@ -83,7 +85,7 @@ public class HelpHandler extends BaseHandler
 					break;
 				}
 			}
-			commandList.append("/" + command.toString() + alias + " - "+commands.get(command).getDescription() + "\n");
+			commandList.append("/" + command.toString() + alias + " - "+commands.get(command).getDescription(service) + "\n");
 		}
 		
 		Message message = new Message(commandList.toString());
@@ -114,7 +116,7 @@ public class HelpHandler extends BaseHandler
 		HashMap<String, BaseHandler> commands = cp.getCommands();
 		
 		if (commands.containsKey(command)) {
-			Message message = new Message("Help of /" + command + "\n" + commands.get(command).getUsage() + "\n" + commands.get(command).getDescription() + "\n");
+			Message message = new Message("Help of /" + command + "\n" + commands.get(command).getUsage() + "\n" + commands.get(command).getDescription(service) + "\n");
 			message.setColor(Message.COLOR_YELLOW);
 			conversation.addMessage(message);
 			
@@ -143,8 +145,8 @@ public class HelpHandler extends BaseHandler
 	 * Description of /help
 	 */
 	@Override
-	public String getDescription()
+	public String getDescription(Context context)
 	{
-		return "Lists all available commands";
+		return context.getString(R.string.command_desc_help);
 	}
 }

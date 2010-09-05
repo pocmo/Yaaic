@@ -20,11 +20,14 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.command.handler;
 
+import org.yaaic.R;
 import org.yaaic.command.BaseHandler;
 import org.yaaic.exception.CommandException;
 import org.yaaic.irc.IRCService;
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Server;
+
+import android.content.Context;
 
 /**
  * Command: /quit [<reason>]
@@ -59,8 +62,8 @@ public class QuitHandler extends BaseHandler
 	 * Description of /quit
 	 */
 	@Override
-	public String getDescription()
+	public String getDescription(Context context)
 	{
-		return "disconnect from server";
+		return context.getString(R.string.command_desc_quit);
 	}
 }
