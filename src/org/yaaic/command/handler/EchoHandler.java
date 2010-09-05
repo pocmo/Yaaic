@@ -56,7 +56,7 @@ public class EchoHandler extends BaseHandler
 			);
 			service.sendBroadcast(intent);
 		} else {
-			throw new CommandException("Text is missing");
+			throw new CommandException(service.getString(R.string.text_missing));
 		}
 	}
 	
