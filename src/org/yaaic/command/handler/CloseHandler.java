@@ -47,7 +47,7 @@ public class CloseHandler extends BaseHandler
 	public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException 
 	{
 		if (conversation.getType() == Conversation.TYPE_SERVER) {
-			throw new CommandException("You can't close the server window");
+			throw new CommandException(service.getString(R.string.close_server_window));
 		}
 		
 		if (params.length == 1) {
