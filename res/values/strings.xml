@@ -169,5 +169,4 @@
     <string name="settings_fontsize_title">Font size</string>
     <string name="settings_fontsize_desc">Set the global font size</string>
     <string name="settings_fontsize_dialog_title">Font size</string>
-    <string name="settings_fontsize_dialog_desc">Choose a font size</string>
 </resources>
