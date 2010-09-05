@@ -45,7 +45,7 @@ public class WhoisHandler extends BaseHandler
 	public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException
 	{
 		if (params.length != 2) {
-			throw new CommandException("Invalid number of params");
+			throw new CommandException(service.getString(R.string.invalid_number_of_params));
 		}
 		
 		service.getConnection(server.getId()).sendRawLineViaQueue("WHOIS " + params[1]);

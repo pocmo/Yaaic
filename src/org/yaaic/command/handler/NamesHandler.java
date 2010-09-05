@@ -48,9 +48,10 @@ public class NamesHandler extends BaseHandler
 	public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException 
 	{
 		if (conversation.getType() != Conversation.TYPE_CHANNEL) {
-			throw new CommandException("Only usable from within a channel");
+			throw new CommandException(service.getString(R.string.only_usable_from_channel));
 		}
 		
+		// XXX:I18N - Translation needed!
 		StringBuffer userList = new StringBuffer("Users " + conversation.getName() + ":");
 		
 		User[] mUsers = service.getConnection(server.getId()).getUsers(conversation.getName());

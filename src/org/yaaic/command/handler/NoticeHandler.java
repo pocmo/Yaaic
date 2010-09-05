@@ -63,7 +63,7 @@ public class NoticeHandler extends BaseHandler
 			
 			service.getConnection(server.getId()).sendNotice(params[1], text);
 		} else {
-			throw new CommandException("Invalid number of params");
+			throw new CommandException(service.getString(R.string.invalid_number_of_params));
 		}
 	}
 	

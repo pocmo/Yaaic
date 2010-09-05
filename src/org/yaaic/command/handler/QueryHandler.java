@@ -50,13 +50,13 @@ public class QueryHandler extends BaseHandler
 		if (params.length == 2) {
 			// Simple validation
 			if (params[1].startsWith("#")) {
-				throw new CommandException("You cannot open queries to channels");
+				throw new CommandException(service.getString(R.string.query_to_channel));
 			}
 			
 			Conversation query = server.getConversation(params[1]);
 			
 			if (query != null) {
-				throw new CommandException("Query already exists");
+				throw new CommandException(service.getString(R.string.query_exists));
 			}
 			
 			query = new Query(params[1]);
@@ -69,7 +69,7 @@ public class QueryHandler extends BaseHandler
 			);
 			service.sendBroadcast(intent);
 		} else {
-			throw new CommandException("Invalid number of params");
+			throw new CommandException(service.getString(R.string.invalid_number_of_params));
 		}
 	}
 	

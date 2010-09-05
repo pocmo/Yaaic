@@ -66,7 +66,7 @@ public class MsgHandler extends BaseHandler
 				service.sendBroadcast(intent);
 			}
 		} else {
-			throw new CommandException("Invalid number of params");
+			throw new CommandException(service.getString(R.string.invalid_number_of_params));
 		}
 	}
 	

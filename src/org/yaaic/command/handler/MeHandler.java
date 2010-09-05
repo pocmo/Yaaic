@@ -46,7 +46,7 @@ public class MeHandler extends BaseHandler
 	public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException 
 	{
 		if (conversation.getType() == Conversation.TYPE_SERVER) {
-			throw new CommandException("Only usable from within a channel or a query");
+			throw new CommandException(service.getString(R.string.only_usable_from_channel_or_query));
 		}
 		
 		if (params.length > 1) {
@@ -66,7 +66,7 @@ public class MeHandler extends BaseHandler
 			
 			service.getConnection(server.getId()).sendAction(conversation.getName(), action);
 		} else {
-			throw new CommandException("Text is missing");
+			throw new CommandException(service.getString(R.string.text_missing));
 		}
 	}
 	

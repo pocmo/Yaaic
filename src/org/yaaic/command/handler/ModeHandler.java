@@ -49,7 +49,7 @@ public class ModeHandler extends BaseHandler
 			
 			service.getConnection(server.getId()).setMode(params[1], modes);
 		} else {
-			throw new CommandException("Invalid number of params");
+			throw new CommandException(service.getString(R.string.invalid_number_of_params));
 		}
 	}
 	

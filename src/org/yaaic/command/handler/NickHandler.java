@@ -45,7 +45,7 @@ public class NickHandler extends BaseHandler
 		if (params.length == 2) {
 			service.getConnection(server.getId()).changeNick(params[1]);
 		} else {
-			throw new CommandException("Invalid number of params");
+			throw new CommandException(service.getString(R.string.invalid_number_of_params));
 		}
 	}
 	

@@ -47,7 +47,7 @@ public class JoinHandler extends BaseHandler
 		} else if (params.length == 3) {
 			service.getConnection(server.getId()).joinChannel(params[1], params[2]);
 		} else {
-			throw new CommandException("Invalid number of params");
+			throw new CommandException(service.getString(R.string.invalid_number_of_params));
 		}
 	}
 	

@@ -55,7 +55,7 @@ public class HelpHandler extends BaseHandler
 		} else if (params.length == 1) {
 			showAllCommands(service, server, conversation);
 		} else {
-			throw new CommandException("Invalid number of params");
+			throw new CommandException(service.getString(R.string.invalid_number_of_params));
 		}
 	}
 	
@@ -70,7 +70,9 @@ public class HelpHandler extends BaseHandler
 	{
 		CommandParser cp = CommandParser.getInstance();
 		
-		StringBuffer commandList = new StringBuffer("Available commands: \n");
+		StringBuffer commandList = new StringBuffer(service.getString(R.string.available_commands));
+		commandList.append("\n");
+		
 		HashMap<String, BaseHandler> commands = cp.getCommands();
 		HashMap<String, String> aliases = cp.getAliases();
 
@@ -81,7 +83,7 @@ public class HelpHandler extends BaseHandler
 			String alias = "";
 			for (Object aliasCommand : aliasesKeys) {
 				if (command.equals(aliases.get(aliasCommand))) {
-					alias = " or /" + aliasCommand;
+					alias = " " + service.getString(R.string.logical_or) + " /" + aliasCommand;
 					break;
 				}
 			}
@@ -116,6 +118,7 @@ public class HelpHandler extends BaseHandler
 		HashMap<String, BaseHandler> commands = cp.getCommands();
 		
 		if (commands.containsKey(command)) {
+			// XXX:I18N - String building salad :)
 			Message message = new Message("Help of /" + command + "\n" + commands.get(command).getUsage() + "\n" + commands.get(command).getDescription(service) + "\n");
 			message.setColor(Message.COLOR_YELLOW);
 			conversation.addMessage(message);
@@ -128,7 +131,7 @@ public class HelpHandler extends BaseHandler
 			
 			service.sendBroadcast(intent);
 		} else {
-			throw new CommandException("Unknown command: " + command);
+			throw new CommandException(service.getString(R.string.unknown_command, command));
 		}
 	}
 

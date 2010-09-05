@@ -45,13 +45,13 @@ public class KickHandler extends BaseHandler
 	public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException 
 	{
 		if (conversation.getType() != Conversation.TYPE_CHANNEL) {
-			throw new CommandException("Only usable from within a channel");
+			throw new CommandException(service.getString(R.string.only_usable_from_channel));
 		}
 		
 		if (params.length == 2) {
 			service.getConnection(server.getId()).kick(conversation.getName(), params[1]);
 		} else {
-			throw new CommandException("Invalid number of params");
+			throw new CommandException(service.getString(R.string.invalid_number_of_params));
 		}
 	}
 	
