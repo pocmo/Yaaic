@@ -50,16 +50,16 @@ public class DCCHandler extends BaseHandler
 	{
 		if (params.length == 4) {
 			if (!params[1].equalsIgnoreCase("SEND")) {
-				throw new CommandException("Currently only SEND is allowed");
+				throw new CommandException(service.getString(R.string.dcc_only_send));
 			}
 			File file = new File(params[3]);
 			if (!file.exists()) {
-				throw new CommandException("File does not exist: " + params[3]);
+				throw new CommandException(service.getString(R.string.dcc_file_not_found, params[3]));
 			}
 			
 			service.getConnection(server.getId()).dccSendFile(file, params[2], 60000);
 			
-			Message message = new Message("Waiting for " + params[2] + " to accept the file transfer");
+			Message message = new Message(service.getString(R.string.dcc_waiting_accept, params[2]));
 			message.setColor(Message.COLOR_GREY);
 			conversation.addMessage(message);
 			
@@ -67,7 +67,7 @@ public class DCCHandler extends BaseHandler
 				Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), conversation.getName())
 			);
 		} else {
-			throw new CommandException("Invalid number of params");
+			throw new CommandException(service.getString(R.string.invalid_number_of_params));
 		}
 	}
 	
