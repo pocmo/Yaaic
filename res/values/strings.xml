@@ -153,7 +153,7 @@
 	<string name="settings_reconnect_title">Reconnect</string>
 	<string name="settings_reconnect_desc">Automatically reconnect on disconnect</string>
 	<string name="settings_chat">Chat</string>
-    <string name="settings_icons_title">Show Icons</string>
+    <string name="settings_icons_title">Show icons</string>
 	<string name="settings_icons_desc">Show icons to highlight special events</string>
 	<string name="settings_colors_title">Show colors</string>
 	<string name="settings_colors_desc">Show colors to highlight special events</string>
@@ -169,6 +169,6 @@
 	<string name="settings_fontsize_title">Font size</string>
 	<string name="settings_fontsize_desc">Set the global font size</string>
 	<string name="settings_fontsize_dialog_title">Font size</string>
-	<string name="settings_voice_recognition_title">Voice Recognition</string>
+	<string name="settings_voice_recognition_title">Voice recognition</string>
 	<string name="settings_voice_recognition_desc">Show button for voice recognition</string>
 </resources>
