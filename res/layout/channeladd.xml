@@ -27,7 +27,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     <TextView
     	android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
-    	android:text="These channels will be automatically joined after connect."
+    	android:text="@string/channel_add_description"
     	android:padding="5px" />
     <ListView
     	android:id="@+id/channels"

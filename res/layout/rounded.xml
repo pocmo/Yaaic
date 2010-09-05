@@ -37,5 +37,4 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
    		android:bottomLeftRadius="10dp"
    		android:topLeftRadius="10dp"
    		android:topRightRadius="10dp" />
-		
 </shape>

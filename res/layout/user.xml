@@ -41,13 +41,13 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 	    	android:layout_width="fill_parent"
 	    	android:layout_height="wrap_content"
 			android:layout_weight="1"
-	    	android:text="Op" />
+	    	android:text="@string/button_op" />
 	    <Button
 	    	android:id="@+id/deop"
 	    	android:layout_width="fill_parent"
 	    	android:layout_height="wrap_content"
 	    	android:layout_weight="1"
-	    	android:text="DeOp" />
+	    	android:text="@string/button_deop" />
 	</LinearLayout>
 	<LinearLayout
 	    android:orientation="horizontal"
@@ -58,13 +58,13 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 	    	android:layout_width="fill_parent"
 	    	android:layout_height="wrap_content"
 			android:layout_weight="1"
-	    	android:text="Voice" />
+	    	android:text="@string/button_voice" />
 	    <Button
 	    	android:id="@+id/devoice"
 	    	android:layout_width="fill_parent"
 	    	android:layout_height="wrap_content"
 	    	android:layout_weight="1"
-	    	android:text="DeVoice" />
+	    	android:text="@string/button_devoice" />
 	</LinearLayout>
 	<LinearLayout
 	    android:orientation="horizontal"
@@ -75,12 +75,12 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 	    	android:layout_width="fill_parent"
 	    	android:layout_height="wrap_content"
 	    	android:layout_weight="1"
-	    	android:text="Kick" />
+	    	android:text="@string/button_kick" />
 	    <Button
 	    	android:id="@+id/ban"
 	    	android:layout_width="fill_parent"
 	    	android:layout_height="wrap_content"
 			android:layout_weight="1"
-	    	android:text="Ban" />
+	    	android:text="@string/button_ban" />
 	</LinearLayout>
 </LinearLayout>

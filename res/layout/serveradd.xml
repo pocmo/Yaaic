@@ -29,7 +29,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent">
 	    <TextView
-	        android:text="Server"
+	        android:text="@string/server"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:background="#ff333333"
@@ -91,7 +91,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 			android:text="@string/server_useSSL" />
 <!-- ############################################################################ -->
         <TextView
-            android:text="User"
+            android:text="@string/user"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="#ff333333"
@@ -100,7 +100,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:padding="3px"
             android:layout_margin="2px" />
         <TextView
-            android:text="Nickname"
+            android:text="@string/nickname"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
         <EditText
@@ -109,7 +109,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:layout_height="wrap_content"
             android:singleLine="true" />
         <TextView
-            android:text="Ident"
+            android:text="@string/ident"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
         <EditText
@@ -119,7 +119,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:text="yaaic"
             android:singleLine="true" />
         <TextView
-            android:text="Real Name"
+            android:text="@string/realname"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
         <EditText
@@ -130,7 +130,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:singleLine="true" />
 <!-- ############################################################################ -->
 		<TextView
-		     android:text="On Connect"
+		     android:text="@string/on_connect"
 		     android:layout_width="fill_parent"
 		     android:layout_height="wrap_content"
 		     android:background="#ff333333"
@@ -142,15 +142,15 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 			android:id="@+id/channels"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:text="Channels" />
+			android:text="@string/channels" />
 		<Button
 			android:id="@+id/commands"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:text="Commands" />
+			android:text="@string/commands" />
 <!-- ############################################################################ -->
 		<TextView
-		     android:text="Preferences"
+		     android:text="@string/preferences"
 		     android:layout_width="fill_parent"
 		     android:layout_height="wrap_content"
 		     android:background="#ff333333"
@@ -159,7 +159,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 		     android:padding="3px"
 		     android:layout_margin="2px" />
         <TextView
-            android:text="Charset"
+            android:text="@string/charset"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
         <Spinner
@@ -181,7 +181,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 				android:layout_weight="1" />
             <Button
                 android:id="@+id/cancel"
-                android:text="@string/cancel"
+                android:text="@string/action_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0" />

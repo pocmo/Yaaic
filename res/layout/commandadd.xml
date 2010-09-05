@@ -27,7 +27,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     <TextView
     	android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
-    	android:text="These commands will be executed after connect."
+    	android:text="@string/command_add_description"
     	android:padding="5px" />
     <ListView
     	android:id="@+id/commands"
@@ -48,7 +48,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
    			android:id="@+id/add"
     		android:layout_width="wrap_content"
     		android:layout_height="wrap_content"
-    		android:text="Add" />
+    		android:text="@string/action_add" />
    	</LinearLayout>
    	<LinearLayout
    		android:orientation="horizontal"
@@ -58,11 +58,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 	   		android:layout_width="wrap_content"
 	   		android:layout_height="wrap_content"
 	   		android:id="@+id/ok"
-			android:text="Ok" />
+			android:text="@string/action_ok" />
 	   	<Button
 	   		android:layout_width="wrap_content"
 	   		android:layout_height="wrap_content"
-	   		android:id="@+id/cancel"
-			android:text="Cancel" />
+	   		android:id="@+id/action_cancel"
+			android:text="@string/action_cancel" />
 	</LinearLayout>
 </LinearLayout>

@@ -36,5 +36,5 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 		android:id="@+id/join"
 		android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
-		android:text="Join" />
+		android:text="@string/join" />
 </LinearLayout>
