@@ -74,7 +74,6 @@ public class Settings
 	public boolean showIcons()
 	{
 		return preferences.getBoolean(
-				
 			resources.getString(R.string.key_show_icons),
 			Boolean.parseBoolean(resources.getString(R.string.default_show_icons))
 		);
@@ -130,5 +129,18 @@ public class Settings
 			resources.getString(R.string.key_quitmessage),
 			resources.getString(R.string.default_quitmessage)
 		);
+	}
+	
+	/**
+	 * Get the font size
+	 * 
+	 * @return The font size for conversation messages
+	 */
+	public int getFontSize()
+	{
+		return Integer.parseInt(preferences.getString(
+			resources.getString(R.string.key_fontsize),
+			resources.getString(R.string.default_fontsize)
+		));
 	}
 }

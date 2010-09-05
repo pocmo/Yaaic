@@ -132,10 +132,13 @@ public class Message {
 	 */
 	public TextView renderTextView(Context context)
 	{
+		// XXX: We should not read settings here ALWAYS for EVERY textview
+		Settings settings = new Settings(context);
+		
 		TextView canvas = new TextView(context);
 		
 		canvas.setText(this.render(context));
-		canvas.setTextSize(11);
+		canvas.setTextSize(settings.getFontSize());
 		canvas.setTypeface(Typeface.MONOSPACE);
 		canvas.setTextColor(0xffeeeeee);
 		

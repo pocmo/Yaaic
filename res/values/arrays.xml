@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="fontsize_labels">
+        <item>8px</item>
+        <item>9px</item>
+        <item>10px</item>
+        <item>11px</item>
+        <item>12px</item>
+        <item>13px</item>
+        <item>14px</item>
+        <item>15px</item>
+        <item>16px</item>
+    </string-array>
+    <string-array name="fontsize_values">
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+    </string-array>
+</resources>

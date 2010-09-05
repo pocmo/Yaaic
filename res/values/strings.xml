@@ -166,4 +166,8 @@
     <string name="settings_quitmessage_desc">Message to show when you disconnect</string>
     <string name="settings_quitmessage_dialog_title">Quit message</string>
     <string name="settings_quitmessage_dialog_desc">Message to show when you disconnect:</string>
+    <string name="settings_fontsize_title">Font size</string>
+    <string name="settings_fontsize_desc">Set the global font size</string>
+    <string name="settings_fontsize_dialog_title">Font size</string>
+    <string name="settings_fontsize_dialog_desc">Choose a font size</string>
 </resources>

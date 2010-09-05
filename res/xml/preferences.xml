@@ -31,6 +31,14 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 	</PreferenceCategory>
 	<PreferenceCategory
 		android:title="@string/settings_chat">
+		<ListPreference
+            android:title="@string/settings_fontsize_title"
+            android:summary="@string/settings_fontsize_desc"
+            android:dialogTitle="@string/settings_fontsize_dialog_title"
+            android:entries="@array/fontsize_labels"
+            android:entryValues="@array/fontsize_values"
+            android:key="@string/key_fontsize"
+            android:defaultValue="@string/default_fontsize" />
 		<CheckBoxPreference
 			android:title="@string/settings_icons_title"
 			android:summary="@string/settings_icons_desc"
