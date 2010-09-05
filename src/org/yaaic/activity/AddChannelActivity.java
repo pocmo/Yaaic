@@ -119,7 +119,7 @@ public class AddChannelActivity extends Activity implements OnClickListener, OnI
 	{
 		final String channel = adapter.getItem(position);
 		
-		String[] items = { "Remove" };
+		String[] items = { getResources().getString(R.string.action_remove) };
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(channel);
