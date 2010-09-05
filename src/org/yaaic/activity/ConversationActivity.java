@@ -319,7 +319,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 					server.removeConversation(conversationToClose.getName());
 					onRemoveConversation(conversationToClose.getName());
 				} else {
-					Toast.makeText(this, "You can not close the server info window", Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, getResources().getString(R.string.close_server_window), Toast.LENGTH_SHORT).show();
 				}
 				break;
 			case R.id.join:

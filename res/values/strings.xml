@@ -78,7 +78,7 @@
 	<string name="available_commands">Available commands:</string>
 	<string name="logical_or">or</string>
 	<string name="query_to_channel">You cannot open queries to channels</string>
-	<string name="query_exists" />
+	<string name="query_exists">Query already exists</string>
 	<string name="line_missing">Line is missing</string>
 
 	<string name="command_desc_amsg">Send a message to all channels</string>
