@@ -162,11 +162,13 @@
     <string name="settings_24h_title">24 hour format</string>
     <string name="settings_24h_desc">Use 24 hour format for timestamps</string>
     <string name="settings_misc">Misc</string>
-    <string name="settings_quitmessage_title">Misc</string>
+    <string name="settings_quitmessage_title">Quit message</string>
     <string name="settings_quitmessage_desc">Message to show when you disconnect</string>
     <string name="settings_quitmessage_dialog_title">Quit message</string>
     <string name="settings_quitmessage_dialog_desc">Message to show when you disconnect:</string>
     <string name="settings_fontsize_title">Font size</string>
     <string name="settings_fontsize_desc">Set the global font size</string>
     <string name="settings_fontsize_dialog_title">Font size</string>
+    <string name="settings_voice_recognition_title">Voice Recognition</string>
+    <string name="settings_voice_recognition_desc">Show button for voice recognition</string>
 </resources>

@@ -45,6 +45,7 @@ import org.yaaic.model.Message;
 import org.yaaic.model.Scrollback;
 import org.yaaic.model.Server;
 import org.yaaic.model.ServerInfo;
+import org.yaaic.model.Settings;
 import org.yaaic.model.Status;
 import org.yaaic.receiver.ConversationReceiver;
 import org.yaaic.receiver.ServerReceiver;
@@ -62,6 +63,7 @@ import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.speech.RecognizerIntent;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -143,16 +145,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 			server.clearConversations();
 			deckAdapter.clearConversations();
 		}
-		
-		// Check if speech recognition is available
-		PackageManager pm = getPackageManager();
-		Button speechButton = (Button) findViewById(R.id.speech);
-		List<ResolveInfo> activities = pm.queryIntentActivities(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
-		if (activities.size() != 0) {
-			((Button) findViewById(R.id.speech)).setOnClickListener(new SpeechClickListener(this));
-		} else {
-			speechButton.setVisibility(View.GONE);
-		}
 
 		// Optimization : cache field lookups 
 		Collection<Conversation> mConversations = server.getConversations();
@@ -181,6 +173,17 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		registerReceiver(serverReceiver, new IntentFilter(Broadcast.SERVER_UPDATE));
 		
 		super.onResume();
+		
+		// Check if speech recognition is enabled and available
+		if (new Settings(this).isVoiceRecognitionEnabled()) {
+			PackageManager pm = getPackageManager();
+			Button speechButton = (Button) findViewById(R.id.speech);
+			List<ResolveInfo> activities = pm.queryIntentActivities(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
+			if (activities.size() != 0) {
+				((Button) findViewById(R.id.speech)).setOnClickListener(new SpeechClickListener(this));
+				speechButton.setVisibility(View.VISIBLE);
+			}
+		}
 		
 		((ImageView) findViewById(R.id.status)).setImageResource(server.getStatusIcon());
 		

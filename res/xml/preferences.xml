@@ -63,6 +63,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 	</PreferenceCategory>
 	<PreferenceCategory
 		android:title="@string/settings_misc">
+        <CheckBoxPreference
+            android:title="@string/settings_voice_recognition_title"
+            android:summary="@string/settings_voice_recognition_desc"
+            android:key="@string/key_voice_recognition"
+            android:defaultValue="@string/default_voice_recognition" />
 		<EditTextPreference
 			android:title="@string/settings_quitmessage_title"
 			android:summary="@string/settings_quitmessage_desc"

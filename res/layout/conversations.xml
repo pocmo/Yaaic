@@ -75,6 +75,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:id="@+id/speech"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableLeft="@android:drawable/ic_btn_speak_now" />
+            android:drawableLeft="@android:drawable/ic_btn_speak_now"
+            android:visibility="gone" />
 	</LinearLayout>
 </LinearLayout>

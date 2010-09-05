@@ -143,4 +143,17 @@ public class Settings
 			resources.getString(R.string.default_fontsize)
 		));
 	}
+	
+	/**
+	 * Is voice recognition enabled?
+	 * 
+	 * @return True if voice recognition is enabled, false otherwise
+	 */
+	public boolean isVoiceRecognitionEnabled()
+	{
+		return preferences.getBoolean(
+			resources.getString(R.string.key_voice_recognition),
+			Boolean.parseBoolean(resources.getString(R.string.default_voice_recognition))
+		);
+	}
 }
