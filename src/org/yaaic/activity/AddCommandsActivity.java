@@ -134,7 +134,7 @@ public class AddCommandsActivity extends Activity implements OnClickListener, On
 	{
 		final String command = adapter.getItem(position);
 		
-		String[] items = { "Remove" };
+		String[] items = { getResources().getString(R.string.action_remove) };
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(command);
