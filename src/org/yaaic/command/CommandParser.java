@@ -119,6 +119,7 @@ public class CommandParser
 		aliases.put("q", "query");
 		aliases.put("h", "help");
 		aliases.put("raw", "quote");
+		aliases.put("w", "whois");
 	}
 	
 	/**
