@@ -96,6 +96,39 @@
     <string name="command_desc_voice">Give a user voice status</string>
     <string name="command_desc_whois">Get information about a user</string>
 
+	<string name="notification_connected">Connected to %1$s</string>
+	<string name="notification_disconnected">Disconnected from %1$s</string>
 	
+	<string name="message_connected">Connected to %1$s</string>
+	<string name="message_deop">%1$s deops %2$s</string>
+	<string name="message_devoice">%1$s devoices %2$s</string>
+	<string name="message_invite_you">%1$s invites you into %2$s</string>
+	<string name="message_invite_someone">%1$s invites %2$s into %3$s</string>
+	<string name="message_join">%1$s joines</string>
+	<string name="message_kick">%1$s kicks %2$s</string>
+	<string name="message_rename">%1$s is now known as %2$s</string>
+	<string name="message_op">%1$s ops %2$s</string>
+	<string name="message_part">%1$s parts</string>
+	<string name="message_quit">%1$s quits (%2$s)</string>
+	<string name="message_topic">Topic: %1$s</string>
+	<string name="message_topic_set">%1$s sets topic: %2$s</string>
+	<string name="message_voice">%1$s voices %2$s</string>
+	<string name="message_remove_channel_key">%1$s removes channel key</string>
+	<string name="message_set_channel_key">%1$s sets channel key: %2$s</string>
+	<string name="message_set_channel_secret">%1$s sets channel secret</string>
+	<string name="message_set_channel_public">%1$s sets channel public</string>
+	<string name="message_set_channel_private">%1$s sets channel private</string>
+	<string name="message_set_channel_limit">%1$s sets limit: %2$s</string>
+	<string name="message_remove_channel_limit">%1$s removes limit</string>
+	<string name="message_set_ban">%1$s sets ban: %2$s</string>
+	<string name="message_remove_ban">%1$s removes ban: %2$s</string>
+	<string name="message_set_topic_protection">%1$s sets topic protection</string>
+	<string name="message_remove_topic_protection">%1$s removes topic protection</string>
+	<string name="message_disable_external">%1$s disables external messages</string>
+	<string name="message_enable_external">%1$s enables external messages</string>
+	<string name="message_set_invite_only">%1$s sets invite only</string>
+	<string name="message_remove_invite_only">%1$s removes invite only</string>
+	<string name="message_set_moderated">%1$s sets moderated</string>
+	<string name="message_remove_moderated">%1$s removes moderated</string>
+	<string name="message_disconnected">Disconnected</string>
 </resources>
-
