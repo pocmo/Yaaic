@@ -337,7 +337,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 					);
 					startActivityForResult(intent, REQUEST_CODE_USERS);
 				} else {
-					Toast.makeText(this, "Only usable from within a channel", Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, getResources().getString(R.string.only_usable_from_channel), Toast.LENGTH_SHORT).show();
 				}
 				break;
 		}
@@ -427,7 +427,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
 			if (!binder.getService().getSettings().isReconnectEnabled()) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				builder.setMessage("You disconnected from " + server.getTitle() + ". Do you want to reconnect?")
+				builder.setMessage(getResources().getString(R.string.reconnect_after_disconnect, server.getTitle()))
 				.setCancelable(false)
 				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
@@ -440,7 +440,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 						binder.connect(server);
 					}
 				})
-				.setNegativeButton("No", new DialogInterface.OnClickListener() {
+				.setNegativeButton(getString(R.string.negative_button), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
 					}
@@ -521,7 +521,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 						conversation.addMessage(new Message("<" + nickname + "> " + text));
 						binder.getService().getConnection(serverId).sendMessage(conversation.getName(), text);
 					} else {
-						Message message = new Message("You can only chat from within a channel or a query");
+						Message message = new Message(getString(R.string.chat_only_form_channel));
 						message.setColor(Message.COLOR_YELLOW);
 						message.setIcon(R.drawable.warning);
 						conversation.addMessage(message);
