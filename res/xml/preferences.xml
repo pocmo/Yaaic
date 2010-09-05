@@ -22,45 +22,45 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 <PreferenceScreen
 	xmlns:android="http://schemas.android.com/apk/res/android">
 	<PreferenceCategory
-		android:title="Connection">
+		android:title="@string/settings_connection">
 		<CheckBoxPreference
-			android:title="Reconnect"
-			android:summary="Automatically reconnect on disconnect"
+			android:title="@string/settings_reconnect_title"
+			android:summary="@string/settings_reconnect_desc"
 			android:key="@string/key_reconnect"
 			android:defaultValue="@string/default_reconnect" />
 	</PreferenceCategory>
 	<PreferenceCategory
-		android:title="Chat">
+		android:title="@string/settings_chat">
 		<CheckBoxPreference
-			android:title="Show icons"
-			android:summary="Show icons to highlight special events"
+			android:title="@string/settings_icons_title"
+			android:summary="@string/settings_icons_desc"
 			android:key="@string/key_show_icons"
 			android:defaultValue="@string/default_show_icons" />
 		<CheckBoxPreference
-			android:title="Show colors"
-			android:summary="Show colors to highlight special events"
+			android:title="@string/settings_colors_title"
+			android:summary="@string/settings_colors_desc"
 			android:key="@string/key_show_colors"
 			android:defaultValue="@string/default_show_colors" />
 		<CheckBoxPreference
-			android:title="Show timestamp"
-			android:summary="Prefix all messages with a timestamp"
+			android:title="@string/settings_timestamp_title"
+			android:summary="@string/settings_timestamp_desc"
 			android:key="@string/key_show_timestamp"
 			android:defaultValue="@string/default_show_timestamp" />
 		<CheckBoxPreference
-			android:title="24 hour format"
-			android:summary="Use 24 hour format for timestamps"
+			android:title="@string/settings_24h_title"
+			android:summary="@string/settings_24h_desc"
 			android:key="@string/key_24h_format"
 			android:defaultValue="@string/default_24h_format"
 			android:dependency="@string/key_show_timestamp" />
 	</PreferenceCategory>
 	<PreferenceCategory
-		android:title="Misc">
+		android:title="@string/settings_misc">
 		<EditTextPreference
-			android:title="Quit message"
-			android:summary="Message to show when you disconnect"
+			android:title="@string/settings_quitmessage_title"
+			android:summary="@string/settings_quitmessage_desc"
 			android:key="@string/key_quitmessage"
 			android:defaultValue="@string/default_quitmessage"
-			android:dialogTitle="Quit message"
-			android:dialogMessage="Message to show when you disconnect:" />
+			android:dialogTitle="@string/settings_quitmessage_dialog_title"
+			android:dialogMessage="@string/settings_quitmessage_dialog_desc" />
 	</PreferenceCategory>
 </PreferenceScreen>
