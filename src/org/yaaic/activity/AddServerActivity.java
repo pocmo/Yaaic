@@ -329,31 +329,31 @@ public class AddServerActivity extends Activity implements OnClickListener
 		String charset = ((Spinner) findViewById(R.id.charset)).getSelectedItem().toString();
 		
 		if (title.trim().equals("")) {
-			throw new ValidationException("Title cannot be blank");
+			throw new ValidationException(getResources().getString(R.string.validation_blank_title));
 		}
 		
 		if (host.trim().equals("")) {
 			// XXX: We should use some better host validation
-			throw new ValidationException("Host cannot be blank");
+			throw new ValidationException(getResources().getString(R.string.validation_blank_host));
 		}
 		
 		try {
 			Integer.parseInt(port);
 		} catch (NumberFormatException e) {
-			throw new ValidationException("Enter a numeric port");
+			throw new ValidationException(getResources().getString(R.string.validation_invalid_port));
 		}
 		
 		try {
 			"".getBytes(charset);
 		}
 		catch (UnsupportedEncodingException e) {
-			throw new ValidationException("Charset is not supported by your device");
+			throw new ValidationException(getResources().getString(R.string.validation_unsupported_charset));
 		}
 		
 		Database db = new Database(this);
 		if (db.isTitleUsed(title) && (server == null || !server.getTitle().equals(title))) {
 			db.close();
-			throw new ValidationException("There is already a server with this title");
+			throw new ValidationException(getResources().getString(R.string.validation_title_used));
 		}
 		db.close();
 	}
@@ -370,15 +370,15 @@ public class AddServerActivity extends Activity implements OnClickListener
 		String realname = ((EditText) findViewById(R.id.realname)).getText().toString();
 		
 		if (nickname.trim().equals("")) {
-			throw new ValidationException("Nickname cannot be blank");
+			throw new ValidationException(getResources().getString(R.string.validation_blank_nickname));
 		}
 		
 		if (ident.trim().equals("")) {
-			throw new ValidationException("Ident cannot be blank");
+			throw new ValidationException(getResources().getString(R.string.validation_blank_ident));
 		}
 		
 		if (realname.trim().equals("")) {
-			throw new ValidationException("Realname cannot be blank");
+			throw new ValidationException(getResources().getString(R.string.validation_blank_realname));
 		}
 		
 		// RFC 1459:  <nick> ::= <letter> { <letter> | <number> | <special> }
@@ -387,13 +387,13 @@ public class AddServerActivity extends Activity implements OnClickListener
 		// | and _ 
 		Pattern nickPattern = Pattern.compile("^[a-zA-Z_][a-zA-Z0-9^\\-`\\[\\]{}|_\\\\]*$");
 		if (!nickPattern.matcher(nickname).matches()) {
-			throw new ValidationException("Invalid nickname");
+			throw new ValidationException(getResources().getString(R.string.validation_invalid_nickname));
 		}
 		
 		// We currently only allow chars and numbers as ident
 		Pattern identPattern = Pattern.compile("^[a-zA-Z0-9]+$");
 		if (!identPattern.matcher(ident).matches()) {
-			throw new ValidationException("Invalid ident");
+			throw new ValidationException(getResources().getString(R.string.validation_invalid_ident));
 		}
 	}
 }
