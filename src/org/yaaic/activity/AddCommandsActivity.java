@@ -23,7 +23,6 @@ package org.yaaic.activity;
 import java.util.ArrayList;
 
 import org.yaaic.R;
-import org.yaaic.command.CommandParser;
 import org.yaaic.model.Extra;
 
 import android.app.Activity;
@@ -39,7 +38,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 /**
@@ -97,19 +95,12 @@ public class AddCommandsActivity extends Activity implements OnClickListener, On
 			case R.id.add:
 				String command = commandInput.getText().toString().trim();
 				
-				if (command.startsWith("/")) {
-					command = command.substring(1); // cut the slash
+				if (!command.startsWith("/")) {
+					command = "/" + command;
 				}
 				
-				String[] params = command.split(" ");
-				String type = params[0];
-				if (!CommandParser.getInstance().isValidCommand(type)) {
-					Toast.makeText(this, "Invalid command: " + params[0], Toast.LENGTH_SHORT).show();
-					return;
-				}
-				
-				commands.add("/" + command);
-				adapter.add("/" + command);
+				commands.add(command);
+				adapter.add(command);
 				commandInput.setText("/");
 				okButton.setEnabled(true);
 				break;

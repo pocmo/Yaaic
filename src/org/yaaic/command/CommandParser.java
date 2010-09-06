@@ -65,19 +65,6 @@ public class CommandParser
 	private HashMap<String, BaseHandler> commands;
 	private HashMap<String, String> aliases;
 	private static CommandParser instance;
-	
-	private final static String[] serverCommands = {
-		// whitelist of server commands
-		"admin", "motd",    "version",            "knock",   "rules",
-		"vhost", "credits", "license", "setname", "watch",   "pong",
-		"cycle", "links",   "silence", "who",     "dalinfo", "userhost",
-		"list",  "stats",              "invite",  "lusers",  "ping",
-		"time",  "whowas",  "ison",    "map",     "oper",
-		
-		// services
-		"nickserv", "ns", "chanserv", "cs", "authserv", "hostserv",
-		"memoserv", "operserv"
-	};
 
 	/**
 	 * Create a new CommandParser instance
@@ -157,16 +144,6 @@ public class CommandParser
 	}
 	
 	/**
-	 * Is the given command a valid (client or server) command?
-	 * 
-	 * @return true if the command is valid
-	 */
-	public boolean isValidCommand(String command)
-	{
-		return isClientCommand(command) || isServerCommand(command);
-	}
-	
-	/**
 	 * Is the given command a valid client command?
 	 * 
 	 * @param command The (client) command to check (/command)
@@ -175,24 +152,6 @@ public class CommandParser
 	public boolean isClientCommand(String command)
 	{
 		return commands.containsKey(command.toLowerCase()) || aliases.containsKey(command.toLowerCase());
-	}
-	
-	/**
-	 * Is the given command a valid server command?
-	 * 
-	 * @param command The (server) command to check (/command)
-	 * @return true if the command can be handled by a server, false otherwise
-	 */
-	public boolean isServerCommand(String command)
-	{
-		command = command.toLowerCase();
-		for (String validCommand : serverCommands) {
-			if (validCommand.equals(command)) {
-				return true;
-			}
-		}
-		
-		return false;
 	}
 	
 	/**
@@ -258,32 +217,6 @@ public class CommandParser
 	}
 	
 	/**
-	 * Handle an unknown command
-	 * 
-	 * @param type Type of the command (/type param1 param2 ..)
-	 * @param server The current server
-	 * @param conversation The selected conversation
-	 * @param service The service handling the connections
-	 */
-	public void handleUnknownCommand(String type, Server server, Conversation conversation, IRCService service)
-	{
-		if (conversation != null) {
-			// XXX:I18N - How to get a context here? (unknown_command)
-			Message message = new Message("Unknown command: " + type);
-			message.setColor(Message.COLOR_RED);
-			conversation.addMessage(message);
-			
-			Intent intent = Broadcast.createConversationIntent(
-				Broadcast.CONVERSATION_MESSAGE,
-				server.getId(),
-				conversation.getName()
-			);
-			
-			service.sendBroadcast(intent);
-		}
-	}
-	
-	/**
 	 * Parse the given line
 	 * 
 	 * @param line
@@ -296,10 +229,8 @@ public class CommandParser
 		
 		if (isClientCommand(type)) {
 			handleClientCommand(type, params, server, conversation, service);
-		} else if (isServerCommand(type)) {
-			handleServerCommand(type, params, server, conversation, service);
 		} else {
-			handleUnknownCommand(type, server, conversation, service);
+			handleServerCommand(type, params, server, conversation, service);
 		}
 	}
 }
