@@ -10,6 +10,10 @@
         <item>14px</item>
         <item>15px</item>
         <item>16px</item>
+        <item>17px</item>
+        <item>18px</item>
+        <item>19px</item>
+        <item>20px</item>
     </string-array>
     <string-array name="fontsize_values">
         <item>8</item>
@@ -21,5 +25,9 @@
         <item>14</item>
         <item>15</item>
         <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
     </string-array>
 </resources>
