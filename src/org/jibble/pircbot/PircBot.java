@@ -24,9 +24,13 @@ import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.net.ssl.SSLContext;
@@ -202,6 +206,7 @@ public abstract class PircBot implements ReplyConstants {
         // Read stuff back from the server to see if we connected.
         String line = null;
         int tries = 1;
+        List<String> aliases = getAliases();
         while ((line = breader.readLine()) != null) {
             
             this.handleLine(line);
@@ -218,7 +223,9 @@ public abstract class PircBot implements ReplyConstants {
                 else if (code.equals("433")) {
                     if (_autoNickChange) {
                         tries++;
-                        nick = getName() + tries;
+                        nick = ((tries - 1) <= aliases.size()) ?
+                            aliases.get(tries - 2) :
+                            getName() + (tries - aliases.size());
                         OutputThread.sendRawLine(this, bwriter, "NICK " + nick);
                     }
                     else {
@@ -2326,6 +2333,10 @@ public abstract class PircBot implements ReplyConstants {
         _name = name;
     }
     
+    protected final void setAliases(Collection<String> aliases) {
+        _aliases.clear();
+        _aliases.addAll(aliases);
+    }
     
     /**
      * Sets the internal nick of the bot.  This is only to be called by the
@@ -2382,6 +2393,9 @@ public abstract class PircBot implements ReplyConstants {
         return _name;
     }
     
+    public final List<String> getAliases() {
+        return Collections.unmodifiableList(_aliases);
+    }
     
     /**
      * Returns the current nick of the bot. Note that if you have just changed
@@ -3060,6 +3074,7 @@ public abstract class PircBot implements ReplyConstants {
     private boolean _useSSL = false;
 
     private String _name = "PircBot";
+    private List<String> _aliases = new ArrayList<String>();
     private String _nick = _name;
     private String _login = "PircBot";
     private String _version = "PircBot " + VERSION + " Java IRC Bot - www.jibble.org";
