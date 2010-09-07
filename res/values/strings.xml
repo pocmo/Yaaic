@@ -22,6 +22,7 @@
 	<string name="add_server">Add server</string>
 	<string name="select_charset">Select a charset</string>
 	<string name="nickname">Nickname</string>
+	<string name="aliases">Aliases</string>
 	<string name="ident">Ident</string>
 	<string name="realname">Real Name</string>
 
@@ -48,6 +49,7 @@
 	<string name="action_cancel">Cancel</string>
 	<string name="negative_button">No</string>
 
+	<string name="alias_add_description">These aliases will be used if the main nickname is unavailable.</string>
 	<string name="channel_add_description">These channels will be automatically joined after connect.</string>
 	<string name="command_add_description">These commands will be executed after connect.</string>
 

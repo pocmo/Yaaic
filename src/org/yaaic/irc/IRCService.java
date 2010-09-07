@@ -256,6 +256,7 @@ public class IRCService extends Service
 					IRCConnection connection = getConnection(server.getId());
 
 					connection.setNickname(server.getIdentity().getNickname());
+					connection.setAliases(server.getIdentity().getAliases());
 					connection.setIdent(server.getIdentity().getIdent());
 					connection.setRealName(server.getIdentity().getRealName());
 					connection.setUseSSL(server.useSSL());

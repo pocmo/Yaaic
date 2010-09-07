@@ -108,6 +108,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:singleLine="true" />
+        <Button
+            android:id="@+id/aliases"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/aliases" />
         <TextView
             android:text="@string/ident"
             android:layout_width="fill_parent"

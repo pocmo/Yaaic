@@ -55,8 +55,10 @@ public class AddServerActivity extends Activity implements OnClickListener
 {
 	private static final int REQUEST_CODE_CHANNELS = 1;
 	private static final int REQUEST_CODE_COMMANDS = 2;
+	private static final int REQUEST_CODE_ALIASES  = 3;
 	
 	private Server server;
+	private ArrayList<String> aliases;
 	private ArrayList<String> channels;
 	private ArrayList<String> commands;
 	
@@ -69,11 +71,13 @@ public class AddServerActivity extends Activity implements OnClickListener
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.serveradd);
+        aliases = new ArrayList<String>();
         channels = new ArrayList<String>();
         commands = new ArrayList<String>();
         
         ((Button) findViewById(R.id.add)).setOnClickListener(this);
         ((Button) findViewById(R.id.cancel)).setOnClickListener(this);
+        ((Button) findViewById(R.id.aliases)).setOnClickListener(this);
         ((Button) findViewById(R.id.channels)).setOnClickListener(this);
         ((Button) findViewById(R.id.commands)).setOnClickListener(this);
 
@@ -88,6 +92,7 @@ public class AddServerActivity extends Activity implements OnClickListener
         	// Request to edit an existing server
         	Database db = new Database(this);
         	this.server = db.getServerById(extras.getInt(Extra.SERVER));
+        	aliases.addAll(server.getIdentity().getAliases());
         	this.channels = db.getChannelsByServerId(server.getId());
         	this.commands = db.getCommandsByServerId(server.getId());
         	db.close();
@@ -138,6 +143,10 @@ public class AddServerActivity extends Activity implements OnClickListener
 		}
 		
 		switch (requestCode) {
+			case REQUEST_CODE_ALIASES:
+				aliases.clear();
+				aliases.addAll(data.getExtras().getStringArrayList(Extra.ALIASES));
+				break;
 			case REQUEST_CODE_CHANNELS:
 				channels = data.getExtras().getStringArrayList(Extra.CHANNELS);
 				break;
@@ -153,6 +162,11 @@ public class AddServerActivity extends Activity implements OnClickListener
 	public void onClick(View v)
 	{
 		switch (v.getId()) {
+			case R.id.aliases:
+				Intent aliasIntent = new Intent(this, AddAliasActivity.class);
+				aliasIntent.putExtra(Extra.ALIASES, aliases);
+				startActivityForResult(aliasIntent, REQUEST_CODE_ALIASES);
+				break;
 			case R.id.channels:
 				Intent channelIntent = new Intent(this, AddChannelActivity.class);
 				channelIntent.putExtra(Extra.CHANNELS, channels);
@@ -196,7 +210,8 @@ public class AddServerActivity extends Activity implements OnClickListener
 		long identityId = db.addIdentity(
 			identity.getNickname(),
 			identity.getIdent(),
-			identity.getRealName()
+			identity.getRealName(),
+			identity.getAliases()
 		);
 		
 		Server server = getServerFromView();
@@ -252,7 +267,8 @@ public class AddServerActivity extends Activity implements OnClickListener
 			identityId,
 			identity.getNickname(),
 			identity.getIdent(),
-			identity.getNickname()
+			identity.getNickname(),
+			identity.getAliases()
 		);
 		
 		db.setChannels(serverId, channels);
@@ -312,6 +328,8 @@ public class AddServerActivity extends Activity implements OnClickListener
 		identity.setNickname(nickname);
 		identity.setIdent(ident);
 		identity.setRealName(realname);
+		
+		identity.setAliases(aliases);
 		
 		return identity;
 	}

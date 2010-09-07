@@ -22,6 +22,7 @@ package org.yaaic.db;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.yaaic.model.Identity;
 import org.yaaic.model.Server;
@@ -41,7 +42,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class Database extends SQLiteOpenHelper
 {
 	private static final String DATABASE_NAME = "servers.db";
-	private static final int DATABASE_VERSION = 3;
+	private static final int DATABASE_VERSION = 4;
 	
 	/**
 	 * Create a new helper for database access
@@ -94,6 +95,13 @@ public class Database extends SQLiteOpenHelper
 			+ ChannelConstants.SERVER + " INTEGER"
 			+ ");"
 		);
+		
+		db.execSQL("CREATE TABLE " + AliasConstants.TABLE_NAME + " ("
+			+ AliasConstants._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+			+ AliasConstants.ALIAS + " TEXT NOT NULL, "
+			+ AliasConstants.IDENTITY + " INTEGER"
+			+ ");"
+		);
 	}
 	
 	/**
@@ -123,6 +131,17 @@ public class Database extends SQLiteOpenHelper
 				+ CommandConstants._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 				+ CommandConstants.COMMAND + " TEXT NOT NULL, "
 				+ ChannelConstants.SERVER + " INTEGER"
+				+ ");"
+			);
+			
+			oldVersion = 3;
+		}
+		
+		if (oldVersion == 3) {
+			db.execSQL("CREATE TABLE " + AliasConstants.TABLE_NAME + " ("
+				+ AliasConstants._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+				+ AliasConstants.ALIAS + " TEXT NOT NULL, "
+				+ AliasConstants.IDENTITY + " INTEGER"
 				+ ");"
 			);
 		}
@@ -471,6 +490,7 @@ public class Database extends SQLiteOpenHelper
 		//      until we have some kind of identity manager
 		int identityId = this.getIdentityIdByServerId(serverId);
 		if (identityId != -1) {
+			deleteAliases(identityId);
 			this.getWritableDatabase().execSQL(
 				"DELETE FROM " + IdentityConstants.TABLE_NAME + " WHERE " + IdentityConstants._ID + " = " + identityId + ";"
 			);		
@@ -482,6 +502,48 @@ public class Database extends SQLiteOpenHelper
 		);
 	}
 	
+	protected void setAliases(long identityId, List<String> aliases)
+	{
+		deleteAliases(identityId);
+		
+		ContentValues values = new ContentValues();
+		for (String alias : aliases) {
+			values.clear();
+			values.put(AliasConstants.ALIAS, alias);
+			values.put(AliasConstants.IDENTITY, identityId);
+			getWritableDatabase().insert(AliasConstants.TABLE_NAME, null, values);
+		}
+	}
+	
+	protected void deleteAliases(long identityId)
+	{
+		getWritableDatabase().execSQL(
+			"DELETE FROM " + AliasConstants.TABLE_NAME + " WHERE " + AliasConstants.IDENTITY + " = " + identityId
+		);
+	}
+	
+	protected List<String> getAliasesByIdentityId(long identityId)
+	{
+		List<String> aliases = new ArrayList<String>();
+		
+		Cursor cursor = this.getReadableDatabase().query(
+			AliasConstants.TABLE_NAME,
+			AliasConstants.ALL,
+			AliasConstants.IDENTITY + " = " + identityId,
+			null,
+			null,
+			null,
+			null
+		);
+		
+		while (cursor.moveToNext()) {
+			aliases.add(cursor.getString(cursor.getColumnIndex(AliasConstants.ALIAS)));
+		}
+		cursor.close();
+		
+		return aliases;
+	}
+	
 	/**
 	 * Add a new identity
 	 * 
@@ -489,8 +551,9 @@ public class Database extends SQLiteOpenHelper
 	 * @param nickname
 	 * @param ident
 	 * @param realname
+	 * @param aliases
 	 */
-	public long addIdentity(String nickname, String ident, String realname)
+	public long addIdentity(String nickname, String ident, String realname, List<String> aliases)
 	{
 		ContentValues values = new ContentValues();
 		
@@ -498,7 +561,11 @@ public class Database extends SQLiteOpenHelper
 		values.put(IdentityConstants.IDENT, ident);
 		values.put(IdentityConstants.REALNAME, realname);
 		
-		return this.getWritableDatabase().insert(IdentityConstants.TABLE_NAME, null, values);
+		long identityId = this.getWritableDatabase().insert(IdentityConstants.TABLE_NAME, null, values);
+		
+		setAliases(identityId, aliases);
+		
+		return identityId;
 	}
 	
 	/**
@@ -509,7 +576,7 @@ public class Database extends SQLiteOpenHelper
 	 * @param ident
 	 * @param realname
 	 */
-	public void updateIdentity(int identityId, String nickname, String ident, String realname)
+	public void updateIdentity(int identityId, String nickname, String ident, String realname, List<String> aliases)
 	{
 		ContentValues values = new ContentValues();
 		
@@ -523,6 +590,8 @@ public class Database extends SQLiteOpenHelper
 			IdentityConstants._ID + " = " + identityId,
 			null
 		);
+		
+		setAliases(identityId, aliases);
 	}
 	
 	/**
@@ -551,6 +620,8 @@ public class Database extends SQLiteOpenHelper
 			identity.setNickname(cursor.getString(cursor.getColumnIndex(IdentityConstants.NICKNAME)));
 			identity.setIdent(cursor.getString(cursor.getColumnIndex(IdentityConstants.IDENT)));
 			identity.setRealName(cursor.getString(cursor.getColumnIndex(IdentityConstants.REALNAME)));
+			
+			identity.setAliases(getAliasesByIdentityId(identityId));
 		}
 		
 		cursor.close();

@@ -2333,7 +2333,7 @@ public abstract class PircBot implements ReplyConstants {
         _name = name;
     }
     
-    protected final void setAliases(Collection<String> aliases) {
+    public final void setAliases(Collection<String> aliases) {
         _aliases.clear();
         _aliases.addAll(aliases);
     }

@@ -20,6 +20,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * An identity containing a nickname, an ident and a real name
  * 
@@ -28,6 +33,7 @@ package org.yaaic.model;
 public class Identity
 {
 	private String nickname;
+	private List<String> aliases = new ArrayList<String>();
 	private String ident;
 	private String realname;
 	
@@ -49,6 +55,15 @@ public class Identity
 	public String getNickname()
 	{
 		return nickname;
+	}
+	
+	public void setAliases(Collection<String> aliases) {
+		this.aliases.clear();
+		this.aliases.addAll(aliases);
+	}
+	
+	public List<String> getAliases() {
+		return Collections.unmodifiableList(aliases);
 	}
 	
 	/**
