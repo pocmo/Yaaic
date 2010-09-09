@@ -47,8 +47,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 		<CheckBoxPreference
 			android:title="@string/settings_colors_title"
 			android:summary="@string/settings_colors_desc"
-			android:key="@string/key_show_colors"
-			android:defaultValue="@string/default_show_colors" />
+			android:key="@string/key_show_colors" android:defaultValue="@string/default_show_colors"/>
+		<CheckBoxPreference
+			android:title="@string/settings_colors_nick_title"
+			android:key="@string/key_show_colors_nick"
+			android:summary="@string/settings_colors_nick_desc" android:defaultValue="@string/default_show_colors_nick"/>
 		<CheckBoxPreference
 			android:title="@string/settings_timestamp_title"
 			android:summary="@string/settings_timestamp_desc"
@@ -60,7 +63,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 			android:key="@string/key_24h_format"
 			android:defaultValue="@string/default_24h_format"
 			android:dependency="@string/key_show_timestamp" />
-	</PreferenceCategory>
+	
+</PreferenceCategory>
 	<PreferenceCategory
 		android:title="@string/settings_misc">
         <CheckBoxPreference

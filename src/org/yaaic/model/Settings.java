@@ -93,6 +93,19 @@ public class Settings
 	}
 	
 	/**
+	 * Show colors to highlight nicknames?
+	 *
+	 * @return
+	 */
+	public boolean showColorsNick()
+	{
+		return preferences.getBoolean(
+			resources.getString(R.string.key_show_colors_nick),
+			Boolean.parseBoolean(resources.getString(R.string.default_show_colors_nick))
+		);
+	}
+
+	/**
 	 * Use 24 hour format for timestamps?
 	 * 
 	 * @return

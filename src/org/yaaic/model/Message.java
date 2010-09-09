@@ -42,9 +42,30 @@ public class Message {
 	public static final int COLOR_BLUE   = 0xFF729fcf;
 	public static final int COLOR_YELLOW = 0xFFbe9b01;
 	public static final int COLOR_GREY   = 0xFFaaaaaa;
+	public static final int COLOR_DEFAULT   = 0xFFeeeeee;
 	
+	public static final int[] colors = {
+		0xFFffffff, //White
+		0xFFffff00, //Yellow
+		0xFFff00ff, //Fuchsia
+		0xFFff0000, //Red
+		0xFFc0c0c0, //Silver
+		0xFF808080, //Gray
+		0xFF808000, //Olive
+		0xFF800080, //Purple
+		0xFF800000, //Maroon
+		0xFF00ffff, //Agua
+		0xFF00ff00, //Lime
+		0xFF008080, //Teal
+		0xFF008000, //Green
+		0xFF0000FF, //Blue
+		0xFF000080, //Navy
+		0xFF000000, //Black
+	};
+
 	private int icon = -1;
 	private String text;
+	private String sender;
 	private SpannableString canvas;
 	private int color = -1;
 	private long timestamp;
@@ -56,7 +77,18 @@ public class Message {
 	 */
 	public Message(String text)
 	{
+		this(text, null);
+	}
+	/**
+	 * Create a new message sent by a user without an icon
+	 *
+	 * @param text
+	 * @param sender
+	 */
+	public Message(String text, String sender)
+	{
 		this.text = text;
+		this.sender = sender;
 		this.timestamp = new Date().getTime();
 	}
 	
@@ -95,7 +127,23 @@ public class Message {
 	{
 		this.color = color;
 	}
-	
+	/**
+	 * Associate a color with a sender name
+	 *
+	 * @return a color hexa
+	 */
+	private int getSenderColor()
+	{
+		/* It might be worth to use some hash table here */
+		if (sender == null) return COLOR_DEFAULT;
+		int color = 0;
+		for(int i = 0; i < sender.length(); i++){
+			color += sender.charAt(i);
+		}
+		/* we dont want color[colors.length-1] which is black */
+		color = color % (colors.length - 1);
+		return colors[color];
+	}
 	/**
 	 * Render message as spannable string
 	 * 
@@ -107,10 +155,19 @@ public class Message {
 		
 		if (canvas == null) {
 			String prefix = icon != -1 && settings.showIcons() ? "  " : "";
+			String nick = sender != null ? "<" + sender + "> " : "";
 			String timestamp = settings.showTimestamp() ? Message.generateTimestamp(this.timestamp, settings.use24hFormat()) : "";
 			
-			canvas = new SpannableString(prefix + timestamp + text);
+			canvas = new SpannableString(prefix + timestamp + nick + text);
 			
+			if (sender != null) {
+				int start = (prefix + timestamp).length() + 1;
+				int end = start + sender.length();
+				if (settings.showColorsNick()) {
+					canvas.setSpan(new ForegroundColorSpan(getSenderColor()), start, end , Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				}
+			}
+
 			if (icon != -1 && settings.showIcons()) {
 				Drawable drawable = context.getResources().getDrawable(icon);
 				drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
@@ -140,7 +197,7 @@ public class Message {
 		canvas.setText(this.render(context));
 		canvas.setTextSize(settings.getFontSize());
 		canvas.setTypeface(Typeface.MONOSPACE);
-		canvas.setTextColor(0xffeeeeee);
+		canvas.setTextColor(COLOR_DEFAULT);
 		
 		return canvas;
 	}

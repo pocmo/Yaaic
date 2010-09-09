@@ -385,7 +385,7 @@ public class IRCConnection extends PircBot
 		// Strip mIRC colors and formatting
 		text = Colors.removeFormattingAndColors(text);
 		
-		Message message = new Message("<" + sender + "> " + text);
+		Message message = new Message(text, sender);
 		
 		if (text.contains(getNick())) {
 			// highlight
