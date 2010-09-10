@@ -22,12 +22,12 @@
     		android:layout_width="wrap_content"
     		android:layout_height="wrap_content"
     		android:singleLine="true"
-    		android:text=""
     		android:layout_weight="1" />
    		<Button
    			android:id="@+id/add"
     		android:layout_width="wrap_content"
     		android:layout_height="wrap_content"
+    		android:enabled="false"
     		android:text="Add" />
    	</LinearLayout>
    	<LinearLayout

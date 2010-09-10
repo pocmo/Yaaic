@@ -10,6 +10,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
@@ -20,11 +22,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class AddAliasActivity extends Activity implements OnClickListener, OnItemClickListener
+public class AddAliasActivity extends Activity implements OnClickListener, OnItemClickListener, TextWatcher
 {
 	private EditText aliasInput;
 	private ArrayAdapter<String> adapter;
 	private ArrayList<String> aliases;
+	private Button addButton;
 	private Button okButton;
 
 	@Override
@@ -36,6 +39,7 @@ public class AddAliasActivity extends Activity implements OnClickListener, OnIte
 		setContentView(R.layout.aliasadd);
 		
 		aliasInput = (EditText) findViewById(R.id.alias);
+		aliasInput.addTextChangedListener(this);
 		
 		adapter = new ArrayAdapter<String>(this, R.layout.aliasitem);
 		
@@ -43,7 +47,8 @@ public class AddAliasActivity extends Activity implements OnClickListener, OnIte
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(this);
 		
-		((Button) findViewById(R.id.add)).setOnClickListener(this);
+		addButton = (Button) findViewById(R.id.add);
+		addButton.setOnClickListener(this);
 		((Button) findViewById(R.id.cancel)).setOnClickListener(this);
 
 		okButton = (Button) findViewById(R.id.ok);
@@ -108,5 +113,17 @@ public class AddAliasActivity extends Activity implements OnClickListener, OnIte
 		});
 		AlertDialog alert = builder.create();
 		alert.show();
+	}
+
+	public void afterTextChanged(Editable s) {
+		// Do nothing.
+	}
+
+	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+		// Do nothing.
+	}
+
+	public void onTextChanged(CharSequence s, int start, int before, int count) {
+		addButton.setEnabled(aliasInput.getText().length() > 0);
 	}
 }
