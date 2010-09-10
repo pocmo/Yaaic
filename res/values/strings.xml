@@ -171,9 +171,4 @@
 	<string name="settings_fontsize_dialog_title">Font size</string>
 	<string name="settings_voice_recognition_title">Voice recognition</string>
 	<string name="settings_voice_recognition_desc">Show button for voice recognition</string>
-
-
-
-
-
 </resources>
