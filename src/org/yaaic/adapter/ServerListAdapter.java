@@ -22,6 +22,10 @@ package org.yaaic.adapter;
 
 import java.util.ArrayList;
 
+import org.yaaic.R;
+import org.yaaic.Yaaic;
+import org.yaaic.model.Server;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,10 +33,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.yaaic.R;
-import org.yaaic.Yaaic;
-import org.yaaic.model.Server;
 
 /**
  * Adapter for server lists
@@ -51,6 +51,11 @@ public class ServerListAdapter extends BaseAdapter
 		loadServers();
 	}
 	
+	/**
+	 * Load servers from database
+	 *
+	 * Delegate call to yaaic instance
+	 */
 	public void loadServers()
 	{
 		servers = Yaaic.getInstance().getServersAsArrayList();
