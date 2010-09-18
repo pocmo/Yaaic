@@ -139,6 +139,12 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		Server server = adapter.getItem(position);
 		
+		if (server == null) {
+			// "Add server" was selected
+			startActivityForResult(new Intent(this, AddServerActivity.class), 0);
+			return;
+		}
+		
 		Intent intent = new Intent(this, ConversationActivity.class);
 		
 		if (server.getStatus() == Status.DISCONNECTED) {
@@ -156,6 +162,11 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 	public boolean onItemLongClick(AdapterView<?> l, View v, int position, long id)
 	{
 		final Server server = adapter.getItem(position);
+		
+		if (server == null) {
+			// "Add server" view selected
+			return true;
+		}
 		
 		final CharSequence[] items = {
 			getString(R.string.connect),

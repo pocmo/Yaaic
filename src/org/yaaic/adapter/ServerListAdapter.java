@@ -62,7 +62,14 @@ public class ServerListAdapter extends BaseAdapter
 	 */
 	public int getCount()
 	{
-		return servers.size();
+		int size = servers.size();
+		
+		// Display "Add server" item
+		if (size == 0) {
+			return 1;
+		}
+		
+		return size;
 	}
 
 	/**
@@ -72,6 +79,10 @@ public class ServerListAdapter extends BaseAdapter
 	 */
 	public Server getItem(int position)
 	{
+		if (servers.size() == 0) {
+			return null; // No server object for the "add server" view
+		}
+		
 		return servers.get(position);
 	}
 
@@ -82,6 +93,10 @@ public class ServerListAdapter extends BaseAdapter
 	 */
 	public long getItemId(int position)
 	{
+		if (servers.size() == 0) {
+			return 0;
+		}
+		
 		return getItem(position).getId();
 	}
 
@@ -97,6 +112,12 @@ public class ServerListAdapter extends BaseAdapter
 		Server server = getItem(position);
 		
 		LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		
+		if (server == null) {
+			// Return "Add server" view
+			return inflater.inflate(R.layout.addserveritem, null);
+		}
+		
 		View v = inflater.inflate(R.layout.serveritem, null);
 		
 		((TextView) v.findViewById(R.id.title)).setText(server.getTitle());
