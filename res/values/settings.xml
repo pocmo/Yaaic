@@ -10,7 +10,7 @@
 	<string name="default_show_colors">true</string>
 	
 	<string name="key_show_colors_nick">show_colors_nick</string>
-	<string name="default_show_colors_nick">true</string>
+	<string name="default_show_colors_nick">false</string>
 	
 	<string name="key_24h_format">24h_format</string>
 	<string name="default_24h_format">true</string>
