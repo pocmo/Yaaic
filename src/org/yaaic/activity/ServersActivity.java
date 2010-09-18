@@ -63,6 +63,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 	private IRCBinder binder;
 	private ServerReceiver receiver;
 	private ServerListAdapter adapter;
+	private ListView list;
 	
 	/**
 	 * On create
@@ -76,8 +77,9 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
         adapter = new ServerListAdapter();
         setListAdapter(adapter);
         
-        getListView().setOnItemLongClickListener(this);
-        getListView().setBackgroundDrawable(new NonScalingBackgroundDrawable(this, getListView(), R.drawable.background));
+        list = getListView();
+        list.setOnItemLongClickListener(this);
+        list.setBackgroundDrawable(new NonScalingBackgroundDrawable(this, list, R.drawable.background));
     }
 
     /**
@@ -308,7 +310,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 		
 		if (!adapter.isEmpty()) {
 			// Hide background if there are servers in the list
-			getListView().setBackgroundDrawable(null);
+			list.setBackgroundDrawable(null);
 		}
 	}
    
