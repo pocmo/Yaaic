@@ -308,7 +308,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 	{
 		adapter.loadServers();
 		
-		if (!adapter.isEmpty()) {
+		if (adapter.getCount() > 2) {
 			// Hide background if there are servers in the list
 			list.setBackgroundDrawable(null);
 		}
