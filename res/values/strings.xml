@@ -160,7 +160,9 @@
     <string name="settings_icons_title">Show icons</string>
     <string name="settings_icons_desc">Show icons to highlight special events</string>
     <string name="settings_colors_title">Show colors</string>
-    <string name="settings_colors_desc">Show colors to highlight special events</string><string name="settings_colors_nick_title">Colorize nicknames</string><string name="settings_colors_nick_desc">Show nicknames in different colors</string>
+    <string name="settings_colors_desc">Show colors to highlight special events</string>
+    <string name="settings_colors_nick_title">Colorize nicknames</string>
+    <string name="settings_colors_nick_desc">Show nicknames in different colors</string>
     <string name="settings_timestamp_title">Show timestamp</string>
     <string name="settings_timestamp_desc">Prefix all messages with a timestamp</string>
     <string name="settings_24h_title">24 hour format</string>
