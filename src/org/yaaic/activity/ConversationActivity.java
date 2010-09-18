@@ -363,6 +363,13 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	public void onConversationMessage(String target)
 	{
 		Conversation conversation = server.getConversation(target);
+		
+		if (conversation == null) {
+			// In an early state it can happen that the conversation object
+			// is not created yet.
+			return;
+		}
+		
 		MessageListAdapter adapter = conversation.getMessageListAdapter();
 		
 		conversation.setStatus(Conversation.STATUS_MESSAGE);
