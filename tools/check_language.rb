@@ -18,30 +18,26 @@
 # You should have received a copy of the GNU General Public License
 # along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 
-# TODO: Maybe check all existing languages instead of using a paremter
 # TODO: Use a XML parser instead of reading lines
 
-if ARGV.length != 1 then
-  puts "Which language should be checked...?"
-  exit
-end
+base_path     = "#{File.dirname(__FILE__)}/../res/"
+original_file = "#{base_path}values/strings.xml"
+languages     = []
+items         = []
+pattern       = Regexp.new '<string name="([^"]+)">([^<]+)</string>'
+lang_pattern  = Regexp.new 'values-([a-zA-Z_-]+)'
 
-base_path = File.dirname(__FILE__)
-language  = ARGV[0]
+# Scan for languages
+Dir.new(base_path).entries.each { |directory|
+  result = lang_pattern.match directory
+  if !result.nil? then
+    languages.push result[1]
+  end
+}
 
-original_file = "#{base_path}/../res/values/strings.xml"
-language_file = "#{base_path}/../res/values-#{language}/strings.xml"
-
-if !File.exists? language_file then
-  puts "File does not exists: #{language_file}"
-  exit
-end
+puts "Found #{languages.length} language(s): #{languages.inspect}"
 
 # Grab all keys from the original file
-items = []
-
-pattern = Regexp.new '<string name="([^"]+)">([^<]+)</string>'
-
 file = File.new(original_file, 'r')
 while line = file.gets
   result = pattern.match line
@@ -52,24 +48,30 @@ end
 file.close
 
 puts "Found #{items.length} items in strings.xml"
+puts
 
-puts "Checking #{language}"
-check = items.clone
+# Check all langauges files for keys
+languages.each { |language| 
+  check = items.clone
+  language_file = "#{base_path}values-#{language}/strings.xml"
 
-file = File.new(language_file, 'r')
-while line = file.gets
-  result = pattern.match line
-  if !result.nil? then
-    check.delete result[1]
+  file = File.new(language_file, 'r')
+  while line = file.gets
+    result = pattern.match line
+    if !result.nil? then
+      check.delete result[1]
+    end
   end
-end
 
-percent = 100 - (100.to_f / items.length.to_f * check.length.to_f)
+  percent = sprintf('%.2f', 100 - (100.to_f / items.length.to_f * check.length.to_f))
 
-if check.length == 0 then
-  puts "Language #{language} is OK (Translated: #{percent}%)"
-else
-  puts "Language #{language} has missing translations (Translated: #{percent}%)"
-  check.each { |key| puts "  #{key}" }
-end
+  if check.length == 0 then
+    puts "Language #{language} is OK (Translated: #{percent}%)"
+  else
+    puts "Language #{language} has missing translations (Translated: #{percent}%)"
+    check.each { |key| puts "  #{key}" }
+  end
+
+  puts
+}
 
