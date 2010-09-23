@@ -19,8 +19,6 @@
 # along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 
 # TODO: Maybe check all existing languages instead of using a paremter
-# TODO: Add a basepath to the files (this script should be callable from
-#       everyhwere
 # TODO: Use a XML parser instead of reading lines
 
 if ARGV.length != 1 then
@@ -28,10 +26,11 @@ if ARGV.length != 1 then
   exit
 end
 
-language = ARGV[0]
+base_path = File.dirname(__FILE__)
+language  = ARGV[0]
 
-original_file = "../res/values/strings.xml"
-language_file = "../res/values-#{language}/strings.xml"
+original_file = "#{base_path}/../res/values/strings.xml"
+language_file = "#{base_path}/../res/values-#{language}/strings.xml"
 
 if !File.exists? language_file then
   puts "File does not exists: #{language_file}"
