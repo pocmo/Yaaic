@@ -156,7 +156,9 @@
     <string name="settings_icons_title">显示图标</string>
 	<string name="settings_icons_desc">用图标高亮特定事件</string>
 	<string name="settings_colors_title">显示颜色</string>
-	<string name="settings_colors_desc">用彩色高亮特定事件</string><string name="settings_colors_nick_title">昵称颜色</string><string name="settings_colors_nick_desc">昵称使用不同颜色</string>
+	<string name="settings_colors_desc">用彩色高亮特定事件</string>
+	<string name="settings_colors_nick_title">昵称颜色</string>
+	<string name="settings_colors_nick_desc">昵称使用不同颜色</string>
 	<string name="settings_timestamp_title">显示时间戳</string>
 	<string name="settings_timestamp_desc">所有消息前面带上时间戳</string>
 	<string name="settings_24h_title">24小时格式</string>
