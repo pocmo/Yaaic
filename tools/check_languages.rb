@@ -23,9 +23,12 @@
 base_path     = "#{File.dirname(__FILE__)}/../res/"
 original_file = "#{base_path}values/strings.xml"
 languages     = []
-items         = []
+items         = {}
 pattern       = Regexp.new '<string name="([^"]+)">([^<]+)</string>'
 lang_pattern  = Regexp.new 'values-([a-zA-Z_-]+)'
+show_keys     = false
+
+show_keys = true if ARGV.length == 1 && ARGV[0] == '--show-keys'
 
 # Scan for languages
 Dir.new(base_path).entries.each { |directory|
@@ -42,7 +45,7 @@ file = File.new(original_file, 'r')
 while line = file.gets
   result = pattern.match line
   if !result.nil? then
-    items.push result[1]
+    items[result[1]] = result[2]
   end
 end
 file.close
@@ -51,25 +54,53 @@ puts "Found #{items.length} items in strings.xml"
 puts
 
 # Check all langauges files for keys
-languages.each { |language| 
-  check = items.clone
+languages.each { |language|
+  keys          = 0
+  check         = items.clone
+  untranslated  = {}
+  unused        = {}
   language_file = "#{base_path}values-#{language}/strings.xml"
 
   file = File.new(language_file, 'r')
   while line = file.gets
     result = pattern.match line
     if !result.nil? then
-      check.delete result[1]
+      key = result[1]
+      value = result[2]
+
+      check.delete key
+      if items[key].nil? then
+        unused[key] = value
+      else
+        untranslated[key] = value if items[key] == value
+      end
+      keys += 1
     end
   end
 
-  percent = sprintf('%.2f', 100 - (100.to_f / items.length.to_f * check.length.to_f))
+  translated = items.length - untranslated.length - check.length
+  translated_percent = sprintf('%.2f', 100.to_f / items.length.to_f * translated.to_f)
+  keys_percent = sprintf('%.2f', 100.to_f / items.length.to_f * keys.to_f)
 
-  if check.length == 0 then
-    puts "Language #{language} is OK (Translated: #{percent}%)"
-  else
-    puts "Language #{language} has missing translations (Translated: #{percent}%)"
-    check.each { |key| puts "  #{key}" }
+  puts "Language #{language}"
+  puts " * Keys:       #{keys.to_s.rjust 5}/#{items.length.to_s.ljust 5} #{keys_percent.to_s.rjust 6}%"
+  puts " * Translated: #{translated.to_s.rjust 5}/#{items.length.to_s.ljust 5} #{translated_percent.to_s.rjust 6}%"
+
+  if show_keys then
+    if check.length > 0 then
+      puts " * Missing keys:"
+      check.each { |key,value| puts "   * #{key}" }
+    end
+
+    if untranslated.length > 0 then
+      puts " * Untranslated keys:"
+      untranslated.each { |key,value| puts "   * #{key}" }
+    end
+
+    if unused.length > 0 then
+      puts " * Unused keys:"
+      unused.each { |key,value| puts "   * #{key}" } if unused.length > 0
+    end
   end
 
   puts
