@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_server_menu">サーバーを追加</string>
+    <string name="settings_menu">設定</string>
+    <string name="about_menu">Yaaicについて</string>
+    <string name="exit_menu">終了</string>
+    
+    <string name="add_server_label">新しいサーバー</string>
+    <string name="server_title">タイトル</string>
+    <string name="server_host">ホスト</string>
+    <string name="server_port">ポート</string>
+    <string name="server_password">パスワード</string>
+    <string name="server_useSSL">SSL使用</string>
+    <string name="server_autoconnect">起動時に接続する</string>
+    <string name="server_channels">チャンネル</string>
+    <string name="add_server">サーバーを追加</string>
+    <string name="select_charset">文字コード</string>
+    
+    <string name="cancel">キャンセル</string>
+    
+    <string name="channel">チャンネル</string>
+    <string name="join">参加</string>
+    <string name="join_channel">チャンネルへ参加</string>
+    <string name="close">閉じる</string>
+    <string name="users">参加者</string>
+    <string name="connect">接続</string>
+    <string name="disconnect">切断</string>
+    <string name="edit">編集</string>
+    <string name="delete">削除</string>
+    
+    <string name="about_label">Yaaicについて</string>
+
+    <string name="settings_label">設定</string>
+    
+    <string name="join_label">チャンネルへ参加</string>
+    
+    <string name="users_label">参加者</string>
+    
+    <string name="channels_label">チャンネル</string>
+</resources>
