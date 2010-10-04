@@ -108,7 +108,7 @@ public class AddServerActivity extends Activity implements OnClickListener
         	((EditText) findViewById(R.id.realname)).setText(server.getIdentity().getRealName());
         	((CheckBox) findViewById(R.id.useSSL)).setChecked(server.useSSL());
         	
-        	((Button) findViewById(R.id.add)).setText("Save");
+        	((Button) findViewById(R.id.add)).setText(R.string.server_save);
         	
         	// Select charset
         	if (server.getCharset() != null) {

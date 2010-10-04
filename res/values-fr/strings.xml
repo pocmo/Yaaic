@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="add_server_menu">Ajouter un serveur</string>
-    <string name="add_server_list">Ajouter un serveur</string>
+    <string name="add_server_list">Ajouter ce serveur</string>
 
     <string name="settings_menu">Paramètres</string>
     <string name="about_menu">A propos</string>
@@ -22,6 +22,7 @@
     <string name="server_autoconnect">Se connecter au démarrage</string>
     <string name="server_channels">Canaux</string>
     <string name="add_server">Ajouter un serveur</string>
+    <string name="server_save">Enregistrer</string>
     <string name="select_charset">Choisir un encodage</string>
     <string name="nickname">Pseudo</string>
     <string name="aliases">Aliases</string>
@@ -32,16 +33,16 @@
     <string name="channel">Canal</string>
     <string name="channels">Canaux</string>
     <string name="commands">Commandes</string>
-    <string name="user">Utilisateur</string> <!-- WUT ? -->
+    <string name="user">Utilisateur</string>
     <string name="join">Rejoindre</string>
-    <string name="join_channel">Rejoindre le canal</string> <!-- WUT ? -->
+    <string name="join_channel">Rejoindre un canal</string>
     <string name="close">Fermer</string>
     <string name="users">Utilisateurs</string>
-    <string name="connect">Se connecter</string> <!-- "se" ? -->
+    <string name="connect">Se connecter</string>
     <string name="disconnect">Se déconnecter</string>
     <string name="edit">Modifier</string>
     <string name="delete">Supprimer</string>
-    <string name="on_connect">A la connexion</string> <!-- WUT ? -->
+    <string name="on_connect">A la connexion</string>
     <string name="preferences">Préférences</string>
     <string name="charset">Encodage</string>
 
@@ -52,7 +53,7 @@
     <string name="negative_button">Non</string>
 
     <string name="alias_add_description">Ces aliases seront utilisées si le pseudo principal n\'est pas disponible.</string>
-    <string name="channel_add_description">Ces canaux seront rejoint automatiquement après la connexion.</string>
+    <string name="channel_add_description">Ces canaux seront rejoints automatiquement après la connexion.</string>
     <string name="command_add_description">Ces commandes seront exécutées après la connexion.</string>
 
     <string name="validation_blank_title">Le nom ne peut pas être vide</string>
@@ -156,7 +157,7 @@
     <string name="settings_connection">Connexion</string>
     <string name="settings_reconnect_title">Reconnexion</string>
     <string name="settings_reconnect_desc">Se reconnecter automatiquement si déconnecté</string>
-    <string name="settings_chat">Discussion</string> <!-- WUT ? -->
+    <string name="settings_chat">Fenêtre de discussion</string>
     <string name="settings_icons_title">Affiche les icônes</string>
     <string name="settings_icons_desc">Affiche les icônes pour mettre en valeur certains évènements</string>
     <string name="settings_colors_title">Affiche des couleurs</string>
