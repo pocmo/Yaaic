@@ -504,7 +504,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		
 		if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
 			if (!server.isConnected()) {
-				Message message = new Message("Not connected");
+				Message message = new Message(getString(R.string.message_not_connected));
 				message.setColor(Message.COLOR_RED);
 				message.setIcon(R.drawable.error);
 				server.getConversation(server.getSelectedConversation()).addMessage(message);

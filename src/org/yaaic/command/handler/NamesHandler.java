@@ -51,8 +51,7 @@ public class NamesHandler extends BaseHandler
 			throw new CommandException(service.getString(R.string.only_usable_from_channel));
 		}
 		
-		// XXX:I18N - Translation needed!
-		StringBuffer userList = new StringBuffer("Users " + conversation.getName() + ":");
+		StringBuffer userList = new StringBuffer(service.getString(R.string.message_users_on_chan, conversation.getName()));
 		
 		User[] mUsers = service.getConnection(server.getId()).getUsers(conversation.getName());
 		int mSize = mUsers.length;

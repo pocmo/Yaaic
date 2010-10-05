@@ -282,11 +282,11 @@ public class IRCService extends Service
 					Message message;
 					
 					if (e instanceof NickAlreadyInUseException) {
-						message = new Message("Nickname " + connection.getNick() + " already in use");
+						message = new Message(getString(R.string.nickname_in_use, connection.getNick()));
 					} else if (e instanceof IrcException) {
-						message = new Message("Could not log into the IRC server " + server.getHost() + ":" + server.getPort());
+						message = new Message(getString(R.string.irc_login_error, server.getHost(), server.getPort()));
 					} else {
-						message = new Message("Could not connect to " + server.getHost() + ":" + server.getPort());
+						message = new Message(getString(R.string.could_not_connect, server.getHost(), server.getPort()));
 					}
 					
 					message.setColor(Message.COLOR_RED);

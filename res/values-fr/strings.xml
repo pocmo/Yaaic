@@ -85,6 +85,9 @@
     <string name="query_to_channel">Vous ne pouvez pas ouvrir une discussion privée vers un canal</string>
     <string name="query_exists">Cette discussion privée existe déjà</string>
     <string name="line_missing">Ligne est absente</string>
+    <string name="nickname_in_use">Le pseudo %1$s est déjà utilisé</string>
+    <string name="irc_login_error">Impossible de s\'identifier auprès du serveur %1$s:%1$d</string>
+    <string name="could_not_connect">Impossible de se connecter à %1$s:%1$d</string>
 
     <string name="command_desc_amsg">Envoie un message vers tous les canaux</string>
     <string name="command_desc_away">Vous marque absent</string>
@@ -146,6 +149,8 @@
     <string name="message_set_moderated">%1$s modère le canal</string>
     <string name="message_remove_moderated">%1$s retire le statut modéré du canal</string>
     <string name="message_disconnected">Déconnecté</string>
+    <string name="message_not_connected">Non connecté</string>
+    <string name="message_users_on_chan">Utilisateurs sur %1$s :</string>
 
     <string name="button_op">Op</string>
     <string name="button_deop">DeOp</string>
