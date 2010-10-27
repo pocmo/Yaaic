@@ -20,6 +20,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.activity;
 
+import java.util.Arrays;
+
 import org.yaaic.R;
 import org.yaaic.model.Extra;
 
@@ -29,8 +31,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 
 /**
  * User Activity - Shows a list of users in the current channel
@@ -50,9 +52,17 @@ public class UsersActivity extends ListActivity implements OnItemClickListener
 		
 		setContentView(R.layout.users);
 		
-		String[] users = getIntent().getExtras().getStringArray(Extra.USERS);
-		getListView().setAdapter(new ArrayAdapter<String>(this, R.layout.useritem, users));
+		final String[] users = getIntent().getExtras().getStringArray(Extra.USERS);
 		getListView().setOnItemClickListener(this);
+
+		// Add sorted list of users in own thread to avoid blocking UI
+		// TODO: Move to a background task and show loading indicator while sorting
+		(new Thread() {
+			public void run() {
+				Arrays.sort(users, String.CASE_INSENSITIVE_ORDER);
+				getListView().setAdapter(new ArrayAdapter<String>(UsersActivity.this, R.layout.useritem, users));
+			}
+		}).start();
 	}
 
 	/**
