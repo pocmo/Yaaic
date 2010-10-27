@@ -57,12 +57,8 @@ public class UsersActivity extends ListActivity implements OnItemClickListener
 
 		// Add sorted list of users in own thread to avoid blocking UI
 		// TODO: Move to a background task and show loading indicator while sorting
-		(new Thread() {
-			public void run() {
-				Arrays.sort(users, String.CASE_INSENSITIVE_ORDER);
-				getListView().setAdapter(new ArrayAdapter<String>(UsersActivity.this, R.layout.useritem, users));
-			}
-		}).start();
+		Arrays.sort(users, String.CASE_INSENSITIVE_ORDER);
+		getListView().setAdapter(new ArrayAdapter<String>(UsersActivity.this, R.layout.useritem, users));
 	}
 
 	/**
