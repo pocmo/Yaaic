@@ -54,6 +54,7 @@ import org.yaaic.view.ConversationSwitcher;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -69,6 +70,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -90,6 +92,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	private static final int REQUEST_CODE_JOIN = 1;
 	private static final int REQUEST_CODE_USERS = 2;
 	private static final int REQUEST_CODE_USER = 3;
+	private static final int REQUEST_CODE_NICK_COMPLETION= 4;
 	
 	private int serverId;
 	private Server server;
@@ -109,6 +112,11 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 	//      join command would be called in onActivityResult(). joinChannelBuffer will save the
 	//      channel name in onActivityResult() and run the join command in onResume().
 	private String joinChannelBuffer;
+
+	// flag passed to setInputType later
+	// shall be TYPE_TEXT_FLAG_NO_SUGGESTIONS but it's not supported in all API levels (only in 5+)
+	// We'll set it to 0 if it's not supported
+	private int setInputTypeFlag;
 	
 	/**
 	 * On create
@@ -151,7 +159,15 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		for (Conversation conversation : mConversations) {
 			onNewConversation(conversation.getName());
 		}
-		
+
+		// keep compatibility with api level 3
+		if ((android.os.Build.VERSION.SDK.charAt(0) - '0') >= 5) {
+			setInputTypeFlag = 0x80000; // InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+		}
+		else {
+			setInputTypeFlag = 0;
+		}
+
 		// Create a new scrollback history
 		scrollback = new Scrollback();
 	}
@@ -234,13 +250,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 		if (binder != null && binder.getService() != null) {
 			binder.getService().checkServiceStatus();
 		}
-		
-		/*if (!binder.getService().hasConnections()) {
-			Log.d("Yaaic", "Stopping service");
-			//binder.getService().stopSelf();
-		} else {
-			Log.d("Yaaic", "Unbinding service");
-		}*/
 
 		unbindService(this);
 		unregisterReceiver(channelReceiver);
@@ -502,6 +511,107 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 			return true;
 		}
 		
+		// Nick completion
+		if (keyCode == KeyEvent.KEYCODE_SEARCH && event.getAction() == KeyEvent.ACTION_DOWN) {
+			String text = input.getText().toString();
+
+			if (text.length() <= 0) {
+				return true;
+			}
+
+			String[] tokens = text.split("[\\s,.-]+");
+
+			if (tokens.length <= 0) {
+				return true;
+			}
+
+			String word = tokens[tokens.length - 1].toLowerCase();
+			tokens[tokens.length - 1] = null;
+
+			int begin   = input.getSelectionStart();
+			int end     = input.getSelectionEnd();
+			int cursor  = Math.min(begin, end);
+			int sel_end = Math.max(begin, end);
+
+			boolean in_selection = cursor != sel_end;
+
+			if (in_selection) {
+				word = text.substring(cursor, sel_end);
+			} else {
+				// use the word at the curent cursor position
+				while(true) {
+					cursor -= 1;
+					if (cursor <= 0 || text.charAt(cursor) == ' ') {
+						break;
+					}
+				}
+
+				if (cursor < 0) {
+					cursor = 0;
+				}
+
+				if (text.charAt(cursor) == ' ') {
+					cursor += 1;
+				}
+
+				sel_end = text.indexOf(' ', cursor);
+
+				if (sel_end == -1) {
+					sel_end = text.length();
+				}
+
+				word = text.substring(cursor, sel_end);
+			}
+			// Log.d("Yaaic", "Trying to complete nick: " + word);
+
+			Conversation conversationForUserList = deckAdapter.getItem(deck.getSelectedItemPosition());
+
+			String[] users = null;
+
+			if (conversationForUserList.getType() == Conversation.TYPE_CHANNEL) {
+				users = binder.getService().getConnection(server.getId()).getUsersAsStringArray(
+					conversationForUserList.getName()
+				);
+			}
+
+			// go through users and add matches
+			if (users != null) {
+				List<Integer> result = new ArrayList<Integer>();
+
+				for (int i = 0; i < users.length; i++) {
+					if (users[i].toLowerCase().startsWith(word)) {
+						result.add(Integer.valueOf(i));
+					}
+				}
+
+				if (result.size() == 1) {
+					String text1 = users[result.get(0).intValue()];
+
+					if (cursor == 0) {
+						text1 += ":";
+					}
+
+					text1 += " ";
+					input.getText().replace(cursor, sel_end, text1, 0, text1.length());
+					int old = input.getInputType();
+					input.setInputType(old | setInputTypeFlag);
+				} else if (result.size() > 0) {
+					Intent intent  = new Intent(this, UsersActivity.class);
+					String[] extra = new String[result.size()];
+					int i = 0;
+
+					for (Integer n : result) {
+						extra[i++] = users[n.intValue()];
+					}
+
+					input.setSelection(cursor, sel_end);
+					intent.putExtra(Extra.USERS, extra);
+					startActivityForResult(intent, REQUEST_CODE_NICK_COMPLETION);
+				}
+			}
+			return true;
+		}
+
 		if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
 			if (!server.isConnected()) {
 				Message message = new Message(getString(R.string.message_not_connected));
@@ -574,6 +684,31 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 				Intent intent = new Intent(this, UserActivity.class);
 				intent.putExtra(Extra.USER, data.getStringExtra(Extra.USER));
 				startActivityForResult(intent, REQUEST_CODE_USER);
+				break;
+			case REQUEST_CODE_NICK_COMPLETION:
+				EditText input = (EditText) findViewById(R.id.input);
+				String src 	   = data.getExtras().getString(Extra.USER);
+				int start 	   = input.getSelectionStart();
+				int end 	   = input.getSelectionEnd();
+
+				if (start == 0) {
+					src += ":";
+				}
+
+				src += " ";
+				input.getText().replace(start, end, src, 0, src.length());
+				// put cursor after inserted text
+				input.setSelection(start + src.length());
+				input.post(new Runnable() {
+					@Override
+					public void run() {
+						// make the softkeyboard come up again (only if no hw keyboard is attached)
+						EditText input = (EditText) findViewById(R.id.input);
+						InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+						mgr.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
+					}
+				});
+				input.requestFocus();
 				break;
 			case REQUEST_CODE_USER:
 				final int actionId = data.getExtras().getInt(Extra.ACTION);
