@@ -6,3 +6,5 @@ bin/
 gen/
 R.java
 
+# local ant properties
+local.properties
