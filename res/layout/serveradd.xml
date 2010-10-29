@@ -180,7 +180,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:paddingTop="10px">
 			<Button
 				android:id="@+id/add"
-				android:text="@string/add_server"
+				android:text="@string/server_save"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_weight="1" />

@@ -21,7 +21,6 @@
     <string name="server_useSSL">Utiliser SSL</string>
     <string name="server_autoconnect">Se connecter au démarrage</string>
     <string name="server_channels">Canaux</string>
-    <string name="add_server">Ajouter un serveur</string>
     <string name="server_save">Enregistrer</string>
     <string name="select_charset">Choisir un encodage</string>
     <string name="nickname">Pseudo</string>

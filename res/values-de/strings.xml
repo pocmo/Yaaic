@@ -20,7 +20,6 @@
     <string name="server_useSSL">SSL benutzen</string>
     <string name="server_autoconnect">Automatisch verbinden nach dem Start</string>
     <string name="server_channels">Kanäle</string>
-    <string name="add_server">Server hinzufügen</string>
     <string name="select_charset">Zeichensatz auswählen</string>
     <string name="nickname">Nickname</string>
     <string name="aliases">Aliases</string>

@@ -21,7 +21,6 @@
     <string name="server_useSSL">Use SSL</string>
     <string name="server_autoconnect">Auto connect on startup</string>
     <string name="server_channels">Channels</string>
-    <string name="add_server">Add server</string>
     <string name="server_save">Save</string>
     <string name="select_charset">Select a charset</string>
     <string name="nickname">Nickname</string>

@@ -21,7 +21,6 @@
     <string name="server_autoconnect">启动时自动连接</string>
 
     <string name="server_channels">频道</string>
-    <string name="add_server">添加服务器</string>
     <string name="select_charset">选择字符编码</string>
     <string name="nickname">昵称</string>
     <string name="aliases">别名</string>

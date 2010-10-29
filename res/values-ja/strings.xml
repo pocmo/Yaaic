@@ -21,7 +21,6 @@
     <string name="server_useSSL">SSL使用</string>
     <string name="server_autoconnect">起動時に接続する</string>
     <string name="server_channels">チャンネル</string>
-    <string name="add_server">サーバーを追加</string>
     <string name="select_charset">文字コード</string>
     <string name="nickname">Nickname</string>
     <string name="aliases">Aliases</string>

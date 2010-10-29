@@ -21,7 +21,6 @@
     <string name="server_useSSL">Usar SSL</string>
     <string name="server_autoconnect">Conectar automaticamente al iniciar</string>
     <string name="server_channels">Canales</string>
-    <string name="add_server">Añadir servidor</string>
     <string name="server_save">Guardar</string>
     <string name="select_charset">Seleccionar juego de caracteres</string>
     <string name="nickname">Apodo</string>
