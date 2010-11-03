@@ -1,10 +1,12 @@
-#
 # Git Ignore for Yaaic
-#
 
+# Compiled and generated files
 bin/
 gen/
 R.java
 
 # local ant properties
 local.properties
+
+# Config file for the build_release.sh script (Because everyone has a different version)
+build.conf

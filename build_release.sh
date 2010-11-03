@@ -1,7 +1,15 @@
-KEYSTORE=
-BUILD_DIRECTORY=builds/ant
-RELEASE_KEY=
-ANDROID_SDK=
+####
+# Build a new release
+#
+# - Modify build.conf as needed
+# - Usage: ./build_release.sh <version>
+
+if [ ! -f build.conf ]
+  echo "Config file missing: build.conf"
+  echo "Modify the build.conf.sample file and save it as build.conf"
+fi
+
+. build.conf
 
 if [ -z $1 ]; then
   echo "Release version is missing."

@@ -1,0 +1,12 @@
+# The keystore file you use for the release
+KEYSTORE=
+
+# The directory you want the builds to go
+BUILD_DIRECTORY=builds/ant
+
+# The key of the keystore you want to use to sign the release
+RELEASE_KEY=
+
+# The path to your Android SDK
+ANDROID_SDK=
+
