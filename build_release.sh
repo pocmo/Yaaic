@@ -4,9 +4,10 @@
 # - Modify build.conf as needed
 # - Usage: ./build_release.sh <version>
 
-if [ ! -f build.conf ]
+if [ ! -f build.conf ]; then
   echo "Config file missing: build.conf"
   echo "Modify the build.conf.sample file and save it as build.conf"
+  exit 1
 fi
 
 . build.conf
