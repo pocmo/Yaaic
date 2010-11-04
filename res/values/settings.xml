@@ -25,5 +25,5 @@
 	<string name="default_fontsize">11</string>
 	
 	<string name="key_voice_recognition">voice_recognition</string>
-	<string name="default_voice_recognition">true</string>
+	<string name="default_voice_recognition">false</string>
 </resources>
