@@ -33,6 +33,8 @@ public class AllTests {
 		TestSuite suite = new TestSuite("Scenario-Tests");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(ServerListScenarios.class);
+		suite.addTestSuite(ConnectionScenarios.class);
+		suite.addTestSuite(ChannelScenarios.class);
 		//$JUnit-END$
 		return suite;
 	}
