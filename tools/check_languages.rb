@@ -20,7 +20,7 @@
 
 # TODO: Use a XML parser instead of reading lines
 
-base_path     = "#{File.dirname(__FILE__)}/../res/"
+base_path     = "#{File.dirname(__FILE__)}/../application/res/"
 original_file = "#{base_path}values/strings.xml"
 languages     = []
 items         = {}
