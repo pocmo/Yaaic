@@ -20,7 +20,9 @@ fi
 
 echo "Building yaaic $1"
 echo ""
+cd application
 ant release
+cd ..
 jarsigner -verbose -keystore $KEYSTORE "$BUILD_DIRECTORY/Yaaic-unsigned.apk" release
 jarsigner -verify "$BUILD_DIRECTORY/Yaaic-unsigned.apk"
 "$ANDROID_SDK/tools/zipalign" -v 4 "$BUILD_DIRECTORY/Yaaic-unsigned.apk" "$BUILD_DIRECTORY/yaaic-$1.apk"
