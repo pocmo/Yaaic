@@ -10,3 +10,5 @@ RELEASE_KEY=
 # The path to your Android SDK
 ANDROID_SDK=
 
+# The AVD for running the unit and scenario tests
+AVD_TEST=
