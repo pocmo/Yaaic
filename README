@@ -13,9 +13,9 @@ our repository at github:
 
 http://github.com/pocmo/Yaaic
 
-See also the "test package" for unit tests & co.:
-
-http://github.com/pocmo/Yaaic-Test
+The application project is located in application/ while the test/
+folder contains unit and scenario tests. (They are two separate
+projects!)
 
 --------------------------------------------------------------------
 
