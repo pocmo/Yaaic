@@ -20,6 +20,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.test.scenario;
 
+
+
 import com.jayway.android.robotium.solo.Solo;
 import android.test.ActivityInstrumentationTestCase2;
 
@@ -32,7 +34,13 @@ import android.test.ActivityInstrumentationTestCase2;
 public class ServerListScenarios extends ActivityInstrumentationTestCase2
 {
 	private Solo solo;
+	private ScenarioHelper helper;
 	
+	/**
+	 * Create a new ServerListScenarios instance
+	 * 
+	 * @throws ClassNotFoundException
+	 */
 	@SuppressWarnings("unchecked")
 	public ServerListScenarios() throws ClassNotFoundException
 	{
@@ -42,9 +50,13 @@ public class ServerListScenarios extends ActivityInstrumentationTestCase2
 		);
 	}
 	
+	/**
+	 * Setup test case
+	 */
 	protected void setUp()
 	{
-		solo = new Solo(getInstrumentation(), getActivity());
+		solo   = new Solo(getInstrumentation(), getActivity());
+		helper = new ScenarioHelper(solo);
 	}
 
 	/**
@@ -63,6 +75,9 @@ public class ServerListScenarios extends ActivityInstrumentationTestCase2
 	 */
 	public void testAddingAndRemovingServer()
 	{
+		// Delete Testserver if already exists
+		helper.deleteTestServer();
+		
 		int numberOfServersBefore = solo.getCurrentListViews().get(0).getCount();
 		
 		// Add server
