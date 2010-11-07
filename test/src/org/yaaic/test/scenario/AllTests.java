@@ -18,26 +18,22 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.yaaic.test;
+package org.yaaic.test.scenario;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
 /**
- * All tests for Yaaic (org.yaaic.test.*)
+ * All scenario tests 
  *  
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
 public class AllTests {
-
 	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for org.yaaic.test");
+		TestSuite suite = new TestSuite("Scenario-Tests");
 		//$JUnit-BEGIN$
-		suite.addTest(org.yaaic.test.model.AllTests.suite());
-		suite.addTest(org.yaaic.test.receiver.AllTests.suite());
-		suite.addTest(org.yaaic.test.scenario.AllTests.suite());
+		suite.addTestSuite(ServerListScenarios.class);
 		//$JUnit-END$
 		return suite;
 	}
-
 }
