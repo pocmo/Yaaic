@@ -1137,6 +1137,6 @@ public class IRCConnection extends PircBot
      * Update the nick matching pattern, should be called when the nickname changes.
      */
 	private void updateNickMatchPattern() {
-	    mNickMatch = Pattern.compile("(?:^|[\\s?:;,.])"+Pattern.quote(getNick())+"(?:[\\s?:;,.]|$)", Pattern.CASE_INSENSITIVE);
+	    mNickMatch = Pattern.compile("(?:^|[\\s?!'´:;,.])"+Pattern.quote(getNick())+"(?:[\\s?!'´:;,.]|$)", Pattern.CASE_INSENSITIVE);
 	}
 }
