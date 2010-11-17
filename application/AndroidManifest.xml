@@ -94,4 +94,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     
     <uses-sdk android:minSdkVersion="3" />
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
+
+<uses-permission android:name="android.permission.VIBRATE"></uses-permission>
 </manifest> 

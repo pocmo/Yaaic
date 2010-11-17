@@ -169,4 +169,17 @@ public class Settings
 			Boolean.parseBoolean(resources.getString(R.string.default_voice_recognition))
 		);
 	}
+	
+    /**
+     * Vibrate on highlight?
+     * 
+     * @return True if vibrate on highlight is enabled, false otherwise
+     */
+    public boolean isVibrateHighlightEnabled()
+    {
+        return preferences.getBoolean(
+            resources.getString(R.string.key_vibrate_highlight),
+            Boolean.parseBoolean(resources.getString(R.string.default_vibrate_highlight))
+        );
+    }	
 }

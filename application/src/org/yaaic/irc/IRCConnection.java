@@ -195,7 +195,7 @@ public class IRCConnection extends PircBot
 		if (action.contains(getNick())) {
 			// highlight
 			message.setColor(Message.COLOR_RED);
-			service.updateNotification(target + ": " + sender + " " + action);
+			service.updateNotification(target + ": " + sender + " " + action, service.getSettings().isVibrateHighlightEnabled());
 			
 			server.getConversation(target).setStatus(Conversation.STATUS_HIGHLIGHT);
 		}
@@ -390,7 +390,7 @@ public class IRCConnection extends PircBot
 		if (text.contains(getNick())) {
 			// highlight
 			message.setColor(Message.COLOR_RED);
-			service.updateNotification(target + ": <" + sender + "> " + text);
+			service.updateNotification(target + ": <" + sender + "> " + text, service.getSettings().isVibrateHighlightEnabled());
 			
 			server.getConversation(target).setStatus(Conversation.STATUS_HIGHLIGHT);
 		}
@@ -536,7 +536,7 @@ public class IRCConnection extends PircBot
 		
 		if (text.contains(getNick())) {
 			message.setColor(Message.COLOR_RED);
-			service.updateNotification("<" + sender + "> " + text);
+			service.updateNotification("<" + sender + "> " + text, service.getSettings().isVibrateHighlightEnabled());
 			
 			server.getConversation(sender).setStatus(Conversation.STATUS_HIGHLIGHT);
 		}

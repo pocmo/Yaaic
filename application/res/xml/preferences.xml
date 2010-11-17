@@ -80,5 +80,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 			android:defaultValue="@string/default_quitmessage"
 			android:dialogTitle="@string/settings_quitmessage_dialog_title"
 			android:dialogMessage="@string/settings_quitmessage_dialog_desc" />
+        <CheckBoxPreference
+            android:title="@string/settings_vibrate_highlight_title"
+            android:summary="@string/settings_vibrate_highlight_desc"
+            android:key="@string/key_vibrate_highlight"
+            android:defaultValue="@string/default_vibrate_highlight" />
+			
 	</PreferenceCategory>
 </PreferenceScreen>

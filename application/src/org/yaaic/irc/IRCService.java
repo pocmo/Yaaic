@@ -43,6 +43,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.util.Log;
 
 /**
  * The background service for managing the irc connections
@@ -157,11 +158,10 @@ public class IRCService extends Service
      */
     private void handleCommand(Intent intent)
     {
-    	if (ACTION_FOREGROUND.equals(intent.getAction())) {
+        if (ACTION_FOREGROUND.equals(intent.getAction())) {
         	if (foreground) {
         		return; // XXX: We are already in foreground...
         	}
-    		
     		foreground = true;
     		
 	        // Set the icon, scrolling text and timestamp
@@ -184,13 +184,19 @@ public class IRCService extends Service
      * 
      * @param text The text to display
      */
-    public void updateNotification(String text)
+    public void updateNotification(String text) {
+        updateNotification(text, false);
+    }
+    public void updateNotification(String text, boolean vibrate)
     {
     	if (foreground) {
     		notificationManager.cancel(R.string.app_name);
     		notification = new Notification(R.drawable.icon, text, System.currentTimeMillis());
     		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, ServersActivity.class), 0);
     		notification.setLatestEventInfo(this, getText(R.string.app_name), text, contentIntent);
+    		if (vibrate) {
+    		    notification.defaults |= Notification.DEFAULT_VIBRATE;
+    		}
     		notificationManager.notify(R.string.app_name, notification);
     	}
     }
