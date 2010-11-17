@@ -23,6 +23,7 @@ package org.yaaic.irc;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Vector;
+import java.util.regex.Pattern;
 
 import android.content.Intent;
 
@@ -52,6 +53,7 @@ public class IRCConnection extends PircBot
 	private IRCService service;
 	private Server server;
 	private ArrayList<String> autojoinChannels;
+	private Pattern mNickMatch;
 	
 	/**
 	 * Create a new connection
@@ -68,6 +70,7 @@ public class IRCConnection extends PircBot
 		this.setAutoNickChange(true);
 		
 		this.setFinger("http://www.youtube.com/watch?v=oHg5SJYRHA0");
+		this.updateNickMatchPattern();
 	}
 	
 	/**
@@ -78,6 +81,7 @@ public class IRCConnection extends PircBot
 	public void setNickname(String nickname)
 	{
 		this.setName(nickname);
+		this.updateNickMatchPattern();
 	}
 	
 	/**
@@ -156,6 +160,7 @@ public class IRCConnection extends PircBot
 		// execute commands
 		CommandParser parser = CommandParser.getInstance();
 		
+		this.updateNickMatchPattern();
 		for (String command : server.getConnectCommands()) {
 			parser.parse(command, server, server.getConversation(ServerInfo.DEFAULT_NAME), service);
 		}
@@ -192,7 +197,7 @@ public class IRCConnection extends PircBot
 		Message message = new Message(sender + " " + action);
 		message.setIcon(R.drawable.action);
 		
-		if (action.contains(getNick())) {
+		if (isMentioned(action)) {
 			// highlight
 			message.setColor(Message.COLOR_RED);
 			service.updateNotification(target + ": " + sender + " " + action, service.getSettings().isVibrateHighlightEnabled());
@@ -387,7 +392,7 @@ public class IRCConnection extends PircBot
 		
 		Message message = new Message(text, sender);
 		
-		if (text.contains(getNick())) {
+		if (isMentioned(text)) {
 			// highlight
 			message.setColor(Message.COLOR_RED);
 			service.updateNotification(target + ": <" + sender + "> " + text, service.getSettings().isVibrateHighlightEnabled());
@@ -427,7 +432,10 @@ public class IRCConnection extends PircBot
 	 */
 	@Override
 	protected void onNickChange(String oldNick, String login, String hostname, String newNick)
-	{
+	{   
+	    if (getNick().equalsIgnoreCase(newNick)) {
+	        this.updateNickMatchPattern();
+	    }
 		Vector<String> channels = getChannelsByNickname(newNick);
 		
 		for (String target : channels) {
@@ -534,7 +542,7 @@ public class IRCConnection extends PircBot
 
 		Message message = new Message("<" + sender + "> " + text);
 		
-		if (text.contains(getNick())) {
+		if (isMentioned(text)) {
 			message.setColor(Message.COLOR_RED);
 			service.updateNotification("<" + sender + "> " + text, service.getSettings().isVibrateHighlightEnabled());
 			
@@ -1113,5 +1121,22 @@ public class IRCConnection extends PircBot
 				quitServer(service.getSettings().getQuitMessage());
 			}
 		}.start();
+	}
+	
+    /**
+     * Check whether the nickname has been mentioned.
+     * 
+     * @param text The text to check for the nickname
+     * @return true if nickname was found, otherwise false
+     */
+	public boolean isMentioned(String text) {
+	    return mNickMatch.matcher(text).find();
+	}
+	
+    /**
+     * Update the nick matching pattern, should be called when the nickname changes.
+     */
+	private void updateNickMatchPattern() {
+	    mNickMatch = Pattern.compile("(?:^|[\\s?:;,.])"+Pattern.quote(getNick())+"(?:[\\s?:;,.]|$)", Pattern.CASE_INSENSITIVE);
 	}
 }
