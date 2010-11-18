@@ -181,13 +181,21 @@ public class IRCService extends Service
     }
     
     /**
-     * Update the notification
+     * Update notification
      * 
      * @param text The text to display
      */
-    public void updateNotification(String text) {
+    public void updateNotification(String text)
+    {
         updateNotification(text, false);
     }
+
+    /**
+     * Update notification and vibrate if needed
+     *
+     * @param text 	  The text to display
+     * @param vibrate True if the device should vibrate, false otherwise
+     */
     public void updateNotification(String text, boolean vibrate)
     {
     	if (foreground) {
