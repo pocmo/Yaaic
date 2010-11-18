@@ -1129,14 +1129,16 @@ public class IRCConnection extends PircBot
      * @param text The text to check for the nickname
      * @return true if nickname was found, otherwise false
      */
-    public boolean isMentioned(String text) {
+    public boolean isMentioned(String text)
+    {
         return mNickMatch.matcher(text).find();
     }
     
     /**
      * Update the nick matching pattern, should be called when the nickname changes.
      */
-    private void updateNickMatchPattern() {
-        mNickMatch = Pattern.compile("(?:^|[\\s?!'´:;,.])"+Pattern.quote(getNick())+"(?:[\\s?!'´:;,.]|$)", Pattern.CASE_INSENSITIVE);
+    private void updateNickMatchPattern()
+    {
+        mNickMatch = Pattern.compile("(?:^|[\\s?!'ï¿½:;,.])"+Pattern.quote(getNick())+"(?:[\\s?!'ï¿½:;,.]|$)", Pattern.CASE_INSENSITIVE);
     }
 }
