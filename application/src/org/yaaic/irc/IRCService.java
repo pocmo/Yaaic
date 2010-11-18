@@ -141,7 +141,9 @@ public class IRCService extends Service
 	 */
     public int onStartCommand(Intent intent, int flags, int startId)
     {
-        handleCommand(intent);
+    	if (intent != null) {
+    		handleCommand(intent);
+    	}
 
         // We want this service to continue running until it is explicitly
         // stopped, so return sticky.
