@@ -37,80 +37,80 @@ import android.widget.ListView;
  */
 public class MessageListView extends ListView
 {
-	private boolean delegate = true;
-	private View parent;
-	private int parentWidth;
-	private int parentHeight;
-	
-	/**
-	 * Create a new MessageListView
-	 * 
-	 * @param context
-	 */
-	public MessageListView(Context context, View parent)
-	{
-		super(context);
-		
-		this.parent = parent;
-		this.setOnItemClickListener(MessageClickListener.getInstance());
-		
-		parentWidth = parent.getWidth();
-		parentHeight = parent.getHeight();
-	}
-	
-	/**
-	 * Should all touch events delegated?
-	 * 
-	 * @param delegate If true all touch events will be delegated, otherwise the listview will handle them
-	 */
-	public void setDelegateTouchEvents(boolean delegate)
-	{
-		this.delegate = delegate;
-	}
-	
-	/**
-	 * Handle touch screen motion events
-	 */
-	@Override
-	public boolean onTouchEvent(MotionEvent event)
-	{
-		if (delegate) {
-			// We delegate the touch events to the underlying view 
-			return false;
-		} else {
-			return super.onTouchEvent(event);
-		}
-	}
+    private boolean delegate = true;
+    private View parent;
+    private int parentWidth;
+    private int parentHeight;
+    
+    /**
+     * Create a new MessageListView
+     * 
+     * @param context
+     */
+    public MessageListView(Context context, View parent)
+    {
+        super(context);
+        
+        this.parent = parent;
+        this.setOnItemClickListener(MessageClickListener.getInstance());
+        
+        parentWidth = parent.getWidth();
+        parentHeight = parent.getHeight();
+    }
+    
+    /**
+     * Should all touch events delegated?
+     * 
+     * @param delegate If true all touch events will be delegated, otherwise the listview will handle them
+     */
+    public void setDelegateTouchEvents(boolean delegate)
+    {
+        this.delegate = delegate;
+    }
+    
+    /**
+     * Handle touch screen motion events
+     */
+    @Override
+    public boolean onTouchEvent(MotionEvent event)
+    {
+        if (delegate) {
+            // We delegate the touch events to the underlying view 
+            return false;
+        } else {
+            return super.onTouchEvent(event);
+        }
+    }
 
-	/**
-	 * On draw
-	 */
-	@Override
-	protected void onDraw(Canvas canvas)
-	{
-		if (delegate && (parent.getWidth() != parentWidth || parent.getHeight() != parentHeight)) {
-			// parent size changed, resizing this child too
-			
-			parentWidth = parent.getWidth();
-			parentHeight = parent.getHeight();
-			
-			this.setLayoutParams(new Gallery.LayoutParams(
-				parent.getWidth() / 100 * 85,
-				parent.getHeight()
-			));
-		}
-		
-		super.onDraw(canvas);
-	}
-	
-	/**
-	 * Get the adapter of this MessageListView
-	 * (Helper to avoid casting)
-	 * 
-	 * @return The MessageListAdapter
-	 */
-	public MessageListAdapter getAdapter()
-	{
-		return (MessageListAdapter) super.getAdapter();
-	}
+    /**
+     * On draw
+     */
+    @Override
+    protected void onDraw(Canvas canvas)
+    {
+        if (delegate && (parent.getWidth() != parentWidth || parent.getHeight() != parentHeight)) {
+            // parent size changed, resizing this child too
+            
+            parentWidth = parent.getWidth();
+            parentHeight = parent.getHeight();
+            
+            this.setLayoutParams(new Gallery.LayoutParams(
+                parent.getWidth() / 100 * 85,
+                parent.getHeight()
+            ));
+        }
+        
+        super.onDraw(canvas);
+    }
+    
+    /**
+     * Get the adapter of this MessageListView
+     * (Helper to avoid casting)
+     * 
+     * @return The MessageListAdapter
+     */
+    public MessageListAdapter getAdapter()
+    {
+        return (MessageListAdapter) super.getAdapter();
+    }
 }

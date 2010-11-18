@@ -36,56 +36,56 @@ import org.yaaic.view.ConversationSwitcher;
  */
 public class ConversationSelectedListener implements OnItemSelectedListener
 {
-	private Server server;
-	private TextView titleView;
-	private ConversationSwitcher switcher;
-	
-	/**
-	 * Create a new ConversationSelectedListener
-	 * 
-	 * @param server
-	 * @param titleView
-	 */
-	public ConversationSelectedListener(Server server, TextView titleView, ConversationSwitcher switcher)
-	{
-		this.server = server;
-		this.titleView = titleView;
-		this.switcher = switcher;
-	}
-	
-	/**
-	 * On conversation selected/focused
-	 */
-	public void onItemSelected(AdapterView<?> deck, View view, int position, long id)
-	{
-		Conversation conversation = (Conversation) deck.getItemAtPosition(position);
-		
-		if (conversation != null && conversation.getType() != Conversation.TYPE_SERVER) {
-			titleView.setText(server.getTitle() + " - " + conversation.getName());
-		} else {
-			onNothingSelected(deck);
-		}
-		
-		// Remember selection
-		if (conversation != null) {
-			Conversation previousConversation = server.getConversation(server.getSelectedConversation());
-			
-			if (previousConversation != null) {
-				previousConversation.setStatus(Conversation.STATUS_DEFAULT);
-			}
-			
-			conversation.setStatus(Conversation.STATUS_SELECTED);
-			server.setSelectedConversation(conversation.getName());
-		}
+    private Server server;
+    private TextView titleView;
+    private ConversationSwitcher switcher;
+    
+    /**
+     * Create a new ConversationSelectedListener
+     * 
+     * @param server
+     * @param titleView
+     */
+    public ConversationSelectedListener(Server server, TextView titleView, ConversationSwitcher switcher)
+    {
+        this.server = server;
+        this.titleView = titleView;
+        this.switcher = switcher;
+    }
+    
+    /**
+     * On conversation selected/focused
+     */
+    public void onItemSelected(AdapterView<?> deck, View view, int position, long id)
+    {
+        Conversation conversation = (Conversation) deck.getItemAtPosition(position);
+        
+        if (conversation != null && conversation.getType() != Conversation.TYPE_SERVER) {
+            titleView.setText(server.getTitle() + " - " + conversation.getName());
+        } else {
+            onNothingSelected(deck);
+        }
+        
+        // Remember selection
+        if (conversation != null) {
+            Conversation previousConversation = server.getConversation(server.getSelectedConversation());
+            
+            if (previousConversation != null) {
+                previousConversation.setStatus(Conversation.STATUS_DEFAULT);
+            }
+            
+            conversation.setStatus(Conversation.STATUS_SELECTED);
+            server.setSelectedConversation(conversation.getName());
+        }
 
-		switcher.invalidate();
-	}
-	
-	/**
-	 * On no conversation selected/focused
-	 */
-	public void onNothingSelected(AdapterView<?> deck)
-	{
-		titleView.setText(server.getTitle());
-	}
+        switcher.invalidate();
+    }
+    
+    /**
+     * On no conversation selected/focused
+     */
+    public void onNothingSelected(AdapterView<?> deck)
+    {
+        titleView.setText(server.getTitle());
+    }
 }

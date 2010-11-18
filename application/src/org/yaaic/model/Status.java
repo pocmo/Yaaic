@@ -26,8 +26,8 @@ package org.yaaic.model;
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
 public class Status {
-	public static final int DISCONNECTED = 0;
-	public static final int CONNECTING = 1;
-	public static final int CONNECTED = 2;
-	public static final int PRE_CONNECTING = 3;
+    public static final int DISCONNECTED = 0;
+    public static final int CONNECTING = 1;
+    public static final int CONNECTED = 2;
+    public static final int PRE_CONNECTING = 3;
 }

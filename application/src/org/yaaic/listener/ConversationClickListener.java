@@ -38,35 +38,35 @@ import org.yaaic.view.MessageListView;
  */
 public class ConversationClickListener implements OnItemClickListener
 {
-	private DeckAdapter adapter;
-	private ViewSwitcher switcher;
-	
-	/**
-	 * Create a new ConversationClickListener
-	 * 
-	 * @param adapter
-	 * @param switcher
-	 */
-	public ConversationClickListener(DeckAdapter adapter, ViewSwitcher switcher)
-	{
-		this.adapter = adapter;
-		this.switcher = switcher;
-	}
-	
-	/**
-	 * On conversation item clicked
-	 */
-	public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
-	{
-		Conversation conversation = adapter.getItem(position);
-		
-		MessageListView canvas = adapter.renderConversation(conversation, switcher);
-		canvas.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
-		canvas.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-		canvas.setDelegateTouchEvents(false); // Do not delegate
-		
-		adapter.setSwitched(conversation.getName(), canvas);
-		switcher.addView(canvas);
-		switcher.showNext();
-	}
+    private DeckAdapter adapter;
+    private ViewSwitcher switcher;
+    
+    /**
+     * Create a new ConversationClickListener
+     * 
+     * @param adapter
+     * @param switcher
+     */
+    public ConversationClickListener(DeckAdapter adapter, ViewSwitcher switcher)
+    {
+        this.adapter = adapter;
+        this.switcher = switcher;
+    }
+    
+    /**
+     * On conversation item clicked
+     */
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
+    {
+        Conversation conversation = adapter.getItem(position);
+        
+        MessageListView canvas = adapter.renderConversation(conversation, switcher);
+        canvas.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
+        canvas.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+        canvas.setDelegateTouchEvents(false); // Do not delegate
+        
+        adapter.setSwitched(conversation.getName(), canvas);
+        switcher.addView(canvas);
+        switcher.showNext();
+    }
 }

@@ -31,36 +31,36 @@ import android.os.Binder;
  */
 public class IRCBinder extends Binder
 {
-	private IRCService service;
-	
-	/**
-	 * Create a new binder for given service 
-	 * 
-	 * @param service
-	 */
-	public IRCBinder(IRCService service)
-	{
-		super();
-		
-		this.service = service;
-	}
-	
-	/**
-	 * Connect to given server
-	 * 
-	 * @param server
-	 */
-	public void connect(final Server server)
-	{
-		service.connect(server);
-	}
-	
-	/**
-	 * Get service associated with this service
-	 * @return
-	 */
-	public IRCService getService()
-	{
-		return service;
-	}
+    private IRCService service;
+    
+    /**
+     * Create a new binder for given service 
+     * 
+     * @param service
+     */
+    public IRCBinder(IRCService service)
+    {
+        super();
+        
+        this.service = service;
+    }
+    
+    /**
+     * Connect to given server
+     * 
+     * @param server
+     */
+    public void connect(final Server server)
+    {
+        service.connect(server);
+    }
+    
+    /**
+     * Get service associated with this service
+     * @return
+     */
+    public IRCService getService()
+    {
+        return service;
+    }
 }

@@ -38,9 +38,9 @@ import android.widget.EditText;
  */
 public class JoinActivity extends Activity implements OnClickListener
 {
-	/**
-	 * On create
-	 */
+    /**
+     * On create
+     */
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -54,11 +54,11 @@ public class JoinActivity extends Activity implements OnClickListener
     /**
      * On click
      */
-	public void onClick(View v)
-	{
-		Intent intent = new Intent();
-		intent.putExtra("channel", ((EditText) findViewById(R.id.channel)).getText().toString());
-		setResult(RESULT_OK, intent);
-		finish();
-	}
+    public void onClick(View v)
+    {
+        Intent intent = new Intent();
+        intent.putExtra("channel", ((EditText) findViewById(R.id.channel)).getText().toString());
+        setResult(RESULT_OK, intent);
+        finish();
+    }
 }

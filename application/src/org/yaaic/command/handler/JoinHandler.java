@@ -36,36 +36,36 @@ import android.content.Context;
  */
 public class JoinHandler extends BaseHandler
 {
-	/**
-	 * Execute /join
-	 */
-	@Override
-	public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException
-	{
-		if (params.length == 2) {
-			service.getConnection(server.getId()).joinChannel(params[1]);
-		} else if (params.length == 3) {
-			service.getConnection(server.getId()).joinChannel(params[1], params[2]);
-		} else {
-			throw new CommandException(service.getString(R.string.invalid_number_of_params));
-		}
-	}
-	
-	/**
-	 * Usage of /join
-	 */
-	@Override
-	public String getUsage()
-	{
-		return "/join <channel> [<key>]";
-	}
+    /**
+     * Execute /join
+     */
+    @Override
+    public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException
+    {
+        if (params.length == 2) {
+            service.getConnection(server.getId()).joinChannel(params[1]);
+        } else if (params.length == 3) {
+            service.getConnection(server.getId()).joinChannel(params[1], params[2]);
+        } else {
+            throw new CommandException(service.getString(R.string.invalid_number_of_params));
+        }
+    }
+    
+    /**
+     * Usage of /join
+     */
+    @Override
+    public String getUsage()
+    {
+        return "/join <channel> [<key>]";
+    }
 
-	/**
-	 * Description of /join
-	 */
-	@Override
-	public String getDescription(Context context)
-	{
-		return context.getString(R.string.command_desc_join);
-	}
+    /**
+     * Description of /join
+     */
+    @Override
+    public String getDescription(Context context)
+    {
+        return context.getString(R.string.command_desc_join);
+    }
 }

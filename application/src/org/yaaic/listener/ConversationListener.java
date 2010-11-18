@@ -22,7 +22,7 @@ package org.yaaic.listener;
 
 public interface ConversationListener
 {
-	public void onConversationMessage(String target);
-	public void onNewConversation(String target);
-	public void onRemoveConversation(String target);
+    public void onConversationMessage(String target);
+    public void onNewConversation(String target);
+    public void onRemoveConversation(String target);
 }

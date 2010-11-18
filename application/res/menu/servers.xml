@@ -24,16 +24,16 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/add"
         android:title="@string/add_server_menu"
         android:icon="@android:drawable/ic_menu_add" />
-	<item
-		android:id="@+id/settings"
-		android:title="@string/settings_menu"
-		android:icon="@android:drawable/ic_menu_preferences" />
-	<item
-		android:id="@+id/about"
-		android:title="@string/about_menu"
-		android:icon="@android:drawable/ic_menu_help" />
-	<item
-		android:id="@+id/exit"
-		android:title="@string/exit_menu"
-		android:icon="@android:drawable/ic_menu_close_clear_cancel" />
+    <item
+        android:id="@+id/settings"
+        android:title="@string/settings_menu"
+        android:icon="@android:drawable/ic_menu_preferences" />
+    <item
+        android:id="@+id/about"
+        android:title="@string/about_menu"
+        android:icon="@android:drawable/ic_menu_help" />
+    <item
+        android:id="@+id/exit"
+        android:title="@string/exit_menu"
+        android:icon="@android:drawable/ic_menu_close_clear_cancel" />
 </menu>

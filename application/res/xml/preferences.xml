@@ -20,18 +20,18 @@ You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <PreferenceScreen
-	xmlns:android="http://schemas.android.com/apk/res/android">
-	<PreferenceCategory
-		android:title="@string/settings_connection">
-		<CheckBoxPreference
-			android:title="@string/settings_reconnect_title"
-			android:summary="@string/settings_reconnect_desc"
-			android:key="@string/key_reconnect"
-			android:defaultValue="@string/default_reconnect" />
-	</PreferenceCategory>
-	<PreferenceCategory
-		android:title="@string/settings_chat">
-		<ListPreference
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/settings_connection">
+        <CheckBoxPreference
+            android:title="@string/settings_reconnect_title"
+            android:summary="@string/settings_reconnect_desc"
+            android:key="@string/key_reconnect"
+            android:defaultValue="@string/default_reconnect" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/settings_chat">
+        <ListPreference
             android:title="@string/settings_fontsize_title"
             android:summary="@string/settings_fontsize_desc"
             android:dialogTitle="@string/settings_fontsize_dialog_title"
@@ -39,52 +39,52 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:entryValues="@array/fontsize_values"
             android:key="@string/key_fontsize"
             android:defaultValue="@string/default_fontsize" />
-		<CheckBoxPreference
-			android:title="@string/settings_icons_title"
-			android:summary="@string/settings_icons_desc"
-			android:key="@string/key_show_icons"
-			android:defaultValue="@string/default_show_icons" />
-		<CheckBoxPreference
-			android:title="@string/settings_colors_title"
-			android:summary="@string/settings_colors_desc"
-			android:key="@string/key_show_colors"
-			android:defaultValue="@string/default_show_colors"/>
-		<CheckBoxPreference
-			android:title="@string/settings_colors_nick_title"
-			android:key="@string/key_show_colors_nick"
-			android:summary="@string/settings_colors_nick_desc"
-			android:defaultValue="@string/default_show_colors_nick"/>
-		<CheckBoxPreference
-			android:title="@string/settings_timestamp_title"
-			android:summary="@string/settings_timestamp_desc"
-			android:key="@string/key_show_timestamp"
-			android:defaultValue="@string/default_show_timestamp" />
-		<CheckBoxPreference
-			android:title="@string/settings_24h_title"
-			android:summary="@string/settings_24h_desc"
-			android:key="@string/key_24h_format"
-			android:defaultValue="@string/default_24h_format"
-			android:dependency="@string/key_show_timestamp" />
+        <CheckBoxPreference
+            android:title="@string/settings_icons_title"
+            android:summary="@string/settings_icons_desc"
+            android:key="@string/key_show_icons"
+            android:defaultValue="@string/default_show_icons" />
+        <CheckBoxPreference
+            android:title="@string/settings_colors_title"
+            android:summary="@string/settings_colors_desc"
+            android:key="@string/key_show_colors"
+            android:defaultValue="@string/default_show_colors"/>
+        <CheckBoxPreference
+            android:title="@string/settings_colors_nick_title"
+            android:key="@string/key_show_colors_nick"
+            android:summary="@string/settings_colors_nick_desc"
+            android:defaultValue="@string/default_show_colors_nick"/>
+        <CheckBoxPreference
+            android:title="@string/settings_timestamp_title"
+            android:summary="@string/settings_timestamp_desc"
+            android:key="@string/key_show_timestamp"
+            android:defaultValue="@string/default_show_timestamp" />
+        <CheckBoxPreference
+            android:title="@string/settings_24h_title"
+            android:summary="@string/settings_24h_desc"
+            android:key="@string/key_24h_format"
+            android:defaultValue="@string/default_24h_format"
+            android:dependency="@string/key_show_timestamp" />
     </PreferenceCategory>
-	<PreferenceCategory
-		android:title="@string/settings_misc">
+    <PreferenceCategory
+        android:title="@string/settings_misc">
         <CheckBoxPreference
             android:title="@string/settings_voice_recognition_title"
             android:summary="@string/settings_voice_recognition_desc"
             android:key="@string/key_voice_recognition"
             android:defaultValue="@string/default_voice_recognition" />
-		<EditTextPreference
-			android:title="@string/settings_quitmessage_title"
-			android:summary="@string/settings_quitmessage_desc"
-			android:key="@string/key_quitmessage"
-			android:defaultValue="@string/default_quitmessage"
-			android:dialogTitle="@string/settings_quitmessage_dialog_title"
-			android:dialogMessage="@string/settings_quitmessage_dialog_desc" />
+        <EditTextPreference
+            android:title="@string/settings_quitmessage_title"
+            android:summary="@string/settings_quitmessage_desc"
+            android:key="@string/key_quitmessage"
+            android:defaultValue="@string/default_quitmessage"
+            android:dialogTitle="@string/settings_quitmessage_dialog_title"
+            android:dialogMessage="@string/settings_quitmessage_dialog_desc" />
         <CheckBoxPreference
             android:title="@string/settings_vibrate_highlight_title"
             android:summary="@string/settings_vibrate_highlight_desc"
             android:key="@string/key_vibrate_highlight"
             android:defaultValue="@string/default_vibrate_highlight" />
-			
-	</PreferenceCategory>
+            
+    </PreferenceCategory>
 </PreferenceScreen>

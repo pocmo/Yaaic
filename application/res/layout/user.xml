@@ -20,67 +20,67 @@ You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     <TextView
-    	android:id="@+id/nickname"
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:padding="10px"
-    	android:autoLink="all"
-    	android:linksClickable="true"
-    	android:textSize="20px" />
-	<LinearLayout
-	    android:orientation="horizontal"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content">
-	    <Button
-	    	android:id="@+id/op"
-	    	android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-			android:layout_weight="1"
-	    	android:text="@string/button_op" />
-	    <Button
-	    	android:id="@+id/deop"
-	    	android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-	    	android:layout_weight="1"
-	    	android:text="@string/button_deop" />
-	</LinearLayout>
-	<LinearLayout
-	    android:orientation="horizontal"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content">
-	    <Button
-	    	android:id="@+id/voice"
-	    	android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-			android:layout_weight="1"
-	    	android:text="@string/button_voice" />
-	    <Button
-	    	android:id="@+id/devoice"
-	    	android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-	    	android:layout_weight="1"
-	    	android:text="@string/button_devoice" />
-	</LinearLayout>
-	<LinearLayout
-	    android:orientation="horizontal"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content">
-	    <Button
-	    	android:id="@+id/kick"
-	    	android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-	    	android:layout_weight="1"
-	    	android:text="@string/button_kick" />
-	    <Button
-	    	android:id="@+id/ban"
-	    	android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-			android:layout_weight="1"
-	    	android:text="@string/button_ban" />
-	</LinearLayout>
+        android:id="@+id/nickname"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="10px"
+        android:autoLink="all"
+        android:linksClickable="true"
+        android:textSize="20px" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/op"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/button_op" />
+        <Button
+            android:id="@+id/deop"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/button_deop" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/voice"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/button_voice" />
+        <Button
+            android:id="@+id/devoice"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/button_devoice" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/kick"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/button_kick" />
+        <Button
+            android:id="@+id/ban"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/button_ban" />
+    </LinearLayout>
 </LinearLayout>

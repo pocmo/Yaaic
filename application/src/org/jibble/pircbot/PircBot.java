@@ -158,21 +158,21 @@ public abstract class PircBot implements ReplyConstants {
         // XXX: PircBot Patch for SSL
         Socket socket;
         if (_useSSL) {
-        	try {
-        		SSLContext context = SSLContext.getInstance("TLS");
-        		context.init(null, new X509TrustManager[] { new NaiveTrustManager() }, null);
-        		SSLSocketFactory factory = context.getSocketFactory();
-        		SSLSocket ssocket = (SSLSocket) factory.createSocket(hostname, port);
-        		ssocket.startHandshake();
-        		socket = ssocket;
-        	}
-        	catch(Exception e)
-        	{
-        		// XXX: It's not really an IOException :)
-        		throw new IOException("Cannot open SSL socket");
-        	}
+            try {
+                SSLContext context = SSLContext.getInstance("TLS");
+                context.init(null, new X509TrustManager[] { new NaiveTrustManager() }, null);
+                SSLSocketFactory factory = context.getSocketFactory();
+                SSLSocket ssocket = (SSLSocket) factory.createSocket(hostname, port);
+                ssocket.startHandshake();
+                socket = ssocket;
+            }
+            catch(Exception e)
+            {
+                // XXX: It's not really an IOException :)
+                throw new IOException("Cannot open SSL socket");
+            }
         } else {
-        	socket =  new Socket(hostname, port);
+            socket =  new Socket(hostname, port);
         }
         
         _inetAddress = socket.getLocalAddress();
@@ -245,7 +245,7 @@ public abstract class PircBot implements ReplyConstants {
 
         // XXX: PircBot patch - We are not connected to server if nothing received
         if (line == null) {
-        	throw new IOException("Could not connect to server");
+            throw new IOException("Could not connect to server");
         }
         
         // This makes the socket timeout on read operations after 5 minutes.
@@ -293,7 +293,7 @@ public abstract class PircBot implements ReplyConstants {
      */
     public void setUseSSL(boolean useSSL)
     {
-    	_useSSL = useSSL;
+        _useSSL = useSSL;
     }
 
 
@@ -1013,11 +1013,11 @@ public abstract class PircBot implements ReplyConstants {
         }
         else if (command.equals("QUIT")) {
             // Someone has quit from the IRC server.
-        	
-        	// XXX: Pircbot Patch - Call onQuit before removing the user. This way we
-        	//						are able to know which channels the user was on.
-        	this.onQuit(sourceNick, sourceLogin, sourceHostname, line.substring(line.indexOf(" :") + 2));
-        	
+            
+            // XXX: Pircbot Patch - Call onQuit before removing the user. This way we
+            //                        are able to know which channels the user was on.
+            this.onQuit(sourceNick, sourceLogin, sourceHostname, line.substring(line.indexOf(" :") + 2));
+            
             if (sourceNick.equals(this.getNick())) {
                 this.removeAllChannels();
             }

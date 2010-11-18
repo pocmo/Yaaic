@@ -53,14 +53,14 @@ public  class NonScalingBackgroundDrawable extends Drawable {
      */
     public void draw(Canvas canvas)
     {
-    	int left = (view.getWidth() / 2) - (drawable.getIntrinsicWidth() / 2);
-    	int top = (view.getHeight() / 2) - (drawable.getIntrinsicHeight() / 2);
-    	int right = left + drawable.getIntrinsicWidth();
-    	int bottom = top + drawable.getIntrinsicHeight();
+        int left = (view.getWidth() / 2) - (drawable.getIntrinsicWidth() / 2);
+        int top = (view.getHeight() / 2) - (drawable.getIntrinsicHeight() / 2);
+        int right = left + drawable.getIntrinsicWidth();
+        int bottom = top + drawable.getIntrinsicHeight();
 
-    	drawable.setBounds(left, top, right, bottom);
+        drawable.setBounds(left, top, right, bottom);
          
-    	drawable.draw(canvas);
+        drawable.draw(canvas);
     }
 
     /**
@@ -76,7 +76,7 @@ public  class NonScalingBackgroundDrawable extends Drawable {
      */
     public void setAlpha(int alpha)
     {
-    	drawable.setAlpha(alpha);
+        drawable.setAlpha(alpha);
     }
 
     /**
@@ -84,6 +84,6 @@ public  class NonScalingBackgroundDrawable extends Drawable {
      */
     public void setColorFilter(ColorFilter cf)
     {
-    	drawable.setColorFilter(cf);
+        drawable.setColorFilter(cf);
     }
 }

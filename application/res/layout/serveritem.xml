@@ -35,17 +35,17 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="5px">
-	    <TextView
-	        android:id="@+id/title"
-	        android:layout_width="fill_parent" 
-	        android:layout_height="wrap_content"
-			android:text=""
-			android:textSize="16px" />
-		<TextView
-		   android:id="@+id/host"
-		   android:layout_width="fill_parent"
-		   android:layout_height="wrap_content"
-		   android:text=""
-		   android:textSize="12px" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="fill_parent" 
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="16px" />
+        <TextView
+           android:id="@+id/host"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           android:text=""
+           android:textSize="12px" />
     </LinearLayout>
 </LinearLayout>

@@ -41,34 +41,34 @@ import android.widget.ArrayAdapter;
  */
 public class UsersActivity extends ListActivity implements OnItemClickListener
 {
-	/**
-	 * On create
-	 */
-	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
-		setContentView(R.layout.users);
-		
-		final String[] users = getIntent().getExtras().getStringArray(Extra.USERS);
-		getListView().setOnItemClickListener(this);
+    /**
+     * On create
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        
+        setContentView(R.layout.users);
+        
+        final String[] users = getIntent().getExtras().getStringArray(Extra.USERS);
+        getListView().setOnItemClickListener(this);
 
-		// Add sorted list of users in own thread to avoid blocking UI
-		// TODO: Move to a background task and show loading indicator while sorting
-		Arrays.sort(users, String.CASE_INSENSITIVE_ORDER);
-		getListView().setAdapter(new ArrayAdapter<String>(UsersActivity.this, R.layout.useritem, users));
-	}
+        // Add sorted list of users in own thread to avoid blocking UI
+        // TODO: Move to a background task and show loading indicator while sorting
+        Arrays.sort(users, String.CASE_INSENSITIVE_ORDER);
+        getListView().setAdapter(new ArrayAdapter<String>(UsersActivity.this, R.layout.useritem, users));
+    }
 
-	/**
-	 * On user selected
-	 */
-	public void onItemClick(AdapterView<?> list, View item, int position, long id)
-	{
-		Intent intent = new Intent();
-		intent.putExtra(Extra.USER, (String) getListView().getAdapter().getItem(position));
-		setResult(RESULT_OK, intent);
-		finish();
-	}
+    /**
+     * On user selected
+     */
+    public void onItemClick(AdapterView<?> list, View item, int position, long id)
+    {
+        Intent intent = new Intent();
+        intent.putExtra(Extra.USER, (String) getListView().getAdapter().getItem(position));
+        setResult(RESULT_OK, intent);
+        finish();
+    }
 }

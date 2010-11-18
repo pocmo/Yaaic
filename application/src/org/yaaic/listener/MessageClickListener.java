@@ -36,38 +36,38 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class MessageClickListener implements OnItemClickListener
 {
-	private static MessageClickListener instance;
-	
-	/**
-	 * Private constructor
-	 */
-	private MessageClickListener()
-	{
-	}
-	
-	/**
-	 * Get global instance of message click listener 
-	 * 
-	 * @return
-	 */
-	public static synchronized MessageClickListener getInstance()
-	{
-		if (instance == null) {
-			instance = new MessageClickListener();
-		}
-		
-		return instance;
-	}
-	
-	/**
-	 * On message item clicked
-	 */
-	public void onItemClick(AdapterView<?> group, View view, int position, long id)
-	{
-		MessageListAdapter adapter = (MessageListAdapter) group.getAdapter();
-		
-		Intent intent = new Intent(group.getContext(), MessageActivity.class);
-		intent.putExtra(Extra.MESSAGE, adapter.getItem(position).getText().toString());
-		group.getContext().startActivity(intent);
-	}
+    private static MessageClickListener instance;
+    
+    /**
+     * Private constructor
+     */
+    private MessageClickListener()
+    {
+    }
+    
+    /**
+     * Get global instance of message click listener 
+     * 
+     * @return
+     */
+    public static synchronized MessageClickListener getInstance()
+    {
+        if (instance == null) {
+            instance = new MessageClickListener();
+        }
+        
+        return instance;
+    }
+    
+    /**
+     * On message item clicked
+     */
+    public void onItemClick(AdapterView<?> group, View view, int position, long id)
+    {
+        MessageListAdapter adapter = (MessageListAdapter) group.getAdapter();
+        
+        Intent intent = new Intent(group.getContext(), MessageActivity.class);
+        intent.putExtra(Extra.MESSAGE, adapter.getItem(position).getText().toString());
+        group.getContext().startActivity(intent);
+    }
 }

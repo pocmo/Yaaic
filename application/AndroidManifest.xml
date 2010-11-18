@@ -20,12 +20,12 @@ You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="org.yaaic"
-	android:versionCode="7"
-	android:versionName="0.6">
+    package="org.yaaic"
+    android:versionCode="7"
+    android:versionName="0.6">
     <application
-    	android:icon="@drawable/icon"
-    	android:label="Yaaic">
+        android:icon="@drawable/icon"
+        android:label="Yaaic">
         <activity
             android:name=".activity.ServersActivity"
             android:label="@string/app_name"
@@ -38,12 +38,12 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         <activity
             android:name=".activity.AddServerActivity"
             android:label="@string/add_server_label">
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<category android:name="android.intent.category.BROWSABLE" />
-				<data android:scheme="irc"/>
-			</intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="irc"/>
+            </intent-filter>
         </activity>
         <activity
             android:name=".activity.ConversationActivity"
@@ -69,25 +69,25 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:theme="@android:style/Theme.Dialog">
         </activity>
         <activity
-        	android:name=".activity.AddAliasActivity"
-        	android:theme="@android:style/Theme.Dialog">
+            android:name=".activity.AddAliasActivity"
+            android:theme="@android:style/Theme.Dialog">
         </activity>
         <activity
-        	android:name=".activity.AddChannelActivity"
-        	android:theme="@android:style/Theme.Dialog">
-       	</activity>
+            android:name=".activity.AddChannelActivity"
+            android:theme="@android:style/Theme.Dialog">
+           </activity>
         <activity
-        	android:name=".activity.AddCommandsActivity"
-        	android:theme="@android:style/Theme.Dialog">
-       	</activity>
+            android:name=".activity.AddCommandsActivity"
+            android:theme="@android:style/Theme.Dialog">
+           </activity>
         <activity
-        	android:name=".activity.MessageActivity"
-        	android:theme="@android:style/Theme.Dialog">
-       	</activity>
+            android:name=".activity.MessageActivity"
+            android:theme="@android:style/Theme.Dialog">
+           </activity>
         <activity
-        	android:name=".activity.UserActivity"
-        	android:theme="@android:style/Theme.Dialog">
-       	</activity>
+            android:name=".activity.UserActivity"
+            android:theme="@android:style/Theme.Dialog">
+           </activity>
         <service android:name=".irc.IRCService"></service>
     </application>
     <uses-sdk android:minSdkVersion="3" />

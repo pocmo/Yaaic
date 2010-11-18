@@ -26,50 +26,50 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     android:layout_height="fill_parent"
     android:padding="10px">
     <TextView
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:text="Yaaic"
-    	android:textSize="16px"
-    	android:gravity="center_horizontal"
-    	android:textColor="#FF6CB600" />
-	<LinearLayout
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:orientation="horizontal"
-		android:gravity="center_horizontal">
-	    <TextView
-	    	android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:text="@string/app_full_name"
-	    	android:textSize="10px" />
-		<TextView
-	    	android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:text=" - " />
-	    <TextView
-	    	android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:text="@string/app_version"
-	    	android:textSize="10px" />
-   	</LinearLayout>
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Yaaic"
+        android:textSize="16px"
+        android:gravity="center_horizontal"
+        android:textColor="#FF6CB600" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_full_name"
+            android:textSize="10px" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" - " />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_version"
+            android:textSize="10px" />
+       </LinearLayout>
     <TextView
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:text="@string/app_copyright"
-    	android:textSize="12px"
-    	android:gravity="center_horizontal" />
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_copyright"
+        android:textSize="12px"
+        android:gravity="center_horizontal" />
     <TextView
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:text="@string/app_homepage"
-    	android:linksClickable="true"
-    	android:autoLink="web"
-    	android:textColorLink="#FF6CB600"
-    	android:textSize="16px"
-    	android:gravity="center_horizontal" />
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_homepage"
+        android:linksClickable="true"
+        android:autoLink="web"
+        android:textColorLink="#FF6CB600"
+        android:textSize="16px"
+        android:gravity="center_horizontal" />
     <TextView
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:text="@string/licence_info"
-    	android:textSize="12px" />
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/licence_info"
+        android:textSize="12px" />
 </LinearLayout>

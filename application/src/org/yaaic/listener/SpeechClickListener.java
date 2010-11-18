@@ -35,29 +35,29 @@ import android.view.View.OnClickListener;
  */
 public class SpeechClickListener implements OnClickListener
 {
-	private Activity activity;
-	
-	/**
-	 * Create a new listener for speech button
-	 * 
-	 * @param activity
-	 * @param input
-	 */
-	public SpeechClickListener(Activity activity)
-	{
-		this.activity = activity;
-	}
-	
-	/**
-	 * On Click on speech button
-	 */
-	public void onClick(View v)
-	{
-		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-		
+    private Activity activity;
+    
+    /**
+     * Create a new listener for speech button
+     * 
+     * @param activity
+     * @param input
+     */
+    public SpeechClickListener(Activity activity)
+    {
+        this.activity = activity;
+    }
+    
+    /**
+     * On Click on speech button
+     */
+    public void onClick(View v)
+    {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "");
         
         activity.startActivityForResult(intent, ConversationActivity.REQUEST_CODE_SPEECH);
-	}
+    }
 }

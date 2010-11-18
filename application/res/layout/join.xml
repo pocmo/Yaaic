@@ -20,21 +20,21 @@ You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:padding="5px">
     <EditText
-    	android:id="@+id/channel"
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:singleLine="true"
-    	android:ems="10"
-    	android:text="#" />
-	<Button
-		android:id="@+id/join"
-		android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-		android:text="@string/join" />
+        android:id="@+id/channel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:ems="10"
+        android:text="#" />
+    <Button
+        android:id="@+id/join"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/join" />
 </LinearLayout>

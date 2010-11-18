@@ -32,31 +32,31 @@ import javax.net.ssl.X509TrustManager;
  */
 public class NaiveTrustManager implements X509TrustManager
 {
-	/**
-	 * Check client trusted
-	 * 
-	 * @throws CertificateException if not trusted
-	 */
-	public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException
-	{
-		// No Exception == Trust
-	}
+    /**
+     * Check client trusted
+     * 
+     * @throws CertificateException if not trusted
+     */
+    public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException
+    {
+        // No Exception == Trust
+    }
 
-	/**
-	 * Check server trusted
-	 * 
-	 * @throws CertificateException if not trusted
-	 */
-	public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException
-	{
-		// No Exception == Trust
-	}
+    /**
+     * Check server trusted
+     * 
+     * @throws CertificateException if not trusted
+     */
+    public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException
+    {
+        // No Exception == Trust
+    }
 
-	/**
-	 * Get accepted issuers
-	 */
-	public X509Certificate[] getAcceptedIssuers()
-	{
-		return new X509Certificate[0];
-	}
+    /**
+     * Get accepted issuers
+     */
+    public X509Certificate[] getAcceptedIssuers()
+    {
+        return new X509Certificate[0];
+    }
 }

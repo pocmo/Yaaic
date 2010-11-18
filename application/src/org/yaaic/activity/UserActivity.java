@@ -41,44 +41,44 @@ import android.widget.TextView;
  */
 public class UserActivity extends Activity implements OnClickListener
 {
-	private String nickname;
-	
-	/**
-	 * On create
-	 */
-	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
-		nickname = getIntent().getStringExtra(Extra.USER);
-		setContentView(R.layout.user);
-		
-		// Use full width
-		LayoutParams params = getWindow().getAttributes();
-		params.width = WindowManager.LayoutParams.FILL_PARENT;
-		getWindow().setAttributes(params);
-		
-		((Button) findViewById(R.id.op)).setOnClickListener(this);
-		((Button) findViewById(R.id.deop)).setOnClickListener(this);
-		((Button) findViewById(R.id.voice)).setOnClickListener(this);
-		((Button) findViewById(R.id.devoice)).setOnClickListener(this);
-		((Button) findViewById(R.id.kick)).setOnClickListener(this);
-		((Button) findViewById(R.id.ban)).setOnClickListener(this);
-		
-		((TextView) findViewById(R.id.nickname)).setText(nickname);
-	}
+    private String nickname;
+    
+    /**
+     * On create
+     */
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        
+        nickname = getIntent().getStringExtra(Extra.USER);
+        setContentView(R.layout.user);
+        
+        // Use full width
+        LayoutParams params = getWindow().getAttributes();
+        params.width = WindowManager.LayoutParams.FILL_PARENT;
+        getWindow().setAttributes(params);
+        
+        ((Button) findViewById(R.id.op)).setOnClickListener(this);
+        ((Button) findViewById(R.id.deop)).setOnClickListener(this);
+        ((Button) findViewById(R.id.voice)).setOnClickListener(this);
+        ((Button) findViewById(R.id.devoice)).setOnClickListener(this);
+        ((Button) findViewById(R.id.kick)).setOnClickListener(this);
+        ((Button) findViewById(R.id.ban)).setOnClickListener(this);
+        
+        ((TextView) findViewById(R.id.nickname)).setText(nickname);
+    }
 
-	/**
-	 * On button click
-	 */
-	public void onClick(View v)
-	{
-		Intent intent = new Intent();
-		intent.putExtra(Extra.ACTION, v.getId());
-		intent.putExtra(Extra.USER, nickname);
-		setResult(RESULT_OK, intent);
-		finish();
-	}
+    /**
+     * On button click
+     */
+    public void onClick(View v)
+    {
+        Intent intent = new Intent();
+        intent.putExtra(Extra.ACTION, v.getId());
+        intent.putExtra(Extra.USER, nickname);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
 }

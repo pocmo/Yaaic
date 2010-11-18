@@ -33,24 +33,24 @@ import android.content.Intent;
  */
 public class ServerReceiver extends BroadcastReceiver
 {
-	private ServerListener listener;
-	
-	/**
-	 * Create a new server receiver
-	 * 
-	 * @param listener
-	 */
-	public ServerReceiver(ServerListener listener)
-	{
-		this.listener = listener;
-	}
+    private ServerListener listener;
+    
+    /**
+     * Create a new server receiver
+     * 
+     * @param listener
+     */
+    public ServerReceiver(ServerListener listener)
+    {
+        this.listener = listener;
+    }
 
-	/**
-	 * On receive broadcast
-	 */
-	@Override
-	public void onReceive(Context context, Intent intent)
-	{
-		listener.onStatusUpdate(); 
-	}
+    /**
+     * On receive broadcast
+     */
+    @Override
+    public void onReceive(Context context, Intent intent)
+    {
+        listener.onStatusUpdate(); 
+    }
 }

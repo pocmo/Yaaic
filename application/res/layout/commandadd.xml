@@ -20,49 +20,49 @@ You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     <TextView
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:text="@string/command_add_description"
-    	android:padding="5px" />
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/command_add_description"
+        android:padding="5px" />
     <ListView
-    	android:id="@+id/commands"
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content" />
-   	<LinearLayout
-   		android:orientation="horizontal"
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content">
-    	<EditText
-			android:id="@+id/command"
-    		android:layout_width="wrap_content"
-    		android:layout_height="wrap_content"
-    		android:singleLine="true"
-    		android:text="/"
-    		android:layout_weight="1" />
-   		<Button
-   			android:id="@+id/add"
-    		android:layout_width="wrap_content"
-    		android:layout_height="wrap_content"
-    		android:text="@string/action_add" />
-   	</LinearLayout>
-   	<LinearLayout
-   		android:orientation="horizontal"
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content">
-	   	<Button
-	   		android:layout_width="wrap_content"
-	   		android:layout_height="wrap_content"
-	   		android:id="@+id/ok"
-			android:text="@string/action_ok" />
-	   	<Button
-	   		android:layout_width="wrap_content"
-	   		android:layout_height="wrap_content"
-	   		android:id="@+id/cancel"
-			android:text="@string/action_cancel" />
-	</LinearLayout>
+        android:id="@+id/commands"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+       <LinearLayout
+           android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/command"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="/"
+            android:layout_weight="1" />
+           <Button
+               android:id="@+id/add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_add" />
+       </LinearLayout>
+       <LinearLayout
+           android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+           <Button
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:id="@+id/ok"
+            android:text="@string/action_ok" />
+           <Button
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:id="@+id/cancel"
+            android:text="@string/action_cancel" />
+    </LinearLayout>
 </LinearLayout>

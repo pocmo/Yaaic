@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="key_show_timestamp">show_timestamp</string>
-	<string name="default_show_timestamp">false</string>
-	
-	<string name="key_show_icons">show_icons</string>
-	<string name="default_show_icons">true</string>
-	
-	<string name="key_show_colors">show_colors</string>
-	<string name="default_show_colors">true</string>
-	
-	<string name="key_show_colors_nick">show_colors_nick</string>
-	<string name="default_show_colors_nick">false</string>
-	
-	<string name="key_24h_format">24h_format</string>
-	<string name="default_24h_format">true</string>
-	
-	<string name="key_reconnect">reconnect</string>
-	<string name="default_reconnect">false</string>
-	
-	<string name="key_quitmessage">quitmessage</string>
-	<string name="default_quitmessage">Yaaic - Yet another Android IRC client - http://www.yaaic.org</string>
-	
-	<string name="key_fontsize">fontsize</string>
-	<string name="default_fontsize">11</string>
-	
-	<string name="key_voice_recognition">voice_recognition</string>
-	<string name="default_voice_recognition">false</string>
-	
-	<string name="key_vibrate_highlight">vibrate_highlight</string>
-	<string name="default_vibrate_highlight">true</string>
+    <string name="key_show_timestamp">show_timestamp</string>
+    <string name="default_show_timestamp">false</string>
+    
+    <string name="key_show_icons">show_icons</string>
+    <string name="default_show_icons">true</string>
+    
+    <string name="key_show_colors">show_colors</string>
+    <string name="default_show_colors">true</string>
+    
+    <string name="key_show_colors_nick">show_colors_nick</string>
+    <string name="default_show_colors_nick">false</string>
+    
+    <string name="key_24h_format">24h_format</string>
+    <string name="default_24h_format">true</string>
+    
+    <string name="key_reconnect">reconnect</string>
+    <string name="default_reconnect">false</string>
+    
+    <string name="key_quitmessage">quitmessage</string>
+    <string name="default_quitmessage">Yaaic - Yet another Android IRC client - http://www.yaaic.org</string>
+    
+    <string name="key_fontsize">fontsize</string>
+    <string name="default_fontsize">11</string>
+    
+    <string name="key_voice_recognition">voice_recognition</string>
+    <string name="default_voice_recognition">false</string>
+    
+    <string name="key_vibrate_highlight">vibrate_highlight</string>
+    <string name="default_vibrate_highlight">true</string>
 </resources>

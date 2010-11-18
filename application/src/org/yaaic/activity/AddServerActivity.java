@@ -53,19 +53,19 @@ import org.yaaic.model.Status;
  */
 public class AddServerActivity extends Activity implements OnClickListener
 {
-	private static final int REQUEST_CODE_CHANNELS = 1;
-	private static final int REQUEST_CODE_COMMANDS = 2;
-	private static final int REQUEST_CODE_ALIASES  = 3;
-	
-	private Server server;
-	private ArrayList<String> aliases;
-	private ArrayList<String> channels;
-	private ArrayList<String> commands;
-	
-	/**
-	 * On create
-	 */
-	@Override
+    private static final int REQUEST_CODE_CHANNELS = 1;
+    private static final int REQUEST_CODE_COMMANDS = 2;
+    private static final int REQUEST_CODE_ALIASES  = 3;
+    
+    private Server server;
+    private ArrayList<String> aliases;
+    private ArrayList<String> channels;
+    private ArrayList<String> commands;
+    
+    /**
+     * On create
+     */
+    @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -89,327 +89,327 @@ public class AddServerActivity extends Activity implements OnClickListener
         
         Bundle extras = getIntent().getExtras();
         if (extras != null && extras.containsKey(Extra.SERVER)) {
-        	// Request to edit an existing server
-        	Database db = new Database(this);
-        	this.server = db.getServerById(extras.getInt(Extra.SERVER));
-        	aliases.addAll(server.getIdentity().getAliases());
-        	this.channels = db.getChannelsByServerId(server.getId());
-        	this.commands = db.getCommandsByServerId(server.getId());
-        	db.close();
-        	
-        	// Set server values
-        	((EditText) findViewById(R.id.title)).setText(server.getTitle());
-        	((EditText) findViewById(R.id.host)).setText(server.getHost());
-        	((EditText) findViewById(R.id.port)).setText(String.valueOf(server.getPort()));
-        	((EditText) findViewById(R.id.password)).setText(server.getPassword());
-        	
-        	((EditText) findViewById(R.id.nickname)).setText(server.getIdentity().getNickname());
-        	((EditText) findViewById(R.id.ident)).setText(server.getIdentity().getIdent());
-        	((EditText) findViewById(R.id.realname)).setText(server.getIdentity().getRealName());
-        	((CheckBox) findViewById(R.id.useSSL)).setChecked(server.useSSL());
-        	
-        	// Select charset
-        	if (server.getCharset() != null) {
-        		for (int i = 0; i < charsets.length; i++) {
-        			if (server.getCharset().equals(charsets[i])) {
-        				spinner.setSelection(i);
-        				break;
-        			}
-        		}
-        	}
+            // Request to edit an existing server
+            Database db = new Database(this);
+            this.server = db.getServerById(extras.getInt(Extra.SERVER));
+            aliases.addAll(server.getIdentity().getAliases());
+            this.channels = db.getChannelsByServerId(server.getId());
+            this.commands = db.getCommandsByServerId(server.getId());
+            db.close();
+            
+            // Set server values
+            ((EditText) findViewById(R.id.title)).setText(server.getTitle());
+            ((EditText) findViewById(R.id.host)).setText(server.getHost());
+            ((EditText) findViewById(R.id.port)).setText(String.valueOf(server.getPort()));
+            ((EditText) findViewById(R.id.password)).setText(server.getPassword());
+            
+            ((EditText) findViewById(R.id.nickname)).setText(server.getIdentity().getNickname());
+            ((EditText) findViewById(R.id.ident)).setText(server.getIdentity().getIdent());
+            ((EditText) findViewById(R.id.realname)).setText(server.getIdentity().getRealName());
+            ((CheckBox) findViewById(R.id.useSSL)).setChecked(server.useSSL());
+            
+            // Select charset
+            if (server.getCharset() != null) {
+                for (int i = 0; i < charsets.length; i++) {
+                    if (server.getCharset().equals(charsets[i])) {
+                        spinner.setSelection(i);
+                        break;
+                    }
+                }
+            }
         }
         
         Uri uri = getIntent().getData();
         if (uri != null && uri.getScheme().equals("irc")) {
-        	// handling an irc:// uri
-        	
-        	((EditText) findViewById(R.id.host)).setText(uri.getHost());
-        	if (uri.getPort() != -1) {
-        		((EditText) findViewById(R.id.port)).setText(String.valueOf(uri.getPort()));
-        	}
+            // handling an irc:// uri
+            
+            ((EditText) findViewById(R.id.host)).setText(uri.getHost());
+            if (uri.getPort() != -1) {
+                ((EditText) findViewById(R.id.port)).setText(String.valueOf(uri.getPort()));
+            }
         }
     }
-	
-	/**
-	 * On activity result
-	 */
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data)
-	{
-		if (resultCode != RESULT_OK) {
-			return; // ignore everything else
-		}
-		
-		switch (requestCode) {
-			case REQUEST_CODE_ALIASES:
-				aliases.clear();
-				aliases.addAll(data.getExtras().getStringArrayList(Extra.ALIASES));
-				break;
-			case REQUEST_CODE_CHANNELS:
-				channels = data.getExtras().getStringArrayList(Extra.CHANNELS);
-				break;
-			case REQUEST_CODE_COMMANDS:
-				commands = data.getExtras().getStringArrayList(Extra.COMMANDS);
-				break;
-		}
-	}
+    
+    /**
+     * On activity result
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (resultCode != RESULT_OK) {
+            return; // ignore everything else
+        }
+        
+        switch (requestCode) {
+            case REQUEST_CODE_ALIASES:
+                aliases.clear();
+                aliases.addAll(data.getExtras().getStringArrayList(Extra.ALIASES));
+                break;
+            case REQUEST_CODE_CHANNELS:
+                channels = data.getExtras().getStringArrayList(Extra.CHANNELS);
+                break;
+            case REQUEST_CODE_COMMANDS:
+                commands = data.getExtras().getStringArrayList(Extra.COMMANDS);
+                break;
+        }
+    }
 
-	/**
-	 * On click add server or cancel activity
-	 */
-	public void onClick(View v)
-	{
-		switch (v.getId()) {
-			case R.id.aliases:
-				Intent aliasIntent = new Intent(this, AddAliasActivity.class);
-				aliasIntent.putExtra(Extra.ALIASES, aliases);
-				startActivityForResult(aliasIntent, REQUEST_CODE_ALIASES);
-				break;
-			case R.id.channels:
-				Intent channelIntent = new Intent(this, AddChannelActivity.class);
-				channelIntent.putExtra(Extra.CHANNELS, channels);
-				startActivityForResult(channelIntent, REQUEST_CODE_CHANNELS);
-				break;
-			case R.id.commands:
-				Intent commandsIntent = new Intent(this, AddCommandsActivity.class);
-				commandsIntent.putExtra(Extra.COMMANDS, commands);
-				startActivityForResult(commandsIntent, REQUEST_CODE_COMMANDS);
-				break;
-			case R.id.add:
-				try {
-					validateServer();
-					validateIdentity();
-					if (server == null) {
-						addServer();
-					} else {
-						updateServer();
-					}
-					setResult(RESULT_OK);
-					finish();
-				} catch(ValidationException e) {
-					Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-				}
-			break;
-			case R.id.cancel:
-				setResult(RESULT_CANCELED);
-				finish();
-			break;
-		}
-	}
-	
-	/**
-	 * Add server to database
-	 */
-	private void addServer()
-	{
-		Database db = new Database(this);
-		
-		Identity identity = getIdentityFromView();
-		long identityId = db.addIdentity(
-			identity.getNickname(),
-			identity.getIdent(),
-			identity.getRealName(),
-			identity.getAliases()
-		);
-		
-		Server server = getServerFromView();
-		long serverId = db.addServer(
-			server.getTitle(),
-			server.getHost(),
-			server.getPort(),
-			server.getPassword(),
-			false, // auto connect
-			server.useSSL(),
-			identityId,
-			server.getCharset()
-		);
-		
-		db.setChannels((int) serverId, channels);
-		db.setCommands((int) serverId, commands);
-		
-		db.close();
-		
-		server.setId((int) serverId);
-		server.setIdentity(identity);
-		server.setAutoJoinChannels(channels);
-		server.setConnectCommands(commands);
-		
-		Yaaic.getInstance().addServer(server);
-	}
-	
-	/**
-	 * Update server
-	 */
-	private void updateServer()
-	{
-		Database db = new Database(this);
-		
-		int serverId = this.server.getId();
-		int identityId = db.getIdentityIdByServerId(serverId);
-		
-		Server server = getServerFromView();
-		db.updateServer(
-			serverId,
-			server.getTitle(),
-			server.getHost(),
-			server.getPort(),
-			server.getPassword(),
-			false, // auto connect
-			server.useSSL(),
-			identityId,
-			server.getCharset()
-		);
-		
-		Identity identity = getIdentityFromView();
-		db.updateIdentity(
-			identityId,
-			identity.getNickname(),
-			identity.getIdent(),
-			identity.getNickname(),
-			identity.getAliases()
-		);
-		
-		db.setChannels(serverId, channels);
-		db.setCommands(serverId, commands);
-		
-		db.close();
-		
-		server.setId(this.server.getId());
-		server.setIdentity(identity);
-		server.setAutoJoinChannels(channels);
-		server.setConnectCommands(commands);
-		
-		Yaaic.getInstance().updateServer(server);
-	}
-	
-	/**
-	 * Populate a server object from the data in the view
-	 * 
-	 * @return The server object
-	 */
-	private Server getServerFromView()
-	{
-		String title = ((EditText) findViewById(R.id.title)).getText().toString().trim();
-		String host = ((EditText) findViewById(R.id.host)).getText().toString().trim();
-		int port = Integer.parseInt(((EditText) findViewById(R.id.port)).getText().toString().trim());
-		String password = ((EditText) findViewById(R.id.password)).getText().toString().trim();
-		String charset = ((Spinner) findViewById(R.id.charset)).getSelectedItem().toString();
-		Boolean useSSL = ((CheckBox) findViewById(R.id.useSSL)).isChecked();
-		
-		// not in use yet
-		//boolean autoConnect = ((CheckBox) findViewById(R.id.autoconnect)).isChecked();
-		
-		Server server = new Server();
-		server.setHost(host);
-		server.setPort(port);
-		server.setPassword(password);
-		server.setTitle(title);
-		server.setCharset(charset);
-		server.setUseSSL(useSSL);
-		server.setStatus(Status.DISCONNECTED);
+    /**
+     * On click add server or cancel activity
+     */
+    public void onClick(View v)
+    {
+        switch (v.getId()) {
+            case R.id.aliases:
+                Intent aliasIntent = new Intent(this, AddAliasActivity.class);
+                aliasIntent.putExtra(Extra.ALIASES, aliases);
+                startActivityForResult(aliasIntent, REQUEST_CODE_ALIASES);
+                break;
+            case R.id.channels:
+                Intent channelIntent = new Intent(this, AddChannelActivity.class);
+                channelIntent.putExtra(Extra.CHANNELS, channels);
+                startActivityForResult(channelIntent, REQUEST_CODE_CHANNELS);
+                break;
+            case R.id.commands:
+                Intent commandsIntent = new Intent(this, AddCommandsActivity.class);
+                commandsIntent.putExtra(Extra.COMMANDS, commands);
+                startActivityForResult(commandsIntent, REQUEST_CODE_COMMANDS);
+                break;
+            case R.id.add:
+                try {
+                    validateServer();
+                    validateIdentity();
+                    if (server == null) {
+                        addServer();
+                    } else {
+                        updateServer();
+                    }
+                    setResult(RESULT_OK);
+                    finish();
+                } catch(ValidationException e) {
+                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            break;
+            case R.id.cancel:
+                setResult(RESULT_CANCELED);
+                finish();
+            break;
+        }
+    }
+    
+    /**
+     * Add server to database
+     */
+    private void addServer()
+    {
+        Database db = new Database(this);
+        
+        Identity identity = getIdentityFromView();
+        long identityId = db.addIdentity(
+            identity.getNickname(),
+            identity.getIdent(),
+            identity.getRealName(),
+            identity.getAliases()
+        );
+        
+        Server server = getServerFromView();
+        long serverId = db.addServer(
+            server.getTitle(),
+            server.getHost(),
+            server.getPort(),
+            server.getPassword(),
+            false, // auto connect
+            server.useSSL(),
+            identityId,
+            server.getCharset()
+        );
+        
+        db.setChannels((int) serverId, channels);
+        db.setCommands((int) serverId, commands);
+        
+        db.close();
+        
+        server.setId((int) serverId);
+        server.setIdentity(identity);
+        server.setAutoJoinChannels(channels);
+        server.setConnectCommands(commands);
+        
+        Yaaic.getInstance().addServer(server);
+    }
+    
+    /**
+     * Update server
+     */
+    private void updateServer()
+    {
+        Database db = new Database(this);
+        
+        int serverId = this.server.getId();
+        int identityId = db.getIdentityIdByServerId(serverId);
+        
+        Server server = getServerFromView();
+        db.updateServer(
+            serverId,
+            server.getTitle(),
+            server.getHost(),
+            server.getPort(),
+            server.getPassword(),
+            false, // auto connect
+            server.useSSL(),
+            identityId,
+            server.getCharset()
+        );
+        
+        Identity identity = getIdentityFromView();
+        db.updateIdentity(
+            identityId,
+            identity.getNickname(),
+            identity.getIdent(),
+            identity.getNickname(),
+            identity.getAliases()
+        );
+        
+        db.setChannels(serverId, channels);
+        db.setCommands(serverId, commands);
+        
+        db.close();
+        
+        server.setId(this.server.getId());
+        server.setIdentity(identity);
+        server.setAutoJoinChannels(channels);
+        server.setConnectCommands(commands);
+        
+        Yaaic.getInstance().updateServer(server);
+    }
+    
+    /**
+     * Populate a server object from the data in the view
+     * 
+     * @return The server object
+     */
+    private Server getServerFromView()
+    {
+        String title = ((EditText) findViewById(R.id.title)).getText().toString().trim();
+        String host = ((EditText) findViewById(R.id.host)).getText().toString().trim();
+        int port = Integer.parseInt(((EditText) findViewById(R.id.port)).getText().toString().trim());
+        String password = ((EditText) findViewById(R.id.password)).getText().toString().trim();
+        String charset = ((Spinner) findViewById(R.id.charset)).getSelectedItem().toString();
+        Boolean useSSL = ((CheckBox) findViewById(R.id.useSSL)).isChecked();
+        
+        // not in use yet
+        //boolean autoConnect = ((CheckBox) findViewById(R.id.autoconnect)).isChecked();
+        
+        Server server = new Server();
+        server.setHost(host);
+        server.setPort(port);
+        server.setPassword(password);
+        server.setTitle(title);
+        server.setCharset(charset);
+        server.setUseSSL(useSSL);
+        server.setStatus(Status.DISCONNECTED);
 
-		return server;
-	}
-	
-	/**
-	 * Populate an identity object from the data in the view
-	 * 
-	 * @return The identity object
-	 */
-	private Identity getIdentityFromView()
-	{
-		String nickname = ((EditText) findViewById(R.id.nickname)).getText().toString().trim();
-		String ident = ((EditText) findViewById(R.id.ident)).getText().toString().trim();
-		String realname = ((EditText) findViewById(R.id.realname)).getText().toString().trim();
-		
-		Identity identity = new Identity();
-		identity.setNickname(nickname);
-		identity.setIdent(ident);
-		identity.setRealName(realname);
-		
-		identity.setAliases(aliases);
-		
-		return identity;
-	}
-	
-	/**
-	 * Validate the input for a server
-	 * 
-	 * @throws ValidationException
-	 */
-	private void validateServer() throws ValidationException
-	{
-		String title = ((EditText) findViewById(R.id.title)).getText().toString();
-		String host = ((EditText) findViewById(R.id.host)).getText().toString();
-		String port = ((EditText) findViewById(R.id.port)).getText().toString();
-		String charset = ((Spinner) findViewById(R.id.charset)).getSelectedItem().toString();
-		
-		if (title.trim().equals("")) {
-			throw new ValidationException(getResources().getString(R.string.validation_blank_title));
-		}
-		
-		if (host.trim().equals("")) {
-			// XXX: We should use some better host validation
-			throw new ValidationException(getResources().getString(R.string.validation_blank_host));
-		}
-		
-		try {
-			Integer.parseInt(port);
-		} catch (NumberFormatException e) {
-			throw new ValidationException(getResources().getString(R.string.validation_invalid_port));
-		}
-		
-		try {
-			"".getBytes(charset);
-		}
-		catch (UnsupportedEncodingException e) {
-			throw new ValidationException(getResources().getString(R.string.validation_unsupported_charset));
-		}
-		
-		Database db = new Database(this);
-		if (db.isTitleUsed(title) && (server == null || !server.getTitle().equals(title))) {
-			db.close();
-			throw new ValidationException(getResources().getString(R.string.validation_title_used));
-		}
-		db.close();
-	}
-	
-	/**
-	 * Validate the input for a identity
-	 * 
-	 * @throws ValidationException
-	 */
-	private void validateIdentity() throws ValidationException
-	{
-		String nickname = ((EditText) findViewById(R.id.nickname)).getText().toString();
-		String ident = ((EditText) findViewById(R.id.ident)).getText().toString();
-		String realname = ((EditText) findViewById(R.id.realname)).getText().toString();
-		
-		if (nickname.trim().equals("")) {
-			throw new ValidationException(getResources().getString(R.string.validation_blank_nickname));
-		}
-		
-		if (ident.trim().equals("")) {
-			throw new ValidationException(getResources().getString(R.string.validation_blank_ident));
-		}
-		
-		if (realname.trim().equals("")) {
-			throw new ValidationException(getResources().getString(R.string.validation_blank_realname));
-		}
-		
-		// RFC 1459:  <nick> ::= <letter> { <letter> | <number> | <special> }
-		// <special>    ::= '-' | '[' | ']' | '\' | '`' | '^' | '{' | '}'
-		// Chars that are not in RFC 1459 but are supported too:
-		// | and _ 
-		Pattern nickPattern = Pattern.compile("^[a-zA-Z_][a-zA-Z0-9^\\-`\\[\\]{}|_\\\\]*$");
-		if (!nickPattern.matcher(nickname).matches()) {
-			throw new ValidationException(getResources().getString(R.string.validation_invalid_nickname));
-		}
-		
-		// We currently only allow chars and numbers as ident
-		Pattern identPattern = Pattern.compile("^[a-zA-Z0-9]+$");
-		if (!identPattern.matcher(ident).matches()) {
-			throw new ValidationException(getResources().getString(R.string.validation_invalid_ident));
-		}
-	}
+        return server;
+    }
+    
+    /**
+     * Populate an identity object from the data in the view
+     * 
+     * @return The identity object
+     */
+    private Identity getIdentityFromView()
+    {
+        String nickname = ((EditText) findViewById(R.id.nickname)).getText().toString().trim();
+        String ident = ((EditText) findViewById(R.id.ident)).getText().toString().trim();
+        String realname = ((EditText) findViewById(R.id.realname)).getText().toString().trim();
+        
+        Identity identity = new Identity();
+        identity.setNickname(nickname);
+        identity.setIdent(ident);
+        identity.setRealName(realname);
+        
+        identity.setAliases(aliases);
+        
+        return identity;
+    }
+    
+    /**
+     * Validate the input for a server
+     * 
+     * @throws ValidationException
+     */
+    private void validateServer() throws ValidationException
+    {
+        String title = ((EditText) findViewById(R.id.title)).getText().toString();
+        String host = ((EditText) findViewById(R.id.host)).getText().toString();
+        String port = ((EditText) findViewById(R.id.port)).getText().toString();
+        String charset = ((Spinner) findViewById(R.id.charset)).getSelectedItem().toString();
+        
+        if (title.trim().equals("")) {
+            throw new ValidationException(getResources().getString(R.string.validation_blank_title));
+        }
+        
+        if (host.trim().equals("")) {
+            // XXX: We should use some better host validation
+            throw new ValidationException(getResources().getString(R.string.validation_blank_host));
+        }
+        
+        try {
+            Integer.parseInt(port);
+        } catch (NumberFormatException e) {
+            throw new ValidationException(getResources().getString(R.string.validation_invalid_port));
+        }
+        
+        try {
+            "".getBytes(charset);
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new ValidationException(getResources().getString(R.string.validation_unsupported_charset));
+        }
+        
+        Database db = new Database(this);
+        if (db.isTitleUsed(title) && (server == null || !server.getTitle().equals(title))) {
+            db.close();
+            throw new ValidationException(getResources().getString(R.string.validation_title_used));
+        }
+        db.close();
+    }
+    
+    /**
+     * Validate the input for a identity
+     * 
+     * @throws ValidationException
+     */
+    private void validateIdentity() throws ValidationException
+    {
+        String nickname = ((EditText) findViewById(R.id.nickname)).getText().toString();
+        String ident = ((EditText) findViewById(R.id.ident)).getText().toString();
+        String realname = ((EditText) findViewById(R.id.realname)).getText().toString();
+        
+        if (nickname.trim().equals("")) {
+            throw new ValidationException(getResources().getString(R.string.validation_blank_nickname));
+        }
+        
+        if (ident.trim().equals("")) {
+            throw new ValidationException(getResources().getString(R.string.validation_blank_ident));
+        }
+        
+        if (realname.trim().equals("")) {
+            throw new ValidationException(getResources().getString(R.string.validation_blank_realname));
+        }
+        
+        // RFC 1459:  <nick> ::= <letter> { <letter> | <number> | <special> }
+        // <special>    ::= '-' | '[' | ']' | '\' | '`' | '^' | '{' | '}'
+        // Chars that are not in RFC 1459 but are supported too:
+        // | and _ 
+        Pattern nickPattern = Pattern.compile("^[a-zA-Z_][a-zA-Z0-9^\\-`\\[\\]{}|_\\\\]*$");
+        if (!nickPattern.matcher(nickname).matches()) {
+            throw new ValidationException(getResources().getString(R.string.validation_invalid_nickname));
+        }
+        
+        // We currently only allow chars and numbers as ident
+        Pattern identPattern = Pattern.compile("^[a-zA-Z0-9]+$");
+        if (!identPattern.matcher(ident).matches()) {
+            throw new ValidationException(getResources().getString(R.string.validation_invalid_ident));
+        }
+    }
 }

@@ -26,56 +26,56 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     android:layout_height="fill_parent"
     android:background="#ff181818">
     <LinearLayout
-	    android:orientation="horizontal"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:padding="3px">
-	    <ImageView
-	        android:id="@+id/status"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:src="@drawable/disconnected"/>
-	    <TextView
-	        android:id="@+id/title"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:paddingLeft="3px"
-	        android:textSize="12px"
-	        android:layout_weight="1" />
-	</LinearLayout>
-	<ViewSwitcher
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="3px">
+        <ImageView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/disconnected"/>
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="3px"
+            android:textSize="12px"
+            android:layout_weight="1" />
+    </LinearLayout>
+    <ViewSwitcher
         android:id="@+id/switcher"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_weight="1">
-	    <Gallery
-	       android:id="@+id/deck"
-	       android:layout_width="fill_parent"
-	       android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+        <Gallery
+           android:id="@+id/deck"
+           android:layout_width="fill_parent"
+           android:layout_height="fill_parent"
            android:layout_margin="0px"
            android:spacing="5px"
            android:unselectedAlpha="100"/>
-	</ViewSwitcher>
-	<org.yaaic.view.ConversationSwitcher
-		android:id="@+id/dots"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" />
-	<LinearLayout
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:orientation="horizontal">
-		<EditText
-			android:id="@+id/input"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:singleLine="true"
+    </ViewSwitcher>
+    <org.yaaic.view.ConversationSwitcher
+        android:id="@+id/dots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:singleLine="true"
             android:imeOptions="actionSend" />
-		<Button
+        <Button
             android:id="@+id/speech"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableLeft="@android:drawable/ic_btn_speak_now"
             android:visibility="gone" />
-	</LinearLayout>
+    </LinearLayout>
 </LinearLayout>

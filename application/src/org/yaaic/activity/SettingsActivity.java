@@ -32,10 +32,10 @@ import android.preference.PreferenceActivity;
  */
 public class SettingsActivity extends PreferenceActivity
 {
-	/**
-	 * On create
-	 */
-	@Override
+    /**
+     * On create
+     */
+    @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);

@@ -22,5 +22,5 @@ package org.yaaic.listener;
 
 public interface ServerListener
 {
-	public void onStatusUpdate();
+    public void onStatusUpdate();
 }

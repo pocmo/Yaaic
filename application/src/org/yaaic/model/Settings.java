@@ -32,144 +32,144 @@ import android.preference.PreferenceManager;
  * small and simple methods.
  * 
  * Note: As this class carries a Context instace as private member, instances of
- * 		 this class should be thrown away not later than when the Context should
- * 		 be gone. Otherwise this could leak memory. 
+ *          this class should be thrown away not later than when the Context should
+ *          be gone. Otherwise this could leak memory. 
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
   */
 public class Settings
 {
-	private SharedPreferences preferences;
-	private Resources resources;
-	
-	/**
-	 * Create a new Settings instance
-	 * 
-	 * @param context
-	 */
-	public Settings(Context context)
-	{
-		this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		this.resources = context.getApplicationContext().getResources();
-	}
-	
-	/**
-	 * Prefix all messages with a timestamp?
-	 * 
-	 * @return
-	 */
-	public boolean showTimestamp()
-	{
-		return preferences.getBoolean(
-			resources.getString(R.string.key_show_timestamp),
-			Boolean.parseBoolean(resources.getString(R.string.default_show_timestamp))
-		);
-	}
-	
-	/**
-	 * Show icons to highlight special events
-	 * 
-	 * @return
-	 */
-	public boolean showIcons()
-	{
-		return preferences.getBoolean(
-			resources.getString(R.string.key_show_icons),
-			Boolean.parseBoolean(resources.getString(R.string.default_show_icons))
-		);
-	}
-	
-	/**
-	 * Show colors to highlight special events?
-	 * 
-	 * @return
-	 */
-	public boolean showColors()
-	{
-		return preferences.getBoolean(
-			resources.getString(R.string.key_show_colors),
-			Boolean.parseBoolean(resources.getString(R.string.default_show_colors))
-		);
-	}
-	
-	/**
-	 * Show colors to highlight nicknames?
-	 *
-	 * @return
-	 */
-	public boolean showColorsNick()
-	{
-		return preferences.getBoolean(
-			resources.getString(R.string.key_show_colors_nick),
-			Boolean.parseBoolean(resources.getString(R.string.default_show_colors_nick))
-		);
-	}
+    private SharedPreferences preferences;
+    private Resources resources;
+    
+    /**
+     * Create a new Settings instance
+     * 
+     * @param context
+     */
+    public Settings(Context context)
+    {
+        this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        this.resources = context.getApplicationContext().getResources();
+    }
+    
+    /**
+     * Prefix all messages with a timestamp?
+     * 
+     * @return
+     */
+    public boolean showTimestamp()
+    {
+        return preferences.getBoolean(
+            resources.getString(R.string.key_show_timestamp),
+            Boolean.parseBoolean(resources.getString(R.string.default_show_timestamp))
+        );
+    }
+    
+    /**
+     * Show icons to highlight special events
+     * 
+     * @return
+     */
+    public boolean showIcons()
+    {
+        return preferences.getBoolean(
+            resources.getString(R.string.key_show_icons),
+            Boolean.parseBoolean(resources.getString(R.string.default_show_icons))
+        );
+    }
+    
+    /**
+     * Show colors to highlight special events?
+     * 
+     * @return
+     */
+    public boolean showColors()
+    {
+        return preferences.getBoolean(
+            resources.getString(R.string.key_show_colors),
+            Boolean.parseBoolean(resources.getString(R.string.default_show_colors))
+        );
+    }
+    
+    /**
+     * Show colors to highlight nicknames?
+     *
+     * @return
+     */
+    public boolean showColorsNick()
+    {
+        return preferences.getBoolean(
+            resources.getString(R.string.key_show_colors_nick),
+            Boolean.parseBoolean(resources.getString(R.string.default_show_colors_nick))
+        );
+    }
 
-	/**
-	 * Use 24 hour format for timestamps?
-	 * 
-	 * @return
-	 */
-	public boolean use24hFormat()
-	{
-		return preferences.getBoolean(
-			resources.getString(R.string.key_24h_format),
-			Boolean.parseBoolean(resources.getString(R.string.default_24h_format))
-		);
-	}
-	
-	/**
-	 * Is reconnect on disconnect enabled?
-	 * 
-	 * @return 
-	 */
-	public boolean isReconnectEnabled()
-	{
-		return preferences.getBoolean(
-			resources.getString(R.string.key_reconnect),
-			Boolean.parseBoolean(resources.getString(R.string.default_reconnect))
-		);
-	}
-	
-	/**
-	 * Get the quit message
-	 * 
-	 * @return The message to display when the user disconnects
-	 */
-	public String getQuitMessage()
-	{
-		return preferences.getString(
-			resources.getString(R.string.key_quitmessage),
-			resources.getString(R.string.default_quitmessage)
-		);
-	}
-	
-	/**
-	 * Get the font size
-	 * 
-	 * @return The font size for conversation messages
-	 */
-	public int getFontSize()
-	{
-		return Integer.parseInt(preferences.getString(
-			resources.getString(R.string.key_fontsize),
-			resources.getString(R.string.default_fontsize)
-		));
-	}
-	
-	/**
-	 * Is voice recognition enabled?
-	 * 
-	 * @return True if voice recognition is enabled, false otherwise
-	 */
-	public boolean isVoiceRecognitionEnabled()
-	{
-		return preferences.getBoolean(
-			resources.getString(R.string.key_voice_recognition),
-			Boolean.parseBoolean(resources.getString(R.string.default_voice_recognition))
-		);
-	}
-	
+    /**
+     * Use 24 hour format for timestamps?
+     * 
+     * @return
+     */
+    public boolean use24hFormat()
+    {
+        return preferences.getBoolean(
+            resources.getString(R.string.key_24h_format),
+            Boolean.parseBoolean(resources.getString(R.string.default_24h_format))
+        );
+    }
+    
+    /**
+     * Is reconnect on disconnect enabled?
+     * 
+     * @return 
+     */
+    public boolean isReconnectEnabled()
+    {
+        return preferences.getBoolean(
+            resources.getString(R.string.key_reconnect),
+            Boolean.parseBoolean(resources.getString(R.string.default_reconnect))
+        );
+    }
+    
+    /**
+     * Get the quit message
+     * 
+     * @return The message to display when the user disconnects
+     */
+    public String getQuitMessage()
+    {
+        return preferences.getString(
+            resources.getString(R.string.key_quitmessage),
+            resources.getString(R.string.default_quitmessage)
+        );
+    }
+    
+    /**
+     * Get the font size
+     * 
+     * @return The font size for conversation messages
+     */
+    public int getFontSize()
+    {
+        return Integer.parseInt(preferences.getString(
+            resources.getString(R.string.key_fontsize),
+            resources.getString(R.string.default_fontsize)
+        ));
+    }
+    
+    /**
+     * Is voice recognition enabled?
+     * 
+     * @return True if voice recognition is enabled, false otherwise
+     */
+    public boolean isVoiceRecognitionEnabled()
+    {
+        return preferences.getBoolean(
+            resources.getString(R.string.key_voice_recognition),
+            Boolean.parseBoolean(resources.getString(R.string.default_voice_recognition))
+        );
+    }
+    
     /**
      * Vibrate on highlight?
      * 
@@ -181,5 +181,5 @@ public class Settings
             resources.getString(R.string.key_vibrate_highlight),
             Boolean.parseBoolean(resources.getString(R.string.default_vibrate_highlight))
         );
-    }	
+    }    
 }
