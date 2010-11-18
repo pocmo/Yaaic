@@ -181,5 +181,18 @@ public class Settings
             resources.getString(R.string.key_vibrate_highlight),
             Boolean.parseBoolean(resources.getString(R.string.default_vibrate_highlight))
         );
-    }    
+    }
+
+    /**
+     * Should join and part messages be displayed?
+     *
+     * @return True if joins and parts should be displayed, false otherwise
+     */
+    public boolean showJoinAndPart()
+    {
+        return preferences.getBoolean(
+            resources.getString(R.string.key_show_joinpart),
+            Boolean.parseBoolean(resources.getString(R.string.default_show_joinpart))
+        );
+    }
 }

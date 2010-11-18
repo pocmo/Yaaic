@@ -184,4 +184,6 @@
     <string name="settings_voice_recognition_desc">Show button for voice recognition</string>
     <string name="settings_vibrate_highlight_title">Vibrate on highlight</string>
     <string name="settings_vibrate_highlight_desc">Vibrate when your nick is mentioned</string>
+    <string name="settings_joinpart_title">Show join and part</string>
+    <string name="settings_joinpart_desc">Show join and part messages in channels</string>
 </resources>

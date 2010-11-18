@@ -65,6 +65,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:key="@string/key_24h_format"
             android:defaultValue="@string/default_24h_format"
             android:dependency="@string/key_show_timestamp" />
+        <CheckBoxPreference
+            android:title="@string/settings_joinpart_title"
+            android:summary="@string/settings_joinpart_desc"
+            android:key="@string/key_show_joinpart"
+            android:defaultValue="@string/default_show_joinpart" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/settings_misc">
@@ -85,6 +90,5 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:summary="@string/settings_vibrate_highlight_desc"
             android:key="@string/key_vibrate_highlight"
             android:defaultValue="@string/default_vibrate_highlight" />
-            
     </PreferenceCategory>
 </PreferenceScreen>

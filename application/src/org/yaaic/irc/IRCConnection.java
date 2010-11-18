@@ -336,7 +336,7 @@ public class IRCConnection extends PircBot
                 target
             );
             service.sendBroadcast(intent);
-        } else {
+        } else if (service.getSettings().showJoinAndPart()) {
             Message message = new Message(service.getString(R.string.message_join, sender));
             message.setIcon(R.drawable.join);
             message.setColor(Message.COLOR_GREEN);
@@ -516,7 +516,7 @@ public class IRCConnection extends PircBot
                 target
             );
             service.sendBroadcast(intent);
-        } else {
+        } else if (service.getSettings().showJoinAndPart()) {
             Message message = new Message(service.getString(R.string.message_part, sender));
             message.setColor(Message.COLOR_GREEN);
             message.setIcon(R.drawable.part);
