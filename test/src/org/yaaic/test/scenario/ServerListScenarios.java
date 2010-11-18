@@ -95,7 +95,7 @@ public class ServerListScenarios extends ActivityInstrumentationTestCase2
 		
 		solo.clickOnButton(4);
 		
-		solo.waitForActivity("ServersActivity", 2000);
+		solo.waitForActivity("ServersActivity", 1000);
 		solo.assertCurrentActivity("Switched back to ServersActivity", "ServersActivity");
 
 		// Assert new server exists
@@ -108,7 +108,7 @@ public class ServerListScenarios extends ActivityInstrumentationTestCase2
 		
 		solo.clickOnText("Delete");
 		
-		solo.waitForActivity("ServersActivity", 2000);
+		solo.waitForActivity("ServersActivity", 1000);
 		solo.assertCurrentActivity("Switched back to ServersActivity", "ServersActivity");
 
 		// Assert server is gone again
