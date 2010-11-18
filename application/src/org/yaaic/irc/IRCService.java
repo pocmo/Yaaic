@@ -43,7 +43,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.util.Log;
 
 /**
  * The background service for managing the irc connections
