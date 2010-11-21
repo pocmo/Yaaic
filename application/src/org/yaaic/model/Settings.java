@@ -31,7 +31,7 @@ import android.preference.PreferenceManager;
  * The settings class is a helper class to access the different preferences via
  * small and simple methods.
  * 
- * Note: As this class carries a Context instace as private member, instances of
+ * Note: As this class carries a Context instance as private member, instances of
  *          this class should be thrown away not later than when the Context should
  *          be gone. Otherwise this could leak memory. 
  * 
