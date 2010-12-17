@@ -32,8 +32,8 @@ public class AllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Scenario-Tests");
 		//$JUnit-BEGIN$
-		suite.addTestSuite(ServerListScenarios.class);
-		suite.addTestSuite(ConnectionScenarios.class);
+		//suite.addTestSuite(ServerListScenarios.class);
+		//suite.addTestSuite(ConnectionScenarios.class);
 		suite.addTestSuite(ChannelScenarios.class);
 		//$JUnit-END$
 		return suite;
