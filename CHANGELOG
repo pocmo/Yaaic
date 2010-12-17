@@ -1,0 +1,167 @@
+--------------------------------------------------------------------------------
+Yaaic 0.6.1 - 2010-12-17 - 15 commits, files changed
+--------------------------------------------------------------------------------
+ * Fixed a bug in the french and spanish translation that may cause force closes
+   on connecting to a server.
+ * New setting available: Hide join and part messages.
+ * Automated testing: Some first scenario tests using the Robotium framework.
+ * Improved nickname detection: Words including the nickname won't cause a
+   highlight. (Thanks to liato!)
+ * Vibrating on highlight is now available as a setting. (Thanks to liato!)
+
+--------------------------------------------------------------------------------
+Yaaic 0.6 - 2010-11-16 - 80 commits, 179 files changed
+--------------------------------------------------------------------------------
+ * Voice recognition via Google API
+ * Everything is now easy translatable via one XML file
+ * Customizable font sizes (8px - 20px)
+ * New shortcut: /w for /whois
+ * Every unknown command will now be sent to the server. No more command
+   whitelisting.
+ * Colored nicknames (by chantra)
+ * Set a list of nickname aliases (by ZoogieZork)
+ * Small ruby script to check the translation status
+ * Userlist is now sorted alphabetically (By mloskot)
+    * Nick completion via search button - completes current selection or at the
+      cursor position (Patch by Thomas Martitz)
+    * Build files for ant
+    * Merged yaaic application and testing repositories
+    * First scenario tests via the robotium lib.
+    * Translations:
+          o Chinese
+          o Japanese (work in progress)
+          o German (work in progress)
+          o French
+          o Spanish
+
+--------------------------------------------------------------------------------
+Yaaic 0.5 - 2010-08-27 - 35 commits, 19 files changed
+--------------------------------------------------------------------------------
+ * Awesome channel indicator at the bottom of the screen showing highlights and
+   new messages in other channels
+ * Define a custom quit message in the settings menu
+ * Execute commands on connect BEFORE joining channels
+ * Wait a small amount of time before auto-joining channels (because of slow
+   server commands)
+ * Tap a nickname in the user list to perform an action (op, deop, kick, ...)
+ * Bugfix: Enter key did not work on Motorola Milestone
+ * Disable "Ok" button on Add Channel, Add Command dialogs until something's
+   actually been added or removed. (by brion. thanks!)
+ * Other small adjustments and bugfixes
+ * Bugfix: The ident now can contain numbers
+ * Bugfix: Nicknames now can start with an underscore (_)
+
+--------------------------------------------------------------------------------
+Yaaic 0.4.1 - 2010-04-27 - 14 commits, 13 files changed
+--------------------------------------------------------------------------------
+ * When using the reconnect feature (Settings) - Yaaic sometimes did reconnect
+   even when you disconnected yourself (even when "exit" was used)
+
+--------------------------------------------------------------------------------
+Yaaic 0.4 - 2010-04-25 - 66 commits, 36 files changed
+--------------------------------------------------------------------------------
+ * You can now define channels to join after connecting to a server
+ * It's also possible now to add commands that are executed after connecting to
+   a server
+ * When adding/editing a server spaces at the beginning and ending will be
+   removed due to some "on screen keyboards" adding spaces.
+ * The following server commands have been added to the whitelist and Yaaic will
+   now send them to the server: /opper, /nickserv, /ns, /chanserv, /cs,
+   /authserv, /hostserv, /memoserv, /operserv
+ * Bugfix: Closed queries couldn't be reopened when closed
+ * New command: Send a message to a channel or user:
+   /msg <target> <message> (See Issue 10)
+ * New command: Send a message to all channels on the server: /amsg <message>
+ * Bugfix: Nicknames can now contain a hyphen (-) (See issue 9)
+ * Bugfix: When using BIP IRC Proxy channels were not joined (See Issue 8)
+ * New command: /quote <line> or /raw <line> to send a raw line to the server
+ * Settings: You can now enable to reconnect automatically on disconnect
+ * Bugfix: Sometimes the notification icon was still in the notification bar if
+   not connected to any server and yaaic not running
+ * The menu now contains an "exit" option to disconnect from all servers and
+   exiting Yaaic.
+ * Bugfix: When selection "connect" via long-click on a connected server in the
+   list, Yaaic disconnected.
+ * The /help command now shows the usage of a command if given as parameter:
+   /help <command> (Thanks to Kell)
+ * The server list now also shows the nickname and the port of the server
+
+--------------------------------------------------------------------------------
+Yaaic 0.3 - 2010-04-15 - 145 commits, 79 files changed.
+--------------------------------------------------------------------------------
+ * Yaaic now has an awesome icon designed by androidicons.com
+ * It's now possible to select a charset when adding/editing a server. See the
+   list of supported charsets for more details.
+ * SSL-Support! You are now able to use SSL connections with Yaaic. But beware!
+   The current TrustManager will accept every certificate.
+ * There will be an icon in your notification bar if you are connected to a
+   server.
+ * You can now connect to some IRC networks that use strange spam bot checks.
+ * The background service is now persistent so that you don't get disconnected
+   while yaaic is in the background and you are using an other app.
+ * Bugfix: Sometimes the app crashed if you disconnected from a server and
+   connected again to the same server later.
+ * There has been a lot of code optimization. Hopefully Yaaic is now much more
+   smoother.
+ * You are now notified about a disconnect in all conversation views.
+ * The background color is now fixed so that Yaaic should look the same on
+   Android 1.5 as well as on Android 2.x.
+ * There's now a menu option to show a list of the users in the current selected
+   channel
+ * Highlights (if someone mentions your nickname), Connects and Disconnects are
+   now shown as notifications in the notification bar.
+ * You can now use the dialpad up and dialpad down buttons to scroll in the
+   history of messages entered by you
+ * Menu items that are not ussable until connect are now inactive.
+ * There's now a /help command showing all commands available (Thanks to Kell)
+ * If a disconnect occurs Yaaic will now ask you if you want to reconnect
+   (Currently only if yaaic is not in the background)
+ * Developers: There's now a second repository for automated testing with some
+   unit tests already added: http://github.com/pocmo/Yaaic-Test
+ * Bugfix: The timestamps sometimes were wrong, especially the timestamps in
+   12h format were totally wrong at all
+ * New commands handled by the client: /away /whois
+ * Last but not least, thanks to tkn for contributing a bug fix! :)
+
+--------------------------------------------------------------------------------
+Yaaic 0.2 - 2010-03-20 - 58 commits, 22 files changed.
+--------------------------------------------------------------------------------
+ * Bugfix: Fixed an annoying bug that caused messages to sometimes appear in the
+   wrong channel / query
+ * Bugfix: A lot of (visual) issues have been fixed when using the on screen
+   keyboard
+ * More IRC events are now shown as messages:
+   * On set / remove channel key
+   * On set / remove channel secret
+   * On set / remove channel ban
+   * On set / remove channel limit
+   * On set / remove topic protection
+   * On set / remove external messages
+   * On set / remove invite only
+   * On set / remove moderated
+   * On set / remove private
+   * On invite into channel
+ * Send files via DCC with /dcc SEND <nickname> <file>
+ * The join channel dialog is now permanent and does not disappear on rotation
+ * It's now mandatory to enter a real name as servers require a value on connect
+ * A nicer look and feel with transcluent conversation windows and rounded
+   corners
+ * Bugfix: Scrollbar didn't scroll automatically sometimes
+ * Bugfix: Messages updated their timestamp when application was resumed
+ * Server responses are now shown in the server info window (some are skipped)
+ * Messages containing the current nickname are now highlighted (red color)
+ * If you are clicking on an irc:// link in the browser you are now able to add
+   this server to your server list
+ * Servers in the serverlist can now be edited (long touch a server)
+ * UTF-8 is now the default enconding used by the IRC client. There will be an
+   option to choose an enconding in a future release
+ * Bugfix: Messages that have been written by users while the client was paused
+   didn't appear directly on resume
+ * Server titles now have to be unique
+ * ... some other small fixes and adjustments
+
+--------------------------------------------------------------------------------
+Yaaic 0.1 (Beta) - 2010-03-14
+--------------------------------------------------------------------------------
+ * This is the first release. There hasn't changed anything to prior releases ;)
+
