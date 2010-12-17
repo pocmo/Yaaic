@@ -23,6 +23,7 @@ package org.yaaic.test.scenario;
 
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.util.Log;
 
 import com.jayway.android.robotium.solo.Solo;
 
@@ -73,7 +74,11 @@ public class ConnectionScenarios extends ActivityInstrumentationTestCase2
 		helper.disconnectFromServer();
 		helper.deleteTestServer();
 		
-		solo.sleep(500);
+		try {
+			solo.finalize();
+		} catch (Throwable t) {
+			Log.d("Yaaic/ChannelScenarios", t.getMessage());
+		}
 	}
 	
 	/**

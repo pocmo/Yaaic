@@ -24,6 +24,7 @@ package org.yaaic.test.scenario;
 
 import com.jayway.android.robotium.solo.Solo;
 import android.test.ActivityInstrumentationTestCase2;
+import android.util.Log;
 
 /**
  * Scenario Tests for the ServersActivity
@@ -53,10 +54,24 @@ public class ServerListScenarios extends ActivityInstrumentationTestCase2
 	/**
 	 * Setup test case
 	 */
+	@Override
 	protected void setUp()
 	{
 		solo   = new Solo(getInstrumentation(), getActivity());
 		helper = new ScenarioHelper(solo);
+	}
+	
+	/**
+	 * Cleanup after run
+	 */
+	@Override
+	protected void tearDown()
+	{
+		try {
+			solo.finalize();
+		} catch (Throwable t) {
+			Log.d("Yaaic/ChannelScenarios", t.getMessage());
+		}
 	}
 
 	/**
