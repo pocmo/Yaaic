@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.irc;
 
 import java.lang.reflect.InvocationTargetException;
@@ -51,37 +51,37 @@ import android.content.Intent;
  */
 public class IRCService extends Service
 {
-    private IRCBinder binder;
-    private HashMap<Integer, IRCConnection> connections;
+    private final IRCBinder binder;
+    private final HashMap<Integer, IRCConnection> connections;
     private boolean foreground = false;
-    
+
     @SuppressWarnings("rawtypes")
     private static final Class[] mStartForegroundSignature = new Class[] { int.class, Notification.class };
     @SuppressWarnings("rawtypes")
     private static final Class[] mStopForegroundSignature = new Class[] { boolean.class };
-    
+
     public static final String ACTION_FOREGROUND = "org.yaaic.service.foreground";
     public static final String ACTION_BACKGROUND = "org.yaaic.service.background";
-    
+
     private NotificationManager notificationManager;
     private Method mStartForeground;
     private Method mStopForeground;
-    private Object[] mStartForegroundArgs = new Object[2];
-    private Object[] mStopForegroundArgs = new Object[1];
+    private final Object[] mStartForegroundArgs = new Object[2];
+    private final Object[] mStopForegroundArgs = new Object[1];
     private Notification notification;
     private Settings settings;
-    
+
     /**
      * Create new service
      */
     public IRCService()
     {
         super();
-        
+
         this.connections = new HashMap<Integer, IRCConnection>();
         this.binder = new IRCBinder(this);
     }
-    
+
     /**
      * On create
      */
@@ -89,10 +89,10 @@ public class IRCService extends Service
     public void onCreate()
     {
         super.onCreate();
-        
+
         settings = new Settings(getBaseContext());
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        
+
         try {
             mStartForeground = getClass().getMethod("startForeground", mStartForegroundSignature);
             mStopForeground = getClass().getMethod("stopForeground", mStopForegroundSignature);
@@ -100,7 +100,7 @@ public class IRCService extends Service
             // Running on an older platform.
             mStartForeground = mStopForeground = null;
         }
-        
+
         // Load servers from Database
         Database db = new Database(this);
         Yaaic.getInstance().setServers(db.getServers());
@@ -109,7 +109,7 @@ public class IRCService extends Service
         // Broadcast changed server list
         sendBroadcast(new Intent(Broadcast.SERVER_UPDATE));
     }
-    
+
     /**
      * Get Settings object
      * 
@@ -150,7 +150,7 @@ public class IRCService extends Service
         //return START_STICKY;
         return 1;
     }
-    
+
 
     /**
      * Handle command
@@ -164,22 +164,22 @@ public class IRCService extends Service
                 return; // XXX: We are already in foreground...
             }
             foreground = true;
-            
+
             // Set the icon, scrolling text and timestamp
             notification = new Notification(R.drawable.icon, "", System.currentTimeMillis());
-    
+
             // The PendingIntent to launch our activity if the user selects this notification
             PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, ServersActivity.class), 0);
-    
+
             // Set the info for the views that show in the notification panel.
             notification.setLatestEventInfo(this, getText(R.string.app_name), "", contentIntent);
-    
+
             startForegroundCompat(R.string.app_name, notification);
         } else if (ACTION_BACKGROUND.equals(intent.getAction()) && !foreground) {
             stopForegroundCompat(R.string.app_name);
         }
     }
-    
+
     /**
      * Update notification
      * 
@@ -203,9 +203,12 @@ public class IRCService extends Service
             notification = new Notification(R.drawable.icon, text, System.currentTimeMillis());
             PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, ServersActivity.class), 0);
             notification.setLatestEventInfo(this, getText(R.string.app_name), text, contentIntent);
+
             if (vibrate) {
-                notification.defaults |= Notification.DEFAULT_VIBRATE;
+                long[] pattern = {0,100,200,300};
+                notification.vibrate = pattern;
             }
+
             notificationManager.notify(R.string.app_name, notification);
         }
     }
@@ -241,7 +244,7 @@ public class IRCService extends Service
     public void stopForegroundCompat(int id)
     {
         foreground = false;
-        
+
         // If we have the new stopForeground API, then use it.
         if (mStopForeground != null) {
             mStopForegroundArgs[0] = Boolean.TRUE;
@@ -259,13 +262,14 @@ public class IRCService extends Service
             setForeground(false);
         }
     }
-    
+
     /**
      * Connect to the given server
      */
     public void connect(final Server server)
     {
         new Thread() {
+            @Override
             public void run() {
                 try {
                     IRCConnection connection = getConnection(server.getId());
@@ -275,11 +279,11 @@ public class IRCService extends Service
                     connection.setIdent(server.getIdentity().getIdent());
                     connection.setRealName(server.getIdentity().getRealName());
                     connection.setUseSSL(server.useSSL());
-                    
+
                     if (server.getCharset() != null) {
                         connection.setEncoding(server.getCharset());
                     }
-                    
+
                     if (server.getPassword() != "") {
                         connection.connect(server.getHost(), server.getPort(), server.getPassword());
                     } else {
@@ -288,14 +292,14 @@ public class IRCService extends Service
                 }
                 catch (Exception e) {
                     server.setStatus(Status.DISCONNECTED);
-                    
+
                     Intent sIntent = Broadcast.createServerIntent(Broadcast.SERVER_UPDATE, server.getId());
                     sendBroadcast(sIntent);
-                    
+
                     IRCConnection connection = getConnection(server.getId());
-                    
+
                     Message message;
-                    
+
                     if (e instanceof NickAlreadyInUseException) {
                         message = new Message(getString(R.string.nickname_in_use, connection.getNick()));
                     } else if (e instanceof IrcException) {
@@ -303,11 +307,11 @@ public class IRCService extends Service
                     } else {
                         message = new Message(getString(R.string.could_not_connect, server.getHost(), server.getPort()));
                     }
-                    
+
                     message.setColor(Message.COLOR_RED);
                     message.setIcon(R.drawable.error);
                     server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(message);
-                    
+
                     Intent cIntent = Broadcast.createConversationIntent(
                         Broadcast.CONVERSATION_MESSAGE,
                         server.getId(),
@@ -318,7 +322,7 @@ public class IRCService extends Service
             }
         }.start();
     }
-    
+
     /**
      * Get connection for given server
      * 
@@ -328,15 +332,15 @@ public class IRCService extends Service
     public synchronized IRCConnection getConnection(int serverId)
     {
         IRCConnection connection = connections.get(serverId);
-        
+
         if (connection == null) {
             connection = new IRCConnection(this, serverId);
             connections.put(serverId, connection);
         }
-        
+
         return connection;
     }
-    
+
     /**
      * Does the service keep a connection object for this server?
      * 
@@ -346,7 +350,7 @@ public class IRCService extends Service
     {
         return connections.containsKey(serverId);
     }
-    
+
     /**
      * Check status of service
      */
@@ -356,7 +360,7 @@ public class IRCService extends Service
         ArrayList<Server> mServers = Yaaic.getInstance().getServersAsArrayList();
         int mSize = mServers.size();
         Server server;
-        
+
         for (int i = 0; i < mSize; i++) {
             server = mServers.get(i);
             if (server.isDisconnected()) {
@@ -365,14 +369,14 @@ public class IRCService extends Service
                 shutDown = false;
             }
         }
-        
+
         if (shutDown) {
             foreground = false;
             stopForegroundCompat(R.string.app_name);
             stopSelf();
         }
     }
-    
+
     /**
      * On Destroy
      */
@@ -389,7 +393,7 @@ public class IRCService extends Service
      * On Activity binding to this service
      * 
      * @param intent
-     * @return 
+     * @return
      */
     @Override
     public IRCBinder onBind(Intent intent)
