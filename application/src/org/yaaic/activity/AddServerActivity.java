@@ -17,12 +17,21 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.activity;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
+
+import org.yaaic.R;
+import org.yaaic.Yaaic;
+import org.yaaic.db.Database;
+import org.yaaic.exception.ValidationException;
+import org.yaaic.model.Extra;
+import org.yaaic.model.Identity;
+import org.yaaic.model.Server;
+import org.yaaic.model.Status;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -37,15 +46,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import org.yaaic.R;
-import org.yaaic.Yaaic;
-import org.yaaic.db.Database;
-import org.yaaic.exception.ValidationException;
-import org.yaaic.model.Extra;
-import org.yaaic.model.Identity;
-import org.yaaic.model.Server;
-import org.yaaic.model.Status;
-
 /**
  * Add a new server to the list
  * 
@@ -56,12 +56,12 @@ public class AddServerActivity extends Activity implements OnClickListener
     private static final int REQUEST_CODE_CHANNELS = 1;
     private static final int REQUEST_CODE_COMMANDS = 2;
     private static final int REQUEST_CODE_ALIASES  = 3;
-    
+
     private Server server;
     private ArrayList<String> aliases;
     private ArrayList<String> channels;
     private ArrayList<String> commands;
-    
+
     /**
      * On create
      */
@@ -69,12 +69,12 @@ public class AddServerActivity extends Activity implements OnClickListener
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        
+
         setContentView(R.layout.serveradd);
         aliases = new ArrayList<String>();
         channels = new ArrayList<String>();
         commands = new ArrayList<String>();
-        
+
         ((Button) findViewById(R.id.add)).setOnClickListener(this);
         ((Button) findViewById(R.id.cancel)).setOnClickListener(this);
         ((Button) findViewById(R.id.aliases)).setOnClickListener(this);
@@ -86,7 +86,7 @@ public class AddServerActivity extends Activity implements OnClickListener
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, charsets);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        
+
         Bundle extras = getIntent().getExtras();
         if (extras != null && extras.containsKey(Extra.SERVER)) {
             // Request to edit an existing server
@@ -96,18 +96,18 @@ public class AddServerActivity extends Activity implements OnClickListener
             this.channels = db.getChannelsByServerId(server.getId());
             this.commands = db.getCommandsByServerId(server.getId());
             db.close();
-            
+
             // Set server values
             ((EditText) findViewById(R.id.title)).setText(server.getTitle());
             ((EditText) findViewById(R.id.host)).setText(server.getHost());
             ((EditText) findViewById(R.id.port)).setText(String.valueOf(server.getPort()));
             ((EditText) findViewById(R.id.password)).setText(server.getPassword());
-            
+
             ((EditText) findViewById(R.id.nickname)).setText(server.getIdentity().getNickname());
             ((EditText) findViewById(R.id.ident)).setText(server.getIdentity().getIdent());
             ((EditText) findViewById(R.id.realname)).setText(server.getIdentity().getRealName());
             ((CheckBox) findViewById(R.id.useSSL)).setChecked(server.useSSL());
-            
+
             // Select charset
             if (server.getCharset() != null) {
                 for (int i = 0; i < charsets.length; i++) {
@@ -118,18 +118,18 @@ public class AddServerActivity extends Activity implements OnClickListener
                 }
             }
         }
-        
+
         Uri uri = getIntent().getData();
         if (uri != null && uri.getScheme().equals("irc")) {
             // handling an irc:// uri
-            
+
             ((EditText) findViewById(R.id.host)).setText(uri.getHost());
             if (uri.getPort() != -1) {
                 ((EditText) findViewById(R.id.port)).setText(String.valueOf(uri.getPort()));
             }
         }
     }
-    
+
     /**
      * On activity result
      */
@@ -139,7 +139,7 @@ public class AddServerActivity extends Activity implements OnClickListener
         if (resultCode != RESULT_OK) {
             return; // ignore everything else
         }
-        
+
         switch (requestCode) {
             case REQUEST_CODE_ALIASES:
                 aliases.clear();
@@ -157,6 +157,7 @@ public class AddServerActivity extends Activity implements OnClickListener
     /**
      * On click add server or cancel activity
      */
+    @Override
     public void onClick(View v)
     {
         switch (v.getId()) {
@@ -189,21 +190,21 @@ public class AddServerActivity extends Activity implements OnClickListener
                 } catch(ValidationException e) {
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-            break;
+                break;
             case R.id.cancel:
                 setResult(RESULT_CANCELED);
                 finish();
-            break;
+                break;
         }
     }
-    
+
     /**
      * Add server to database
      */
     private void addServer()
     {
         Database db = new Database(this);
-        
+
         Identity identity = getIdentityFromView();
         long identityId = db.addIdentity(
             identity.getNickname(),
@@ -211,7 +212,7 @@ public class AddServerActivity extends Activity implements OnClickListener
             identity.getRealName(),
             identity.getAliases()
         );
-        
+
         Server server = getServerFromView();
         long serverId = db.addServer(
             server.getTitle(),
@@ -223,30 +224,30 @@ public class AddServerActivity extends Activity implements OnClickListener
             identityId,
             server.getCharset()
         );
-        
+
         db.setChannels((int) serverId, channels);
         db.setCommands((int) serverId, commands);
-        
+
         db.close();
-        
+
         server.setId((int) serverId);
         server.setIdentity(identity);
         server.setAutoJoinChannels(channels);
         server.setConnectCommands(commands);
-        
+
         Yaaic.getInstance().addServer(server);
     }
-    
+
     /**
      * Update server
      */
     private void updateServer()
     {
         Database db = new Database(this);
-        
+
         int serverId = this.server.getId();
         int identityId = db.getIdentityIdByServerId(serverId);
-        
+
         Server server = getServerFromView();
         db.updateServer(
             serverId,
@@ -259,7 +260,7 @@ public class AddServerActivity extends Activity implements OnClickListener
             identityId,
             server.getCharset()
         );
-        
+
         Identity identity = getIdentityFromView();
         db.updateIdentity(
             identityId,
@@ -268,20 +269,20 @@ public class AddServerActivity extends Activity implements OnClickListener
             identity.getNickname(),
             identity.getAliases()
         );
-        
+
         db.setChannels(serverId, channels);
         db.setCommands(serverId, commands);
-        
+
         db.close();
-        
+
         server.setId(this.server.getId());
         server.setIdentity(identity);
         server.setAutoJoinChannels(channels);
         server.setConnectCommands(commands);
-        
+
         Yaaic.getInstance().updateServer(server);
     }
-    
+
     /**
      * Populate a server object from the data in the view
      * 
@@ -295,10 +296,10 @@ public class AddServerActivity extends Activity implements OnClickListener
         String password = ((EditText) findViewById(R.id.password)).getText().toString().trim();
         String charset = ((Spinner) findViewById(R.id.charset)).getSelectedItem().toString();
         Boolean useSSL = ((CheckBox) findViewById(R.id.useSSL)).isChecked();
-        
+
         // not in use yet
         //boolean autoConnect = ((CheckBox) findViewById(R.id.autoconnect)).isChecked();
-        
+
         Server server = new Server();
         server.setHost(host);
         server.setPort(port);
@@ -310,7 +311,7 @@ public class AddServerActivity extends Activity implements OnClickListener
 
         return server;
     }
-    
+
     /**
      * Populate an identity object from the data in the view
      * 
@@ -321,17 +322,17 @@ public class AddServerActivity extends Activity implements OnClickListener
         String nickname = ((EditText) findViewById(R.id.nickname)).getText().toString().trim();
         String ident = ((EditText) findViewById(R.id.ident)).getText().toString().trim();
         String realname = ((EditText) findViewById(R.id.realname)).getText().toString().trim();
-        
+
         Identity identity = new Identity();
         identity.setNickname(nickname);
         identity.setIdent(ident);
         identity.setRealName(realname);
-        
+
         identity.setAliases(aliases);
-        
+
         return identity;
     }
-    
+
     /**
      * Validate the input for a server
      * 
@@ -343,29 +344,29 @@ public class AddServerActivity extends Activity implements OnClickListener
         String host = ((EditText) findViewById(R.id.host)).getText().toString();
         String port = ((EditText) findViewById(R.id.port)).getText().toString();
         String charset = ((Spinner) findViewById(R.id.charset)).getSelectedItem().toString();
-        
+
         if (title.trim().equals("")) {
             throw new ValidationException(getResources().getString(R.string.validation_blank_title));
         }
-        
+
         if (host.trim().equals("")) {
             // XXX: We should use some better host validation
             throw new ValidationException(getResources().getString(R.string.validation_blank_host));
         }
-        
+
         try {
             Integer.parseInt(port);
         } catch (NumberFormatException e) {
             throw new ValidationException(getResources().getString(R.string.validation_invalid_port));
         }
-        
+
         try {
             "".getBytes(charset);
         }
         catch (UnsupportedEncodingException e) {
             throw new ValidationException(getResources().getString(R.string.validation_unsupported_charset));
         }
-        
+
         Database db = new Database(this);
         if (db.isTitleUsed(title) && (server == null || !server.getTitle().equals(title))) {
             db.close();
@@ -373,7 +374,7 @@ public class AddServerActivity extends Activity implements OnClickListener
         }
         db.close();
     }
-    
+
     /**
      * Validate the input for a identity
      * 
@@ -384,30 +385,30 @@ public class AddServerActivity extends Activity implements OnClickListener
         String nickname = ((EditText) findViewById(R.id.nickname)).getText().toString();
         String ident = ((EditText) findViewById(R.id.ident)).getText().toString();
         String realname = ((EditText) findViewById(R.id.realname)).getText().toString();
-        
+
         if (nickname.trim().equals("")) {
             throw new ValidationException(getResources().getString(R.string.validation_blank_nickname));
         }
-        
+
         if (ident.trim().equals("")) {
             throw new ValidationException(getResources().getString(R.string.validation_blank_ident));
         }
-        
+
         if (realname.trim().equals("")) {
             throw new ValidationException(getResources().getString(R.string.validation_blank_realname));
         }
-        
+
         // RFC 1459:  <nick> ::= <letter> { <letter> | <number> | <special> }
         // <special>    ::= '-' | '[' | ']' | '\' | '`' | '^' | '{' | '}'
         // Chars that are not in RFC 1459 but are supported too:
-        // | and _ 
+        // | and _
         Pattern nickPattern = Pattern.compile("^[a-zA-Z_][a-zA-Z0-9^\\-`\\[\\]{}|_\\\\]*$");
         if (!nickPattern.matcher(nickname).matches()) {
             throw new ValidationException(getResources().getString(R.string.validation_invalid_nickname));
         }
-        
+
         // We currently only allow chars and numbers as ident
-        Pattern identPattern = Pattern.compile("^[a-zA-Z0-9]+$");
+        Pattern identPattern = Pattern.compile("^[a-zA-Z0-9\\[\\]]+$");
         if (!identPattern.matcher(ident).matches()) {
             throw new ValidationException(getResources().getString(R.string.validation_invalid_ident));
         }
