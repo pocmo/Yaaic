@@ -32,4 +32,7 @@
 
     <string name="key_vibrate_highlight">vibrate_highlight</string>
     <string name="default_vibrate_highlight">true</string>
+
+    <string name="key_sound_highlight">sound_highlight</string>
+    <string name="default_sound_highlight">false</string>
 </resources>

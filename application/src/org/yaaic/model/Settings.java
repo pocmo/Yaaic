@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.model;
 
 import org.yaaic.R;
@@ -33,15 +33,15 @@ import android.preference.PreferenceManager;
  * 
  * Note: As this class carries a Context instance as private member, instances of
  *          this class should be thrown away not later than when the Context should
- *          be gone. Otherwise this could leak memory. 
+ *          be gone. Otherwise this could leak memory.
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
-  */
+ */
 public class Settings
 {
-    private SharedPreferences preferences;
-    private Resources resources;
-    
+    private final SharedPreferences preferences;
+    private final Resources resources;
+
     /**
      * Create a new Settings instance
      * 
@@ -52,7 +52,7 @@ public class Settings
         this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
         this.resources = context.getApplicationContext().getResources();
     }
-    
+
     /**
      * Prefix all messages with a timestamp?
      * 
@@ -65,7 +65,7 @@ public class Settings
             Boolean.parseBoolean(resources.getString(R.string.default_show_timestamp))
         );
     }
-    
+
     /**
      * Show icons to highlight special events
      * 
@@ -78,7 +78,7 @@ public class Settings
             Boolean.parseBoolean(resources.getString(R.string.default_show_icons))
         );
     }
-    
+
     /**
      * Show colors to highlight special events?
      * 
@@ -91,7 +91,7 @@ public class Settings
             Boolean.parseBoolean(resources.getString(R.string.default_show_colors))
         );
     }
-    
+
     /**
      * Show colors to highlight nicknames?
      *
@@ -117,11 +117,11 @@ public class Settings
             Boolean.parseBoolean(resources.getString(R.string.default_24h_format))
         );
     }
-    
+
     /**
      * Is reconnect on disconnect enabled?
      * 
-     * @return 
+     * @return
      */
     public boolean isReconnectEnabled()
     {
@@ -130,7 +130,7 @@ public class Settings
             Boolean.parseBoolean(resources.getString(R.string.default_reconnect))
         );
     }
-    
+
     /**
      * Get the quit message
      * 
@@ -143,7 +143,7 @@ public class Settings
             resources.getString(R.string.default_quitmessage)
         );
     }
-    
+
     /**
      * Get the font size
      * 
@@ -156,7 +156,7 @@ public class Settings
             resources.getString(R.string.default_fontsize)
         ));
     }
-    
+
     /**
      * Is voice recognition enabled?
      * 
@@ -169,10 +169,23 @@ public class Settings
             Boolean.parseBoolean(resources.getString(R.string.default_voice_recognition))
         );
     }
-    
+
+    /**
+     * Play notification sound on highlight?
+     * 
+     * @return True if sound should be played on highlight, false otherwise
+     */
+    public boolean isSoundHighlightEnabled()
+    {
+        return preferences.getBoolean(
+            resources.getString(R.string.key_sound_highlight),
+            Boolean.parseBoolean(resources.getString(R.string.default_sound_highlight))
+        );
+    }
+
     /**
      * Vibrate on highlight?
-     * 
+     *
      * @return True if vibrate on highlight is enabled, false otherwise
      */
     public boolean isVibrateHighlightEnabled()

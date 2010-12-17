@@ -161,6 +161,7 @@
     <string name="settings_connection">Connection</string>
     <string name="settings_reconnect_title">Reconnect</string>
     <string name="settings_reconnect_desc">Automatically reconnect on disconnect</string>
+
     <string name="settings_chat">Chat</string>
     <string name="settings_icons_title">Show icons</string>
     <string name="settings_icons_desc">Show icons to highlight special events</string>
@@ -172,6 +173,13 @@
     <string name="settings_timestamp_desc">Prefix all messages with a timestamp</string>
     <string name="settings_24h_title">24 hour format</string>
     <string name="settings_24h_desc">Use 24 hour format for timestamps</string>
+
+    <string name="settings_highlight">Highlight</string>
+    <string name="settings_sound_highlight_title">Play sound on highlight</string>
+    <string name="settings_sound_highlight_desc">Play sound when your nick is mentioned</string>
+    <string name="settings_vibrate_highlight_title">Vibrate on highlight</string>
+    <string name="settings_vibrate_highlight_desc">Vibrate when your nick is mentioned</string>
+
     <string name="settings_misc">Misc</string>
     <string name="settings_quitmessage_title">Quit message</string>
     <string name="settings_quitmessage_desc">Message to show when you disconnect</string>
@@ -182,8 +190,6 @@
     <string name="settings_fontsize_dialog_title">Font size</string>
     <string name="settings_voice_recognition_title">Voice recognition</string>
     <string name="settings_voice_recognition_desc">Show button for voice recognition</string>
-    <string name="settings_vibrate_highlight_title">Vibrate on highlight</string>
-    <string name="settings_vibrate_highlight_desc">Vibrate when your nick is mentioned</string>
     <string name="settings_joinpart_title">Show join and part</string>
     <string name="settings_joinpart_desc">Show join and part messages in channels</string>
 </resources>

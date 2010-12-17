@@ -187,7 +187,7 @@ public class IRCService extends Service
      */
     public void updateNotification(String text)
     {
-        updateNotification(text, false);
+        updateNotification(text, false, false);
     }
 
     /**
@@ -196,7 +196,7 @@ public class IRCService extends Service
      * @param text       The text to display
      * @param vibrate True if the device should vibrate, false otherwise
      */
-    public void updateNotification(String text, boolean vibrate)
+    public void updateNotification(String text, boolean vibrate, boolean sound)
     {
         if (foreground) {
             notificationManager.cancel(R.string.app_name);

@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.irc;
 
 import java.util.ArrayList;
@@ -25,12 +25,9 @@ import java.util.Collection;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
-import android.content.Intent;
-
 import org.jibble.pircbot.Colors;
 import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.User;
-
 import org.yaaic.R;
 import org.yaaic.Yaaic;
 import org.yaaic.command.CommandParser;
@@ -43,6 +40,8 @@ import org.yaaic.model.Server;
 import org.yaaic.model.ServerInfo;
 import org.yaaic.model.Status;
 
+import android.content.Intent;
+
 /**
  * The class that actually handles the connection to an IRC server
  * 
@@ -50,11 +49,11 @@ import org.yaaic.model.Status;
  */
 public class IRCConnection extends PircBot
 {
-    private IRCService service;
-    private Server server;
+    private final IRCService service;
+    private final Server server;
     private ArrayList<String> autojoinChannels;
     private Pattern mNickMatch;
-    
+
     /**
      * Create a new connection
      * 
@@ -65,14 +64,14 @@ public class IRCConnection extends PircBot
     {
         this.server = Yaaic.getInstance().getServerById(serverId);
         this.service = service;
-        
+
         // XXX: Should be configurable via settings
         this.setAutoNickChange(true);
-        
+
         this.setFinger("http://www.youtube.com/watch?v=oHg5SJYRHA0");
         this.updateNickMatchPattern();
     }
-    
+
     /**
      * Set the nickname of the user
      * 
@@ -83,7 +82,7 @@ public class IRCConnection extends PircBot
         this.setName(nickname);
         this.updateNickMatchPattern();
     }
-    
+
     /**
      * Set the real name of the user
      * 
@@ -92,10 +91,10 @@ public class IRCConnection extends PircBot
     public void setRealName(String realname)
     {
         // XXX: Pircbot uses the version for "real name" and "version".
-        //      The real "version" value is provided by onVersion() 
+        //      The real "version" value is provided by onVersion()
         this.setVersion(realname);
     }
-    
+
     /**
      * Set channels to autojoin after connect
      * 
@@ -115,9 +114,9 @@ public class IRCConnection extends PircBot
     protected void onVersion(String sourceNick, String sourceLogin,    String sourceHostname, String target)
     {
         this.sendRawLine(
-                "NOTICE " + sourceNick + " :\u0001VERSION " +
-                "Yaaic - Yet another Android IRC client - http://www.yaaic.org" +
-                "\u0001"
+            "NOTICE " + sourceNick + " :\u0001VERSION " +
+            "Yaaic - Yet another Android IRC client - http://www.yaaic.org" +
+            "\u0001"
         );
     }
 
@@ -138,40 +137,40 @@ public class IRCConnection extends PircBot
     public void onConnect()
     {
         server.setStatus(Status.CONNECTED);
-        
+
         service.sendBroadcast(
             Broadcast.createServerIntent(Broadcast.SERVER_UPDATE, server.getId())
         );
-        
+
         service.updateNotification(service.getString(R.string.notification_connected, server.getTitle()));
-        
+
         Message message = new Message(service.getString(R.string.message_connected, server.getTitle()));
         message.setColor(Message.COLOR_GREEN);
         server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(message);
-        
+
         Intent intent = Broadcast.createConversationIntent(
             Broadcast.CONVERSATION_MESSAGE,
             server.getId(),
             ServerInfo.DEFAULT_NAME
         );
-        
+
         service.sendBroadcast(intent);
-        
+
         // execute commands
         CommandParser parser = CommandParser.getInstance();
-        
+
         this.updateNickMatchPattern();
         for (String command : server.getConnectCommands()) {
             parser.parse(command, server, server.getConversation(ServerInfo.DEFAULT_NAME), service);
         }
-        
+
         // delay 1 sec before auto joining channels
         try {
             Thread.sleep(1000);
         } catch(InterruptedException e) {
             // do nothing
         }
-        
+
         // join channels
         if (autojoinChannels != null) {
             for (String channel : autojoinChannels) {
@@ -184,7 +183,7 @@ public class IRCConnection extends PircBot
             }
         }
     }
-    
+
     /**
      * On channel action
      */
@@ -196,19 +195,23 @@ public class IRCConnection extends PircBot
 
         Message message = new Message(sender + " " + action);
         message.setIcon(R.drawable.action);
-        
+
         if (isMentioned(action)) {
             // highlight
             message.setColor(Message.COLOR_RED);
-            service.updateNotification(target + ": " + sender + " " + action, service.getSettings().isVibrateHighlightEnabled());
-            
+            service.updateNotification(
+                target + ": " + sender + " " + action,
+                service.getSettings().isVibrateHighlightEnabled(),
+                service.getSettings().isSoundHighlightEnabled()
+            );
+
             server.getConversation(target).setStatus(Conversation.STATUS_HIGHLIGHT);
         }
-        
+
         if (target.equals(this.getNick())) {
             // We are the target - this is an action in a query
-            Conversation conversation = server.getConversation(sender); 
-            if (conversation == null) { 
+            Conversation conversation = server.getConversation(sender);
+            if (conversation == null) {
                 // Open a query if there's none yet
                 conversation = new Query(sender);
                 server.addConversationl(conversation);
@@ -231,7 +234,7 @@ public class IRCConnection extends PircBot
         } else {
             // A action in a channel
             server.getConversation(target).addMessage(message);
-            
+
             Intent intent = Broadcast.createConversationIntent(
                 Broadcast.CONVERSATION_MESSAGE,
                 server.getId(),
@@ -259,7 +262,7 @@ public class IRCConnection extends PircBot
         message.setIcon(R.drawable.op);
         message.setColor(Message.COLOR_BLUE);
         server.getConversation(target).addMessage(message);
-        
+
         Intent intent = Broadcast.createConversationIntent(
             Broadcast.CONVERSATION_MESSAGE,
             server.getId(),
@@ -279,13 +282,13 @@ public class IRCConnection extends PircBot
         message.setColor(Message.COLOR_BLUE);
         message.setIcon(R.drawable.voice);
         server.getConversation(target).addMessage(message);
-        
+
         Intent intent = Broadcast.createConversationIntent(
             Broadcast.CONVERSATION_MESSAGE,
             server.getId(),
             target
         );
-    
+
         service.sendBroadcast(intent);
     }
 
@@ -299,7 +302,7 @@ public class IRCConnection extends PircBot
             // We are invited
             Message message = new Message(service.getString(R.string.message_invite_you, sourceNick, target));
             server.getConversation(server.getSelectedConversation()).addMessage(message);
-            
+
             Intent intent = Broadcast.createConversationIntent(
                 Broadcast.CONVERSATION_MESSAGE,
                 server.getId(),
@@ -310,7 +313,7 @@ public class IRCConnection extends PircBot
             // Someone is invited
             Message message = new Message(service.getString(R.string.message_invite_someone, sourceNick, targetNick, target));
             server.getConversation(target).addMessage(message);
-            
+
             Intent intent = Broadcast.createConversationIntent(
                 Broadcast.CONVERSATION_MESSAGE,
                 server.getId(),
@@ -329,7 +332,7 @@ public class IRCConnection extends PircBot
         if (sender.equalsIgnoreCase(getNick())) {
             // We joined a new channel
             server.addConversationl(new Channel(target));
-            
+
             Intent intent = Broadcast.createConversationIntent(
                 Broadcast.CONVERSATION_NEW,
                 server.getId(),
@@ -341,7 +344,7 @@ public class IRCConnection extends PircBot
             message.setIcon(R.drawable.join);
             message.setColor(Message.COLOR_GREEN);
             server.getConversation(target).addMessage(message);
-            
+
             Intent intent = Broadcast.createConversationIntent(
                 Broadcast.CONVERSATION_MESSAGE,
                 server.getId(),
@@ -360,7 +363,7 @@ public class IRCConnection extends PircBot
         if (recipientNick.equals(getNick())) {
             // We are kicked
             server.removeConversation(target);
-            
+
             Intent intent = Broadcast.createConversationIntent(
                 Broadcast.CONVERSATION_REMOVE,
                 server.getId(),
@@ -377,7 +380,7 @@ public class IRCConnection extends PircBot
                 server.getId(),
                 target
             );
-            service.sendBroadcast(intent);            
+            service.sendBroadcast(intent);
         }
     }
 
@@ -389,19 +392,23 @@ public class IRCConnection extends PircBot
     {
         // Strip mIRC colors and formatting
         text = Colors.removeFormattingAndColors(text);
-        
+
         Message message = new Message(text, sender);
-        
+
         if (isMentioned(text)) {
             // highlight
             message.setColor(Message.COLOR_RED);
-            service.updateNotification(target + ": <" + sender + "> " + text, service.getSettings().isVibrateHighlightEnabled());
-            
+            service.updateNotification(
+                target + ": <" + sender + "> " + text,
+                service.getSettings().isVibrateHighlightEnabled(),
+                service.getSettings().isSoundHighlightEnabled()
+            );
+
             server.getConversation(target).setStatus(Conversation.STATUS_HIGHLIGHT);
         }
-        
+
         server.getConversation(target).addMessage(message);
-        
+
         Intent intent = Broadcast.createConversationIntent(
             Broadcast.CONVERSATION_MESSAGE,
             server.getId(),
@@ -419,12 +426,12 @@ public class IRCConnection extends PircBot
         /*//Disabled as it doubles events (e.g. onOp and onMode will be called)
         Message message = new Message(sourceNick + " sets mode " + mode);
         server.getChannel(target).addMessage(message);
-        
+
         Intent intent = new Intent(Broadcast.CHANNEL_MESSAGE);
         intent.putExtra(Broadcast.EXTRA_SERVER, server.getId());
         intent.putExtra(Broadcast.EXTRA_CHANNEL, target);
         service.sendBroadcast(intent);
-        */
+         */
     }
 
     /**
@@ -432,17 +439,17 @@ public class IRCConnection extends PircBot
      */
     @Override
     protected void onNickChange(String oldNick, String login, String hostname, String newNick)
-    {   
+    {
         if (getNick().equalsIgnoreCase(newNick)) {
             this.updateNickMatchPattern();
         }
         Vector<String> channels = getChannelsByNickname(newNick);
-        
+
         for (String target : channels) {
             Message message = new Message(service.getString(R.string.message_rename, oldNick, newNick));
             message.setColor(Message.COLOR_GREEN);
             server.getConversation(target).addMessage(message);
-            
+
             Intent intent = Broadcast.createConversationIntent(
                 Broadcast.CONVERSATION_MESSAGE,
                 server.getId(),
@@ -460,10 +467,10 @@ public class IRCConnection extends PircBot
     {
         // Strip mIRC colors and formatting
         notice = Colors.removeFormattingAndColors(notice);
-        
+
         // Post notice to currently selected conversation
         Conversation conversation = server.getConversation(server.getSelectedConversation());
-        
+
         if (conversation == null) {
             // Fallback: Use ServerInfo view
             conversation = server.getConversation(ServerInfo.DEFAULT_NAME);
@@ -472,7 +479,7 @@ public class IRCConnection extends PircBot
         Message message = new Message("-" + sourceNick + "- " + notice);
         message.setIcon(R.drawable.info);
         conversation.addMessage(message);
-        
+
         Intent intent = Broadcast.createConversationIntent(
             Broadcast.CONVERSATION_MESSAGE,
             server.getId(),
@@ -491,7 +498,7 @@ public class IRCConnection extends PircBot
         message.setColor(Message.COLOR_BLUE);
         message.setIcon(R.drawable.op);
         server.getConversation(target).addMessage(message);
-        
+
         Intent intent = Broadcast.createConversationIntent(
             Broadcast.CONVERSATION_MESSAGE,
             server.getId(),
@@ -509,7 +516,7 @@ public class IRCConnection extends PircBot
         if (sender.equals(getNick())) {
             // We parted a channel
             server.removeConversation(target);
-            
+
             Intent intent = Broadcast.createConversationIntent(
                 Broadcast.CONVERSATION_REMOVE,
                 server.getId(),
@@ -521,7 +528,7 @@ public class IRCConnection extends PircBot
             message.setColor(Message.COLOR_GREEN);
             message.setIcon(R.drawable.part);
             server.getConversation(target).addMessage(message);
-            
+
             Intent intent = Broadcast.createConversationIntent(
                 Broadcast.CONVERSATION_MESSAGE,
                 server.getId(),
@@ -541,22 +548,26 @@ public class IRCConnection extends PircBot
         text = Colors.removeFormattingAndColors(text);
 
         Message message = new Message("<" + sender + "> " + text);
-        
+
         if (isMentioned(text)) {
             message.setColor(Message.COLOR_RED);
-            service.updateNotification("<" + sender + "> " + text, service.getSettings().isVibrateHighlightEnabled());
-            
+            service.updateNotification(
+                "<" + sender + "> " + text,
+                service.getSettings().isVibrateHighlightEnabled(),
+                service.getSettings().isSoundHighlightEnabled()
+            );
+
             server.getConversation(sender).setStatus(Conversation.STATUS_HIGHLIGHT);
         }
 
         Conversation conversation = server.getConversation(sender);
 
-        if (conversation == null) { 
+        if (conversation == null) {
             // Open a query if there's none yet
             conversation = new Query(sender);
             conversation.addMessage(message);
             server.addConversationl(conversation);
-            
+
             Intent intent = Broadcast.createConversationIntent(
                 Broadcast.CONVERSATION_NEW,
                 server.getId(),
@@ -565,7 +576,7 @@ public class IRCConnection extends PircBot
             service.sendBroadcast(intent);
         } else {
             conversation.addMessage(message);
-            
+
             Intent intent = Broadcast.createConversationIntent(
                 Broadcast.CONVERSATION_MESSAGE,
                 server.getId(),
@@ -583,13 +594,13 @@ public class IRCConnection extends PircBot
     {
         if (!sourceNick.equals(this.getNick())) {
             Vector<String> channels = getChannelsByNickname(sourceNick);
-            
+
             for (String target : channels) {
                 Message message = new Message(service.getString(R.string.message_quit, sourceNick, reason));
                 message.setColor(Message.COLOR_GREEN);
                 message.setIcon(R.drawable.quit);
                 server.getConversation(target).addMessage(message);
-                
+
                 Intent intent = Broadcast.createConversationIntent(
                     Broadcast.CONVERSATION_MESSAGE,
                     server.getId(),
@@ -597,16 +608,16 @@ public class IRCConnection extends PircBot
                 );
                 service.sendBroadcast(intent);
             }
-            
+
             // Look if there's a query to update
             Conversation conversation = server.getConversation(sourceNick);
-            
+
             if (conversation != null) {
                 Message message = new Message(service.getString(R.string.message_quit, sourceNick, reason));
                 message.setColor(Message.COLOR_GREEN);
                 message.setIcon(R.drawable.quit);
                 conversation.addMessage(message);
-                
+
                 Intent intent = Broadcast.createConversationIntent(
                     Broadcast.CONVERSATION_MESSAGE,
                     server.getId(),
@@ -614,7 +625,7 @@ public class IRCConnection extends PircBot
                 );
                 service.sendBroadcast(intent);
             }
-            
+
         } else {
             // XXX: We quitted
         }
@@ -628,7 +639,7 @@ public class IRCConnection extends PircBot
     {
         // strip mIRC colors
         topic = Colors.removeFormattingAndColors(topic);
-        
+
         if (changed) {
             Message message = new Message(service.getString(R.string.message_topic_set, setBy, topic));
             message.setColor(Message.COLOR_YELLOW);
@@ -638,10 +649,10 @@ public class IRCConnection extends PircBot
             message.setColor(Message.COLOR_YELLOW);
             server.getConversation(target).addMessage(message);
         }
-        
+
         // remember channel's topic
         ((Channel) server.getConversation(target)).setTopic(topic);
-        
+
         Intent intent = Broadcast.createConversationIntent(
             Broadcast.CONVERSATION_MESSAGE,
             server.getId(),
@@ -669,7 +680,7 @@ public class IRCConnection extends PircBot
         message.setIcon(R.drawable.voice);
         message.setColor(Message.COLOR_BLUE);
         server.getConversation(target).addMessage(message);
-        
+
         Intent intent = Broadcast.createConversationIntent(
             Broadcast.CONVERSATION_MESSAGE,
             server.getId(),
@@ -677,9 +688,9 @@ public class IRCConnection extends PircBot
         );
         service.sendBroadcast(intent);
     }
-    
+
     /**
-     * On remove channel key    
+     * On remove channel key
      */
     @Override
     protected void onRemoveChannelKey(String target, String sourceNick, String sourceLogin, String sourceHostname, String key)
@@ -687,7 +698,7 @@ public class IRCConnection extends PircBot
         Message message = new Message(service.getString(R.string.message_remove_channel_key, sourceNick));
         message.setColor(Message.COLOR_BLUE);
         server.getConversation(target).addMessage(message);
-        
+
         service.sendBroadcast(
             Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
         );
@@ -702,12 +713,12 @@ public class IRCConnection extends PircBot
         Message message = new Message(service.getString(R.string.message_set_channel_key, sourceNick, key));
         message.setColor(Message.COLOR_BLUE);
         server.getConversation(target).addMessage(message);
-        
+
         service.sendBroadcast(
             Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
         );
     }
-    
+
     /**
      * On set secret
      */
@@ -717,12 +728,12 @@ public class IRCConnection extends PircBot
         Message message = new Message(service.getString(R.string.message_set_channel_secret, sourceNick));
         message.setColor(Message.COLOR_BLUE);
         server.getConversation(target).addMessage(message);
-        
+
         service.sendBroadcast(
             Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
         );
     }
-    
+
     /**
      * On remove secret
      */
@@ -732,12 +743,12 @@ public class IRCConnection extends PircBot
         Message message = new Message(service.getString(R.string.message_set_channel_public, sourceNick));
         message.setColor(Message.COLOR_BLUE);
         server.getConversation(target).addMessage(message);
-        
+
         service.sendBroadcast(
             Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
         );
     }
-    
+
     /**
      * On set channel limit
      */
@@ -747,12 +758,12 @@ public class IRCConnection extends PircBot
         Message message = new Message(service.getString(R.string.message_set_channel_limit, sourceNick, limit));
         message.setColor(Message.COLOR_BLUE);
         server.getConversation(target).addMessage(message);
-        
+
         service.sendBroadcast(
             Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
         );
     }
-    
+
     /**
      * On remove channel limit
      */
@@ -762,7 +773,7 @@ public class IRCConnection extends PircBot
         Message message = new Message(service.getString(R.string.message_remove_channel_limit, sourceNick));
         message.setColor(Message.COLOR_BLUE);
         server.getConversation(target).addMessage(message);
-        
+
         service.sendBroadcast(
             Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
         );
@@ -777,12 +788,12 @@ public class IRCConnection extends PircBot
         Message message = new Message(service.getString(R.string.message_set_ban, sourceNick, hostmask));
         message.setColor(Message.COLOR_BLUE);
         server.getConversation(target).addMessage(message);
-        
+
         service.sendBroadcast(
             Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
         );
     }
-    
+
     /**
      * On remove channel ban
      */
@@ -792,12 +803,12 @@ public class IRCConnection extends PircBot
         Message message = new Message(service.getString(R.string.message_remove_ban, sourceNick, hostmask));
         message.setColor(Message.COLOR_BLUE);
         server.getConversation(target).addMessage(message);
-        
+
         service.sendBroadcast(
             Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
         );
     }
-    
+
     /**
      * On set topic protection
      */
@@ -807,12 +818,12 @@ public class IRCConnection extends PircBot
         Message message = new Message(service.getString(R.string.message_set_topic_protection, sourceNick));
         message.setColor(Message.COLOR_BLUE);
         server.getConversation(target).addMessage(message);
-        
+
         service.sendBroadcast(
             Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
         );
     }
-    
+
     /**
      * On remove topic protection
      */
@@ -822,7 +833,7 @@ public class IRCConnection extends PircBot
         Message message = new Message(service.getString(R.string.message_remove_topic_protection, sourceNick));
         message.setColor(Message.COLOR_BLUE);
         server.getConversation(target).addMessage(message);
-        
+
         service.sendBroadcast(
             Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
         );
@@ -837,7 +848,7 @@ public class IRCConnection extends PircBot
         Message message = new Message(service.getString(R.string.message_disable_external, sourceNick));
         message.setColor(Message.COLOR_BLUE);
         server.getConversation(target).addMessage(message);
-        
+
         service.sendBroadcast(
             Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
         );
@@ -852,12 +863,12 @@ public class IRCConnection extends PircBot
         Message message = new Message(service.getString(R.string.message_enable_external, sourceNick));
         message.setColor(Message.COLOR_BLUE);
         server.getConversation(target).addMessage(message);
-        
+
         service.sendBroadcast(
             Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
         );
     }
-    
+
     /**
      * On set invite only
      */
@@ -867,12 +878,12 @@ public class IRCConnection extends PircBot
         Message message = new Message(service.getString(R.string.message_set_invite_only, sourceNick));
         message.setColor(Message.COLOR_BLUE);
         server.getConversation(target).addMessage(message);
-        
+
         service.sendBroadcast(
             Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
         );
     }
-    
+
     /**
      * On remove invite only
      */
@@ -882,7 +893,7 @@ public class IRCConnection extends PircBot
         Message message = new Message(service.getString(R.string.message_remove_invite_only, sourceNick));
         message.setColor(Message.COLOR_BLUE);
         server.getConversation(target).addMessage(message);
-        
+
         service.sendBroadcast(
             Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
         );
@@ -897,12 +908,12 @@ public class IRCConnection extends PircBot
         Message message = new Message(service.getString(R.string.message_set_moderated, sourceNick));
         message.setColor(Message.COLOR_BLUE);
         server.getConversation(target).addMessage(message);
-        
+
         service.sendBroadcast(
             Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
         );
     }
-    
+
     /**
      * On remove moderated
      */
@@ -912,12 +923,12 @@ public class IRCConnection extends PircBot
         Message message = new Message(service.getString(R.string.message_remove_moderated, sourceNick));
         message.setColor(Message.COLOR_BLUE);
         server.getConversation(target).addMessage(message);
-        
+
         service.sendBroadcast(
             Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
         );
     }
-    
+
     /**
      * On set private
      */
@@ -927,12 +938,12 @@ public class IRCConnection extends PircBot
         Message message = new Message(service.getString(R.string.message_set_channel_private, sourceNick));
         message.setColor(Message.COLOR_BLUE);
         server.getConversation(target).addMessage(message);
-        
+
         service.sendBroadcast(
             Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
         );
     }
-    
+
     /**
      * On remove private
      */
@@ -942,7 +953,7 @@ public class IRCConnection extends PircBot
         Message message = new Message(service.getString(R.string.message_set_channel_public, sourceNick));
         message.setColor(Message.COLOR_BLUE);
         server.getConversation(target).addMessage(message);
-        
+
         service.sendBroadcast(
             Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
         );
@@ -958,7 +969,7 @@ public class IRCConnection extends PircBot
         message.setIcon(R.drawable.action);
         message.setColor(Message.COLOR_GREY);
         server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(message);
-        
+
         Intent intent = Broadcast.createConversationIntent(
             Broadcast.CONVERSATION_MESSAGE,
             server.getId(),
@@ -977,16 +988,16 @@ public class IRCConnection extends PircBot
             // Skip MOTD
             return;
         }
-        
+
         if (code >= 200 && code < 300) {
             // Skip 2XX responses
             return;
         }
-        
+
         if (code == 353 || code == 366 || code == 332 || code == 333) {
             return;
         }
-        
+
         if (code < 10) {
             // Skip server info
             return;
@@ -996,7 +1007,7 @@ public class IRCConnection extends PircBot
         Message message = new Message(response);
         message.setColor(Message.COLOR_GREY);
         server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(message);
-        
+
         Intent intent = Broadcast.createConversationIntent(
             Broadcast.CONVERSATION_MESSAGE,
             server.getId(),
@@ -1020,20 +1031,20 @@ public class IRCConnection extends PircBot
         } else {
             server.setStatus(Status.DISCONNECTED);
         }
-        
+
         service.updateNotification(service.getString(R.string.notification_disconnected, server.getTitle()));
 
         Intent sIntent = Broadcast.createServerIntent(Broadcast.SERVER_UPDATE, server.getId());
         service.sendBroadcast(sIntent);
-        
+
         Collection<Conversation> conversations = server.getConversations();
-        
+
         for (Conversation conversation : conversations) {
             Message message = new Message(service.getString(R.string.message_disconnected));
             message.setIcon(R.drawable.error);
             message.setColor(Message.COLOR_RED);
             server.getConversation(conversation.getName()).addMessage(message);
-            
+
             Intent cIntent = Broadcast.createConversationIntent(
                 Broadcast.CONVERSATION_MESSAGE,
                 server.getId(),
@@ -1042,7 +1053,7 @@ public class IRCConnection extends PircBot
             service.sendBroadcast(cIntent);
         }
     }
-    
+
     /**
      * Get all channels where the user with the given nickname is online
      * 
@@ -1053,7 +1064,7 @@ public class IRCConnection extends PircBot
     {
         Vector<String> channels = new Vector<String>();
         String[] channelArray = getChannels();
-        
+
         for (String channel : channelArray) {
             User[] userArray = getUsers(channel);
             for (User user : userArray) {
@@ -1063,10 +1074,10 @@ public class IRCConnection extends PircBot
                 }
             }
         }
-        
+
         return channels;
     }
-    
+
     /**
      * Get list of users in a channel as array of strings
      * 
@@ -1077,15 +1088,15 @@ public class IRCConnection extends PircBot
         User[] userArray = getUsers(channel);
         int mLength = userArray.length;
         String[] users = new String[mLength];
-        
+
         for (int i = 0; i < mLength; i++) {
             // Prefix disabled
             users[i] = /*userArray[i].getPrefix() + */ userArray[i].getNick();
         }
-        
+
         return users;
     }
-    
+
     /**
      * Get a user by channel and nickname
      * 
@@ -1097,7 +1108,7 @@ public class IRCConnection extends PircBot
     {
         User[] users = getUsers(channel);
         int mLength = users.length;
-        
+
         for (int i = 0; i < mLength; i++) {
             if (nickname.equals(users[i].getNick())) {
                 return users[i];
@@ -1106,10 +1117,10 @@ public class IRCConnection extends PircBot
                 return users[i];
             }
         }
-        
+
         return null;
     }
-    
+
     /**
      * Quits from the IRC server with default reason.
      */
@@ -1117,12 +1128,13 @@ public class IRCConnection extends PircBot
     public void quitServer()
     {
         new Thread() {
+            @Override
             public void run() {
                 quitServer(service.getSettings().getQuitMessage());
             }
         }.start();
     }
-    
+
     /**
      * Check whether the nickname has been mentioned.
      * 
@@ -1133,7 +1145,7 @@ public class IRCConnection extends PircBot
     {
         return mNickMatch.matcher(text).find();
     }
-    
+
     /**
      * Update the nick matching pattern, should be called when the nickname changes.
      */
