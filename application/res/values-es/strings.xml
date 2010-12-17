@@ -85,8 +85,8 @@
     <string name="query_exists">La consulta ya existe</string>
     <string name="line_missing">Falta la línea</string>
     <string name="nickname_in_use">El apodo %1$s ya esta en uso</string>
-    <string name="irc_login_error">No ha sido posible acceder al servidor IRC %1$s:%1$d</string>
-    <string name="could_not_connect">No ha sido posible conectar a %1$s:%1$d</string>
+    <string name="irc_login_error">No ha sido posible acceder al servidor IRC %1$s:%2$d</string>
+    <string name="could_not_connect">No ha sido posible conectar a %1$s:%2$d</string>
 
     <string name="command_desc_amsg">Enviar un mensaje a todos los canales</string>
     <string name="command_desc_away">Ponerse ausente</string>
