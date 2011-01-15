@@ -209,6 +209,10 @@ public class IRCService extends Service
                 notification.vibrate = pattern;
             }
 
+            if (sound) {
+                notification.defaults |= Notification.DEFAULT_SOUND;
+            }
+
             notificationManager.notify(R.string.app_name, notification);
         }
     }
