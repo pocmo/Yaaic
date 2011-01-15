@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.activity;
 
 import java.util.ArrayList;
@@ -70,8 +70,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
-import android.view.inputmethod.InputMethodManager;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Gallery;
@@ -93,19 +93,19 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     private static final int REQUEST_CODE_USERS = 2;
     private static final int REQUEST_CODE_USER = 3;
     private static final int REQUEST_CODE_NICK_COMPLETION= 4;
-    
+
     private int serverId;
     private Server server;
     private IRCBinder binder;
     private ConversationReceiver channelReceiver;
     private ServerReceiver serverReceiver;
-    
+
     private ViewSwitcher switcher;
     private Gallery deck;
     private DeckAdapter deckAdapter;
     private Scrollback scrollback;
     private ConversationSwitcher dots;
-    
+
     // XXX: This is ugly. This is a buffer for a channel that should be joined after showing the
     //      JoinActivity. As onActivityResult() is called before onResume() a "channel joined"
     //      broadcast may get lost as the broadcast receivers are registered in onResume() but the
@@ -117,7 +117,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     // shall be TYPE_TEXT_FLAG_NO_SUGGESTIONS but it's not supported in all API levels (only in 5+)
     // We'll set it to 0 if it's not supported
     private int setInputTypeFlag;
-    
+
     /**
      * On create
      */
@@ -126,18 +126,18 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        
+
         serverId = getIntent().getExtras().getInt("serverId");
-        server = (Server) Yaaic.getInstance().getServerById(serverId);
+        server = Yaaic.getInstance().getServerById(serverId);
         setTitle("Yaaic - " + server.getTitle());
-        
+
         setContentView(R.layout.conversations);
-        
+
         ((TextView) findViewById(R.id.title)).setText(server.getTitle());
         ((EditText) findViewById(R.id.input)).setOnKeyListener(this);
-        
+
         switcher = (ViewSwitcher) findViewById(R.id.switcher);
-        
+
         dots = (ConversationSwitcher) findViewById(R.id.dots);
         dots.setServer(server);
 
@@ -147,15 +147,15 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         deck.setAdapter(deckAdapter);
         deck.setOnItemClickListener(new ConversationClickListener(deckAdapter, switcher));
         deck.setBackgroundDrawable(new NonScalingBackgroundDrawable(this, deck, R.drawable.background));
-        
+
         if (server.getStatus() == Status.PRE_CONNECTING) {
             server.clearConversations();
             deckAdapter.clearConversations();
         }
 
-        // Optimization : cache field lookups 
+        // Optimization : cache field lookups
         Collection<Conversation> mConversations = server.getConversations();
-        
+
         for (Conversation conversation : mConversations) {
             onNewConversation(conversation.getName());
         }
@@ -171,7 +171,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         // Create a new scrollback history
         scrollback = new Scrollback();
     }
-    
+
     /**
      * On resume
      */
@@ -183,12 +183,12 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_MESSAGE));
         registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_NEW));
         registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_REMOVE));
-        
+
         serverReceiver = new ServerReceiver(this);
         registerReceiver(serverReceiver, new IntentFilter(Broadcast.SERVER_UPDATE));
-        
+
         super.onResume();
-        
+
         // Check if speech recognition is enabled and available
         if (new Settings(this).isVoiceRecognitionEnabled()) {
             PackageManager pm = getPackageManager();
@@ -199,38 +199,39 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                 speechButton.setVisibility(View.VISIBLE);
             }
         }
-        
+
         ((ImageView) findViewById(R.id.status)).setImageResource(server.getStatusIcon());
-        
+
         // Start service
         Intent intent = new Intent(this, IRCService.class);
         intent.setAction(IRCService.ACTION_FOREGROUND);
         startService(intent);
         bindService(intent, this, 0);
-        
+
         if (!server.isConnected()) {
-             ((EditText) findViewById(R.id.input)).setEnabled(false);
+            ((EditText) findViewById(R.id.input)).setEnabled(false);
         } else {
-             ((EditText) findViewById(R.id.input)).setEnabled(true);
+            ((EditText) findViewById(R.id.input)).setEnabled(true);
         }
 
         // Optimization - cache field lookup
         Collection<Conversation> mConversations = server.getConversations();
         MessageListAdapter mAdapter;
-        
+
         // Fill view with messages that have been buffered while paused
         for (Conversation conversation : mConversations) {
             mAdapter = conversation.getMessageListAdapter();
-            
+
             if (mAdapter != null) {
                 mAdapter.addBulkMessages(conversation.getBuffer());
                 conversation.clearBuffer();
             }
         }
-        
+
         // Join channel that has been selected in JoinActivity (onActivityResult())
         if (joinChannelBuffer != null) {
             new Thread() {
+                @Override
                 public void run() {
                     binder.getService().getConnection(serverId).joinChannel(joinChannelBuffer);
                     joinChannelBuffer = null;
@@ -238,7 +239,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             }.start();
         }
     }
-    
+
     /**
      * On Pause
      */
@@ -246,7 +247,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     public void onPause()
     {
         super.onPause();
-        
+
         if (binder != null && binder.getService() != null) {
             binder.getService().checkServiceStatus();
         }
@@ -259,10 +260,11 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     /**
      * On service connected
      */
+    @Override
     public void onServiceConnected(ComponentName name, IBinder service)
     {
         this.binder = (IRCBinder) service;
-        
+
         // connect to irc server if connect has been requested
         if (server.getStatus() == Status.PRE_CONNECTING && getIntent().hasExtra("connect")) {
             server.setStatus(Status.CONNECTING);
@@ -273,6 +275,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     /**
      * On service disconnected
      */
+    @Override
     public void onServiceDisconnected(ComponentName name)
     {
         this.binder = null;
@@ -285,14 +288,14 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     public boolean onCreateOptionsMenu(Menu menu)
     {
         super.onCreateOptionsMenu(menu);
-        
+
         // inflate from xml
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.conversations, menu);
-        
+
         return true;
     }
-    
+
     /**
      * On prepare options menu
      */
@@ -302,7 +305,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         menu.getItem(0).setEnabled(server.isConnected()); // join
         menu.getItem(1).setEnabled(server.isConnected()); // users
         menu.getItem(2).setEnabled(server.isConnected()); // close
-        
+
         return true;
     }
 
@@ -352,10 +355,10 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                 }
                 break;
         }
-        
+
         return true;
     }
-    
+
     /**
      * Get server object assigned to this activity
      * 
@@ -369,27 +372,28 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     /**
      * On conversation message
      */
+    @Override
     public void onConversationMessage(String target)
     {
         Conversation conversation = server.getConversation(target);
-        
+
         if (conversation == null) {
             // In an early state it can happen that the conversation object
             // is not created yet.
             return;
         }
-        
+
         MessageListAdapter adapter = conversation.getMessageListAdapter();
-        
+
         conversation.setStatus(Conversation.STATUS_MESSAGE);
 
         if (dots != null) {
             dots.invalidate();
         }
-        
+
         while(conversation.hasBufferedMessages()) {
             Message message = conversation.pollBufferedMessage();
-            
+
             if (adapter != null) {
                 adapter.addMessage(message);
             }
@@ -399,23 +403,25 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     /**
      * On new conversation
      */
+    @Override
     public void onNewConversation(String target)
     {
         deckAdapter.addItem(server.getConversation(target));
-        
+
         if (!deckAdapter.isSwitched()) {
             // Scroll to new conversation
             deck.setSelection(deckAdapter.getCount() - 1);
         }
     }
-    
+
     /**
      * On conversation remove
      */
+    @Override
     public void onRemoveConversation(String target)
     {
         deckAdapter.removeItem(target);
-        
+
         if (deckAdapter.isSwitched()) {
             switcher.showNext();
             switcher.removeView(deckAdapter.getSwitchedView());
@@ -426,14 +432,15 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     /**
      * On server status update
      */
+    @Override
     public void onStatusUpdate()
     {
         ((ImageView) findViewById(R.id.status)).setImageResource(server.getStatusIcon());
-        
+
         EditText input = (EditText) findViewById(R.id.input);
 
         if (server.isConnected()) {
-            input.setEnabled(true); 
+            input.setEnabled(true);
         } else {
             input.setEnabled(false);
 
@@ -448,6 +455,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                 builder.setMessage(getResources().getString(R.string.reconnect_after_disconnect, server.getTitle()))
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int id) {
                         binder.getService().getConnection(server.getId()).setAutojoinChannels(
                             server.getCurrentChannelNames()
@@ -459,6 +467,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                     }
                 })
                 .setNegativeButton(getString(R.string.negative_button), new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }
@@ -491,10 +500,11 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     /**
      * On key pressed (input line)
      */
+    @Override
     public boolean onKey(View view, int keyCode, KeyEvent event)
     {
         EditText input = (EditText) view;
-        
+
         if (keyCode == KeyEvent.KEYCODE_DPAD_UP && event.getAction() == KeyEvent.ACTION_DOWN) {
             String message = scrollback.goBack();
             if (message != null) {
@@ -502,7 +512,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             }
             return true;
         }
-        
+
         if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN && event.getAction() == KeyEvent.ACTION_DOWN) {
             String message = scrollback.goForward();
             if (message != null) {
@@ -510,7 +520,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             }
             return true;
         }
-        
+
         // Nick completion
         if (keyCode == KeyEvent.KEYCODE_SEARCH && event.getAction() == KeyEvent.ACTION_DOWN) {
             String text = input.getText().toString();
@@ -620,19 +630,19 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                 server.getConversation(server.getSelectedConversation()).addMessage(message);
                 onConversationMessage(server.getSelectedConversation());
             }
-            
+
             String text = input.getText().toString();
             input.setText("");
-            
+
             if (text.equals("")) {
                 // ignore empty messages
                 return true;
             }
-            
+
             scrollback.addMessage(text);
-            
+
             Conversation conversation = deckAdapter.getItem(deck.getSelectedItemPosition());
-            
+
             if (conversation != null) {
                 if (!text.trim().startsWith("/")) {
                     if (conversation.getType() != Conversation.TYPE_SERVER) {
@@ -650,12 +660,12 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                     CommandParser.getInstance().parse(text, server, conversation, binder.getService());
                 }
             }
-            
+
             return true;
         }
         return false;
     }
-    
+
     /**
      * On activity result
      */
@@ -666,16 +676,13 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             // ignore other result codes
             return;
         }
-        
+
         switch (requestCode) {
             case REQUEST_CODE_SPEECH:
                 ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                StringBuffer buffer = new StringBuffer();
-                for (String partial : matches) {
-                    buffer.append(" ");
-                    buffer.append(partial);
+                if (matches.size() > 0) {
+                    ((EditText) findViewById(R.id.input)).setText(matches.get(0));
                 }
-                ((EditText) findViewById(R.id.input)).setText(buffer.toString().trim());
                 break;
             case REQUEST_CODE_JOIN:
                 joinChannelBuffer = data.getExtras().getString("channel");
@@ -719,15 +726,16 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                 // XXX: Implement me - The action should be handled after onResume()
                 //                     to catch the broadcasts... now we just wait a second
                 // Yes .. that's very ugly - we need some kind of queue that is handled after onResume()
-                
+
                 new Thread() {
+                    @Override
                     public void run() {
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException e) {
                             // Do nothing
                         }
-                        
+
                         switch (actionId) {
                             case R.id.op:
                                 connection.op(conversation, nickname);
