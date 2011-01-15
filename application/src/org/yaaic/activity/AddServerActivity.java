@@ -408,7 +408,7 @@ public class AddServerActivity extends Activity implements OnClickListener
         }
 
         // We currently only allow chars and numbers as ident
-        Pattern identPattern = Pattern.compile("^[a-zA-Z0-9\\[\\]]+$");
+        Pattern identPattern = Pattern.compile("^[a-zA-Z0-9\\[\\]\\-]+$");
         if (!identPattern.matcher(ident).matches()) {
             throw new ValidationException(getResources().getString(R.string.validation_invalid_ident));
         }
