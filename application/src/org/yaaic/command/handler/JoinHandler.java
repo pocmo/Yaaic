@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.command.handler;
 
 import org.yaaic.R;
@@ -50,7 +50,7 @@ public class JoinHandler extends BaseHandler
             throw new CommandException(service.getString(R.string.invalid_number_of_params));
         }
     }
-    
+
     /**
      * Usage of /join
      */

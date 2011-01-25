@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.layout;
 
 import android.content.Context;
@@ -31,10 +31,11 @@ import android.view.View;
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public  class NonScalingBackgroundDrawable extends Drawable {
-    private View view;
-    private Drawable drawable;
-    
+public class NonScalingBackgroundDrawable extends Drawable
+{
+    private final View view;
+    private final Drawable drawable;
+
     /**
      * Create a new non scaling background drawable
      * 
@@ -44,13 +45,14 @@ public  class NonScalingBackgroundDrawable extends Drawable {
      */
     public NonScalingBackgroundDrawable(Context context, View view, int resource)
     {
-         this.view = view;
-         this.drawable = context.getResources().getDrawable(resource);
+        this.view = view;
+        this.drawable = context.getResources().getDrawable(resource);
     }
 
     /**
      * Draw the background drawable
      */
+    @Override
     public void draw(Canvas canvas)
     {
         int left = (view.getWidth() / 2) - (drawable.getIntrinsicWidth() / 2);
@@ -59,21 +61,23 @@ public  class NonScalingBackgroundDrawable extends Drawable {
         int bottom = top + drawable.getIntrinsicHeight();
 
         drawable.setBounds(left, top, right, bottom);
-         
+
         drawable.draw(canvas);
     }
 
     /**
      * Get the opacity
      */
+    @Override
     public int getOpacity()
     {
-         return drawable.getOpacity();
+        return drawable.getOpacity();
     }
 
     /**
      * Set the alpha
      */
+    @Override
     public void setAlpha(int alpha)
     {
         drawable.setAlpha(alpha);
@@ -82,6 +86,7 @@ public  class NonScalingBackgroundDrawable extends Drawable {
     /**
      * Set the color filter
      */
+    @Override
     public void setColorFilter(ColorFilter cf)
     {
         drawable.setColorFilter(cf);

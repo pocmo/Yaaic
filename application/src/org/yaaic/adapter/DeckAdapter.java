@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.adapter;
 
 import java.util.LinkedList;
@@ -43,7 +43,7 @@ public class DeckAdapter extends BaseAdapter
     private LinkedList<Conversation> conversations;
     private MessageListView currentView;
     private String currentChannel;
-    
+
     /**
      * Create a new DeckAdapter instance
      */
@@ -51,7 +51,7 @@ public class DeckAdapter extends BaseAdapter
     {
         conversations = new LinkedList<Conversation>();
     }
-    
+
     /**
      * Clear conversations
      */
@@ -59,10 +59,11 @@ public class DeckAdapter extends BaseAdapter
     {
         conversations = new LinkedList<Conversation>();
     }
-    
+
     /**
      * Get number of item
      */
+    @Override
     public int getCount()
     {
         return conversations.size();
@@ -71,6 +72,7 @@ public class DeckAdapter extends BaseAdapter
     /**
      * Get item at position
      */
+    @Override
     public Conversation getItem(int position)
     {
         if (position >= 0 && position < conversations.size()) {
@@ -82,13 +84,14 @@ public class DeckAdapter extends BaseAdapter
     /**
      * Get id of item at position
      */
+    @Override
     public long getItemId(int position)
     {
         return position;
     }
-    
+
     /**
-     * Add an item 
+     * Add an item
      * 
      * @param channel Name of the channel
      * @param view The view object
@@ -96,10 +99,10 @@ public class DeckAdapter extends BaseAdapter
     public void addItem(Conversation conversation)
     {
         conversations.add(conversation);
-        
+
         notifyDataSetChanged();
     }
-    
+
     /**
      * Get an item by the channel's name
      * 
@@ -111,16 +114,16 @@ public class DeckAdapter extends BaseAdapter
         // Optimization - cache field lookups
         int mSize = conversations.size();
         LinkedList<Conversation> mItems = this.conversations;
-        
+
         for (int i = 0; i <  mSize; i++) {
             if (mItems.get(i).getName().equalsIgnoreCase(name)) {
                 return i;
             }
         }
-        
+
         return -1;
     }
-    
+
     /**
      * Remove an item
      * 
@@ -129,13 +132,13 @@ public class DeckAdapter extends BaseAdapter
     public void removeItem(String target)
     {
         int position = getPositionByName(target);
-        
+
         if (position != -1) {
             conversations.remove(position);
             notifyDataSetChanged();
         }
     }
-    
+
     /**
      * Set single channel view
      * 
@@ -146,7 +149,7 @@ public class DeckAdapter extends BaseAdapter
         currentChannel = channel;
         currentView = current;
     }
-    
+
     /**
      * Get single channel view
      * 
@@ -156,7 +159,7 @@ public class DeckAdapter extends BaseAdapter
     {
         return currentView;
     }
-    
+
     /**
      * Get name of channel (single channel view)
      * 
@@ -166,9 +169,9 @@ public class DeckAdapter extends BaseAdapter
     {
         return currentChannel;
     }
-    
+
     /**
-     * Has the view been switched to single channel view? 
+     * Has the view been switched to single channel view?
      * 
      * @return view true if view is in single channel view, false otherwise
      */
@@ -176,16 +179,17 @@ public class DeckAdapter extends BaseAdapter
     {
         return currentView != null;
     }
-    
+
     /**
      * Get view at given position
      */
+    @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
         Conversation conversation = getItem(position);
         return renderConversation(conversation, parent);
     }
-    
+
     /**
      * Render a conversation view (MessageListView)
      * 
@@ -197,21 +201,21 @@ public class DeckAdapter extends BaseAdapter
     {
         MessageListView list = new MessageListView(parent.getContext(), parent);
         list.setOnItemClickListener(MessageClickListener.getInstance());
-        
+
         MessageListAdapter adapter = conversation.getMessageListAdapter();
         if (adapter == null) {
             adapter = new MessageListAdapter(conversation, parent.getContext());
             conversation.setMessageListAdapter(adapter);
         }
-        
+
         list.setAdapter(adapter);
-        
+
         list.setDivider(null);
         list.setLayoutParams(new Gallery.LayoutParams(
             parent.getWidth() / 100 * 85,
             parent.getHeight()
         ));
-        
+
         list.setBackgroundResource(R.layout.rounded);
         list.setCacheColorHint(0xee000000);
         list.setPadding(5, 5, 5, 5);
@@ -219,7 +223,7 @@ public class DeckAdapter extends BaseAdapter
         list.setScrollBarStyle(ListView.SCROLLBARS_OUTSIDE_INSET);
         list.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
         list.setSelection(list.getAdapter().getCount() - 1); // scroll to bottom
-        
+
         return list;
     }
 }

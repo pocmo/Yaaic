@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.command.handler;
 
 import java.util.HashMap;
@@ -37,7 +37,7 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
- * Command: /help 
+ * Command: /help
  * 
  * @author Karol Gliniecki <karol.gliniecki@googlemail.com>
  * @author Sebastian Kaspari <sebastian@yaaic.org>
@@ -51,14 +51,14 @@ public class HelpHandler extends BaseHandler
     public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException
     {
         if (params.length == 2) {
-            showCommandDetails(service, server, conversation, params[1]);        
+            showCommandDetails(service, server, conversation, params[1]);
         } else if (params.length == 1) {
             showAllCommands(service, server, conversation);
         } else {
             throw new CommandException(service.getString(R.string.invalid_number_of_params));
         }
     }
-    
+
     /**
      * Show all available commands
      * 
@@ -69,16 +69,16 @@ public class HelpHandler extends BaseHandler
     private void showAllCommands(IRCService service, Server server, Conversation conversation)
     {
         CommandParser cp = CommandParser.getInstance();
-        
+
         StringBuffer commandList = new StringBuffer(service.getString(R.string.available_commands));
         commandList.append("\n");
-        
+
         HashMap<String, BaseHandler> commands = cp.getCommands();
         HashMap<String, String> aliases = cp.getAliases();
 
         Set<String> commandKeys = commands.keySet();
         Set<String> aliasesKeys = aliases.keySet();
-        
+
         for (Object command : commandKeys) {
             String alias = "";
             for (Object aliasCommand : aliasesKeys) {
@@ -89,17 +89,17 @@ public class HelpHandler extends BaseHandler
             }
             commandList.append("/" + command.toString() + alias + " - "+commands.get(command).getDescription(service) + "\n");
         }
-        
+
         Message message = new Message(commandList.toString());
         message.setColor(Message.COLOR_YELLOW);
         conversation.addMessage(message);
-        
+
         Intent intent = Broadcast.createConversationIntent(
             Broadcast.CONVERSATION_MESSAGE,
             server.getId(),
             conversation.getName()
         );
-        
+
         service.sendBroadcast(intent);
     }
 
@@ -116,19 +116,19 @@ public class HelpHandler extends BaseHandler
     {
         CommandParser cp = CommandParser.getInstance();
         HashMap<String, BaseHandler> commands = cp.getCommands();
-        
+
         if (commands.containsKey(command)) {
             // XXX:I18N - String building salad :)
             Message message = new Message("Help of /" + command + "\n" + commands.get(command).getUsage() + "\n" + commands.get(command).getDescription(service) + "\n");
             message.setColor(Message.COLOR_YELLOW);
             conversation.addMessage(message);
-            
+
             Intent intent = Broadcast.createConversationIntent(
                 Broadcast.CONVERSATION_MESSAGE,
                 server.getId(),
                 conversation.getName()
             );
-            
+
             service.sendBroadcast(intent);
         } else {
             throw new CommandException(service.getString(R.string.unknown_command, command));

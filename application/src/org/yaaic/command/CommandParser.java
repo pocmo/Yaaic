@@ -17,12 +17,10 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.command;
 
 import java.util.HashMap;
-
-import android.content.Intent;
 
 import org.yaaic.command.handler.AMsgHandler;
 import org.yaaic.command.handler.AwayHandler;
@@ -55,15 +53,17 @@ import org.yaaic.model.Conversation;
 import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 
+import android.content.Intent;
+
 /**
  * Parser for commands
- *  
+ * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
 public class CommandParser
 {
-    private HashMap<String, BaseHandler> commands;
-    private HashMap<String, String> aliases;
+    private final HashMap<String, BaseHandler> commands;
+    private final HashMap<String, String> aliases;
     private static CommandParser instance;
 
     /**
@@ -72,7 +72,7 @@ public class CommandParser
     private CommandParser()
     {
         commands = new HashMap<String, BaseHandler>();
-        
+
         // Commands
         commands.put("nick", new NickHandler());
         commands.put("join", new JoinHandler());
@@ -98,9 +98,9 @@ public class CommandParser
         commands.put("msg", new MsgHandler());
         commands.put("quote", new RawHandler());
         commands.put("amsg", new AMsgHandler());
-        
+
         aliases = new HashMap<String, String>();
-        
+
         // Aliases
         aliases.put("j","join");
         aliases.put("q", "query");
@@ -108,7 +108,7 @@ public class CommandParser
         aliases.put("raw", "quote");
         aliases.put("w", "whois");
     }
-    
+
     /**
      * Get the global CommandParser instance
      * 
@@ -119,10 +119,10 @@ public class CommandParser
         if (instance == null) {
             instance = new CommandParser();
         }
-        
+
         return instance;
     }
-    
+
     /**
      * Get the commands HashMap
      * 
@@ -132,7 +132,7 @@ public class CommandParser
     {
         return commands;
     }
-    
+
     /**
      * Get the command aliases HashMap
      * 
@@ -142,7 +142,7 @@ public class CommandParser
     {
         return aliases;
     }
-    
+
     /**
      * Is the given command a valid client command?
      * 
@@ -153,7 +153,7 @@ public class CommandParser
     {
         return commands.containsKey(command.toLowerCase()) || aliases.containsKey(command.toLowerCase());
     }
-    
+
     /**
      * Handle a client command
      * 
@@ -180,11 +180,11 @@ public class CommandParser
                 Message errorMessage = new Message(type + ": " + e.getMessage());
                 errorMessage.setColor(Message.COLOR_RED);
                 conversation.addMessage(errorMessage);
-                
+
                 // XXX:I18N - How to get a context here? (command_syntax)
                 Message usageMessage = new Message("Syntax: " + command.getUsage());
                 conversation.addMessage(usageMessage);
-                
+
                 Intent intent = Broadcast.createConversationIntent(
                     Broadcast.CONVERSATION_MESSAGE,
                     server.getId(),
@@ -195,7 +195,7 @@ public class CommandParser
             }
         }
     }
-    
+
     /**
      * Handle a server command
      * 
@@ -215,7 +215,7 @@ public class CommandParser
             service.getConnection(server.getId()).sendRawLineViaQueue(type.toUpperCase());
         }
     }
-    
+
     /**
      * Parse the given line
      * 
@@ -226,7 +226,7 @@ public class CommandParser
         line = line.trim().substring(1); // cut the slash
         String[] params = line.split(" ");
         String type = params[0];
-        
+
         if (isClientCommand(type)) {
             handleClientCommand(type, params, server, conversation, service);
         } else {

@@ -17,9 +17,14 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.listener;
 
+/**
+ * Listener for conversations
+ * 
+ * @author Sebastian Kaspari <sebastian@yaaic.org>
+ */
 public interface ConversationListener
 {
     public void onConversationMessage(String target);

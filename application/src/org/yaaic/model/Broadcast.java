@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.model;
 
 import android.content.Intent;
@@ -30,11 +30,11 @@ import android.content.Intent;
 public abstract class Broadcast
 {
     public static final String SERVER_UPDATE         = "org.yaaic.server.status";
-    
+
     public static final String CONVERSATION_MESSAGE    = "org.yaaic.conversation.message";
     public static final String CONVERSATION_NEW        = "org.yaaic.conversation.new";
     public static final String CONVERSATION_REMOVE    = "org.yaaic.conversation.remove";
-    
+
     /**
      * Create an Intent for conversation broadcasting
      * 
@@ -46,13 +46,13 @@ public abstract class Broadcast
     public static Intent createConversationIntent(String broadcastType, int serverId, String conversationName)
     {
         Intent intent = new Intent(broadcastType);
-        
+
         intent.putExtra(Extra.SERVER, serverId);
         intent.putExtra(Extra.CONVERSATION, conversationName);
-        
+
         return intent;
     }
-    
+
     /**
      * Create an Intent for server broadcasting
      * 
@@ -63,9 +63,9 @@ public abstract class Broadcast
     public static Intent createServerIntent(String broadcastType, int serverId)
     {
         Intent intent = new Intent(broadcastType);
-        
+
         intent.putExtra(Extra.SERVER, serverId);
-        
+
         return intent;
     }
 }

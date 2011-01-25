@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.model;
 
 import java.util.ArrayList;
@@ -33,10 +33,10 @@ import java.util.List;
 public class Identity
 {
     private String nickname;
-    private List<String> aliases = new ArrayList<String>();
+    private final List<String> aliases = new ArrayList<String>();
     private String ident;
     private String realname;
-    
+
     /**
      * Set the nickname of this identity
      * 
@@ -46,7 +46,7 @@ public class Identity
     {
         this.nickname = nickname;
     }
-    
+
     /**
      * Get the nickname of this identity
      * 
@@ -56,16 +56,16 @@ public class Identity
     {
         return nickname;
     }
-    
+
     public void setAliases(Collection<String> aliases) {
         this.aliases.clear();
         this.aliases.addAll(aliases);
     }
-    
+
     public List<String> getAliases() {
         return Collections.unmodifiableList(aliases);
     }
-    
+
     /**
      * Set the ident of this identity
      * 
@@ -75,7 +75,7 @@ public class Identity
     {
         this.ident = ident;
     }
-    
+
     /**
      * Get the ident of this identity
      * 
@@ -85,7 +85,7 @@ public class Identity
     {
         return ident;
     }
-    
+
     /**
      * Set the real name of this identity
      * 
@@ -95,7 +95,7 @@ public class Identity
     {
         this.realname = realname;
     }
-    
+
     /**
      * Get the real name of this identity
      * 

@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.view;
 
 import org.yaaic.adapter.MessageListAdapter;
@@ -31,17 +31,17 @@ import android.widget.Gallery;
 import android.widget.ListView;
 
 /**
- * A customized ListView for Messages 
+ * A customized ListView for Messages
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
 public class MessageListView extends ListView
 {
     private boolean delegate = true;
-    private View parent;
+    private final View parent;
     private int parentWidth;
     private int parentHeight;
-    
+
     /**
      * Create a new MessageListView
      * 
@@ -50,14 +50,14 @@ public class MessageListView extends ListView
     public MessageListView(Context context, View parent)
     {
         super(context);
-        
+
         this.parent = parent;
         this.setOnItemClickListener(MessageClickListener.getInstance());
-        
+
         parentWidth = parent.getWidth();
         parentHeight = parent.getHeight();
     }
-    
+
     /**
      * Should all touch events delegated?
      * 
@@ -67,7 +67,7 @@ public class MessageListView extends ListView
     {
         this.delegate = delegate;
     }
-    
+
     /**
      * Handle touch screen motion events
      */
@@ -75,7 +75,7 @@ public class MessageListView extends ListView
     public boolean onTouchEvent(MotionEvent event)
     {
         if (delegate) {
-            // We delegate the touch events to the underlying view 
+            // We delegate the touch events to the underlying view
             return false;
         } else {
             return super.onTouchEvent(event);
@@ -90,25 +90,26 @@ public class MessageListView extends ListView
     {
         if (delegate && (parent.getWidth() != parentWidth || parent.getHeight() != parentHeight)) {
             // parent size changed, resizing this child too
-            
+
             parentWidth = parent.getWidth();
             parentHeight = parent.getHeight();
-            
+
             this.setLayoutParams(new Gallery.LayoutParams(
                 parent.getWidth() / 100 * 85,
                 parent.getHeight()
             ));
         }
-        
+
         super.onDraw(canvas);
     }
-    
+
     /**
      * Get the adapter of this MessageListView
      * (Helper to avoid casting)
      * 
      * @return The MessageListAdapter
      */
+    @Override
     public MessageListAdapter getAdapter()
     {
         return (MessageListAdapter) super.getAdapter();

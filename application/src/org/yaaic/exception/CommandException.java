@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.exception;
 
 /**
@@ -29,7 +29,7 @@ package org.yaaic.exception;
 public class CommandException extends Throwable
 {
     private static final long serialVersionUID = -8317993941455253288L;
-    
+
     /**
      * Create a new CommandException object
      */

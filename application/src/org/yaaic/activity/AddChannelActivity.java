@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.activity;
 
 import java.util.ArrayList;
@@ -31,14 +31,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * Adding auto join channels to a server
@@ -51,7 +51,7 @@ public class AddChannelActivity extends Activity implements OnClickListener, OnI
     private ArrayAdapter<String> adapter;
     private ArrayList<String> channels;
     private Button okButton;
-    
+
     /**
      * On create
      */
@@ -60,17 +60,17 @@ public class AddChannelActivity extends Activity implements OnClickListener, OnI
     {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        
+
         setContentView(R.layout.channeladd);
-        
+
         channelInput = (EditText) findViewById(R.id.channel);
-        
+
         adapter = new ArrayAdapter<String>(this, R.layout.channelitem);
-        
+
         ListView list = (ListView) findViewById(R.id.channels);
         list.setAdapter(adapter);
         list.setOnItemClickListener(this);
-        
+
         ((Button) findViewById(R.id.add)).setOnClickListener(this);
         ((Button) findViewById(R.id.cancel)).setOnClickListener(this);
 
@@ -79,7 +79,7 @@ public class AddChannelActivity extends Activity implements OnClickListener, OnI
         okButton.setEnabled(false);
 
         channels = getIntent().getExtras().getStringArrayList(Extra.CHANNELS);
-        
+
         for (String channel : channels) {
             adapter.add(channel);
         }
@@ -88,6 +88,7 @@ public class AddChannelActivity extends Activity implements OnClickListener, OnI
     /**
      * On Click
      */
+    @Override
     public void onClick(View v)
     {
         switch (v.getId()) {
@@ -115,15 +116,17 @@ public class AddChannelActivity extends Activity implements OnClickListener, OnI
     /**
      * On item clicked
      */
+    @Override
     public void onItemClick(AdapterView<?> list, View item, int position, long id)
     {
         final String channel = adapter.getItem(position);
-        
+
         String[] items = { getResources().getString(R.string.action_remove) };
-        
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(channel);
         builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int item) {
                 switch (item) {
                     case 0: // Remove

@@ -17,16 +17,16 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.receiver;
-
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
 
 import org.yaaic.listener.ConversationListener;
 import org.yaaic.model.Broadcast;
 import org.yaaic.model.Extra;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 
 /**
  * A channel receiver for receiving channel updates
@@ -35,14 +35,14 @@ import org.yaaic.model.Extra;
  */
 public class ConversationReceiver extends BroadcastReceiver
 {
-    private ConversationListener listener;
-    private int serverId;
-    
+    private final ConversationListener listener;
+    private final int serverId;
+
     /**
      * Create a new channel receiver
-     *  
+     * 
      * @param serverId Only listen on channels of this server
-     * @param listener 
+     * @param listener
      */
     public ConversationReceiver(int serverId, ConversationListener listener)
     {
@@ -63,7 +63,7 @@ public class ConversationReceiver extends BroadcastReceiver
         if (serverId != this.serverId) {
             return;
         }
-        
+
         String action = intent.getAction();
 
         if (action.equals(Broadcast.CONVERSATION_MESSAGE)) {
@@ -73,6 +73,6 @@ public class ConversationReceiver extends BroadcastReceiver
         } else if (action.equals(Broadcast.CONVERSATION_REMOVE)) {
             listener.onRemoveConversation(intent.getExtras().getString(Extra.CONVERSATION));
         }
-        
+
     }
 }

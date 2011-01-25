@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.command.handler;
 
 import org.yaaic.R;
@@ -40,7 +40,7 @@ public class NickHandler extends BaseHandler
      * Execute /nick
      */
     @Override
-    public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException 
+    public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException
     {
         if (params.length == 2) {
             service.getConnection(server.getId()).changeNick(params[1]);
@@ -48,7 +48,7 @@ public class NickHandler extends BaseHandler
             throw new CommandException(service.getString(R.string.invalid_number_of_params));
         }
     }
-    
+
     /**
      * Usage of /nick
      */
@@ -57,7 +57,7 @@ public class NickHandler extends BaseHandler
     {
         return "/nick <nickname>";
     }
-    
+
     /**
      * Description of /nick
      */

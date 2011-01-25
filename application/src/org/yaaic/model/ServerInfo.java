@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.model;
 
 /**
@@ -28,7 +28,7 @@ package org.yaaic.model;
 public class ServerInfo extends Conversation
 {
     public static final String DEFAULT_NAME = "";
-    
+
     /**
      * Create a new ServerInfo object
      * 

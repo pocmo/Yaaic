@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.model;
 
 import java.util.LinkedList;
@@ -30,10 +30,10 @@ import java.util.LinkedList;
 public class Scrollback
 {
     public static final int MAX_HISTORY = 10;
-    
-    private LinkedList<String> messages;
+
+    private final LinkedList<String> messages;
     private int pointer;
-    
+
     /**
      * Create a new scrollback object
      */
@@ -41,21 +41,21 @@ public class Scrollback
     {
         messages = new LinkedList<String>();
     }
-    
+
     /**
      * Add a message to the history
      */
     public void addMessage(String message)
     {
         messages.addLast(message);
-        
+
         if (messages.size() > MAX_HISTORY) {
             messages.removeFirst();
         }
-        
+
         pointer = messages.size();
     }
-    
+
     /**
      * Go back in history
      * 
@@ -66,14 +66,14 @@ public class Scrollback
         if (pointer > 0) {
             pointer--;
         }
-        
+
         if (messages.size() > 0) {
             return messages.get(pointer);
         }
-    
+
         return null;
     }
-    
+
     /**
      * Go forward in history
      * 
@@ -86,11 +86,11 @@ public class Scrollback
         } else {
             return "";
         }
-        
+
         if (messages.size() > 0) {
             return messages.get(pointer);
         }
-        
+
         return null;
     }
 }

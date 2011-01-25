@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic;
 
 import java.util.ArrayList;
@@ -36,11 +36,11 @@ import android.content.Context;
  */
 public class Yaaic
 {
-    public static Yaaic instance;
-    
+    public static Yaaic              instance;
+
     private HashMap<Integer, Server> servers;
-    private boolean serversLoaded = false;
-    
+    private boolean                  serversLoaded = false;
+
     /**
      * Private constructor, you may want to use static getInstance()
      */
@@ -48,7 +48,7 @@ public class Yaaic
     {
         servers = new HashMap<Integer, Server>();
     }
-    
+
     /**
      * Load servers from database
      * 
@@ -60,12 +60,12 @@ public class Yaaic
             Database db = new Database(context);
             servers = db.getServers();
             db.close();
-            
-            //context.sendBroadcast(new Intent(Broadcast.SERVER_UPDATE));
+
+            // context.sendBroadcast(new Intent(Broadcast.SERVER_UPDATE));
             serversLoaded = true;
         }
     }
-    
+
     /**
      * Get global Yaaic instance
      * 
@@ -74,12 +74,12 @@ public class Yaaic
     public static Yaaic getInstance()
     {
         if (instance == null) {
-            instance = new Yaaic(); 
+            instance = new Yaaic();
         }
-        
+
         return instance;
     }
-    
+
     /**
      * Get server by id
      * 
@@ -89,7 +89,7 @@ public class Yaaic
     {
         return servers.get(serverId);
     }
-    
+
     /**
      * Remove server with given unique id from list
      * 
@@ -99,7 +99,7 @@ public class Yaaic
     {
         servers.remove(serverId);
     }
-    
+
     /**
      * Set servers
      * 
@@ -109,7 +109,7 @@ public class Yaaic
     {
         this.servers = servers;
     }
-    
+
     /**
      * Add server to list
      */
@@ -119,7 +119,7 @@ public class Yaaic
             servers.put(server.getId(), server);
         }
     }
-    
+
     /**
      * Update a server in list
      */
@@ -127,7 +127,7 @@ public class Yaaic
     {
         servers.put(server.getId(), server);
     }
-    
+
     /**
      * Get list of servers
      * 
@@ -136,12 +136,12 @@ public class Yaaic
     public ArrayList<Server> getServersAsArrayList()
     {
         ArrayList<Server> serverList = new ArrayList<Server>();
-        
+
         Set<Integer> mKeys = servers.keySet();
         for (int key : mKeys) {
             serverList.add(servers.get(key));
         }
-        
+
         return serverList;
     }
 }

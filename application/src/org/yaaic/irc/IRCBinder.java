@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.irc;
 
 import org.yaaic.model.Server;
@@ -26,25 +26,25 @@ import android.os.Binder;
 
 /**
  * Binder for service communication
- *  
+ * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
 public class IRCBinder extends Binder
 {
-    private IRCService service;
-    
+    private final IRCService service;
+
     /**
-     * Create a new binder for given service 
+     * Create a new binder for given service
      * 
      * @param service
      */
     public IRCBinder(IRCService service)
     {
         super();
-        
+
         this.service = service;
     }
-    
+
     /**
      * Connect to given server
      * 
@@ -54,7 +54,7 @@ public class IRCBinder extends Binder
     {
         service.connect(server);
     }
-    
+
     /**
      * Get service associated with this service
      * @return

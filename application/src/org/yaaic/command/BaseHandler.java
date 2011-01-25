@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.command;
 
 import org.yaaic.exception.CommandException;
@@ -44,14 +44,14 @@ public abstract class BaseHandler
      * @throws CommandException if command couldn't be executed
      */
     public abstract void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException;
-    
+
     /**
      * Get the usage description for this command
      * 
      * @return The usage description
      */
     public abstract String getUsage();
-    
+
     /**
      * Get the description for this command
      * 
@@ -59,7 +59,7 @@ public abstract class BaseHandler
      * @return
      */
     public abstract String getDescription(Context context);
-    
+
     /**
      * Merge params to a string
      * 
@@ -69,7 +69,7 @@ public abstract class BaseHandler
     {
         return mergeParams(params, 1);
     }
-    
+
     /**
      * Merge params to a string
      * 
@@ -79,12 +79,12 @@ public abstract class BaseHandler
     public static String mergeParams(String[] params, int position)
     {
         StringBuffer buffer = new StringBuffer();
-        
+
         for (; position < params.length; position++) {
             buffer.append(params[position]);
             buffer.append(" ");
         }
-        
+
         return buffer.toString().trim();
     }
 }

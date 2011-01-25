@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.activity;
 
 import java.util.Arrays;
@@ -49,9 +49,9 @@ public class UsersActivity extends ListActivity implements OnItemClickListener
     {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        
+
         setContentView(R.layout.users);
-        
+
         final String[] users = getIntent().getExtras().getStringArray(Extra.USERS);
         getListView().setOnItemClickListener(this);
 
@@ -64,6 +64,7 @@ public class UsersActivity extends ListActivity implements OnItemClickListener
     /**
      * On user selected
      */
+    @Override
     public void onItemClick(AdapterView<?> list, View item, int position, long id)
     {
         Intent intent = new Intent();

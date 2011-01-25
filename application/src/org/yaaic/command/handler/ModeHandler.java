@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.command.handler;
 
 import org.yaaic.R;
@@ -42,17 +42,17 @@ public class ModeHandler extends BaseHandler
      * Execute /mode
      */
     @Override
-    public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException 
+    public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException
     {
         if (params.length > 2) {
             String modes = BaseHandler.mergeParams(params, 2);
-            
+
             service.getConnection(server.getId()).setMode(params[1], modes);
         } else {
             throw new CommandException(service.getString(R.string.invalid_number_of_params));
         }
     }
-    
+
     /**
      * Usage of /mode
      */

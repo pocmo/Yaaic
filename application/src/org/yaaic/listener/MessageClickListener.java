@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.listener;
 
 import org.yaaic.activity.MessageActivity;
@@ -37,16 +37,16 @@ import android.widget.AdapterView.OnItemClickListener;
 public class MessageClickListener implements OnItemClickListener
 {
     private static MessageClickListener instance;
-    
+
     /**
      * Private constructor
      */
     private MessageClickListener()
     {
     }
-    
+
     /**
-     * Get global instance of message click listener 
+     * Get global instance of message click listener
      * 
      * @return
      */
@@ -55,17 +55,18 @@ public class MessageClickListener implements OnItemClickListener
         if (instance == null) {
             instance = new MessageClickListener();
         }
-        
+
         return instance;
     }
-    
+
     /**
      * On message item clicked
      */
+    @Override
     public void onItemClick(AdapterView<?> group, View view, int position, long id)
     {
         MessageListAdapter adapter = (MessageListAdapter) group.getAdapter();
-        
+
         Intent intent = new Intent(group.getContext(), MessageActivity.class);
         intent.putExtra(Extra.MESSAGE, adapter.getItem(position).getText().toString());
         group.getContext().startActivity(intent);

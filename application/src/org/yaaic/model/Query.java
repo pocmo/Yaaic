@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.model;
 
 /**
@@ -36,10 +36,11 @@ public class Query extends Conversation
     {
         super(name);
     }
-    
+
     /**
      * Get the type of this conversation
      */
+    @Override
     public int getType()
     {
         return Conversation.TYPE_QUERY;

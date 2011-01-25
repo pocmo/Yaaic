@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.command.handler;
 
 import java.io.File;
@@ -46,7 +46,7 @@ public class DCCHandler extends BaseHandler
      * Execute /dcc
      */
     @Override
-    public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException 
+    public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException
     {
         if (params.length == 4) {
             if (!params[1].equalsIgnoreCase("SEND")) {
@@ -56,13 +56,13 @@ public class DCCHandler extends BaseHandler
             if (!file.exists()) {
                 throw new CommandException(service.getString(R.string.dcc_file_not_found, params[3]));
             }
-            
+
             service.getConnection(server.getId()).dccSendFile(file, params[2], 60000);
-            
+
             Message message = new Message(service.getString(R.string.dcc_waiting_accept, params[2]));
             message.setColor(Message.COLOR_GREY);
             conversation.addMessage(message);
-            
+
             service.sendBroadcast(
                 Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), conversation.getName())
             );
@@ -70,7 +70,7 @@ public class DCCHandler extends BaseHandler
             throw new CommandException(service.getString(R.string.invalid_number_of_params));
         }
     }
-    
+
     /**
      * Usage of /dcc
      */

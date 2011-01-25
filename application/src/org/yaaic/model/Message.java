@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.model;
 
 import java.util.Date;
@@ -37,39 +37,39 @@ import android.widget.TextView;
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
 public class Message {
-    public static final int COLOR_GREEN  = 0xFF458509;
-    public static final int COLOR_RED    = 0xFFcc0000;
-    public static final int COLOR_BLUE   = 0xFF729fcf;
-    public static final int COLOR_YELLOW = 0xFFbe9b01;
-    public static final int COLOR_GREY   = 0xFFaaaaaa;
-    public static final int COLOR_DEFAULT   = 0xFFeeeeee;
-    
+    public static final int COLOR_GREEN   = 0xFF458509;
+    public static final int COLOR_RED     = 0xFFcc0000;
+    public static final int COLOR_BLUE    = 0xFF729fcf;
+    public static final int COLOR_YELLOW  = 0xFFbe9b01;
+    public static final int COLOR_GREY    = 0xFFaaaaaa;
+    public static final int COLOR_DEFAULT = 0xFFeeeeee;
+
     public static final int[] colors = {
-        0xFFffffff, //White
-        0xFFffff00, //Yellow
-        0xFFff00ff, //Fuchsia
-        0xFFff0000, //Red
-        0xFFc0c0c0, //Silver
-        0xFF808080, //Gray
-        0xFF808000, //Olive
-        0xFF800080, //Purple
-        0xFF800000, //Maroon
-        0xFF00ffff, //Agua
-        0xFF00ff00, //Lime
-        0xFF008080, //Teal
-        0xFF008000, //Green
-        0xFF0000FF, //Blue
-        0xFF000080, //Navy
-        0xFF000000, //Black
+        0xFFffffff, // White
+        0xFFffff00, // Yellow
+        0xFFff00ff, // Fuchsia
+        0xFFff0000, // Red
+        0xFFc0c0c0, // Silver
+        0xFF808080, // Gray
+        0xFF808000, // Olive
+        0xFF800080, // Purple
+        0xFF800000, // Maroon
+        0xFF00ffff, // Agua
+        0xFF00ff00, // Lime
+        0xFF008080, // Teal
+        0xFF008000, // Green
+        0xFF0000FF, // Blue
+        0xFF000080, // Navy
+        0xFF000000, // Black
     };
 
     private int icon = -1;
-    private String text;
-    private String sender;
+    private final String text;
+    private final String sender;
     private SpannableString canvas;
     private int color = -1;
-    private long timestamp;
-    
+    private final long timestamp;
+
     /**
      * Create a new message without an icon
      * 
@@ -91,7 +91,7 @@ public class Message {
         this.sender = sender;
         this.timestamp = new Date().getTime();
     }
-    
+
     /**
      * Set the message's icon
      */
@@ -99,7 +99,7 @@ public class Message {
     {
         this.icon = icon;
     }
-    
+
     /**
      * Get the message's icon
      * 
@@ -109,7 +109,7 @@ public class Message {
     {
         return icon;
     }
-    
+
     /**
      * Get the text of this message
      * 
@@ -119,7 +119,7 @@ public class Message {
     {
         return text;
     }
-    
+
     /**
      * Set the color of this message
      */
@@ -135,7 +135,9 @@ public class Message {
     private int getSenderColor()
     {
         /* It might be worth to use some hash table here */
-        if (sender == null) return COLOR_DEFAULT;
+        if (sender == null) {
+            return COLOR_DEFAULT;
+        }
         int color = 0;
         for(int i = 0; i < sender.length(); i++){
             color += sender.charAt(i);
@@ -152,14 +154,14 @@ public class Message {
     public SpannableString render(Context context)
     {
         Settings settings = new Settings(context);
-        
+
         if (canvas == null) {
             String prefix = icon != -1 && settings.showIcons() ? "  " : "";
             String nick = sender != null ? "<" + sender + "> " : "";
             String timestamp = settings.showTimestamp() ? Message.generateTimestamp(this.timestamp, settings.use24hFormat()) : "";
-            
+
             canvas = new SpannableString(prefix + timestamp + nick + text);
-            
+
             if (sender != null) {
                 int start = (prefix + timestamp).length() + 1;
                 int end = start + sender.length();
@@ -177,10 +179,10 @@ public class Message {
                 canvas.setSpan(new ForegroundColorSpan(color), 0, canvas.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
-        
+
         return canvas;
     }
-    
+
     /**
      * Render message as text view
      * 
@@ -191,17 +193,17 @@ public class Message {
     {
         // XXX: We should not read settings here ALWAYS for EVERY textview
         Settings settings = new Settings(context);
-        
+
         TextView canvas = new TextView(context);
-        
+
         canvas.setText(this.render(context));
         canvas.setTextSize(settings.getFontSize());
         canvas.setTypeface(Typeface.MONOSPACE);
         canvas.setTextColor(COLOR_DEFAULT);
-        
+
         return canvas;
     }
-    
+
     /**
      * Generate a timestamp
      * 
@@ -211,7 +213,7 @@ public class Message {
     public static String generateTimestamp(long timestamp, boolean use24hFormat)
     {
         Date date = new Date(timestamp);
-        
+
         int hours = date.getHours();
         int minutes = date.getMinutes();
 
@@ -221,7 +223,7 @@ public class Message {
                 hours = 0;
             }
         }
-        
+
         return "[" + (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + "] ";
     }
 }

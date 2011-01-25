@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.exception;
 
 /**
@@ -28,7 +28,7 @@ package org.yaaic.exception;
 public class ValidationException extends Exception
 {
     private static final long serialVersionUID = 6951535205062761539L;
-    
+
     /**
      * Create a new ValidationException with the given message
      * 

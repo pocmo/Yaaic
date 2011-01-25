@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.command.handler;
 
 import org.yaaic.R;
@@ -43,12 +43,12 @@ public class EchoHandler extends BaseHandler
      * Execute /echo
      */
     @Override
-    public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException 
+    public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException
     {
         if (params.length > 1) {
             Message message = new Message(BaseHandler.mergeParams(params));
             conversation.addMessage(message);
-            
+
             Intent intent = Broadcast.createConversationIntent(
                 Broadcast.CONVERSATION_MESSAGE,
                 server.getId(),
@@ -59,7 +59,7 @@ public class EchoHandler extends BaseHandler
             throw new CommandException(service.getString(R.string.text_missing));
         }
     }
-    
+
     /**
      * Usage of /echo
      */

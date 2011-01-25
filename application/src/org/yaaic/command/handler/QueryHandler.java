@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.command.handler;
 
 import org.yaaic.R;
@@ -45,23 +45,23 @@ public class QueryHandler extends BaseHandler
      * Execute /query
      */
     @Override
-    public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException 
+    public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException
     {
         if (params.length == 2) {
             // Simple validation
             if (params[1].startsWith("#")) {
                 throw new CommandException(service.getString(R.string.query_to_channel));
             }
-            
+
             Conversation query = server.getConversation(params[1]);
-            
+
             if (query != null) {
                 throw new CommandException(service.getString(R.string.query_exists));
             }
-            
+
             query = new Query(params[1]);
             server.addConversationl(query);
-            
+
             Intent intent = Broadcast.createConversationIntent(
                 Broadcast.CONVERSATION_NEW,
                 server.getId(),
@@ -72,7 +72,7 @@ public class QueryHandler extends BaseHandler
             throw new CommandException(service.getString(R.string.invalid_number_of_params));
         }
     }
-    
+
     /**
      * Usage of /query
      */

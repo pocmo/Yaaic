@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.model;
 
 import java.util.LinkedList;
@@ -36,27 +36,27 @@ public abstract class Conversation
     public static final int TYPE_CHANNEL = 1;
     public static final int TYPE_QUERY   = 2;
     public static final int TYPE_SERVER  = 3;
-    
+
     public static final int STATUS_DEFAULT   = 1;
     public static final int STATUS_SELECTED  = 2;
     public static final int STATUS_MESSAGE   = 3;
     public static final int STATUS_HIGHLIGHT = 4;
-    
+
     public static final int HISTORY_SIZE = 30;
-    
-    private LinkedList<Message> buffer;
-    private LinkedList<Message> history;
-    private String name;
+
+    private final LinkedList<Message> buffer;
+    private final LinkedList<Message> history;
+    private final String name;
     private MessageListAdapter adapter;
     private int status = 1;
-    
+
     /**
      * Get the type of conversation (channel, query, ..)
      * 
      * @return See the constants: Conversation.TYPE_*
      */
     public abstract int getType();
-    
+
     /**
      * Create a new conversation with the given name
      * 
@@ -68,7 +68,7 @@ public abstract class Conversation
         this.history = new LinkedList<Message>();
         this.name = name.toLowerCase();
     }
-    
+
     /**
      * Get name of the conversation (channel, user)
      */
@@ -76,7 +76,7 @@ public abstract class Conversation
     {
         return name;
     }
-    
+
     /**
      * Add a message to the channel
      */
@@ -84,12 +84,12 @@ public abstract class Conversation
     {
         buffer.add(0, message);
         history.add(message);
-        
+
         if (history.size() > HISTORY_SIZE) {
             history.remove(0);
         }
     }
-    
+
     /**
      * Get the history
      */
@@ -97,7 +97,7 @@ public abstract class Conversation
     {
         return history;
     }
-    
+
     /**
      * Get message of the history at the given position
      * 
@@ -108,7 +108,7 @@ public abstract class Conversation
     {
         return history.get(position);
     }
-    
+
     /**
      * Get last buffered message
      * 
@@ -120,7 +120,7 @@ public abstract class Conversation
         buffer.remove(buffer.size() - 1);
         return message;
     }
-    
+
     /**
      * Get the buffer
      * 
@@ -130,7 +130,7 @@ public abstract class Conversation
     {
         return buffer;
     }
-    
+
     /**
      * Does the channel have buffered messages?
      */
@@ -138,7 +138,7 @@ public abstract class Conversation
     {
         return buffer.size() > 0;
     }
-    
+
     /**
      * Clear the message buffer
      */
@@ -146,7 +146,7 @@ public abstract class Conversation
     {
         buffer.clear();
     }
-    
+
     /**
      * Store the adapter of this conversation
      */
@@ -154,7 +154,7 @@ public abstract class Conversation
     {
         this.adapter = adapter;
     }
-    
+
     /**
      * Get the MessageList Adapter of this conversation if known
      */
@@ -162,7 +162,7 @@ public abstract class Conversation
     {
         return adapter;
     }
-    
+
     /**
      * Set status of conversation
      * 
@@ -174,15 +174,15 @@ public abstract class Conversation
         if (this.status == STATUS_SELECTED && status != STATUS_DEFAULT) {
             return;
         }
-        
+
         // Highlight status can only be changed by selecting
         if (this.status == STATUS_HIGHLIGHT && status != STATUS_SELECTED) {
             return;
         }
-        
+
         this.status = status;
     }
-    
+
     /**
      * Get status of conversation
      * 

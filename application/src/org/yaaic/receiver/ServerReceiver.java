@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.receiver;
 
 import org.yaaic.listener.ServerListener;
@@ -33,8 +33,8 @@ import android.content.Intent;
  */
 public class ServerReceiver extends BroadcastReceiver
 {
-    private ServerListener listener;
-    
+    private final ServerListener listener;
+
     /**
      * Create a new server receiver
      * 
@@ -51,6 +51,6 @@ public class ServerReceiver extends BroadcastReceiver
     @Override
     public void onReceive(Context context, Intent intent)
     {
-        listener.onStatusUpdate(); 
+        listener.onStatusUpdate();
     }
 }

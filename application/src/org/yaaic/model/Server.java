@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.model;
 
 import java.util.ArrayList;
@@ -41,14 +41,14 @@ public class Server
     private String charset;
     private boolean useSSL = false;
     private Identity identity;
-    
-    private LinkedHashMap<String, Conversation> conversations = new LinkedHashMap<String, Conversation>();
+
+    private final LinkedHashMap<String, Conversation> conversations = new LinkedHashMap<String, Conversation>();
     private ArrayList<String> autoJoinChannels;
     private ArrayList<String> connectCommands;
-    
+
     private int status = Status.DISCONNECTED;
     private String selected = "";
-    
+
     /**
      * Create a new server object
      */
@@ -57,7 +57,7 @@ public class Server
         conversations.put(ServerInfo.DEFAULT_NAME, new ServerInfo());
         this.selected = ServerInfo.DEFAULT_NAME;
     }
-    
+
     /**
      * Set the identity for this server
      * 
@@ -67,7 +67,7 @@ public class Server
     {
         this.identity = identity;
     }
-    
+
     /**
      * Get the identity for this server
      * 
@@ -77,7 +77,7 @@ public class Server
     {
         return identity;
     }
-    
+
     /**
      * Get unique id of server
      * 
@@ -87,7 +87,7 @@ public class Server
     {
         return id;
     }
-    
+
     /**
      * Set unique id of server
      * 
@@ -97,7 +97,7 @@ public class Server
     {
         this.id = id;
     }
-    
+
     /**
      * Set password of the server
      * 
@@ -107,7 +107,7 @@ public class Server
     {
         this.password = password;
     }
-    
+
     /**
      * Get the password of the server
      * 
@@ -117,7 +117,7 @@ public class Server
     {
         return password;
     }
-    
+
     /**
      * Get title of server
      * 
@@ -127,7 +127,7 @@ public class Server
     {
         return title;
     }
-    
+
     /**
      * Set title of server
      * 
@@ -137,7 +137,7 @@ public class Server
     {
         this.title = title;
     }
-    
+
     /**
      * Get hostname of server
      * 
@@ -147,7 +147,7 @@ public class Server
     {
         return host;
     }
-    
+
     /**
      * Set hostname of server
      * 
@@ -157,7 +157,7 @@ public class Server
     {
         this.host = host;
     }
-    
+
     /**
      * Get port of server
      * 
@@ -167,7 +167,7 @@ public class Server
     {
         return port;
     }
-    
+
     /**
      * Set port of server
      * 
@@ -177,7 +177,7 @@ public class Server
     {
         this.port = port;
     }
-    
+
     /**
      * Set the charset to be used for all messages sent to the server
      * 
@@ -187,7 +187,7 @@ public class Server
     {
         this.charset = charset;
     }
-    
+
     /**
      * Get the charset to be used with this server
      * 
@@ -197,7 +197,7 @@ public class Server
     {
         return charset;
     }
-    
+
     /**
      * Set if this connections needs to use ssl
      */
@@ -205,7 +205,7 @@ public class Server
     {
         this.useSSL = useSSL;
     }
-    
+
     /**
      * Does this connection use SSL?
      * 
@@ -215,7 +215,7 @@ public class Server
     {
         return useSSL;
     }
-    
+
     /**
      * Set connection status of server
      * 
@@ -225,7 +225,7 @@ public class Server
     {
         this.status = status;
     }
-    
+
     /**
      * Get connection status of server
      * 
@@ -235,7 +235,7 @@ public class Server
     {
         return status;
     }
-    
+
     /**
      * Set list of channels to auto join after connect
      * 
@@ -245,7 +245,7 @@ public class Server
     {
         this.autoJoinChannels = autoJoinChannels;
     }
-    
+
     /**
      * Get list of channels to auto join after connect
      * 
@@ -255,7 +255,7 @@ public class Server
     {
         return autoJoinChannels;
     }
-    
+
     /**
      * Set commands to execute after connect
      * 
@@ -265,7 +265,7 @@ public class Server
     {
         this.connectCommands = connectCommands;
     }
-    
+
     /**
      * Get commands to execute after connect
      * 
@@ -275,17 +275,17 @@ public class Server
     {
         return connectCommands;
     }
-    
+
     /**
      * Is disconnected?
      * 
-     * @return true if the user is disconnected, false if the user is connected or currently connecting 
+     * @return true if the user is disconnected, false if the user is connected or currently connecting
      */
     public boolean isDisconnected()
     {
         return status == Status.DISCONNECTED;
     }
-    
+
     /**
      * Is connected?
      * 
@@ -295,7 +295,7 @@ public class Server
     {
         return status == Status.CONNECTED;
     }
-    
+
     /**
      * Get all conversations
      * 
@@ -305,7 +305,7 @@ public class Server
     {
         return conversations.values();
     }
-    
+
     /**
      * Get conversation by name
      */
@@ -313,7 +313,7 @@ public class Server
     {
         return conversations.get(name.toLowerCase());
     }
-    
+
     /**
      * Add a new conversation
      * 
@@ -323,7 +323,7 @@ public class Server
     {
         conversations.put(conversation.getName().toLowerCase(), conversation);
     }
-    
+
     /**
      * Removes a conversation by name
      * 
@@ -333,19 +333,19 @@ public class Server
     {
         conversations.remove(name.toLowerCase());
     }
-    
+
     /**
      * Remove all conversations
      */
     public void clearConversations()
     {
         conversations.clear();
-        
+
         // reset defaults
         conversations.put(ServerInfo.DEFAULT_NAME, new ServerInfo());
         this.selected = ServerInfo.DEFAULT_NAME;
     }
-    
+
     /**
      * Set name of currently selected conversation
      * 
@@ -355,9 +355,9 @@ public class Server
     {
         this.selected = selected;
     }
-    
+
     /**
-     * Get name of currently selected conversation 
+     * Get name of currently selected conversation
      * 
      * @return The name of the selected conversation
      */
@@ -365,7 +365,7 @@ public class Server
     {
         return selected;
     }
-    
+
     /**
      * Get names of the currently joined channels
      * 
@@ -375,16 +375,16 @@ public class Server
     {
         ArrayList<String> channels = new ArrayList<String>();
         Collection<Conversation> mConversations = conversations.values();
-        
+
         for (Conversation conversation : mConversations) {
             if (conversation.getType() == Conversation.TYPE_CHANNEL) {
                 channels.add(conversation.getName());
             }
         }
-        
+
         return channels;
     }
-    
+
     /**
      * Get icon for current server status
      * 
@@ -401,7 +401,7 @@ public class Server
             case Status.CONNECTING:
                 return R.drawable.connecting;
         }
-        
+
         return R.drawable.connecting;
     }
 }

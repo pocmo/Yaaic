@@ -17,25 +17,25 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.db;
 
 import android.provider.BaseColumns;
 
 /**
  * Constants for the identity table
- *  
+ * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
 public class IdentityConstants implements BaseColumns
 {
     public static final String TABLE_NAME = "identities";
-    
+
     // fields
     public static final String NICKNAME = "nickname";
     public static final String IDENT     = "ident";
     public static final String REALNAME = "realname";
-    
+
     /**
      * All fields of the table
      */

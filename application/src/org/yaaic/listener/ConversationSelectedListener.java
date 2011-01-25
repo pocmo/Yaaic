@@ -17,17 +17,17 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.listener;
-
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.TextView;
-import android.widget.AdapterView.OnItemSelectedListener;
 
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Server;
 import org.yaaic.view.ConversationSwitcher;
+
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.TextView;
 
 /**
  * Listener for conversation selections
@@ -36,10 +36,10 @@ import org.yaaic.view.ConversationSwitcher;
  */
 public class ConversationSelectedListener implements OnItemSelectedListener
 {
-    private Server server;
-    private TextView titleView;
-    private ConversationSwitcher switcher;
-    
+    private final Server server;
+    private final TextView titleView;
+    private final ConversationSwitcher switcher;
+
     /**
      * Create a new ConversationSelectedListener
      * 
@@ -52,38 +52,40 @@ public class ConversationSelectedListener implements OnItemSelectedListener
         this.titleView = titleView;
         this.switcher = switcher;
     }
-    
+
     /**
      * On conversation selected/focused
      */
+    @Override
     public void onItemSelected(AdapterView<?> deck, View view, int position, long id)
     {
         Conversation conversation = (Conversation) deck.getItemAtPosition(position);
-        
+
         if (conversation != null && conversation.getType() != Conversation.TYPE_SERVER) {
             titleView.setText(server.getTitle() + " - " + conversation.getName());
         } else {
             onNothingSelected(deck);
         }
-        
+
         // Remember selection
         if (conversation != null) {
             Conversation previousConversation = server.getConversation(server.getSelectedConversation());
-            
+
             if (previousConversation != null) {
                 previousConversation.setStatus(Conversation.STATUS_DEFAULT);
             }
-            
+
             conversation.setStatus(Conversation.STATUS_SELECTED);
             server.setSelectedConversation(conversation.getName());
         }
 
         switcher.invalidate();
     }
-    
+
     /**
      * On no conversation selected/focused
      */
+    @Override
     public void onNothingSelected(AdapterView<?> deck)
     {
         titleView.setText(server.getTitle());

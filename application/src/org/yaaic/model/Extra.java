@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.model;
 
 /**
@@ -27,12 +27,12 @@ package org.yaaic.model;
  */
 public class Extra
 {
-    public static final String SERVER         = "server";
+    public static final String SERVER       = "server";
     public static final String CONVERSATION = "conversation";
     public static final String USERS        = "users";
-    
+
     public static final String ALIASES      = "aliases";
-    public static final String CHANNELS        = "channels";
+    public static final String CHANNELS     = "channels";
     public static final String COMMANDS     = "commands";
     public static final String MESSAGE      = "message";
     public static final String USER         = "user";

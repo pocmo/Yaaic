@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.model;
 
 /**
@@ -39,7 +39,7 @@ public class Channel extends Conversation
         super(name);
         this.topic = "";
     }
-    
+
     /**
      * Get the type of this conversation
      */
@@ -48,7 +48,7 @@ public class Channel extends Conversation
     {
         return Conversation.TYPE_CHANNEL;
     }
-    
+
     /**
      * Set the channel's topic
      * 
@@ -58,7 +58,7 @@ public class Channel extends Conversation
     {
         this.topic = topic;
     }
-    
+
     /**
      * Get the topic of the channel
      * 

@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.command.handler;
 
 import org.yaaic.R;
@@ -40,7 +40,7 @@ public class QuitHandler extends BaseHandler
      * Execute /quit
      */
     @Override
-    public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException 
+    public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException
     {
         if (params.length == 1) {
             service.getConnection(server.getId()).quitServer();
@@ -48,7 +48,7 @@ public class QuitHandler extends BaseHandler
             service.getConnection(server.getId()).quitServer(BaseHandler.mergeParams(params));
         }
     }
-    
+
     /**
      * Usage of /quit
      */

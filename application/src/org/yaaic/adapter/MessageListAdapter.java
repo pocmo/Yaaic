@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.adapter;
 
 import java.util.LinkedList;
@@ -38,9 +38,9 @@ import android.widget.TextView;
  */
 public class MessageListAdapter extends BaseAdapter
 {
-    private LinkedList<TextView> messages;
-    private Context context;
-    
+    private final LinkedList<TextView> messages;
+    private final Context context;
+
     /**
      * Create a new MessageAdapter
      * 
@@ -50,26 +50,26 @@ public class MessageListAdapter extends BaseAdapter
     public MessageListAdapter(Conversation conversation, Context context)
     {
         LinkedList<TextView> messages = new LinkedList<TextView>();
-        
+
         // Render channel name as first message in channel
         if (conversation.getType() != Conversation.TYPE_SERVER) {
             Message header = new Message(conversation.getName());
             header.setColor(Message.COLOR_RED);
             messages.add(header.renderTextView(context));
         }
-        
+
         // Optimization - cache field lookups
         LinkedList<Message> mHistory =  conversation.getHistory();
         int mSize = mHistory.size();
-        
+
         for (int i = 0; i < mSize; i++) {
             messages.add(mHistory.get(i).renderTextView(context));
         }
-        
+
         // XXX: We don't want to clear the buffer, we want to add only
         //      buffered messages that are not already added (history)
         conversation.clearBuffer();
-        
+
         this.messages = messages;
         this.context = context;
     }
@@ -82,14 +82,14 @@ public class MessageListAdapter extends BaseAdapter
     public void addMessage(Message message)
     {
         messages.add(message.renderTextView(context));
-        
+
         if (messages.size() > Conversation.HISTORY_SIZE) {
             messages.remove(0);
         }
-        
+
         notifyDataSetChanged();
     }
-    
+
     /**
      * Add a list of messages to the list
      * 
@@ -100,23 +100,24 @@ public class MessageListAdapter extends BaseAdapter
         LinkedList<TextView> mMessages = this.messages;
         Context mContext = this.context;
         int mSize = messages.size();
-        
+
         for (int i = mSize - 1; i > -1; i--) {
             mMessages.add(messages.get(i).renderTextView(mContext));
-            
+
             if (mMessages.size() > Conversation.HISTORY_SIZE) {
                 mMessages.remove(0);
             }
         }
-        
+
         notifyDataSetChanged();
     }
-    
+
     /**
      * Get number of items
      * 
      * @return
      */
+    @Override
     public int getCount()
     {
         return messages.size();
@@ -128,6 +129,7 @@ public class MessageListAdapter extends BaseAdapter
      * @param position
      * @return
      */
+    @Override
     public TextView getItem(int position)
     {
         return messages.get(position);
@@ -139,6 +141,7 @@ public class MessageListAdapter extends BaseAdapter
      * @param position
      * @return
      */
+    @Override
     public long getItemId(int position)
     {
         return position;
@@ -152,6 +155,7 @@ public class MessageListAdapter extends BaseAdapter
      * @param parent
      * @return
      */
+    @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
         return getItem(position);

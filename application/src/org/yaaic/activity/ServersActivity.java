@@ -17,28 +17,10 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.activity;
 
 import java.util.ArrayList;
-
-import android.app.AlertDialog;
-import android.app.ListActivity;
-import android.content.ComponentName;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
-import android.os.Bundle;
-import android.os.IBinder;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemLongClickListener;
 
 import org.yaaic.R;
 import org.yaaic.Yaaic;
@@ -54,6 +36,24 @@ import org.yaaic.model.Server;
 import org.yaaic.model.Status;
 import org.yaaic.receiver.ServerReceiver;
 
+import android.app.AlertDialog;
+import android.app.ListActivity;
+import android.content.ComponentName;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ListView;
+import android.widget.Toast;
+
 /**
  * List of servers
  * 
@@ -64,7 +64,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
     private ServerReceiver receiver;
     private ServerListAdapter adapter;
     private ListView list;
-    
+
     /**
      * On create
      */
@@ -73,10 +73,10 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.servers);
-        
+
         adapter = new ServerListAdapter();
         setListAdapter(adapter);
-        
+
         list = getListView();
         list.setOnItemLongClickListener(this);
         list.setBackgroundDrawable(new NonScalingBackgroundDrawable(this, list, R.drawable.background));
@@ -89,7 +89,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
     public void onResume()
     {
         super.onResume();
-        
+
         // Start and connect to service
         Intent intent = new Intent(this, IRCService.class);
         intent.setAction(IRCService.ACTION_BACKGROUND);
@@ -98,10 +98,10 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 
         receiver = new ServerReceiver(this);
         registerReceiver(receiver, new IntentFilter(Broadcast.SERVER_UPDATE));
-        
+
         adapter.loadServers();
     }
-    
+
     /**
      * On pause
      */
@@ -109,18 +109,19 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
     public void onPause()
     {
         super.onPause();
-        
+
         if (binder != null && binder.getService() != null) {
             binder.getService().checkServiceStatus();
         }
-        
+
         unbindService(this);
         unregisterReceiver(receiver);
     }
-    
+
     /**
      * Service connected to Activity
      */
+    @Override
     public void onServiceConnected(ComponentName name, IBinder service)
     {
         binder = (IRCBinder) service;
@@ -129,6 +130,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
     /**
      * Service disconnected from Activity
      */
+    @Override
     public void onServiceDisconnected(ComponentName name)
     {
         binder = null;
@@ -140,36 +142,37 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         Server server = adapter.getItem(position);
-        
+
         if (server == null) {
             // "Add server" was selected
             startActivityForResult(new Intent(this, AddServerActivity.class), 0);
             return;
         }
-        
+
         Intent intent = new Intent(this, ConversationActivity.class);
-        
+
         if (server.getStatus() == Status.DISCONNECTED) {
             server.setStatus(Status.PRE_CONNECTING);
             intent.putExtra("connect", true);
-        }        
-        
+        }
+
         intent.putExtra("serverId", server.getId());
         startActivity(intent);
     }
-    
+
     /**
      * On long click
      */
+    @Override
     public boolean onItemLongClick(AdapterView<?> l, View v, int position, long id)
     {
         final Server server = adapter.getItem(position);
-        
+
         if (server == null) {
             // "Add server" view selected
             return true;
         }
-        
+
         final CharSequence[] items = {
             getString(R.string.connect),
             getString(R.string.disconnect),
@@ -180,6 +183,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(server.getTitle());
         builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int item) {
                 switch (item) {
                     case 0: // Connect
@@ -208,7 +212,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
         alert.show();
         return true;
     }
-    
+
     /**
      * Start activity to edit server with given id
      * 
@@ -217,7 +221,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
     private void editServer(int serverId)
     {
         Server server = Yaaic.getInstance().getServerById(serverId);
-        
+
         if (server.getStatus() != Status.DISCONNECTED) {
             Toast.makeText(this, getResources().getString(R.string.disconnect_before_editing), Toast.LENGTH_SHORT).show();
         }
@@ -227,18 +231,19 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
             startActivityForResult(intent, 0);
         }
     }
-    
+
     /**
      * Options Menu (Menu Button pressed)
      */
+    @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         super.onCreateOptionsMenu(menu);
-        
+
         // inflate from xml
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.servers, menu);
-        
+
         return true;
     }
 
@@ -270,7 +275,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
                 binder.getService().stopForegroundCompat(R.string.app_name);
                 finish();
         }
-        
+
         return true;
     }
 
@@ -285,7 +290,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
             adapter.loadServers();
         }
     }
-    
+
     /**
      * Delete server
      * 
@@ -296,7 +301,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
         Database db = new Database(this);
         db.removeServerById(serverId);
         db.close();
-        
+
         Yaaic.getInstance().removeServerById(serverId);
         adapter.loadServers();
     }
@@ -304,14 +309,15 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
     /**
      * On server status update
      */
+    @Override
     public void onStatusUpdate()
     {
         adapter.loadServers();
-        
+
         if (adapter.getCount() > 2) {
             // Hide background if there are servers in the list
             list.setBackgroundDrawable(null);
         }
     }
-   
+
 }

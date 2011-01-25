@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.db;
 
 import android.provider.BaseColumns;
@@ -30,11 +30,11 @@ import android.provider.BaseColumns;
 public interface CommandConstants extends BaseColumns
 {
     public static final String TABLE_NAME = "commands";
-    
+
     // fields
     public static final String COMMAND      = "command";
     public static final String SERVER     = "server";
-    
+
     /**
      * All fields of the table
      */

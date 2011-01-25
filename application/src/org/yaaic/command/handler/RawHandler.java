@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.command.handler;
 
 import org.yaaic.R;
@@ -42,7 +42,7 @@ public class RawHandler extends BaseHandler
      * Execute /raw
      */
     @Override
-    public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException 
+    public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException
     {
         if (params.length > 1) {
             String line = BaseHandler.mergeParams(params);
@@ -51,7 +51,7 @@ public class RawHandler extends BaseHandler
             throw new CommandException(service.getString(R.string.line_missing));
         }
     }
-    
+
     /**
      * Usage of /raw
      */

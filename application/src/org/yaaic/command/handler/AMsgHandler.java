@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.command.handler;
 
 import java.util.Collection;
@@ -47,26 +47,26 @@ public class AMsgHandler extends BaseHandler
      * Execute /amsg
      */
     @Override
-    public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException 
+    public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException
     {
         if (params.length > 1) {
             String text = BaseHandler.mergeParams(params);
 
-            
+
             Collection<Conversation> mConversations = server.getConversations();
             for (Conversation currentConversation : mConversations) {
                 if (currentConversation.getType() == Conversation.TYPE_CHANNEL) {
                     Message message = new Message("<" + service.getConnection(server.getId()).getNick() + "> " + text);
                     currentConversation.addMessage(message);
-                    
+
                     Intent intent = Broadcast.createConversationIntent(
                         Broadcast.CONVERSATION_MESSAGE,
                         server.getId(),
                         currentConversation.getName()
                     );
-                    
+
                     service.sendBroadcast(intent);
-                    
+
                     service.getConnection(server.getId()).sendMessage(currentConversation.getName(), text);
                 }
             }
@@ -74,7 +74,7 @@ public class AMsgHandler extends BaseHandler
             throw new CommandException(service.getString(R.string.invalid_number_of_params));
         }
     }
-    
+
     /**
      * Usage of /amsg
      */

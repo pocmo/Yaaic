@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.listener;
 
 import org.yaaic.activity.ConversationActivity;
@@ -35,8 +35,8 @@ import android.view.View.OnClickListener;
  */
 public class SpeechClickListener implements OnClickListener
 {
-    private Activity activity;
-    
+    private final Activity activity;
+
     /**
      * Create a new listener for speech button
      * 
@@ -47,17 +47,18 @@ public class SpeechClickListener implements OnClickListener
     {
         this.activity = activity;
     }
-    
+
     /**
      * On Click on speech button
      */
+    @Override
     public void onClick(View v)
     {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        
+
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "");
-        
+
         activity.startActivityForResult(intent, ConversationActivity.REQUEST_CODE_SPEECH);
     }
 }

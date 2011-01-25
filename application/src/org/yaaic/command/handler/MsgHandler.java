@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.command.handler;
 
 import org.yaaic.R;
@@ -45,31 +45,31 @@ public class MsgHandler extends BaseHandler
      * Execute /msg
      */
     @Override
-    public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException 
+    public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException
     {
         if (params.length > 2) {
             String text = BaseHandler.mergeParams(params, 2);
             service.getConnection(server.getId()).sendMessage(params[1], text);
-            
+
             Conversation targetConversation = server.getConversation(params[1]);
-            
+
             if (targetConversation != null) {
                 Message message = new Message("<" + service.getConnection(server.getId()).getNick() + "> " + text);
                 targetConversation.addMessage(message);
-                
+
                 Intent intent = Broadcast.createConversationIntent(
                     Broadcast.CONVERSATION_MESSAGE,
                     server.getId(),
                     targetConversation.getName()
                 );
-                
+
                 service.sendBroadcast(intent);
             }
         } else {
             throw new CommandException(service.getString(R.string.invalid_number_of_params));
         }
     }
-    
+
     /**
      * Usage of /msg
      */

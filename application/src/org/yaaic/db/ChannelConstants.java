@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.db;
 
 import android.provider.BaseColumns;
@@ -30,12 +30,12 @@ import android.provider.BaseColumns;
 public interface ChannelConstants extends BaseColumns
 {
     public static final String TABLE_NAME = "channels";
-    
+
     // fields
     public static final String NAME          = "name";
     public static final String PASSWORD   = "password";
     public static final String SERVER     = "server";
-    
+
     /**
      * All fields of the table
      */

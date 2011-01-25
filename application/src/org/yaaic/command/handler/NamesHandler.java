@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.command.handler;
 
 import org.jibble.pircbot.User;
@@ -35,7 +35,7 @@ import android.content.Intent;
 
 /**
  * Command: /names
- * Lists all users currently in the selected channel 
+ * Lists all users currently in the selected channel
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
@@ -45,14 +45,14 @@ public class NamesHandler extends BaseHandler
      * Execute /names
      */
     @Override
-    public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException 
+    public void execute(String[] params, Server server, Conversation conversation, IRCService service) throws CommandException
     {
         if (conversation.getType() != Conversation.TYPE_CHANNEL) {
             throw new CommandException(service.getString(R.string.only_usable_from_channel));
         }
-        
+
         StringBuffer userList = new StringBuffer(service.getString(R.string.message_users_on_chan, conversation.getName()));
-        
+
         User[] mUsers = service.getConnection(server.getId()).getUsers(conversation.getName());
         int mSize = mUsers.length;
         for (int i = 0; i < mSize; i++) {
@@ -60,11 +60,11 @@ public class NamesHandler extends BaseHandler
             userList.append(mUsers[i].getPrefix());
             userList.append(mUsers[i].getNick());
         }
-        
+
         Message message = new Message(userList.toString());
         message.setColor(Message.COLOR_YELLOW);
         conversation.addMessage(message);
-        
+
         Intent intent = Broadcast.createConversationIntent(
             Broadcast.CONVERSATION_MESSAGE,
             server.getId(),
@@ -72,7 +72,7 @@ public class NamesHandler extends BaseHandler
         );
         service.sendBroadcast(intent);
     }
-    
+
     /**
      * Usage of /names
      */

@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package org.yaaic.command.handler;
 
 import org.yaaic.R;
@@ -48,9 +48,9 @@ public class TopicHandler extends BaseHandler
         if (conversation.getType() != Conversation.TYPE_CHANNEL) {
             throw new CommandException(service.getString(R.string.only_usable_from_channel));
         }
-        
+
         Channel channel = (Channel) conversation;
-        
+
         if (params.length == 1) {
             // Show topic
             service.getConnection(server.getId()).onTopic(channel.getName(), channel.getTopic(), "", 0, false);
@@ -59,7 +59,7 @@ public class TopicHandler extends BaseHandler
             service.getConnection(server.getId()).setTopic(channel.getName(), BaseHandler.mergeParams(params));
         }
     }
-    
+
     /**
      * Usage of /topic
      */
