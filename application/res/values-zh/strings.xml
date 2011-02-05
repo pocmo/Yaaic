@@ -164,13 +164,12 @@
     <string name="message_remove_moderated">%1$s 移除审核</string>
     <string name="message_disconnected">已断开</string>
 
-    <string name="button_op">设为管理员</string>
-    <string name="button_deop">取消管理员</string>
-
-    <string name="button_voice">发言权</string>
-    <string name="button_devoice">取消发言权</string>
-    <string name="button_kick">踢出</string>
-    <string name="button_ban">禁止</string>
+    <string name="user_action_op">设为管理员</string>
+    <string name="user_action_deop">取消管理员</string>
+    <string name="user_action_voice">发言权</string>
+    <string name="user_action_devoice">取消发言权</string>
+    <string name="user_action_kick">踢出</string>
+    <string name="user_action_ban">禁止</string>
 
     <string name="settings_connection">连接</string>
     <string name="settings_reconnect_title">重新连接</string>

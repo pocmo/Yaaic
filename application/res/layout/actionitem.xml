@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 
+<!--
 Yaaic - Yet Another Android IRC Client
 
 Copyright 2009-2011 Sebastian Kaspari
@@ -19,11 +19,23 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:padding="5px"
-    android:textSize="12px"
-    android:drawableLeft="@drawable/user"
-    android:drawablePadding="3px">
-</TextView>
+    android:padding="4px">
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/action_reply"
+        android:layout_gravity="center_vertical" />
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="3px"
+        android:textSize="12px"
+        android:text="Reply">
+    </TextView>
+</LinearLayout>

@@ -151,12 +151,12 @@
     <string name="message_not_connected">No conectado</string>
     <string name="message_users_on_chan">Usuarios en %1$s:</string>
 
-    <string name="button_op">Op</string>
-    <string name="button_deop">DeOp</string>
-    <string name="button_voice">Voice</string>
-    <string name="button_devoice">DeVoice</string>
-    <string name="button_kick">Kick</string>
-    <string name="button_ban">Ban</string>
+    <string name="user_action_op">Op</string>
+    <string name="user_action_deop">DeOp</string>
+    <string name="user_action_voice">Voice</string>
+    <string name="user_action_devoice">DeVoice</string>
+    <string name="user_action_kick">Kick</string>
+    <string name="user_action_ban">Ban</string>
 
     <string name="settings_connection">Conexión</string>
     <string name="settings_reconnect_title">Reconectar</string>

@@ -21,17 +21,15 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 package org.yaaic.activity;
 
 import org.yaaic.R;
+import org.yaaic.adapter.UserActionListAdapter;
 import org.yaaic.model.Extra;
 
-import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
-import android.view.WindowManager;
-import android.view.WindowManager.LayoutParams;
-import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 /**
@@ -39,7 +37,7 @@ import android.widget.TextView;
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class UserActivity extends Activity implements OnClickListener
+public class UserActivity extends ListActivity
 {
     private String nickname;
 
@@ -52,32 +50,21 @@ public class UserActivity extends Activity implements OnClickListener
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        nickname = getIntent().getStringExtra(Extra.USER);
         setContentView(R.layout.user);
+        setListAdapter(new UserActionListAdapter());
 
-        // Use full width
-        LayoutParams params = getWindow().getAttributes();
-        params.width = WindowManager.LayoutParams.FILL_PARENT;
-        getWindow().setAttributes(params);
-
-        ((Button) findViewById(R.id.op)).setOnClickListener(this);
-        ((Button) findViewById(R.id.deop)).setOnClickListener(this);
-        ((Button) findViewById(R.id.voice)).setOnClickListener(this);
-        ((Button) findViewById(R.id.devoice)).setOnClickListener(this);
-        ((Button) findViewById(R.id.kick)).setOnClickListener(this);
-        ((Button) findViewById(R.id.ban)).setOnClickListener(this);
-
+        nickname = getIntent().getStringExtra(Extra.USER);
         ((TextView) findViewById(R.id.nickname)).setText(nickname);
     }
 
     /**
-     * On button click
+     * On action selected
      */
     @Override
-    public void onClick(View v)
+    protected void onListItemClick(ListView list, View view, int position, long id)
     {
         Intent intent = new Intent();
-        intent.putExtra(Extra.ACTION, v.getId());
+        intent.putExtra(Extra.ACTION, (int) id);
         intent.putExtra(Extra.USER, nickname);
         setResult(RESULT_OK, intent);
         finish();

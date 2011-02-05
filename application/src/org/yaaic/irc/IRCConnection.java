@@ -1090,8 +1090,7 @@ public class IRCConnection extends PircBot
         String[] users = new String[mLength];
 
         for (int i = 0; i < mLength; i++) {
-            // Prefix disabled
-            users[i] = /*userArray[i].getPrefix() + */ userArray[i].getNick();
+            users[i] = userArray[i].getPrefix() + userArray[i].getNick();
         }
 
         return users;

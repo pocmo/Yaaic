@@ -42,11 +42,13 @@ import org.yaaic.model.Broadcast;
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Extra;
 import org.yaaic.model.Message;
+import org.yaaic.model.Query;
 import org.yaaic.model.Scrollback;
 import org.yaaic.model.Server;
 import org.yaaic.model.ServerInfo;
 import org.yaaic.model.Settings;
 import org.yaaic.model.Status;
+import org.yaaic.model.User;
 import org.yaaic.receiver.ConversationReceiver;
 import org.yaaic.receiver.ServerReceiver;
 import org.yaaic.view.ConversationSwitcher;
@@ -62,6 +64,7 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.speech.RecognizerIntent;
 import android.view.KeyEvent;
@@ -722,6 +725,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                 final String nickname = data.getExtras().getString(Extra.USER);
                 final IRCConnection connection = binder.getService().getConnection(server.getId());
                 final String conversation = server.getSelectedConversation();
+                final Handler handler = new Handler();
 
                 // XXX: Implement me - The action should be handled after onResume()
                 //                     to catch the broadcasts... now we just wait a second
@@ -736,24 +740,62 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                             // Do nothing
                         }
 
+                        String nicknameWithoutPrefix = nickname;
+
+                        while (
+                            nicknameWithoutPrefix.startsWith("@") ||
+                            nicknameWithoutPrefix.startsWith("+") ||
+                            nicknameWithoutPrefix.startsWith(".") ||
+                            nicknameWithoutPrefix.startsWith("%")
+                        ) {
+                            // Strip prefix(es) now
+                            nicknameWithoutPrefix = nicknameWithoutPrefix.substring(1);
+                        }
+
                         switch (actionId) {
-                            case R.id.op:
-                                connection.op(conversation, nickname);
+                            case User.ACTION_REPLY:
+                                final String replyText = nicknameWithoutPrefix + ": ";
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        EditText input = (EditText) findViewById(R.id.input);
+                                        input.setText(replyText);
+                                        input.setSelection(replyText.length());
+                                    }
+                                });
                                 break;
-                            case R.id.deop:
-                                connection.deOp(conversation, nickname);
+                            case User.ACTION_QUERY:
+                                Conversation query = server.getConversation(nicknameWithoutPrefix);
+                                if (query == null) {
+                                    // Open a query if there's none yet
+                                    query = new Query(nicknameWithoutPrefix);
+                                    server.addConversationl(query);
+
+                                    Intent intent = Broadcast.createConversationIntent(
+                                        Broadcast.CONVERSATION_NEW,
+                                        server.getId(),
+                                        nicknameWithoutPrefix
+                                    );
+                                    binder.getService().sendBroadcast(intent);
+                                }
                                 break;
-                            case R.id.voice:
-                                connection.voice(conversation, nickname);
+                            case User.ACTION_OP:
+                                connection.op(conversation, nicknameWithoutPrefix);
                                 break;
-                            case R.id.devoice:
-                                connection.deVoice(conversation, nickname);
+                            case User.ACTION_DEOP:
+                                connection.deOp(conversation, nicknameWithoutPrefix);
                                 break;
-                            case R.id.kick:
-                                connection.kick(conversation, nickname);
+                            case User.ACTION_VOICE:
+                                connection.voice(conversation, nicknameWithoutPrefix);
                                 break;
-                            case R.id.ban:
-                                connection.ban(conversation, nickname + "!*@*");
+                            case User.ACTION_DEVOICE:
+                                connection.deVoice(conversation, nicknameWithoutPrefix);
+                                break;
+                            case User.ACTION_KICK:
+                                connection.kick(conversation, nicknameWithoutPrefix);
+                                break;
+                            case User.ACTION_BAN:
+                                connection.ban(conversation, nicknameWithoutPrefix + "!*@*");
                                 break;
                         }
                     }
