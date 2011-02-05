@@ -33,8 +33,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/commands"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
-       <LinearLayout
-           android:orientation="horizontal"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
         <EditText
@@ -44,25 +44,28 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:singleLine="true"
             android:text="/"
             android:layout_weight="1" />
-           <Button
-               android:id="@+id/add"
+        <Button
+            android:id="@+id/add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/action_add" />
-       </LinearLayout>
-       <LinearLayout
-           android:orientation="horizontal"
+            android:text="@string/action_add"
+            android:minWidth="50px" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
-           <Button
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:id="@+id/ok"
-            android:text="@string/action_ok" />
-           <Button
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:id="@+id/cancel"
-            android:text="@string/action_cancel" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ok"
+            android:text="@string/action_ok"
+            android:minWidth="75px" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cancel"
+            android:text="@string/action_cancel"
+            android:minWidth="75px" />
     </LinearLayout>
 </LinearLayout>
