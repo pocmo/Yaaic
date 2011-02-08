@@ -129,8 +129,19 @@ public class ServerListAdapter extends BaseAdapter
 
         View v = inflater.inflate(R.layout.serveritem, null);
 
-        ((TextView) v.findViewById(R.id.title)).setText(server.getTitle());
-        ((TextView) v.findViewById(R.id.host)).setText(server.getIdentity().getNickname() + " @ " + server.getHost() + " : " + server.getPort());
+        TextView titleView = (TextView) v.findViewById(R.id.title);
+        titleView.setText(server.getTitle());
+
+        TextView hostView = (TextView) v.findViewById(R.id.host);
+        hostView.setText(server.getIdentity().getNickname() + " @ " + server.getHost() + " : " + server.getPort());
+
+        if (server.isConnected()) {
+            titleView.setTextColor(0xFFcecfce);
+            hostView.setTextColor(0xFFcecfce);
+        } else {
+            titleView.setTextColor(0xFF767776);
+            hostView.setTextColor(0xFF767776);
+        }
 
         ((ImageView) v.findViewById(R.id.status)).setImageResource(server.getStatusIcon());
 
