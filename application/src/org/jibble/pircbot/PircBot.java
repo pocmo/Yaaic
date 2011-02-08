@@ -916,6 +916,12 @@ public abstract class PircBot implements ReplyConstants {
                         sourceNick = senderInfo;
                         target = token;
 
+                        // XXX: PircBot Patch - Sometimes there are senderinfos with an ident but no host
+                        if (sourceNick.contains("!") && !sourceNick.contains("@")) {
+                            String[] chunks = sourceNick.split("!");
+                            sourceNick = chunks[0]; // Use the part before the exclamation mark
+                        }
+
                         // XXX: PircBot Patch - (Needed for BIP IRC Proxy)
                         //      If this is a NICK command, use next token as target
                         if (command.equalsIgnoreCase("nick")) {
