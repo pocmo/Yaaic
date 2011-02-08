@@ -203,6 +203,10 @@ public abstract class PircBot implements ReplyConstants {
 
         _inputThread = new InputThread(this, socket, breader, bwriter);
 
+        // XXX: PircBot Patch - Set nick before loop. otherwise we overwrite it in the loop again and again
+        //                      But maybe we got a new nickname from the server (bouncers!)
+        this.setNick(nick);
+
         // Read stuff back from the server to see if we connected.
         String line = null;
         int tries = 1;
@@ -240,7 +244,6 @@ public abstract class PircBot implements ReplyConstants {
                     throw new IrcException("Could not log into the IRC server: " + line);
                 }
             }
-            this.setNick(nick);
         }
 
         // XXX: PircBot patch - We are not connected to server if nothing received
