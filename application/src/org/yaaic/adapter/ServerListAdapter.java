@@ -136,11 +136,11 @@ public class ServerListAdapter extends BaseAdapter
         hostView.setText(server.getIdentity().getNickname() + " @ " + server.getHost() + " : " + server.getPort());
 
         if (server.isConnected()) {
-            titleView.setTextColor(0xFFcecfce);
-            hostView.setTextColor(0xFFcecfce);
+            titleView.setTextColor(0xFFbcbcbc);
+            hostView.setTextColor(0xFFbcbcbc);
         } else {
-            titleView.setTextColor(0xFF767776);
-            hostView.setTextColor(0xFF767776);
+            titleView.setTextColor(0xFF585858);
+            hostView.setTextColor(0xFF585858);
         }
 
         ((ImageView) v.findViewById(R.id.status)).setImageResource(server.getStatusIcon());

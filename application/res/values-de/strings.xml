@@ -60,7 +60,7 @@
     <string name="validation_title_used">Es existiert bereits ein Server mit diesem Titel</string>
     <string name="validation_blank_nickname">Nickname darf nicht leer sein</string>
     <string name="validation_blank_ident">Ident darf nicht leer sein</string>
-    <string name="validation_blank_realname">Echter Name dary nicht leer sein</string>
+    <string name="validation_blank_realname">Echter Name darf nicht leer sein</string>
     <string name="validation_invalid_nickname">Ungültiger Nickname</string>
     <string name="validation_invalid_ident">Ungültiger Ident</string>
 
