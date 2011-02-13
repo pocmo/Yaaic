@@ -147,6 +147,7 @@ public abstract class PircBot implements ReplyConstants {
         if (isConnected()) {
             throw new IOException("The PircBot is already connected to an IRC server.  Disconnect first.");
         }
+        _autoNickTries = 1;
 
         // Don't clear the outqueue - there might be something important in it!
 
@@ -156,7 +157,6 @@ public abstract class PircBot implements ReplyConstants {
         // Connect to the server.
 
         // XXX: PircBot Patch for SSL
-        Socket socket;
         if (_useSSL) {
             try {
                 SSLContext context = SSLContext.getInstance("TLS");
@@ -164,7 +164,7 @@ public abstract class PircBot implements ReplyConstants {
                 SSLSocketFactory factory = context.getSocketFactory();
                 SSLSocket ssocket = (SSLSocket) factory.createSocket(hostname, port);
                 ssocket.startHandshake();
-                socket = ssocket;
+                _socket = ssocket;
             }
             catch(Exception e)
             {
@@ -172,22 +172,22 @@ public abstract class PircBot implements ReplyConstants {
                 throw new IOException("Cannot open SSL socket");
             }
         } else {
-            socket =  new Socket(hostname, port);
+            _socket =  new Socket(hostname, port);
         }
 
-        _inetAddress = socket.getLocalAddress();
+        _inetAddress = _socket.getLocalAddress();
 
         InputStreamReader inputStreamReader = null;
         OutputStreamWriter outputStreamWriter = null;
         if (getEncoding() != null) {
             // Assume the specified encoding is valid for this JVM.
-            inputStreamReader = new InputStreamReader(socket.getInputStream(), getEncoding());
-            outputStreamWriter = new OutputStreamWriter(socket.getOutputStream(), getEncoding());
+            inputStreamReader = new InputStreamReader(_socket.getInputStream(), getEncoding());
+            outputStreamWriter = new OutputStreamWriter(_socket.getOutputStream(), getEncoding());
         }
         else {
             // Otherwise, just use the JVM's default encoding.
-            inputStreamReader = new InputStreamReader(socket.getInputStream());
-            outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());
+            inputStreamReader = new InputStreamReader(_socket.getInputStream());
+            outputStreamWriter = new OutputStreamWriter(_socket.getOutputStream());
         }
 
         BufferedReader breader = new BufferedReader(inputStreamReader);
@@ -201,7 +201,7 @@ public abstract class PircBot implements ReplyConstants {
         OutputThread.sendRawLine(this, bwriter, "NICK " + nick);
         OutputThread.sendRawLine(this, bwriter, "USER " + this.getLogin() + " 8 * :" + this.getVersion());
 
-        _inputThread = new InputThread(this, socket, breader, bwriter);
+        _inputThread = new InputThread(this, _socket, breader, bwriter);
 
         // XXX: PircBot Patch - Set nick before loop. otherwise we overwrite it in the loop again and again
         //                      But maybe we got a new nickname from the server (bouncers!)
@@ -209,51 +209,19 @@ public abstract class PircBot implements ReplyConstants {
 
         // Read stuff back from the server to see if we connected.
         String line = null;
-        int tries = 1;
-        List<String> aliases = getAliases();
-        while ((line = breader.readLine()) != null) {
-
-            this.handleLine(line);
-
-            int firstSpace = line.indexOf(" ");
-            int secondSpace = line.indexOf(" ", firstSpace + 1);
-            if (secondSpace >= 0) {
-                String code = line.substring(firstSpace + 1, secondSpace);
-
-                if (code.equals("004")) {
-                    // We're connected to the server.
-                    break;
-                }
-                else if (code.equals("433")) {
-                    if (_autoNickChange) {
-                        tries++;
-                        nick = ((tries - 1) <= aliases.size()) ?
-                            aliases.get(tries - 2) :
-                                getName() + (tries - aliases.size());
-                            OutputThread.sendRawLine(this, bwriter, "NICK " + nick);
-                    }
-                    else {
-                        socket.close();
-                        _inputThread = null;
-                        throw new NickAlreadyInUseException(line);
-                    }
-                }
-                else if ((code.startsWith("5") || code.startsWith("4")) && !code.equals("439")) {
-                    socket.close();
-                    _inputThread = null;
-                    throw new IrcException("Could not log into the IRC server: " + line);
-                }
-            }
-        }
+        line = breader.readLine();
 
         // XXX: PircBot patch - We are not connected to server if nothing received
         if (line == null) {
             throw new IOException("Could not connect to server");
         }
 
+        // Send the first line to handleLine before the InputThread is started.
+        this.handleLine(line);
+
         // This makes the socket timeout on read operations after 5 minutes.
         // Maybe in some future version I will let the user change this at runtime.
-        socket.setSoTimeout(5 * 60 * 1000);
+        _socket.setSoTimeout(5 * 60 * 1000);
 
         // Now start the InputThread to read all other lines from the server.
         _inputThread.start();
@@ -863,8 +831,10 @@ public abstract class PircBot implements ReplyConstants {
      * This method may not be overridden!
      * 
      * @param line The raw line of text from the server.
+     * @throws NickAlreadyInUseException
+     * @throws IOException
      */
-    protected void handleLine(String line) {
+    protected void handleLine(String line) throws NickAlreadyInUseException, IOException {
         // Check for server pings.
         if (line.startsWith("PING ")) {
             // Respond to the ping and return immediately.
@@ -905,6 +875,23 @@ public abstract class PircBot implements ReplyConstants {
                     if (code != -1) {
                         String errorStr = token;
                         String response = line.substring(line.indexOf(errorStr, senderInfo.length()) + 4, line.length());
+
+                        if (code == 433) {
+                            if (_autoNickChange) {
+                                List<String> aliases = getAliases();
+                                _autoNickTries++;
+                                String nick = ((_autoNickTries - 1) <= aliases.size()) ?
+                                    aliases.get(_autoNickTries - 2) :
+                                        getName() + (_autoNickTries - aliases.size());
+                                    this.sendRawLineViaQueue("NICK " + nick);
+                            }
+                            else {
+                                _socket.close();
+                                _inputThread = null;
+                                throw new NickAlreadyInUseException(line);
+                            }
+                        }
+
                         this.processServerResponse(code, response);
                         // Return from the method.
                         return;
@@ -3067,6 +3054,7 @@ public abstract class PircBot implements ReplyConstants {
     private OutputThread _outputThread = null;
     private String _charset = null;
     private InetAddress _inetAddress = null;
+    private Socket _socket = null;
 
     // Details about the last server that we connected to.
     private String _server = null;
@@ -3092,6 +3080,7 @@ public abstract class PircBot implements ReplyConstants {
 
     // Default settings for the PircBot.
     private boolean _autoNickChange = false;
+    private int _autoNickTries = 1;
     private boolean _useSSL = false;
 
     private String _name = "PircBot";
