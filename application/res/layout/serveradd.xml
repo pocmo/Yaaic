@@ -43,6 +43,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:layout_height="wrap_content" />
         <EditText
             android:id="@+id/title"
+            android:contentDescription="@string/server_title"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:singleLine="true" />
@@ -52,6 +53,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:layout_height="wrap_content" />
         <EditText
             android:id="@+id/host"
+            android:contentDescription="@string/server_host"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:singleLine="true" />
@@ -61,6 +63,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:layout_height="wrap_content" />
         <EditText
             android:id="@+id/port"
+            android:contentDescription="@string/server_port"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
@@ -72,6 +75,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:layout_height="wrap_content" />
         <EditText
             android:id="@+id/password"
+            android:contentDescription="@string/server_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
@@ -80,12 +84,14 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:maxEms="10" />
         <CheckBox
             android:id="@+id/autoconnect"
+            android:contentDescription="@string/server_port"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/server_port"
             android:visibility="gone" />
         <CheckBox
             android:id="@+id/useSSL"
+            android:contentDescription="@string/server_useSSL"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/server_useSSL" />
@@ -107,7 +113,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:id="@+id/nickname"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:contentDescription="@string/nickname" />
         <Button
             android:id="@+id/aliases"
             android:layout_width="fill_parent"
@@ -122,6 +129,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="yaaic"
+            android:contentDescription="@string/ident"
             android:singleLine="true" />
         <TextView
             android:text="@string/realname"
@@ -132,6 +140,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text=""
+            android:contentDescription="@string/realname"
             android:singleLine="true" />
 <!-- ############################################################################ -->
         <TextView
