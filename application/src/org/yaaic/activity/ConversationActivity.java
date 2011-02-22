@@ -72,8 +72,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnKeyListener;
 import android.view.Window;
+import android.view.View.OnKeyListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -388,18 +388,27 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
         MessageListAdapter adapter = conversation.getMessageListAdapter();
 
-        conversation.setStatus(Conversation.STATUS_MESSAGE);
-
-        if (dots != null) {
-            dots.invalidate();
-        }
-
         while(conversation.hasBufferedMessages()) {
             Message message = conversation.pollBufferedMessage();
 
             if (adapter != null) {
                 adapter.addMessage(message);
+                int status;
+                switch (message.getType())
+                {
+                    case Message.TYPE_MISC:
+                        status = Conversation.STATUS_MISC;
+                        break;
+                    default:
+                        status = Conversation.STATUS_MESSAGE;
+                        break;
+                }
+                conversation.setStatus(status);
             }
+        }
+
+        if (dots != null) {
+            dots.invalidate();
         }
     }
 

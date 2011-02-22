@@ -110,6 +110,8 @@ public class ConversationSwitcher extends View
                 case Conversation.STATUS_SELECTED:
                     paint.setColor(0xFFFFFFFF);
                     break;
+                case Conversation.STATUS_MISC:
+                    paint.setColor(0xFF3333AA);
             }
 
             canvas.drawCircle(startX + 12 * i, height / 2, 4, paint);
