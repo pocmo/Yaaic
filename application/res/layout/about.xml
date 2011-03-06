@@ -24,12 +24,12 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="10px">
+    android:padding="10dp">
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Yaaic"
-        android:textSize="16px"
+        android:textSize="20sp"
         android:gravity="center_horizontal"
         android:textColor="#FF6CB600" />
     <LinearLayout
@@ -41,7 +41,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_full_name"
-            android:textSize="10px" />
+            android:textSize="16sp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,26 +50,26 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_version"
-            android:textSize="10px" />
+            android:textSize="14sp" />
        </LinearLayout>
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/app_copyright"
-        android:textSize="12px"
+        android:textSize="16sp"
         android:gravity="center_horizontal" />
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/app_homepage"
-        android:linksClickable="true"
+        android:linksClickable="false"
         android:autoLink="web"
+        android:textSize="14sp"
         android:textColorLink="#FF6CB600"
-        android:textSize="16px"
         android:gravity="center_horizontal" />
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/licence_info"
-        android:textSize="12px" />
+        android:textSize="16sp" />
 </LinearLayout>
