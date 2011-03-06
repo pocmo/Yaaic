@@ -23,7 +23,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:padding="5px">
+    android:padding="5dp">
     <ImageView
         android:id="@+id/status"
         android:layout_width="wrap_content"
@@ -34,18 +34,18 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="5px">
+        android:paddingLeft="5dp">
         <TextView
             android:id="@+id/title"
             android:layout_width="fill_parent" 
             android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="16px" />
+            android:text="Server"
+            android:textSize="22dp" />
         <TextView
            android:id="@+id/host"
            android:layout_width="fill_parent"
            android:layout_height="wrap_content"
-           android:text=""
-           android:textSize="12px" />
+           android:text="irc.example.com"
+           android:textSize="14dp" />
     </LinearLayout>
 </LinearLayout>
