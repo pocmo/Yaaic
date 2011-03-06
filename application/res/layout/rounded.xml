@@ -32,9 +32,9 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         android:bottom="3px" />  
     <solid
         android:color="#cc000000" />
-       <corners
-           android:bottomRightRadius="10dp"
-           android:bottomLeftRadius="10dp"
-           android:topLeftRadius="10dp"
-           android:topRightRadius="10dp" />
+    <corners
+        android:bottomRightRadius="10dp"
+        android:bottomLeftRadius="10dp"
+        android:topLeftRadius="10dp"
+        android:topRightRadius="10dp" />
 </shape>
