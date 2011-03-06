@@ -29,7 +29,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="3px">
+        android:padding="3dp">
         <ImageView
             android:id="@+id/status"
             android:layout_width="wrap_content"
@@ -39,8 +39,9 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="3px"
-            android:textSize="12px"
+            android:paddingLeft="3dp"
+            android:textSize="14sp"
+            android:text="Server"
             android:layout_weight="1" />
     </LinearLayout>
     <ViewSwitcher
@@ -52,8 +53,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
            android:id="@+id/deck"
            android:layout_width="fill_parent"
            android:layout_height="fill_parent"
-           android:layout_margin="0px"
-           android:spacing="5px"
+           android:layout_margin="0dp"
+           android:spacing="5dp"
            android:unselectedAlpha="100"/>
     </ViewSwitcher>
     <org.yaaic.view.ConversationSwitcher
