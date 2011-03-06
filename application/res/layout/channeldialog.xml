@@ -23,7 +23,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="3px">
+    android:padding="5dp">
     <EditText
         android:id="@+id/channel"
         android:layout_width="wrap_content"
@@ -35,5 +35,6 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/join"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/join" />
+        android:text="@string/join"
+        android:minWidth="75dp" />
 </LinearLayout>
