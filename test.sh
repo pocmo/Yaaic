@@ -16,9 +16,9 @@ fi
 . build.conf
 
 echo "Starting emulator"
-"$ANDROID_SDK"tools/emulator -avd "$AVD_TEST" &
+"$ANDROID_SDK"/tools/emulator -avd "$AVD_TEST" &
 
-sleep 35
+sleep 40
 
 echo "Unlocking emulator"
 echo "event send EV_KEY:KEY_MENU:1 EV_KEY:KEY_MENU:0" | telnet localhost 5554
@@ -26,7 +26,7 @@ echo "event send EV_KEY:KEY_MENU:1 EV_KEY:KEY_MENU:0" | telnet localhost 5554
 sleep 5
 
 echo "Running tests"
-"$ANDROID_SDK"tools/adb -e shell "am instrument -w org.yaaic.test/android.test.InstrumentationTestRunner"
+"$ANDROID_SDK"/platform-tools/adb -e shell "am instrument -w org.yaaic.test/android.test.InstrumentationTestRunner"
 
 sleep 3
 
