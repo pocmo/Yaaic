@@ -23,7 +23,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:padding="4px">
+    android:padding="4dp">
     <ImageView
         android:id="@+id/icon"
         android:layout_width="wrap_content"
@@ -34,8 +34,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="3px"
-        android:textSize="12px"
+        android:paddingLeft="3dp"
+        android:textSize="14sp"
         android:text="Reply">
     </TextView>
 </LinearLayout>
