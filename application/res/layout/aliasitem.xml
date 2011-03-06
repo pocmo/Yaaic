@@ -3,6 +3,6 @@
     android:id="@+id/host"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:padding="7px"
+    android:padding="7dp"
     android:text="Alias"
-    android:textSize="16dp" />
+    android:textSize="16sp" />
