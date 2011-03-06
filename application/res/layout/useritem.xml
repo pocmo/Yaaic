@@ -23,7 +23,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:padding="5px"
-    android:textSize="12px"
+    android:textSize="14dp"
+    android:text="pocmo"
     android:drawableLeft="@drawable/user"
-    android:drawablePadding="3px">
+    android:drawablePadding="3dp">
 </TextView>
