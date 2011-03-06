@@ -28,9 +28,10 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/message"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="10px"
+        android:padding="12sp"
         android:autoLink="all"
-        android:linksClickable="true" />
+        android:linksClickable="true"
+        android:text="&lt;pocmo&gt; Hello world!" />
     <LinearLayout
         android:id="@+id/tools"
         android:orientation="vertical"
