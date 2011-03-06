@@ -153,6 +153,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
              android:padding="3dp"
              android:layout_margin="2dp" />
         <Button
+            android:id="@+id/authentication"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/authentication" />
+        <Button
             android:id="@+id/channels"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

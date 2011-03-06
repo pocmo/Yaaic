@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.yaaic.model.Authentication;
 import org.yaaic.model.Identity;
 import org.yaaic.model.Server;
 import org.yaaic.model.Status;
@@ -43,7 +44,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class Database extends SQLiteOpenHelper
 {
     private static final String DATABASE_NAME = "servers.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     /**
      * Create a new helper for database access
@@ -70,7 +71,10 @@ public class Database extends SQLiteOpenHelper
             + ServerConstants.AUTOCONNECT + " BOOLEAN, "
             + ServerConstants.USE_SSL + " BOOLEAN, "
             + ServerConstants.CHARSET + " TEXT, "
-            + ServerConstants.IDENTITY + " INTEGER"
+            + ServerConstants.IDENTITY + " INTEGER, "
+            + ServerConstants.NICKSERV_PASSWORD + " TEXT, "
+            + ServerConstants.SASL_USERNAME + " TEXT, "
+            + ServerConstants.SASL_PASSWORD + " TEXT"
             + ");"
         );
 
@@ -145,32 +149,41 @@ public class Database extends SQLiteOpenHelper
                 + AliasConstants.IDENTITY + " INTEGER"
                 + ");"
             );
+
+            oldVersion = 4;
+        }
+
+        if (oldVersion == 4) {
+            // Add authentication fields to database
+            db.execSQL("ALTER TABLE " + ServerConstants.TABLE_NAME + " ADD " + ServerConstants.NICKSERV_PASSWORD + " TEXT AFTER " + ServerConstants.CHARSET + ";");
+            db.execSQL("ALTER TABLE " + ServerConstants.TABLE_NAME + " ADD " + ServerConstants.SASL_USERNAME + " TEXT AFTER " + ServerConstants.NICKSERV_PASSWORD + ";");
+            db.execSQL("ALTER TABLE " + ServerConstants.TABLE_NAME + " ADD " + ServerConstants.SASL_PASSWORD + " TEXT AFTER " + ServerConstants.SASL_USERNAME + ";");
         }
     }
 
     /**
      * Add a new server to the database
      * 
-     * @param title Unique title of the server
-     * @param host Hostname of the server
-     * @param port Port (default: 3337)
-     * @param password Password if needed
-     * @param autoConnect Autoconnect to this server on startup?
-     * @param useSSL Does the server use SSL?
-     * @param identityId The id of the identity record
+     * @param server     The server to add.
+     * @param identityId The id of the assigned identity
      */
-    public long addServer(String title, String host, int port, String password, boolean autoConnect, boolean useSSL, long identityId, String charset)
+    public long addServer(Server server, int identityId)
     {
         ContentValues values = new ContentValues();
 
-        values.put(ServerConstants.TITLE, title);
-        values.put(ServerConstants.HOST, host);
-        values.put(ServerConstants.PORT, port);
-        values.put(ServerConstants.PASSWORD, password);
-        values.put(ServerConstants.AUTOCONNECT, autoConnect);
-        values.put(ServerConstants.USE_SSL, useSSL);
+        values.put(ServerConstants.TITLE, server.getTitle());
+        values.put(ServerConstants.HOST, server.getHost());
+        values.put(ServerConstants.PORT, server.getPort());
+        values.put(ServerConstants.PASSWORD, server.getPassword());
+        values.put(ServerConstants.AUTOCONNECT, false);
+        values.put(ServerConstants.USE_SSL, server.useSSL());
         values.put(ServerConstants.IDENTITY, identityId);
-        values.put(ServerConstants.CHARSET, charset);
+        values.put(ServerConstants.CHARSET, server.getCharset());
+
+        Authentication authentication = server.getAuthentication();
+        values.put(ServerConstants.NICKSERV_PASSWORD, authentication.getNickservPassword());
+        values.put(ServerConstants.SASL_USERNAME, authentication.getSaslUsername());
+        values.put(ServerConstants.SASL_PASSWORD, authentication.getSaslPassword());
 
         return this.getWritableDatabase().insert(ServerConstants.TABLE_NAME, null, values);
     }
@@ -178,27 +191,28 @@ public class Database extends SQLiteOpenHelper
     /**
      * Update the server record in the database
      * 
-     * @param serverId
-     * @param title Unique title of the server
-     * @param host Hostname of the server
-     * @param port Port (default: 3337)
-     * @param password Password if needed
-     * @param autoConnect Autoconnect to this server on startup?
-     * @param useSSL Does the server use SSL?
+     * @param serverId   The primary key of the server to update.
+     * @param server     The server to update.
      * @param identityId The identity of the server record
      */
-    public void updateServer(int serverId, String title, String host, int port, String password, boolean autoConnect, boolean useSSL, long identityId, String charset)
+    public void updateServer(int serverId, Server server, int identityId)
     {
         ContentValues values = new ContentValues();
 
-        values.put(ServerConstants.TITLE, title);
-        values.put(ServerConstants.HOST, host);
-        values.put(ServerConstants.PORT, port);
-        values.put(ServerConstants.PASSWORD, password);
-        values.put(ServerConstants.AUTOCONNECT, autoConnect);
-        values.put(ServerConstants.USE_SSL, useSSL);
+        values.put(ServerConstants.TITLE, server.getTitle());
+        values.put(ServerConstants.HOST, server.getHost());
+        values.put(ServerConstants.PORT, server.getPort());
+        values.put(ServerConstants.PASSWORD, server.getPassword());
+        values.put(ServerConstants.AUTOCONNECT, false);
+        values.put(ServerConstants.USE_SSL, server.useSSL());
         values.put(ServerConstants.IDENTITY, identityId);
-        values.put(ServerConstants.CHARSET, charset);
+        values.put(ServerConstants.CHARSET, server.getCharset());
+
+        Authentication authentication = server.getAuthentication();
+
+        values.put(ServerConstants.NICKSERV_PASSWORD, authentication.getNickservPassword());
+        values.put(ServerConstants.SASL_USERNAME, authentication.getSaslUsername());
+        values.put(ServerConstants.SASL_PASSWORD, authentication.getSaslPassword());
 
         this.getWritableDatabase().update(
             ServerConstants.TABLE_NAME,
@@ -416,6 +430,12 @@ public class Database extends SQLiteOpenHelper
         }
 
         server.setStatus(Status.DISCONNECTED);
+
+        Authentication authentication = new Authentication();
+        authentication.setNickservPassword(cursor.getString(cursor.getColumnIndex(ServerConstants.NICKSERV_PASSWORD)));
+        authentication.setSaslUsername(cursor.getString(cursor.getColumnIndex(ServerConstants.SASL_USERNAME)));
+        authentication.setSaslPassword(cursor.getString(cursor.getColumnIndex(ServerConstants.SASL_PASSWORD)));
+        server.setAuthentication(authentication);
 
         // Load identity for server
         Identity identity = this.getIdentityById(cursor.getInt(cursor.getColumnIndex(ServerConstants.IDENTITY)));

@@ -32,7 +32,7 @@ public interface ChannelConstants extends BaseColumns
     public static final String TABLE_NAME = "channels";
 
     // fields
-    public static final String NAME          = "name";
+    public static final String NAME       = "name";
     public static final String PASSWORD   = "password";
     public static final String SERVER     = "server";
 

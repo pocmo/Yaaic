@@ -29,6 +29,7 @@
     <string name="realname">Real Name</string>
 
     <string name="server">Server</string>
+    <string name="authentication">Authentication</string>
     <string name="channel">Channel</string>
     <string name="channels">Channels</string>
     <string name="commands">Commands</string>
