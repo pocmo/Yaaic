@@ -33,10 +33,10 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="#ff333333"
-            android:textSize="14px"
+            android:textSize="16sp"
             android:gravity="center_horizontal"
-            android:padding="3px"
-            android:layout_margin="2px" />
+            android:padding="3dp"
+            android:layout_margin="2dp" />
         <TextView
             android:text="@string/server_title"
             android:layout_width="fill_parent"
@@ -101,10 +101,10 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="#ff333333"
-            android:textSize="14px"
+            android:textSize="16sp"
             android:gravity="center_horizontal"
-            android:padding="3px"
-            android:layout_margin="2px" />
+            android:padding="3dp"
+            android:layout_margin="2dp" />
         <TextView
             android:text="@string/nickname"
             android:layout_width="fill_parent"
@@ -148,10 +148,10 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
              android:layout_width="fill_parent"
              android:layout_height="wrap_content"
              android:background="#ff333333"
-             android:textSize="14px"
+             android:textSize="16sp"
              android:gravity="center_horizontal"
-             android:padding="3px"
-             android:layout_margin="2px" />
+             android:padding="3dp"
+             android:layout_margin="2dp" />
         <Button
             android:id="@+id/channels"
             android:layout_width="fill_parent"
@@ -168,10 +168,10 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
              android:layout_width="fill_parent"
              android:layout_height="wrap_content"
              android:background="#ff333333"
-             android:textSize="14px"
+             android:textSize="16sp"
              android:gravity="center_horizontal"
-             android:padding="3px"
-             android:layout_margin="2px" />
+             android:padding="3dp"
+             android:layout_margin="2dp" />
         <TextView
             android:text="@string/charset"
             android:layout_width="fill_parent"
@@ -186,7 +186,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10px">
+            android:paddingTop="10dp">
             <Button
                 android:id="@+id/add"
                 android:text="@string/server_save"
