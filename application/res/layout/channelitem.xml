@@ -23,6 +23,6 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     android:id="@+id/host"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:padding="7px"
+    android:padding="7dp"
     android:text="#channel"
-    android:textSize="14dp" />
+    android:textSize="16sp" />
