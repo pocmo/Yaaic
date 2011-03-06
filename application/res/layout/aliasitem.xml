@@ -4,5 +4,5 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:padding="7px"
-    android:text=""
-    android:textSize="12px" />
+    android:text="Alias"
+    android:textSize="16dp" />
