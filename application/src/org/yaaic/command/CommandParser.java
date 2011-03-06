@@ -166,12 +166,14 @@ public class CommandParser
     public void handleClientCommand(String type, String[] params, Server server, Conversation conversation, IRCService service)
     {
         BaseHandler command = null;
+
         if (commands.containsKey(type.toLowerCase())) {
-            command = commands.get(type);
+            command = commands.get(type.toLowerCase());
         } else if (aliases.containsKey(type.toLowerCase())) {
             String commandInCommands = aliases.get(type.toLowerCase());
             command = commands.get(commandInCommands);
         }
+
         try {
             command.execute(params, server, conversation, service);
         } catch(CommandException e) {
