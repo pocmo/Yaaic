@@ -155,7 +155,14 @@ public class IRCConnection extends PircBot
         );
 
         service.sendBroadcast(intent);
+    }
 
+
+    /**
+     * On register
+     */
+    public void onRegister()
+    {
         // execute commands
         CommandParser parser = CommandParser.getInstance();
 
@@ -163,6 +170,10 @@ public class IRCConnection extends PircBot
         for (String command : server.getConnectCommands()) {
             parser.parse(command, server, server.getConversation(ServerInfo.DEFAULT_NAME), service);
         }
+
+        // TODO: Detect "You are now identified for <nick>" notices from NickServ and handle
+        //       auto joins in onNotice instead if the user has chosen to wait for NickServ
+        //       identification before auto joining channels.
 
         // delay 1 sec before auto joining channels
         try {
@@ -183,7 +194,6 @@ public class IRCConnection extends PircBot
             }
         }
     }
-
     /**
      * On channel action
      */
@@ -988,6 +998,11 @@ public class IRCConnection extends PircBot
     @Override
     protected void onServerResponse(int code, String response)
     {
+        if (code == 4) {
+            // User has registered with the server
+            onRegister();
+            return;
+        }
         if (code == 372 || code == 375 || code == 376) {
             // Skip MOTD
             return;
