@@ -44,6 +44,13 @@ public class Message {
     public static final int COLOR_GREY    = 0xFFaaaaaa;
     public static final int COLOR_DEFAULT = 0xFFeeeeee;
 
+    /* normal message, this is the default */
+    public static final int TYPE_MESSAGE = 0;
+    /* join, part or quit */
+    public static final int TYPE_MISC    = 1;
+
+    /* Some are light versions because dark colors hardly readable on
+     * Yaaic's dark background */
     public static final int[] colors = {
         0xFFffffff, // White
         0xFFffff00, // Yellow
@@ -52,17 +59,18 @@ public class Message {
         0xFFc0c0c0, // Silver
         0xFF808080, // Gray
         0xFF808000, // Olive
-        0xFF800080, // Purple
-        0xFF800000, // Maroon
+        0xFFC040C0, // Light Purple
+        0xFFC04040, // Light Maroon
         0xFF00ffff, // Agua
-        0xFF00ff00, // Lime
+        0xFF80ff80, // Light Lime
         0xFF008080, // Teal
         0xFF008000, // Green
-        0xFF0000FF, // Blue
-        0xFF000080, // Navy
+        0xFF8484FF, // Light Blue
+        0xFF6060D0, // Light Navy
         0xFF000000, // Black
     };
 
+    private int type = -1;
     private int icon = -1;
     private final String text;
     private final String sender;
@@ -71,25 +79,51 @@ public class Message {
     private final long timestamp;
 
     /**
-     * Create a new message without an icon
+     * Create a new message without an icon defaulting to TYPE_MESSAGE
      * 
      * @param text
      */
     public Message(String text)
     {
-        this(text, null);
+        this(text, null, TYPE_MESSAGE);
     }
+
     /**
-     * Create a new message sent by a user without an icon
-     *
+     * Create a new message without an icon with a specific type
+     * 
+     * @param text
+     * @param type Message type
+     */
+    public Message(String text, int type)
+    {
+        this(text, null, type);
+    }
+
+    /**
+     * Create a new message sent by a user, without an icon,
+     * defaulting to TYPE_MESSAGE
+     * 
      * @param text
      * @param sender
      */
     public Message(String text, String sender)
     {
+        this(text, sender, TYPE_MESSAGE);
+    }
+
+    /**
+     * Create a new message sent by a user without an icon
+     *
+     * @param text
+     * @param sender
+     * @param type Message type
+     */
+    public Message(String text, String sender, int type)
+    {
         this.text = text;
         this.sender = sender;
         this.timestamp = new Date().getTime();
+        this.type = type;
     }
 
     /**
@@ -118,6 +152,16 @@ public class Message {
     public String getText()
     {
         return text;
+    }
+
+    /**
+     * Get the type of this message
+     * 
+     * @return One of Message.TYPE_*
+     */
+    public int getType()
+    {
+        return type;
     }
 
     /**

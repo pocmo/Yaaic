@@ -48,7 +48,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1">
-        <Gallery
+        <org.yaaic.view.ConversationGallery
            android:id="@+id/deck"
            android:layout_width="fill_parent"
            android:layout_height="fill_parent"

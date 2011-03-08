@@ -41,6 +41,8 @@ public abstract class Conversation
     public static final int STATUS_SELECTED  = 2;
     public static final int STATUS_MESSAGE   = 3;
     public static final int STATUS_HIGHLIGHT = 4;
+    /* join/part/quit */
+    public static final int STATUS_MISC      = 5;
 
     public static final int HISTORY_SIZE = 30;
 
@@ -177,6 +179,11 @@ public abstract class Conversation
 
         // Highlight status can only be changed by selecting
         if (this.status == STATUS_HIGHLIGHT && status != STATUS_SELECTED) {
+            return;
+        }
+
+        // Misc cannot change any other than default
+        if (this.status != STATUS_DEFAULT && status == STATUS_MISC) {
             return;
         }
 

@@ -20,7 +20,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.yaaic.view;
 
-import java.util.Collection;
+import java.util.Vector;
 
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Server;
@@ -88,15 +88,17 @@ public class ConversationSwitcher extends View
             return;
         }
 
-        Collection<Conversation> conversations = server.getConversations();
+        Vector<Conversation> conversations = new Vector<Conversation>(server.getConversations());
+        Conversation conversation;
 
-        int i       = 0;
         int width   = getWidth();
         int height  = getHeight();
         int circles = conversations.size();
         int startX  = (width / 2) - (((circles + 1) / 2) * 12);
 
-        for (Conversation conversation : conversations) {
+        for (int i = 0; i < circles; i++) {
+            conversation = conversations.get(i);
+
             switch (conversation.getStatus()) {
                 case Conversation.STATUS_DEFAULT:
                     paint.setColor(0xFF888888);
@@ -110,10 +112,11 @@ public class ConversationSwitcher extends View
                 case Conversation.STATUS_SELECTED:
                     paint.setColor(0xFFFFFFFF);
                     break;
+                case Conversation.STATUS_MISC:
+                    paint.setColor(0xFF3333AA);
             }
 
             canvas.drawCircle(startX + 12 * i, height / 2, 4, paint);
-            i++;
         }
 
     }

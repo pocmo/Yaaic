@@ -50,9 +50,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemLongClickListener;
 
 /**
  * List of servers
@@ -64,6 +64,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
     private ServerReceiver receiver;
     private ServerListAdapter adapter;
     private ListView list;
+    private static int instanceCount = 0;
 
     /**
      * On create
@@ -72,6 +73,19 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        /*
+         * With activity:launchMode = standard, we get duplicated activities
+         * depending on the task the app was started in. In order to avoid
+         * stacking up of this duplicated activities we keep a count of this
+         * root activity and let it finish if it already exists
+         * 
+         * Launching the app via the notification icon creates a new task,
+         * and there doesn't seem to be a way around this so this is needed
+         */
+        if (instanceCount > 0) {
+            finish();
+        }
+        instanceCount++;
         setContentView(R.layout.servers);
 
         adapter = new ServerListAdapter();
@@ -80,6 +94,16 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
         list = getListView();
         list.setOnItemLongClickListener(this);
         list.setBackgroundDrawable(new NonScalingBackgroundDrawable(this, list, R.drawable.background));
+    }
+
+    /**
+     * On Destroy
+     */
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        instanceCount--;
     }
 
     /**
