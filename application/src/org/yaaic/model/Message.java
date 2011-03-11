@@ -36,7 +36,8 @@ import android.widget.TextView;
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class Message {
+public class Message
+{
     public static final int COLOR_GREEN   = 0xFF458509;
     public static final int COLOR_RED     = 0xFFcc0000;
     public static final int COLOR_BLUE    = 0xFF729fcf;
@@ -70,13 +71,18 @@ public class Message {
         0xFF000000, // Black
     };
 
-    private int type = -1;
-    private int icon = -1;
+    public static final int NO_ICON  = -1;
+    public static final int NO_TYPE  = -1;
+    public static final int NO_COLOR = -1;
+
     private final String text;
     private final String sender;
     private SpannableString canvas;
-    private int color = -1;
     private final long timestamp;
+
+    private int color = NO_COLOR;
+    private int type  = NO_ICON;
+    private int icon  = NO_TYPE;
 
     /**
      * Create a new message without an icon defaulting to TYPE_MESSAGE
@@ -182,14 +188,19 @@ public class Message {
         if (sender == null) {
             return COLOR_DEFAULT;
         }
+
         int color = 0;
+
         for(int i = 0; i < sender.length(); i++){
             color += sender.charAt(i);
         }
+
         /* we dont want color[colors.length-1] which is black */
         color = color % (colors.length - 1);
+
         return colors[color];
     }
+
     /**
      * Render message as spannable string
      * 
@@ -200,26 +211,27 @@ public class Message {
         Settings settings = new Settings(context);
 
         if (canvas == null) {
-            String prefix = icon != -1 && settings.showIcons() ? "  " : "";
-            String nick = sender != null ? "<" + sender + "> " : "";
-            String timestamp = settings.showTimestamp() ? Message.generateTimestamp(this.timestamp, settings.use24hFormat()) : "";
+            String prefix    = hasIcon() && settings.showIcons() ? "  " : "";
+            String nick      = hasSender() ? "<" + sender + "> " : "";
+            String timestamp = settings.showTimestamp() ? renderTimeStamp(settings.use24hFormat()) : "";
 
             canvas = new SpannableString(prefix + timestamp + nick + text);
 
-            if (sender != null) {
+            if (hasSender()) {
                 int start = (prefix + timestamp).length() + 1;
                 int end = start + sender.length();
+
                 if (settings.showColorsNick()) {
                     canvas.setSpan(new ForegroundColorSpan(getSenderColor()), start, end , Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
             }
 
-            if (icon != -1 && settings.showIcons()) {
+            if (hasIcon() && settings.showIcons()) {
                 Drawable drawable = context.getResources().getDrawable(icon);
                 drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
                 canvas.setSpan(new ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
-            if (color != -1 && settings.showColors()) {
+            if (hasColor() && settings.showColors()) {
                 canvas.setSpan(new ForegroundColorSpan(color), 0, canvas.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
@@ -228,8 +240,38 @@ public class Message {
     }
 
     /**
+     * Does this message have a sender?
+     *
+     * @return
+     */
+    private boolean hasSender()
+    {
+        return sender != null;
+    }
+
+    /**
+     * Does this message have a color assigned?
+     *
+     * @return
+     */
+    private boolean hasColor()
+    {
+        return color != NO_COLOR;
+    }
+
+    /**
+     * Does this message have an icon assigned?
+     *
+     * @return
+     */
+    private boolean hasIcon()
+    {
+        return icon != NO_ICON;
+    }
+
+    /**
      * Render message as text view
-     * 
+     *
      * @param context
      * @return
      */
@@ -254,7 +296,7 @@ public class Message {
      * @param use24hFormat
      * @return
      */
-    public static String generateTimestamp(long timestamp, boolean use24hFormat)
+    private String renderTimeStamp(boolean use24hFormat)
     {
         Date date = new Date(timestamp);
 
