@@ -434,7 +434,9 @@ public class IRCConnection extends PircBot
     @Override
     protected void onMode(String target, String sourceNick, String sourceLogin, String sourceHostname, String mode)
     {
-        /*//Disabled as it doubles events (e.g. onOp and onMode will be called)
+        // Disabled as it doubles events (e.g. onOp and onMode will be called)
+
+        /*
         Message message = new Message(sourceNick + " sets mode " + mode);
         server.getChannel(target).addMessage(message);
 
@@ -454,6 +456,7 @@ public class IRCConnection extends PircBot
         if (getNick().equalsIgnoreCase(newNick)) {
             this.updateNickMatchPattern();
         }
+
         Vector<String> channels = getChannelsByNickname(newNick);
 
         for (String target : channels) {

@@ -20,7 +20,15 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.yaaic.listener;
 
+/**
+ * Listener for changes regarding a server
+ *
+ * @author Sebastian Kaspari
+ */
 public interface ServerListener
 {
+    /**
+     * On server status update (disconnected, connecting, connected)
+     */
     public void onStatusUpdate();
 }

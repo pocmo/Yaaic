@@ -145,9 +145,11 @@ public class AddServerActivity extends Activity implements OnClickListener
                 aliases.clear();
                 aliases.addAll(data.getExtras().getStringArrayList(Extra.ALIASES));
                 break;
+
             case REQUEST_CODE_CHANNELS:
                 channels = data.getExtras().getStringArrayList(Extra.CHANNELS);
                 break;
+
             case REQUEST_CODE_COMMANDS:
                 commands = data.getExtras().getStringArrayList(Extra.COMMANDS);
                 break;
@@ -166,16 +168,19 @@ public class AddServerActivity extends Activity implements OnClickListener
                 aliasIntent.putExtra(Extra.ALIASES, aliases);
                 startActivityForResult(aliasIntent, REQUEST_CODE_ALIASES);
                 break;
+
             case R.id.channels:
                 Intent channelIntent = new Intent(this, AddChannelActivity.class);
                 channelIntent.putExtra(Extra.CHANNELS, channels);
                 startActivityForResult(channelIntent, REQUEST_CODE_CHANNELS);
                 break;
+
             case R.id.commands:
                 Intent commandsIntent = new Intent(this, AddCommandsActivity.class);
                 commandsIntent.putExtra(Extra.COMMANDS, commands);
                 startActivityForResult(commandsIntent, REQUEST_CODE_COMMANDS);
                 break;
+
             case R.id.add:
                 try {
                     validateServer();
@@ -191,6 +196,7 @@ public class AddServerActivity extends Activity implements OnClickListener
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
                 break;
+
             case R.id.cancel:
                 setResult(RESULT_CANCELED);
                 finish();

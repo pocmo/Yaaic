@@ -52,8 +52,8 @@ public class AMsgHandler extends BaseHandler
         if (params.length > 1) {
             String text = BaseHandler.mergeParams(params);
 
-
             Collection<Conversation> mConversations = server.getConversations();
+
             for (Conversation currentConversation : mConversations) {
                 if (currentConversation.getType() == Conversation.TYPE_CHANNEL) {
                     Message message = new Message("<" + service.getConnection(server.getId()).getNick() + "> " + text);

@@ -35,7 +35,7 @@ public class IRCBinder extends Binder
 
     /**
      * Create a new binder for given service
-     * 
+     *
      * @param service
      */
     public IRCBinder(IRCService service)
@@ -56,7 +56,8 @@ public class IRCBinder extends Binder
     }
 
     /**
-     * Get service associated with this service
+     * Get service associated with this binder
+     *
      * @return
      */
     public IRCService getService()

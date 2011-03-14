@@ -72,8 +72,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnKeyListener;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -197,6 +197,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             PackageManager pm = getPackageManager();
             Button speechButton = (Button) findViewById(R.id.speech);
             List<ResolveInfo> activities = pm.queryIntentActivities(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
+
             if (activities.size() != 0) {
                 ((Button) findViewById(R.id.speech)).setOnClickListener(new SpeechClickListener(this));
                 speechButton.setVisibility(View.VISIBLE);
@@ -326,6 +327,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                 setResult(RESULT_OK);
                 finish();
                 break;
+
             case R.id.close:
                 Conversation conversationToClose = deckAdapter.getItem(deck.getSelectedItemPosition());
                 // Make sure we part a channel when closing the channel conversation
@@ -339,9 +341,11 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                     Toast.makeText(this, getResources().getString(R.string.close_server_window), Toast.LENGTH_SHORT).show();
                 }
                 break;
+
             case R.id.join:
                 startActivityForResult(new Intent(this, JoinActivity.class), REQUEST_CODE_JOIN);
                 break;
+
             case R.id.users:
                 Conversation conversationForUserList = deckAdapter.getItem(deck.getSelectedItemPosition());
                 if (conversationForUserList.getType() == Conversation.TYPE_CHANNEL) {
@@ -394,11 +398,13 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             if (adapter != null) {
                 adapter.addMessage(message);
                 int status;
+
                 switch (message.getType())
                 {
                     case Message.TYPE_MISC:
                         status = Conversation.STATUS_MISC;
                         break;
+
                     default:
                         status = Conversation.STATUS_MESSAGE;
                         break;

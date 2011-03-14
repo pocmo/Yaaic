@@ -41,6 +41,9 @@ import android.widget.TextView;
  */
 public class ServerListAdapter extends BaseAdapter
 {
+    private static final int COLOR_CONNECTED    = 0xFFbcbcbc;
+    private static final int COLOR_DISCONNECTED = 0xFF585858;
+
     private ArrayList<Server> servers;
 
     /**
@@ -136,11 +139,11 @@ public class ServerListAdapter extends BaseAdapter
         hostView.setText(server.getIdentity().getNickname() + " @ " + server.getHost() + " : " + server.getPort());
 
         if (server.isConnected()) {
-            titleView.setTextColor(0xFFbcbcbc);
-            hostView.setTextColor(0xFFbcbcbc);
+            titleView.setTextColor(COLOR_CONNECTED);
+            hostView.setTextColor(COLOR_CONNECTED);
         } else {
-            titleView.setTextColor(0xFF585858);
-            hostView.setTextColor(0xFF585858);
+            titleView.setTextColor(COLOR_DISCONNECTED);
+            hostView.setTextColor(COLOR_DISCONNECTED);
         }
 
         ((ImageView) v.findViewById(R.id.status)).setImageResource(server.getStatusIcon());

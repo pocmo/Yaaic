@@ -65,71 +65,85 @@ public class AddAliasActivity extends Activity implements OnClickListener, OnIte
     /**
      * On Click
      */
-     @Override
-     public void onClick(View v)
-     {
-         switch (v.getId()) {
-             case R.id.add:
-                 String alias = aliasInput.getText().toString().trim();
-                 aliases.add(alias);
-                 adapter.add(alias);
-                 aliasInput.setText("");
-                 okButton.setEnabled(true);
-                 break;
-             case R.id.cancel:
-                 setResult(RESULT_CANCELED);
-                 finish();
-                 break;
-             case R.id.ok:
-                 // Get list and return as result
-                 Intent intent = new Intent();
-                 intent.putExtra(Extra.ALIASES, aliases);
-                 setResult(RESULT_OK, intent);
-                 finish();
-                 break;
-         }
-     }
+    @Override
+    public void onClick(View v)
+    {
+        switch (v.getId()) {
+            case R.id.add:
+                String alias = aliasInput.getText().toString().trim();
+                aliases.add(alias);
+                adapter.add(alias);
+                aliasInput.setText("");
+                okButton.setEnabled(true);
+                break;
 
-     /**
-      * On item clicked
-      */
-     @Override
-     public void onItemClick(AdapterView<?> list, View item, int position, long id)
-     {
-         final String alias = adapter.getItem(position);
+            case R.id.cancel:
+                setResult(RESULT_CANCELED);
+                finish();
+                break;
 
-         String[] items = { getResources().getString(R.string.action_remove) };
+            case R.id.ok:
+                // Get list and return as result
+                Intent intent = new Intent();
+                intent.putExtra(Extra.ALIASES, aliases);
+                setResult(RESULT_OK, intent);
+                finish();
+                break;
+        }
+    }
 
-         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-         builder.setTitle(alias);
-         builder.setItems(items, new DialogInterface.OnClickListener() {
-             @Override
-             public void onClick(DialogInterface dialog, int item) {
-                 switch (item) {
-                     case 0: // Remove
-                         adapter.remove(alias);
-                         aliases.remove(alias);
-                         okButton.setEnabled(true);
-                         break;
-                 }
-             }
-         });
-         AlertDialog alert = builder.create();
-         alert.show();
-     }
+    /**
+     * On item clicked
+     */
+    @Override
+    public void onItemClick(AdapterView<?> list, View item, int position, long id)
+    {
+        final String alias = adapter.getItem(position);
 
-     @Override
-     public void afterTextChanged(Editable s) {
-         // Do nothing.
-     }
+        String[] items = { getResources().getString(R.string.action_remove) };
 
-     @Override
-     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-         // Do nothing.
-     }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(alias);
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                switch (item) {
+                    case 0: // Remove
+                        adapter.remove(alias);
+                        aliases.remove(alias);
+                        okButton.setEnabled(true);
+                        break;
+                }
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
 
-     @Override
-     public void onTextChanged(CharSequence s, int start, int before, int count) {
-         addButton.setEnabled(aliasInput.getText().length() > 0);
-     }
+    /**
+     * On text changed
+     */
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count)
+    {
+        addButton.setEnabled(aliasInput.getText().length() > 0);
+    }
+
+    /**
+     * After text changed
+     */
+    @Override
+    public void afterTextChanged(Editable s)
+    {
+        // Do nothing.
+    }
+
+    /**
+     * Before text changed
+     */
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after)
+    {
+        // Do nothing.
+    }
 }

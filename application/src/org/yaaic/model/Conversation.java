@@ -41,8 +41,7 @@ public abstract class Conversation
     public static final int STATUS_SELECTED  = 2;
     public static final int STATUS_MESSAGE   = 3;
     public static final int STATUS_HIGHLIGHT = 4;
-    /* join/part/quit */
-    public static final int STATUS_MISC      = 5;
+    public static final int STATUS_MISC      = 5; // join/part/quit
 
     public static final int HISTORY_SIZE = 30;
 

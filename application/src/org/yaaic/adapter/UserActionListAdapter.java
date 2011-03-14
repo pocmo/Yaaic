@@ -124,7 +124,6 @@ public class UserActionListAdapter extends BaseAdapter
         textView.setText(labels[position]);
         iconView.setImageResource(icons[position]);
 
-
         return convertView;
     }
 }

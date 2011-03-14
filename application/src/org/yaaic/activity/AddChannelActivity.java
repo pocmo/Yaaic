@@ -99,10 +99,12 @@ public class AddChannelActivity extends Activity implements OnClickListener, OnI
                 channelInput.setText("#");
                 okButton.setEnabled(true);
                 break;
+
             case R.id.cancel:
                 setResult(RESULT_CANCELED);
                 finish();
                 break;
+
             case R.id.ok:
                 // Get list and return as result
                 Intent intent = new Intent();

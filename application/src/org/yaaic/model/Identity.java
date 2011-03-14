@@ -49,7 +49,7 @@ public class Identity
 
     /**
      * Get the nickname of this identity
-     * 
+     *
      * @return The nickname
      */
     public String getNickname()
@@ -57,12 +57,24 @@ public class Identity
         return nickname;
     }
 
-    public void setAliases(Collection<String> aliases) {
+    /**
+     * Set a collection of aliases for this identity
+     *
+     * @param aliases
+     */
+    public void setAliases(Collection<String> aliases)
+    {
         this.aliases.clear();
         this.aliases.addAll(aliases);
     }
 
-    public List<String> getAliases() {
+    /**
+     * Get all aliases for this identity
+     *
+     * @return
+     */
+    public List<String> getAliases()
+    {
         return Collections.unmodifiableList(aliases);
     }
 

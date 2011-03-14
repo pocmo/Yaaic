@@ -21,7 +21,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 package org.yaaic.exception;
 
 /**
- * A valiadtion exception is thrown if any user input is invalid
+ * A ValidationException is thrown if any user input is invalid
  * 
  * @author Sebastian Kaspari
  */
