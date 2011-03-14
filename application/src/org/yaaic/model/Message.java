@@ -78,7 +78,7 @@ public class Message
     private final String text;
     private final String sender;
     private SpannableString canvas;
-    private final long timestamp;
+    private long timestamp;
 
     private int color = NO_COLOR;
     private int type  = NO_ICON;
@@ -177,6 +177,17 @@ public class Message
     {
         this.color = color;
     }
+
+    /**
+     * Set the timestamp of the message
+     *
+     * @param timestamp
+     */
+    public void setTimestamp(long timestamp)
+    {
+        this.timestamp = timestamp;
+    }
+
     /**
      * Associate a color with a sender name
      *
@@ -296,7 +307,7 @@ public class Message
      * @param use24hFormat
      * @return
      */
-    private String renderTimeStamp(boolean use24hFormat)
+    public String renderTimeStamp(boolean use24hFormat)
     {
         Date date = new Date(timestamp);
 

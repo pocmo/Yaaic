@@ -95,7 +95,7 @@ public class ConnectionScenarios extends ActivityInstrumentationTestCase2
 		solo.enterText(0, "/j #yaaic-test");
 		solo.sendKey(Solo.ENTER);
 		
-		solo.sleep(1000);
+		solo.sleep(1500);
 
 		// Assert channel joined
 		assertTrue(solo.searchText("#yaaic-test"));

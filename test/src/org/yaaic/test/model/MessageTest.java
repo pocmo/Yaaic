@@ -58,14 +58,16 @@ public class MessageTest extends TestCase
 	
 	public void testTimestamp()
 	{
-		String timestamp1 = Message.generateTimestamp(1270505773862l, false);
-		assertEquals("[00:16] ", timestamp1);
-		String timestamp2 = Message.generateTimestamp(1270505773862l, true);
-		assertEquals("[00:16] ", timestamp2);
+		Message message = new Message("");
 
-		String timestamp3 = Message.generateTimestamp(1270908275000l, false);
-		assertEquals("[04:04] ", timestamp3);
-		String timestamp4 = Message.generateTimestamp(1270908275000l, true);
-		assertEquals("[16:04] ", timestamp4);
+		message.setTimestamp(1270505773862l);
+
+		assertEquals("[00:16] ", message.renderTimeStamp(false));
+		assertEquals("[00:16] ", message.renderTimeStamp(true));
+
+		message.setTimestamp(1270908275000l);
+
+		assertEquals("[04:04] ", message.renderTimeStamp(false));
+		assertEquals("[16:04] ", message.renderTimeStamp(true));
 	}
 }
