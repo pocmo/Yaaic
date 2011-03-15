@@ -486,11 +486,17 @@ public class IRCConnection extends PircBot
         notice = Colors.removeFormattingAndColors(notice);
 
         // Post notice to currently selected conversation
-        Conversation conversation = server.getConversation(server.getSelectedConversation());
+        Conversation conversation;
 
-        if (conversation == null) {
-            // Fallback: Use ServerInfo view
+        if (service.getSettings().showNoticeInServerWindow()) {
             conversation = server.getConversation(ServerInfo.DEFAULT_NAME);
+        } else {
+            conversation = server.getConversation(server.getSelectedConversation());
+
+            if (conversation == null) {
+                // Fallback: Use ServerInfo view
+                conversation = server.getConversation(ServerInfo.DEFAULT_NAME);
+            }
         }
 
         Message message = new Message("-" + sourceNick + "- " + notice);

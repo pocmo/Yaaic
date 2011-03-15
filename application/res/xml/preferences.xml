@@ -70,6 +70,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:summary="@string/settings_joinpartquit_desc"
             android:key="@string/key_show_joinpartquit"
             android:defaultValue="@string/default_show_joinpartquit" />
+        <CheckBoxPreference
+            android:title="@string/settings_noticeserverwindow_title"
+            android:summary="@string/settings_noticeserverwindow_desc"
+            android:key="@string/key_notice_server_window"
+            android:defaultValue="@string/default_notice_server_window" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/settings_highlight">

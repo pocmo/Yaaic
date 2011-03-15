@@ -35,4 +35,7 @@
 
     <string name="key_sound_highlight">sound_highlight</string>
     <string name="default_sound_highlight">false</string>
+
+    <string name="key_notice_server_window">notice_server_window</string>
+    <string name="default_notice_server_window">false</string>
 </resources>

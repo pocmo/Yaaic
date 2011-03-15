@@ -208,4 +208,17 @@ public class Settings
             Boolean.parseBoolean(resources.getString(R.string.default_show_joinpartquit))
         );
     }
+
+    /**
+     * Should notices be shown in the server window instead in the focused window?
+     *
+     * @return True if notices should be shown in the server window
+     */
+    public boolean showNoticeInServerWindow()
+    {
+        return preferences.getBoolean(
+            resources.getString(R.string.key_notice_server_window),
+            Boolean.parseBoolean(resources.getString(R.string.default_notice_server_window))
+        );
+    }
 }

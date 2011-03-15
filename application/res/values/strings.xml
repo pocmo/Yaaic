@@ -194,4 +194,6 @@
     <string name="settings_voice_recognition_desc">Show button for voice recognition</string>
     <string name="settings_joinpartquit_title">Show join, part and quit</string>
     <string name="settings_joinpartquit_desc">Show join, part and quit messages in channels</string>
+    <string name="settings_noticeserverwindow_title">Notices server window</string>
+    <string name="settings_noticeserverwindow_desc">Show notices in server window</string>
 </resources>
