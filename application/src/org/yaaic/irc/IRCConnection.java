@@ -350,8 +350,11 @@ public class IRCConnection extends PircBot
             );
             service.sendBroadcast(intent);
         } else if (service.getSettings().showJoinAndPart()) {
-            Message message = new Message(service.getString(R.string.message_join, sender),
-                Message.TYPE_MISC);
+            Message message = new Message(
+                service.getString(R.string.message_join, sender),
+                Message.TYPE_MISC
+            );
+
             message.setIcon(R.drawable.join);
             message.setColor(Message.COLOR_GREEN);
             server.getConversation(target).addMessage(message);
@@ -538,8 +541,11 @@ public class IRCConnection extends PircBot
             );
             service.sendBroadcast(intent);
         } else if (service.getSettings().showJoinAndPart()) {
-            Message message = new Message(service.getString(R.string.message_part, sender),
-                Message.TYPE_MISC);
+            Message message = new Message(
+                service.getString(R.string.message_part, sender),
+                Message.TYPE_MISC
+            );
+
             message.setColor(Message.COLOR_GREEN);
             message.setIcon(R.drawable.part);
             server.getConversation(target).addMessage(message);
@@ -611,8 +617,11 @@ public class IRCConnection extends PircBot
             Vector<String> channels = getChannelsByNickname(sourceNick);
 
             for (String target : channels) {
-                Message message = new Message(service.getString(R.string.message_quit, sourceNick, reason),
-                    Message.TYPE_MISC);
+                Message message = new Message(
+                    service.getString(R.string.message_quit, sourceNick, reason),
+                    Message.TYPE_MISC
+                );
+
                 message.setColor(Message.COLOR_GREEN);
                 message.setIcon(R.drawable.quit);
                 server.getConversation(target).addMessage(message);
@@ -629,8 +638,11 @@ public class IRCConnection extends PircBot
             Conversation conversation = server.getConversation(sourceNick);
 
             if (conversation != null) {
-                Message message = new Message(service.getString(R.string.message_quit, sourceNick, reason),
-                    Message.TYPE_MISC);
+                Message message = new Message(
+                    service.getString(R.string.message_quit, sourceNick, reason),
+                    Message.TYPE_MISC
+                );
+
                 message.setColor(Message.COLOR_GREEN);
                 message.setIcon(R.drawable.quit);
                 conversation.addMessage(message);
