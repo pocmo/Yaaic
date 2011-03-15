@@ -22,11 +22,15 @@ package org.yaaic.model;
 
 import java.util.Date;
 
+import org.yaaic.utils.Html2;
+
 import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 import android.widget.TextView;
@@ -225,8 +229,11 @@ public class Message
             String prefix    = hasIcon() && settings.showIcons() ? "  " : "";
             String nick      = hasSender() ? "<" + sender + "> " : "";
             String timestamp = settings.showTimestamp() ? renderTimeStamp(settings.use24hFormat()) : "";
+            Spanned colortext = Html2.fromHtml(text);
 
-            canvas = new SpannableString(prefix + timestamp + nick + text);
+            canvas = new SpannableString(prefix + timestamp + nick);
+            canvas = new SpannableString(TextUtils.concat(canvas, colortext));
+
 
             if (hasSender()) {
                 int start = (prefix + timestamp).length() + 1;
