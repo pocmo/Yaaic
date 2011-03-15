@@ -40,7 +40,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="3dp"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:text="Server"
             android:layout_weight="1" />
     </LinearLayout>

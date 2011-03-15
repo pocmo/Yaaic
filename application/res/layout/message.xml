@@ -28,7 +28,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/message"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="12sp"
+        android:padding="12dp"
         android:autoLink="all"
         android:linksClickable="true"
         android:text="&lt;pocmo&gt; Hello world!" />
