@@ -66,10 +66,10 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:defaultValue="@string/default_24h_format"
             android:dependency="@string/key_show_timestamp" />
         <CheckBoxPreference
-            android:title="@string/settings_joinpart_title"
-            android:summary="@string/settings_joinpart_desc"
-            android:key="@string/key_show_joinpart"
-            android:defaultValue="@string/default_show_joinpart" />
+            android:title="@string/settings_joinpartquit_title"
+            android:summary="@string/settings_joinpartquit_desc"
+            android:key="@string/key_show_joinpartquit"
+            android:defaultValue="@string/default_show_joinpartquit" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/settings_highlight">

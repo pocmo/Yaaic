@@ -192,6 +192,6 @@
     <string name="settings_fontsize_dialog_title">Font size</string>
     <string name="settings_voice_recognition_title">Voice recognition</string>
     <string name="settings_voice_recognition_desc">Show button for voice recognition</string>
-    <string name="settings_joinpart_title">Show join and part</string>
-    <string name="settings_joinpart_desc">Show join and part messages in channels</string>
+    <string name="settings_joinpartquit_title">Show join, part and quit</string>
+    <string name="settings_joinpartquit_desc">Show join, part and quit messages in channels</string>
 </resources>

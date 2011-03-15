@@ -191,6 +191,6 @@
     <string name="settings_fontsize_dialog_title">Misura del font</string>
     <string name="settings_voice_recognition_title">Riconoscimento vocale</string>
     <string name="settings_voice_recognition_desc">Mostra il bottone per il riconoscimento vocale</string>
-    <string name="settings_joinpart_title">Mostra entrate ed uscite</string>
-    <string name="settings_joinpart_desc">Mostra i messaggi di entrata e di uscita nei canali</string>
+    <string name="settings_joinpartquit_title">Mostra entrate ed uscite</string>
+    <string name="settings_joinpartquit_desc">Mostra i messaggi di entrata e di uscita nei canali</string>
 </resources>

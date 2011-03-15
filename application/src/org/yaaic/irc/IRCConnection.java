@@ -349,7 +349,7 @@ public class IRCConnection extends PircBot
                 target
             );
             service.sendBroadcast(intent);
-        } else if (service.getSettings().showJoinAndPart()) {
+        } else if (service.getSettings().showJoinPartAndQuit()) {
             Message message = new Message(
                 service.getString(R.string.message_join, sender),
                 Message.TYPE_MISC
@@ -540,7 +540,7 @@ public class IRCConnection extends PircBot
                 target
             );
             service.sendBroadcast(intent);
-        } else if (service.getSettings().showJoinAndPart()) {
+        } else if (service.getSettings().showJoinPartAndQuit()) {
             Message message = new Message(
                 service.getString(R.string.message_part, sender),
                 Message.TYPE_MISC
@@ -613,7 +613,11 @@ public class IRCConnection extends PircBot
     @Override
     protected void onQuit(String sourceNick, String sourceLogin, String sourceHostname, String reason)
     {
-        if (!sourceNick.equals(this.getNick())) {
+        if (sourceNick.equals(this.getNick())) {
+            return;
+        }
+
+        if (service.getSettings().showJoinPartAndQuit()) {
             Vector<String> channels = getChannelsByNickname(sourceNick);
 
             for (String target : channels) {
@@ -654,9 +658,6 @@ public class IRCConnection extends PircBot
                 );
                 service.sendBroadcast(intent);
             }
-
-        } else {
-            // XXX: We quitted
         }
     }
 

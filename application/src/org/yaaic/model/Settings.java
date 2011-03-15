@@ -197,15 +197,15 @@ public class Settings
     }
 
     /**
-     * Should join and part messages be displayed?
+     * Should join, part and quit messages be displayed?
      *
-     * @return True if joins and parts should be displayed, false otherwise
+     * @return True if joins, parts and quits should be displayed, false otherwise
      */
-    public boolean showJoinAndPart()
+    public boolean showJoinPartAndQuit()
     {
         return preferences.getBoolean(
-            resources.getString(R.string.key_show_joinpart),
-            Boolean.parseBoolean(resources.getString(R.string.default_show_joinpart))
+            resources.getString(R.string.key_show_joinpartquit),
+            Boolean.parseBoolean(resources.getString(R.string.default_show_joinpartquit))
         );
     }
 }

@@ -27,8 +27,8 @@
     <string name="key_voice_recognition">voice_recognition</string>
     <string name="default_voice_recognition">false</string>
 
-    <string name="key_show_joinpart">show_joinpart</string>
-    <string name="default_show_joinpart">true</string>
+    <string name="key_show_joinpartquit">show_joinpartquit</string>
+    <string name="default_show_joinpartquit">true</string>
 
     <string name="key_vibrate_highlight">vibrate_highlight</string>
     <string name="default_vibrate_highlight">true</string>
