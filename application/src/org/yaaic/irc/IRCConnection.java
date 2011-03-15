@@ -224,7 +224,7 @@ public class IRCConnection extends PircBot
             if (conversation == null) {
                 // Open a query if there's none yet
                 conversation = new Query(sender);
-                server.addConversationl(conversation);
+                server.addConversation(conversation);
                 conversation.addMessage(message);
 
                 Intent intent = Broadcast.createConversationIntent(
@@ -341,7 +341,7 @@ public class IRCConnection extends PircBot
     {
         if (sender.equalsIgnoreCase(getNick())) {
             // We joined a new channel
-            server.addConversationl(new Channel(target));
+            server.addConversation(new Channel(target));
 
             Intent intent = Broadcast.createConversationIntent(
                 Broadcast.CONVERSATION_NEW,
@@ -593,7 +593,7 @@ public class IRCConnection extends PircBot
             // Open a query if there's none yet
             conversation = new Query(sender);
             conversation.addMessage(message);
-            server.addConversationl(conversation);
+            server.addConversation(conversation);
 
             Intent intent = Broadcast.createConversationIntent(
                 Broadcast.CONVERSATION_NEW,

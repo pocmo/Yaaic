@@ -784,7 +784,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                                 if (query == null) {
                                     // Open a query if there's none yet
                                     query = new Query(nicknameWithoutPrefix);
-                                    server.addConversationl(query);
+                                    server.addConversation(query);
 
                                     Intent intent = Broadcast.createConversationIntent(
                                         Broadcast.CONVERSATION_NEW,

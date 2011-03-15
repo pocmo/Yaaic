@@ -141,14 +141,14 @@ public class ServerTest extends TestCase
 	{
 		Channel channel = new Channel("#yaaic");
 		
-		server.addConversationl(channel);
+		server.addConversation(channel);
 		assertEquals(2, server.getConversations().size());
 		assertNotNull(server.getConversation("#yaaic"));
 		
 		// ignore case
 		assertNotNull(server.getConversation("#yAAic"));
 		
-		server.addConversationl(new Query("pocmo"));
+		server.addConversation(new Query("pocmo"));
 		assertEquals(3, server.getConversations().size());
 		
 		// test order

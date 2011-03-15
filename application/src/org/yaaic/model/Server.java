@@ -319,7 +319,7 @@ public class Server
      * 
      * @param conversation The conversation to add
      */
-    public void addConversationl(Conversation conversation)
+    public void addConversation(Conversation conversation)
     {
         conversations.put(conversation.getName().toLowerCase(), conversation);
     }

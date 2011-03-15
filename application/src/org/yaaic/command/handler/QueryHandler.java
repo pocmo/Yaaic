@@ -60,7 +60,7 @@ public class QueryHandler extends BaseHandler
             }
 
             query = new Query(params[1]);
-            server.addConversationl(query);
+            server.addConversation(query);
 
             Intent intent = Broadcast.createConversationIntent(
                 Broadcast.CONVERSATION_NEW,
