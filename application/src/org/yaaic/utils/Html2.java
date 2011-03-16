@@ -59,6 +59,7 @@ import android.text.style.TextAppearanceSpan;
 import android.text.style.TypefaceSpan;
 import android.text.style.URLSpan;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 
 /**
  * This class processes HTML strings into displayable styled text.
@@ -90,7 +91,7 @@ public class Html2 {
      */
     public static interface TagHandler {
         /**
-         * This method will be called whenn the HTML parser encounters
+         * This method will be called when the HTML parser encounters
          * a tag that it does not know how to interpret.
          */
         public void handleTag(boolean opening, String tag,
@@ -467,6 +468,7 @@ class HtmlToSpannedConverter implements ContentHandler {
     }
 
     private void handleStartTag(String tag, Attributes attributes) {
+        Log.d("colors", "handleStartTag: "+tag);
         if (tag.equalsIgnoreCase("br")) {
             // We don't need to handle this. TagSoup will ensure that there's a </br> for each <br>
             // so we can safely emite the linebreaks when we handle the close tag.
@@ -518,6 +520,7 @@ class HtmlToSpannedConverter implements ContentHandler {
     }
 
     private void handleEndTag(String tag) {
+        Log.d("colors", "handleEndTag: "+tag);
         if (tag.equalsIgnoreCase("br")) {
             handleBr(mSpannableStringBuilder);
         } else if (tag.equalsIgnoreCase("p")) {

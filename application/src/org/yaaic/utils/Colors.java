@@ -3,6 +3,8 @@ package org.yaaic.utils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.util.Log;
+
 
 public class Colors {
     /*
@@ -80,6 +82,7 @@ public class Colors {
         }
 
         // Remove left over codes
+        Log.d("html", removeStyleAndColors(sb.toString()));
         return removeStyleAndColors(sb.toString());
     }
 

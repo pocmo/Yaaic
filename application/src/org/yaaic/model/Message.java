@@ -231,7 +231,9 @@ public class Message
             String nick      = hasSender() ? "<" + sender + "> " : "";
             String timestamp = settings.showTimestamp() ? renderTimeStamp(settings.use24hFormat()) : "";
             if (settings.showMircColors()) {
-                String htmltext = Colors.mircColorParser(TextUtils.htmlEncode(text));
+                // Tagsoup doesn't like when a html string begins with a <font> tag so we'll surround the html with <pre> tags.
+                String entext = "<pre>"+TextUtils.htmlEncode(text).replaceAll(" ", "&nbsp;")+"</pre>";
+                String htmltext = Colors.mircColorParser(entext);
                 Spanned colortext = Html2.fromHtml(htmltext);
 
                 canvas = new SpannableString(prefix + timestamp + nick);
@@ -257,7 +259,15 @@ public class Message
                 canvas.setSpan(new ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
             if (hasColor() && settings.showColors()) {
-                canvas.setSpan(new ForegroundColorSpan(color), 0, canvas.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                // Only apply the foreground color on areas that don't already have a foreground color.
+                ForegroundColorSpan[] spans = canvas.getSpans(0, canvas.length(), ForegroundColorSpan.class);
+                int start = 0;
+                for (int i = 0; i < spans.length; i++) {
+                    canvas.getSpanStart(spans[i]);
+                    canvas.setSpan(new ForegroundColorSpan(color), start, canvas.getSpanStart(spans[i]), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    start = canvas.getSpanEnd(spans[i]);
+                }
+                canvas.setSpan(new ForegroundColorSpan(color), start, canvas.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
 
