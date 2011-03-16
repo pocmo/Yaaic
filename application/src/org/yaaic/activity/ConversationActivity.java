@@ -395,7 +395,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         while(conversation.hasBufferedMessages()) {
             Message message = conversation.pollBufferedMessage();
 
-            if (adapter != null) {
+            if (adapter != null && message != null) {
                 adapter.addMessage(message);
                 int status;
 
