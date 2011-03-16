@@ -221,4 +221,17 @@ public class Settings
             Boolean.parseBoolean(resources.getString(R.string.default_notice_server_window))
         );
     }
+
+    /**
+     * Render messages with color and style codes.
+     *
+     * @return True if colors should be rendered, false if they should be removed.
+     */
+    public boolean showMircColors()
+    {
+        return preferences.getBoolean(
+            resources.getString(R.string.key_mirc_colors),
+            Boolean.parseBoolean(resources.getString(R.string.default_mirc_colors))
+        );
+    }
 }

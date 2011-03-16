@@ -665,7 +665,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                 if (!text.trim().startsWith("/")) {
                     if (conversation.getType() != Conversation.TYPE_SERVER) {
                         String nickname = binder.getService().getConnection(serverId).getNick();
-                        conversation.addMessage(new Message("<" + nickname + "> " + text));
+                        //conversation.addMessage(new Message("<" + nickname + "> " + text));
+                        conversation.addMessage(new Message(text, nickname));
                         binder.getService().getConnection(serverId).sendMessage(conversation.getName(), text);
                     } else {
                         Message message = new Message(getString(R.string.chat_only_form_channel));

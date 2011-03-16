@@ -75,6 +75,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:summary="@string/settings_noticeserverwindow_desc"
             android:key="@string/key_notice_server_window"
             android:defaultValue="@string/default_notice_server_window" />
+        <CheckBoxPreference
+            android:title="@string/settings_mirc_colors_title"
+            android:summary="@string/settings_mirc_colors_desc"
+            android:key="@string/key_mirc_colors"
+            android:defaultValue="@string/default_mirc_colors" />            
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/settings_highlight">

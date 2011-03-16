@@ -25,7 +25,6 @@ import java.util.Collection;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
-import org.jibble.pircbot.Colors;
 import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.User;
 import org.yaaic.R;
@@ -200,9 +199,6 @@ public class IRCConnection extends PircBot
     @Override
     protected void onAction(String sender, String login, String hostname, String target, String action)
     {
-        // Strip mIRC colors and formatting
-        action = Colors.removeFormattingAndColors(action);
-
         Message message = new Message(sender + " " + action);
         message.setIcon(R.drawable.action);
 
@@ -404,9 +400,6 @@ public class IRCConnection extends PircBot
     @Override
     protected void onMessage(String target, String sender, String login, String hostname, String text)
     {
-        // Strip mIRC colors and formatting
-        text = Colors.removeFormattingAndColors(text);
-
         Message message = new Message(text, sender);
 
         if (isMentioned(text)) {
@@ -482,9 +475,6 @@ public class IRCConnection extends PircBot
     @Override
     protected void onNotice(String sourceNick, String sourceLogin, String sourceHostname, String target, String notice)
     {
-        // Strip mIRC colors and formatting
-        notice = Colors.removeFormattingAndColors(notice);
-
         // Post notice to currently selected conversation
         Conversation conversation;
 
@@ -571,9 +561,6 @@ public class IRCConnection extends PircBot
     @Override
     protected void onPrivateMessage(String sender, String login, String hostname, String text)
     {
-        // Strip mIRC colors and formatting
-        text = Colors.removeFormattingAndColors(text);
-
         Message message = new Message("<" + sender + "> " + text);
 
         if (isMentioned(text)) {
@@ -673,9 +660,6 @@ public class IRCConnection extends PircBot
     @Override
     public void onTopic(String target, String topic, String setBy, long date, boolean changed)
     {
-        // strip mIRC colors
-        topic = Colors.removeFormattingAndColors(topic);
-
         if (changed) {
             Message message = new Message(service.getString(R.string.message_topic_set, setBy, topic));
             message.setColor(Message.COLOR_YELLOW);

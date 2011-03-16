@@ -22,6 +22,7 @@ package org.yaaic.model;
 
 import java.util.Date;
 
+import org.yaaic.utils.Colors;
 import org.yaaic.utils.Html2;
 
 import android.content.Context;
@@ -229,10 +230,16 @@ public class Message
             String prefix    = hasIcon() && settings.showIcons() ? "  " : "";
             String nick      = hasSender() ? "<" + sender + "> " : "";
             String timestamp = settings.showTimestamp() ? renderTimeStamp(settings.use24hFormat()) : "";
-            Spanned colortext = Html2.fromHtml(text);
+            if (settings.showMircColors()) {
+                String htmltext = Colors.mircColorParser(TextUtils.htmlEncode(text));
+                Spanned colortext = Html2.fromHtml(htmltext);
 
-            canvas = new SpannableString(prefix + timestamp + nick);
-            canvas = new SpannableString(TextUtils.concat(canvas, colortext));
+                canvas = new SpannableString(prefix + timestamp + nick);
+                canvas = new SpannableString(TextUtils.concat(canvas, colortext));
+            }
+            else {
+                canvas = new SpannableString(prefix + timestamp + nick + Colors.removeStyleAndColors(text));
+            }
 
 
             if (hasSender()) {

@@ -196,4 +196,6 @@
     <string name="settings_joinpartquit_desc">Show join, part and quit messages in channels</string>
     <string name="settings_noticeserverwindow_title">Notices server window</string>
     <string name="settings_noticeserverwindow_desc">Show notices in server window</string>
+    <string name="settings_mirc_colors_title">Show colors</string>
+    <string name="settings_mirc_colors_desc">Show colors in messages</string>
 </resources>
