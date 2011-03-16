@@ -20,8 +20,10 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
 
+import org.ccil.cowan.tagsoup.HTMLModels;
 import org.ccil.cowan.tagsoup.HTMLSchema;
 import org.ccil.cowan.tagsoup.Parser;
+import org.ccil.cowan.tagsoup.Schema;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
@@ -96,6 +98,7 @@ public class Html2 {
     }
 
     private Html2() { }
+    private static HTMLSchema schema = new HTMLSchema();
 
     /**
      * Returns displayable styled text from the provided HTML string.
@@ -115,7 +118,7 @@ public class Html2 {
      * necessary.
      */
     private static class HtmlParser {
-        private static final HTMLSchema schema = new HTMLSchema();
+        private final static HTMLSchema schema = new HTMLSchema();
     }
 
     /**
@@ -130,8 +133,10 @@ public class Html2 {
     public static Spanned fromHtml(String source, ImageGetter imageGetter,
         TagHandler tagHandler) {
         Parser parser = new Parser();
+        // Make the font tag restartable
+        schema.elementType("font", Schema.M_PCDATA|HTMLModels.M_INLINE, HTMLModels.M_INLINE|HTMLModels.M_NOLINK, Schema.F_RESTART);
         try {
-            parser.setProperty(Parser.schemaProperty, HtmlParser.schema);
+            parser.setProperty(Parser.schemaProperty, schema);
         } catch (org.xml.sax.SAXNotRecognizedException e) {
             // Should not happen.
             throw new RuntimeException(e);
@@ -408,11 +413,11 @@ class HtmlToSpannedConverter implements ContentHandler {
         1.5f, 1.4f, 1.3f, 1.2f, 1.1f, 1f,
     };
 
-    private String mSource;
-    private XMLReader mReader;
-    private SpannableStringBuilder mSpannableStringBuilder;
-    private Html2.ImageGetter mImageGetter;
-    private Html2.TagHandler mTagHandler;
+    private final String mSource;
+    private final XMLReader mReader;
+    private final SpannableStringBuilder mSpannableStringBuilder;
+    private final Html2.ImageGetter mImageGetter;
+    private final Html2.TagHandler mTagHandler;
 
     public HtmlToSpannedConverter(
         String source, Html2.ImageGetter imageGetter, Html2.TagHandler tagHandler,
@@ -867,7 +872,7 @@ class HtmlToSpannedConverter implements ContentHandler {
     }
 
     private static class Header {
-        private int mLevel;
+        private final int mLevel;
 
         public Header(int level) {
             mLevel = level;
