@@ -54,7 +54,7 @@ public class MircColors {
      * @param text  A string with mIRC color codes.
      * @return      A SpannableString with all the styles applied.
      */
-    public static SpannableString toSpannable(String text) {
+    public static SpannableString toSpannable(SpannableString text) {
         SpannableStringBuilder ssb = new SpannableStringBuilder(text);
         replaceControlCodes(boldPattern.matcher(ssb), ssb, new StyleSpan(Typeface.BOLD));
         replaceControlCodes(underlinePattern.matcher(ssb), ssb, new UnderlineSpan());
@@ -94,6 +94,17 @@ public class MircColors {
         }
         // Remove left over codes
         return new SpannableString(removeStyleAndColors(ssb));
+    }
+
+    /**
+     * Converts a string with mIRC style and color codes to a SpannableString with
+     * all the style and color codes applied.
+     * 
+     * @param text  A string with mIRC color codes.
+     * @return      A SpannableString with all the styles applied.
+     */
+    public static SpannableString toSpannable(String text) {
+        return toSpannable(new SpannableString(text));
     }
 
     private static void replaceControlCodes(Matcher m, SpannableStringBuilder ssb, CharacterStyle style) {

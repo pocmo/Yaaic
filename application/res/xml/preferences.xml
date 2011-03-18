@@ -79,7 +79,12 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:title="@string/settings_mirc_colors_title"
             android:summary="@string/settings_mirc_colors_desc"
             android:key="@string/key_mirc_colors"
-            android:defaultValue="@string/default_mirc_colors" />            
+            android:defaultValue="@string/default_mirc_colors" />
+        <CheckBoxPreference
+            android:title="@string/settings_graphical_smilies_title"
+            android:summary="@string/settings_graphical_smilies_desc"
+            android:key="@string/key_graphical_smilies"
+            android:defaultValue="@string/default_graphical_smilies" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/settings_highlight">

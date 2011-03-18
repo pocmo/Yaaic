@@ -23,6 +23,7 @@ package org.yaaic.model;
 import java.util.Date;
 
 import org.yaaic.utils.MircColors;
+import org.yaaic.utils.Smilies;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -228,14 +229,15 @@ public class Message
             String prefix    = hasIcon() && settings.showIcons() ? "  " : "";
             String nick      = hasSender() ? "<" + sender + "> " : "";
             String timestamp = settings.showTimestamp() ? renderTimeStamp(settings.use24hFormat()) : "";
+            canvas = new SpannableString(prefix + timestamp + nick);
+            SpannableString renderedText = new SpannableString(text);
             if (settings.showMircColors()) {
-                canvas = new SpannableString(prefix + timestamp + nick);
-                canvas = new SpannableString(TextUtils.concat(canvas, MircColors.toSpannable(text)));
+                renderedText = MircColors.toSpannable(text);
             }
-            else {
-                canvas = new SpannableString(prefix + timestamp + nick + MircColors.removeStyleAndColors(text));
+            if (settings.showGraphicalSmilies()) {
+                renderedText = Smilies.toSpannable(renderedText, context);
             }
-
+            canvas = new SpannableString(TextUtils.concat(canvas, renderedText));
             if (hasSender()) {
                 int start = (prefix + timestamp).length() + 1;
                 int end = start + sender.length();

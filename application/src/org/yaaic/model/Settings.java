@@ -234,4 +234,17 @@ public class Settings
             Boolean.parseBoolean(resources.getString(R.string.default_mirc_colors))
         );
     }
+
+    /**
+     * Render messages with graphical smilies.
+     *
+     * @return True if text smilies should be rendered as graphical smilies, false otherwise.
+     */
+    public boolean showGraphicalSmilies()
+    {
+        return preferences.getBoolean(
+            resources.getString(R.string.key_graphical_smilies),
+            Boolean.parseBoolean(resources.getString(R.string.default_graphical_smilies))
+        );
+    }
 }
