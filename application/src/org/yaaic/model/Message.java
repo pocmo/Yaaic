@@ -29,6 +29,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 import android.widget.TextView;
@@ -228,7 +229,8 @@ public class Message
             String nick      = hasSender() ? "<" + sender + "> " : "";
             String timestamp = settings.showTimestamp() ? renderTimeStamp(settings.use24hFormat()) : "";
             if (settings.showMircColors()) {
-                canvas = new SpannableString(prefix + timestamp + nick + MircColors.toSpannable(text));
+                canvas = new SpannableString(prefix + timestamp + nick);
+                canvas = new SpannableString(TextUtils.concat(canvas, MircColors.toSpannable(text)));
             }
             else {
                 canvas = new SpannableString(prefix + timestamp + nick + MircColors.removeStyleAndColors(text));
@@ -253,7 +255,6 @@ public class Message
                 ForegroundColorSpan[] spans = canvas.getSpans(0, canvas.length(), ForegroundColorSpan.class);
                 int start = 0;
                 for (int i = 0; i < spans.length; i++) {
-                    canvas.getSpanStart(spans[i]);
                     canvas.setSpan(new ForegroundColorSpan(color), start, canvas.getSpanStart(spans[i]), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     start = canvas.getSpanEnd(spans[i]);
                 }
