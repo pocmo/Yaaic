@@ -23,15 +23,12 @@ package org.yaaic.model;
 import java.util.Date;
 
 import org.yaaic.utils.Colors;
-import org.yaaic.utils.Html2;
 
 import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 import android.widget.TextView;
@@ -231,18 +228,11 @@ public class Message
             String nick      = hasSender() ? "<" + sender + "> " : "";
             String timestamp = settings.showTimestamp() ? renderTimeStamp(settings.use24hFormat()) : "";
             if (settings.showMircColors()) {
-                // Tagsoup doesn't like when a html string begins with a <font> tag so we'll surround the html with <pre> tags.
-                String entext = "<pre>"+TextUtils.htmlEncode(text).replaceAll(" ", "&nbsp;")+"</pre>";
-                String htmltext = Colors.mircColorParser(entext);
-                Spanned colortext = Html2.fromHtml(htmltext);
-
-                canvas = new SpannableString(prefix + timestamp + nick);
-                canvas = new SpannableString(TextUtils.concat(canvas, colortext));
+                canvas = new SpannableString(prefix + timestamp + nick + Colors.mircColorParserSpannable(text));
             }
             else {
                 canvas = new SpannableString(prefix + timestamp + nick + Colors.removeStyleAndColors(text));
             }
-
 
             if (hasSender()) {
                 int start = (prefix + timestamp).length() + 1;
@@ -259,7 +249,7 @@ public class Message
                 canvas.setSpan(new ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
             if (hasColor() && settings.showColors()) {
-                // Only apply the foreground color on areas that don't already have a foreground color.
+                // Only apply the foreground color to areas that don't already have a foreground color.
                 ForegroundColorSpan[] spans = canvas.getSpans(0, canvas.length(), ForegroundColorSpan.class);
                 int start = 0;
                 for (int i = 0; i < spans.length; i++) {
