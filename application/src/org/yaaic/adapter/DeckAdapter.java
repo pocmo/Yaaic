@@ -212,7 +212,7 @@ public class DeckAdapter extends BaseAdapter
 
         list.setDivider(null);
         list.setLayoutParams(new Gallery.LayoutParams(
-            new Double(parent.getWidth()*0.85).intValue(),
+            parent.getWidth()*85/100,
             parent.getHeight()
         ));
 

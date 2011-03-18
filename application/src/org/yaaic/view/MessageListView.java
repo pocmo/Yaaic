@@ -95,7 +95,7 @@ public class MessageListView extends ListView
             parentHeight = parent.getHeight();
 
             this.setLayoutParams(new Gallery.LayoutParams(
-                new Double(parentWidth*0.85).intValue(),
+                parentWidth*85/100,
                 parentHeight
             ));
         }
