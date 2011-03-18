@@ -15,7 +15,7 @@ import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 
 
-public class Colors {
+public class MircColors {
     /*
      * Colors from the "Classic" theme in mIRC.
      */
@@ -45,7 +45,7 @@ public class Colors {
     private static final Pattern colorPattern = Pattern.compile("\\x03(\\d{1,2})(?:,(\\d{1,2}))?([^\\x03\\x0F]*)(\\x03|\\x0F)?");
     private static final Pattern cleanupPattern = Pattern.compile("(?:\\x02|\\x1F|\\x1D|\\x0F|\\x16|\\x03(?:(?:\\d{1,2})(?:,\\d{1,2})?)?)");
 
-    private Colors() {}
+    private MircColors() {}
 
     /**
      * Converts a string with mIRC style and color codes to a SpannableString with
@@ -54,7 +54,7 @@ public class Colors {
      * @param text  A string with mIRC color codes.
      * @return      A SpannableString with all the styles applied.
      */
-    public static SpannableString mircColorParserSpannable(String text) {
+    public static SpannableString toSpannable(String text) {
         SpannableStringBuilder ssb = new SpannableStringBuilder(text);
         replaceControlCodes(boldPattern.matcher(ssb), ssb, new StyleSpan(Typeface.BOLD));
         replaceControlCodes(underlinePattern.matcher(ssb), ssb, new UnderlineSpan());

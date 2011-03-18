@@ -22,7 +22,7 @@ package org.yaaic.model;
 
 import java.util.Date;
 
-import org.yaaic.utils.Colors;
+import org.yaaic.utils.MircColors;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -228,10 +228,10 @@ public class Message
             String nick      = hasSender() ? "<" + sender + "> " : "";
             String timestamp = settings.showTimestamp() ? renderTimeStamp(settings.use24hFormat()) : "";
             if (settings.showMircColors()) {
-                canvas = new SpannableString(prefix + timestamp + nick + Colors.mircColorParserSpannable(text));
+                canvas = new SpannableString(prefix + timestamp + nick + MircColors.toSpannable(text));
             }
             else {
-                canvas = new SpannableString(prefix + timestamp + nick + Colors.removeStyleAndColors(text));
+                canvas = new SpannableString(prefix + timestamp + nick + MircColors.removeStyleAndColors(text));
             }
 
             if (hasSender()) {
