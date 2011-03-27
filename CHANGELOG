@@ -1,5 +1,32 @@
 --------------------------------------------------------------------------------
-Yaaic 0.6.1 - 2010-12-17 - 15 commits, files changed
+Yaaic 0.7 - 2011-03-27 - 79 commits, 144 files changed
+--------------------------------------------------------------------------------
+ * New setting: Play notification sound on highlight.
+ * Updated Robotium to 2.0.2
+ * All current scenario tests are now running
+ * Ident: Added "-" to the list of allowed characters
+ * Fixed voice recognition (Only add top match to the text input)
+ * Code cleanup and eclipse code formatter settings
+ * New translation: Italian (Thanks to Gianmarco Laggia!)
+ * Minimum width defined for some buttons that may become difficult to touch
+ * A lot of code cleanup (mostly formatting)
+ * New user action view and new actions: reply, query
+ * Fixed typo: "joines" -> "joins"
+ * Fixed some issues in the IRC parser for bouncers. Especially regarding
+   Irsii proxy.
+ * Tablet support. Yaaic will scale to different screen resolutions.
+ * Tweak some nick colors for readability on Yaaic's dark background. (kugel-)
+ * Reduce sensitivity of channel switcher (kugel-)
+ * Always open last activity and do not start with server list (liato & kugel-)
+ * Resolved a lot of connection issues - especially with bouncers.
+ * Some improvements for accessibility (but still a lot of things to do)
+ * All dimensions and fontsizes now use screen independent sizes and should
+   therefore look better on differen screen sizes.
+ * It's now possible to hide quit messages as well.
+ * New Setting: Show notices in server window
+
+--------------------------------------------------------------------------------
+Yaaic 0.6.1 - 2010-12-17 - 15 commits, 109 files changed
 --------------------------------------------------------------------------------
  * Fixed a bug in the french and spanish translation that may cause force closes
    on connecting to a server.
