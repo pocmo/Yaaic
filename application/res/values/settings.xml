@@ -40,7 +40,7 @@
     <string name="default_notice_server_window">false</string>
     
     <string name="key_mirc_colors">mirc_colors</string>
-    <string name="default_mirc_colors">true</string>
+    <string name="default_mirc_colors">false</string>
 
     <string name="key_graphical_smilies">graphical_smilies</string>
     <string name="default_graphical_smilies">false</string>
