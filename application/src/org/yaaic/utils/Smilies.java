@@ -33,9 +33,14 @@ import android.text.SpannableString;
 import android.text.style.ImageSpan;
 import android.util.Log;
 
-public class Smilies {
-    public static final HashMap<String, Integer> mappings = new HashMap<String, Integer>();
-    private Smilies() {}
+/**
+ * Class for handling graphical smilies in text messages.
+ *
+ * @author Thomas Martitz
+ */
+public abstract class Smilies
+{
+    private static final HashMap<String, Integer> mappings = new HashMap<String, Integer>();
 
     /**
      * Converts all smilies in a string to graphical smilies.
@@ -43,7 +48,8 @@ public class Smilies {
      * @param text  A string with smilies.
      * @return      A SpannableString with graphical smilies.
      */
-    public static SpannableString toSpannable(SpannableString text, Context context) {
+    public static SpannableString toSpannable(SpannableString text, Context context)
+    {
         mappings.put(">:o", R.drawable.smiley_yell);
         mappings.put(">:-o", R.drawable.smiley_yell);
         mappings.put("O:)", R.drawable.smiley_innocent);
@@ -85,14 +91,17 @@ public class Smilies {
 
         StringBuilder regex = new StringBuilder("(");
         String[] smilies = mappings.keySet().toArray(new String[mappings.size()]);
+
         for (int i = 0; i < smilies.length; i++) {
             regex.append(Pattern.quote(smilies[i]));
             regex.append("|");
         }
+
         regex.deleteCharAt(regex.length()-1);
         regex.append(")");
         Pattern smiliematcher = Pattern.compile(regex.toString());
         Matcher m = smiliematcher.matcher(text);
+
         while (m.find()) {
             Log.d("Smilies", "SID: "+mappings.get(m.group(1)).intValue());
             Log.d("Smilies", "OID: "+R.drawable.smiley_smile);
@@ -101,6 +110,7 @@ public class Smilies {
             ImageSpan span = new ImageSpan(smilie, ImageSpan.ALIGN_BOTTOM);
             text.setSpan(span, m.start(), m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
+
         return text;
     }
 
@@ -110,7 +120,8 @@ public class Smilies {
      * @param text  A string with smilies.
      * @return      A SpannableString with graphical smilies.
      */
-    public static SpannableString toSpannable(String text, Context context) {
+    public static SpannableString toSpannable(String text, Context context)
+    {
         return toSpannable(new SpannableString(text), context);
     }
 }

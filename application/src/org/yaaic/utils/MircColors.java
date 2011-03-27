@@ -34,11 +34,17 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 
-public class MircColors {
+/**
+ * Class for parsing and handling mIRC colors in text messages.
+ * 
+ * @author Thomas Martitz
+ */
+public abstract class MircColors
+{
     /*
      * Colors from the "Classic" theme in mIRC.
      */
-    public static final int[] colors = {
+    private static final int[] colors = {
         0xFFFFFF,  // White
         0x000000,  // Black
         0x00007F,  // Blue (navy)
@@ -64,8 +70,6 @@ public class MircColors {
     private static final Pattern colorPattern = Pattern.compile("\\x03(\\d{1,2})(?:,(\\d{1,2}))?([^\\x03\\x0F]*)(\\x03|\\x0F)?");
     private static final Pattern cleanupPattern = Pattern.compile("(?:\\x02|\\x1F|\\x1D|\\x0F|\\x16|\\x03(?:(?:\\d{1,2})(?:,\\d{1,2})?)?)");
 
-    private MircColors() {}
-
     /**
      * Converts a string with mIRC style and color codes to a SpannableString with
      * all the style and color codes applied.
@@ -73,7 +77,8 @@ public class MircColors {
      * @param text  A string with mIRC color codes.
      * @return      A SpannableString with all the styles applied.
      */
-    public static SpannableString toSpannable(SpannableString text) {
+    public static SpannableString toSpannable(SpannableString text)
+    {
         SpannableStringBuilder ssb = new SpannableStringBuilder(text);
         replaceControlCodes(boldPattern.matcher(ssb), ssb, new StyleSpan(Typeface.BOLD));
         replaceControlCodes(underlinePattern.matcher(ssb), ssb, new UnderlineSpan());
@@ -91,15 +96,18 @@ public class MircColors {
         }
 
         Matcher m = colorPattern.matcher(ssb);
+
         while (m.find()) {
             int start = m.start();
             int end = m.end();
 
             Integer color = Integer.parseInt(m.group(1));
             int codelength = m.group(1).length()+1;
+
             if (color <= 15 && color >= 0) {
                 ssb.setSpan(new ForegroundColorSpan(colors[color] | 0xFF000000), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
+
             if (m.group(2) != null) {
                 color = Integer.parseInt(m.group(2));
                 if (color <= 15 && color >= 0) {
@@ -107,6 +115,7 @@ public class MircColors {
                 }
                 codelength = codelength + m.group(2).length() + 1;
             }
+
             ssb.delete(start, start+codelength);
             // Reset the matcher with the modified text so that the ending color code character can be matched again.
             m.reset(ssb);
@@ -122,12 +131,22 @@ public class MircColors {
      * @param text  A string with mIRC color codes.
      * @return      A SpannableString with all the styles applied.
      */
-    public static SpannableString toSpannable(String text) {
+    public static SpannableString toSpannable(String text)
+    {
         return toSpannable(new SpannableString(text));
     }
 
-    private static void replaceControlCodes(Matcher m, SpannableStringBuilder ssb, CharacterStyle style) {
+    /**
+     * Replace the control codes
+     * 
+     * @param m
+     * @param ssb
+     * @param style
+     */
+    private static void replaceControlCodes(Matcher m, SpannableStringBuilder ssb, CharacterStyle style)
+    {
         ArrayList<Integer> toremove = new ArrayList<Integer>();
+
         while (m.find()) {
             toremove.add(0, m.start());
             // Remove the ending control character unless it's \x0F
@@ -136,6 +155,7 @@ public class MircColors {
             }
             ssb.setSpan(style, m.start(), m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
+
         for (Integer i : toremove) {
             ssb.delete(i, i+1);
         }
@@ -147,7 +167,8 @@ public class MircColors {
      * @param text  A message with mirc colors and styles.
      * @return      The same message with all the colors and styles removed.
      */
-    public static String removeStyleAndColors(String text) {
+    public static String removeStyleAndColors(String text)
+    {
         return cleanupPattern.matcher(text).replaceAll("");
     }
 
@@ -157,7 +178,8 @@ public class MircColors {
      * @param text  A message with mirc colors and styles.
      * @return      The same message with all the colors and styles removed.
      */
-    public static SpannableStringBuilder removeStyleAndColors(SpannableStringBuilder text) {
+    public static SpannableStringBuilder removeStyleAndColors(SpannableStringBuilder text)
+    {
         ArrayList<int[]> toremove = new ArrayList<int[]>();
         Matcher m = cleanupPattern.matcher(text);
         while (m.find()) {
