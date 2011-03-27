@@ -1,3 +1,23 @@
+/*
+Yaaic - Yet Another Android IRC Client
+
+Copyright 2009-2011 Sebastian Kaspari
+
+This file is part of Yaaic.
+
+Yaaic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Yaaic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.yaaic.utils;
 
 import java.util.HashMap;
@@ -12,7 +32,6 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
 import android.util.Log;
-
 
 public class Smilies {
     public static final HashMap<String, Integer> mappings = new HashMap<String, Integer>();
@@ -59,8 +78,8 @@ public class Smilies {
         mappings.put(":-!", R.drawable.smiley_foot_in_mouth);
         mappings.put(":'(", R.drawable.smiley_cry);
         mappings.put(":'-(", R.drawable.smiley_cry);
-        mappings.put(":´(", R.drawable.smiley_cry);
-        mappings.put(":´-(", R.drawable.smiley_cry);
+        mappings.put(":ï¿½(", R.drawable.smiley_cry);
+        mappings.put(":ï¿½-(", R.drawable.smiley_cry);
         mappings.put(":X", R.drawable.smiley_sealed);
         mappings.put(":-X", R.drawable.smiley_sealed);
 
