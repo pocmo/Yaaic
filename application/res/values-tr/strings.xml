@@ -170,7 +170,7 @@
     <string name="settings_colors_title">Renkleri göster</string>
     <string name="settings_colors_desc">Özel etkinlikleri göstermek için renkli göster</string>
     <string name="settings_colors_nick_title">Rumuzları renklendir</string>
-    <string name="settings_colors_nick_desc">Rumuzları farklı renklerde göster/string>
+    <string name="settings_colors_nick_desc">Rumuzları farklı renklerde göster</string>
     <string name="settings_timestamp_title">Zaman damgasını göster</string>
     <string name="settings_timestamp_desc">Bir zaman damgasında ön isimlerle tüm mesajlar</string>
     <string name="settings_24h_title">24 saat biçimi</string>
