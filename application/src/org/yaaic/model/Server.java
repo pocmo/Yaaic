@@ -39,6 +39,7 @@ public class Server
     private int port;
     private String password;
     private String charset;
+    private boolean autoConnect = false;
     private boolean useSSL = false;
     private Identity identity;
 
@@ -196,6 +197,24 @@ public class Server
     public String getCharset()
     {
         return charset;
+    }
+
+    /**
+     * Set if this connections will automatically connect at startup
+     */
+    public void setautoConnect(boolean autoConnect)
+    {
+        this.autoConnect = autoConnect;
+    }
+
+    /**
+     * Does this connection use SSL?
+     * 
+     * @return true if SSL should be used, false otherwise
+     */
+    public boolean autoConnect()
+    {
+        return autoConnect;
     }
 
     /**

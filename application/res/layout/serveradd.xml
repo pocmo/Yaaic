@@ -83,12 +83,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:minEms="10"
             android:maxEms="10" />
         <CheckBox
-            android:id="@+id/autoconnect"
-            android:contentDescription="@string/server_port"
+            android:id="@+id/autoConnect"
+            android:contentDescription="@string/server_autoConnect"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/server_port"
-            android:visibility="gone" />
+            android:text="@string/server_autoConnect" />
         <CheckBox
             android:id="@+id/useSSL"
             android:contentDescription="@string/server_useSSL"
