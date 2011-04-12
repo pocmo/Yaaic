@@ -468,6 +468,11 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                 return;
             }
 
+            // Service is not connected or initialized yet - See #54
+            if (binder == null || binder.getService() == null || binder.getService().getSettings() == null) {
+                return;
+            }
+
             if (!binder.getService().getSettings().isReconnectEnabled()) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage(getResources().getString(R.string.reconnect_after_disconnect, server.getTitle()))
