@@ -31,6 +31,7 @@ import org.yaaic.model.Status;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -66,7 +67,7 @@ public class Database extends SQLiteOpenHelper
             + ServerConstants.HOST + " TEXT NOT NULL, "
             + ServerConstants.PORT + " INTEGER, "
             + ServerConstants.PASSWORD + " TEXT, "
-            + ServerConstants.AUTOCONNECT + " BOOLEAN, " // XXX: Does SQLLite support boolean?
+            + ServerConstants.AUTOCONNECT + " BOOLEAN, "
             + ServerConstants.USE_SSL + " BOOLEAN, "
             + ServerConstants.CHARSET + " TEXT, "
             + ServerConstants.IDENTITY + " INTEGER"
@@ -259,7 +260,7 @@ public class Database extends SQLiteOpenHelper
         Cursor cursor = this.getReadableDatabase().query(
             CommandConstants.TABLE_NAME,
             CommandConstants.ALL,
-            CommandConstants.SERVER + "=" + serverId,
+            CommandConstants.SERVER + " = " + serverId,
             null,
             null,
             null,
@@ -348,7 +349,7 @@ public class Database extends SQLiteOpenHelper
         Cursor cursor = this.getReadableDatabase().query(
             ServerConstants.TABLE_NAME,
             ServerConstants.ALL,
-            ServerConstants._ID + "=" + serverId,
+            ServerConstants._ID + " = " + serverId,
             null,
             null,
             null,
@@ -377,7 +378,7 @@ public class Database extends SQLiteOpenHelper
         Cursor cursor = this.getReadableDatabase().query(
             ServerConstants.TABLE_NAME,
             ServerConstants.ALL,
-            ServerConstants.TITLE + " = '" + title + "'",
+            ServerConstants.TITLE + " = " + DatabaseUtils.sqlEscapeString(title),
             null,
             null,
             null,
@@ -462,7 +463,7 @@ public class Database extends SQLiteOpenHelper
         Cursor cursor = this.getReadableDatabase().query(
             ChannelConstants.TABLE_NAME,
             ChannelConstants.ALL,
-            ChannelConstants.SERVER + "=" + serverId,
+            ChannelConstants.SERVER + " = " + serverId,
             null,
             null,
             null,
@@ -507,6 +508,7 @@ public class Database extends SQLiteOpenHelper
         deleteAliases(identityId);
 
         ContentValues values = new ContentValues();
+
         for (String alias : aliases) {
             values.clear();
             values.put(AliasConstants.ALIAS, alias);
@@ -642,7 +644,7 @@ public class Database extends SQLiteOpenHelper
         Cursor cursor = this.getReadableDatabase().query(
             ServerConstants.TABLE_NAME,
             ServerConstants.ALL,
-            ServerConstants._ID + "=" + serverId,
+            ServerConstants._ID + " = " + serverId,
             null,
             null,
             null,
