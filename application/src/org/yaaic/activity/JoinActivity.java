@@ -49,6 +49,8 @@ public class JoinActivity extends Activity implements OnClickListener
         setContentView(R.layout.join);
 
         ((Button) findViewById(R.id.join)).setOnClickListener(this);
+
+        ((EditText) findViewById(R.id.channel)).setSelection(1);
     }
 
     /**
