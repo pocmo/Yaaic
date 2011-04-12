@@ -37,7 +37,7 @@ import android.text.style.UnderlineSpan;
 /**
  * Class for parsing and handling mIRC colors in text messages.
  * 
- * @author Thomas Martitz
+ * @author Liato
  */
 public abstract class MircColors
 {

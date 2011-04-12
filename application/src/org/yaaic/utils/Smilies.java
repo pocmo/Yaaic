@@ -36,7 +36,7 @@ import android.util.Log;
 /**
  * Class for handling graphical smilies in text messages.
  *
- * @author Thomas Martitz
+ * @author Liato
  */
 public abstract class Smilies
 {
