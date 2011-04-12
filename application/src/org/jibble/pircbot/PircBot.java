@@ -179,6 +179,7 @@ public abstract class PircBot implements ReplyConstants {
 
         InputStreamReader inputStreamReader = null;
         OutputStreamWriter outputStreamWriter = null;
+
         if (getEncoding() != null) {
             // Assume the specified encoding is valid for this JVM.
             inputStreamReader = new InputStreamReader(_socket.getInputStream(), getEncoding());
@@ -233,7 +234,6 @@ public abstract class PircBot implements ReplyConstants {
         }
 
         this.onConnect();
-
     }
 
 
@@ -880,10 +880,10 @@ public abstract class PircBot implements ReplyConstants {
                             if (_autoNickChange) {
                                 List<String> aliases = getAliases();
                                 _autoNickTries++;
-                                String nick = ((_autoNickTries - 1) <= aliases.size()) ?
+                                _nick = ((_autoNickTries - 1) <= aliases.size()) ?
                                     aliases.get(_autoNickTries - 2) :
                                         getName() + (_autoNickTries - aliases.size());
-                                    this.sendRawLineViaQueue("NICK " + nick);
+                                    this.sendRawLineViaQueue("NICK " + _nick);
                             }
                             else {
                                 _socket.close();
