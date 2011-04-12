@@ -160,8 +160,12 @@ public class IRCConnection extends PircBot
     /**
      * On register
      */
+    @Override
     public void onRegister()
     {
+        // Call parent method to ensure "register" status is tracked
+        super.onRegister();
+
         // execute commands
         CommandParser parser = CommandParser.getInstance();
 
@@ -1047,6 +1051,9 @@ public class IRCConnection extends PircBot
     @Override
     public void onDisconnect()
     {
+        // Call parent method to ensure "register" status is tracked
+        super.onDisconnect();
+
         if (service.getSettings().isReconnectEnabled() && server.getStatus() != Status.DISCONNECTED) {
             setAutojoinChannels(server.getCurrentChannelNames());
 

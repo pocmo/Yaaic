@@ -139,6 +139,7 @@ public abstract class PircBot implements ReplyConstants {
      * @throws NickAlreadyInUseException if our nick is already in use on the server.
      */
     public final synchronized void connect(String hostname, int port, String password) throws IOException, IrcException, NickAlreadyInUseException {
+        _registered = false;
 
         _server = hostname;
         _port = port;
@@ -876,7 +877,7 @@ public abstract class PircBot implements ReplyConstants {
                         String errorStr = token;
                         String response = line.substring(line.indexOf(errorStr, senderInfo.length()) + 4, line.length());
 
-                        if (code == 433) {
+                        if (code == 433 && !_registered) {
                             if (_autoNickChange) {
                                 List<String> aliases = getAliases();
                                 _autoNickTries++;
@@ -1068,6 +1069,17 @@ public abstract class PircBot implements ReplyConstants {
      */
     protected void onConnect() {}
 
+    /**
+     * This method is called once the client is registered with the server -
+     * meaning the client recieved server code 004.
+     *
+     * @since Yaaic
+     */
+    protected void onRegister()
+    {
+        _registered = true;
+    }
+
 
     /**
      * This method carries out the actions to be performed when the PircBot
@@ -1087,7 +1099,10 @@ public abstract class PircBot implements ReplyConstants {
      * The implementation of this method in the PircBot abstract class
      * performs no actions and may be overridden as required.
      */
-    protected void onDisconnect() {}
+    protected void onDisconnect()
+    {
+        _registered = false;
+    }
 
 
     /**
@@ -2460,6 +2475,18 @@ public abstract class PircBot implements ReplyConstants {
         return _inputThread != null && _inputThread.isConnected();
     }
 
+    /**
+     * Returns wether or not the client is registered with the server.
+     *
+     * @since Yaaic
+     *
+     * @return True if server code 004 has been received. False otherwise.
+     */
+    public final synchronized boolean isRegistered()
+    {
+        return _registered;
+    }
+
 
     /**
      * Sets the number of milliseconds to delay between consecutive
@@ -3082,6 +3109,7 @@ public abstract class PircBot implements ReplyConstants {
     private boolean _autoNickChange = false;
     private int _autoNickTries = 1;
     private boolean _useSSL = false;
+    private boolean _registered = false;
 
     private String _name = "PircBot";
     private final List<String> _aliases = new ArrayList<String>();
