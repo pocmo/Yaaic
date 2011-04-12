@@ -132,6 +132,12 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
         serverId = getIntent().getExtras().getInt("serverId");
         server = Yaaic.getInstance().getServerById(serverId);
+
+        // Finish activity if server does not exist anymore - See #55
+        if (server == null) {
+            this.finish();
+        }
+
         setTitle("Yaaic - " + server.getTitle());
 
         setContentView(R.layout.conversations);
