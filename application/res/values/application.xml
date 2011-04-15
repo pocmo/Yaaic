@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Yaaic</string>
     <string name="app_full_name">Yet Another Android IRC Client</string>
-    <string name="app_version">0.7</string>
+    <string name="app_version">0.8</string>
     <string name="app_homepage">http://www.yaaic.org</string>
     <string name="app_copyright">(C) 2009-2011 Sebastian Kaspari</string>
     
