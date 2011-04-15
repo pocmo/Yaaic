@@ -32,6 +32,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ListView;
+import android.widget.TextView;
 
 /**
  * The adapter for the "DeckView"
@@ -187,6 +188,15 @@ public class DeckAdapter extends BaseAdapter
     public View getView(int position, View convertView, ViewGroup parent)
     {
         Conversation conversation = getItem(position);
+
+        // Market stack traces prove that sometimes we get a null converstion
+        // because the collection changed while a view is requested for an
+        // item that does not exist anymore... so we just need to reply with
+        // some kind of view here.
+        if (conversation == null) {
+            return new TextView(parent.getContext());
+        }
+
         return renderConversation(conversation, parent);
     }
 
@@ -203,6 +213,7 @@ public class DeckAdapter extends BaseAdapter
         list.setOnItemClickListener(MessageClickListener.getInstance());
 
         MessageListAdapter adapter = conversation.getMessageListAdapter();
+
         if (adapter == null) {
             adapter = new MessageListAdapter(conversation, parent.getContext());
             conversation.setMessageListAdapter(adapter);
