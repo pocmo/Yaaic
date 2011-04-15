@@ -124,6 +124,7 @@
     <string name="message_join">%1$s joins</string>
     <string name="message_kick">%1$s kicks %2$s</string>
     <string name="message_rename">%1$s is now known as %2$s</string>
+    <string name="message_self_rename">You are now known as %1$s</string>
     <string name="message_op">%1$s ops %2$s</string>
     <string name="message_part">%1$s parts</string>
     <string name="message_quit">%1$s quits (%2$s)</string>

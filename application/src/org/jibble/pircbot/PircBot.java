@@ -877,14 +877,27 @@ public abstract class PircBot implements ReplyConstants {
                         String errorStr = token;
                         String response = line.substring(line.indexOf(errorStr, senderInfo.length()) + 4, line.length());
 
+                        this.processServerResponse(code, response);
+
                         if (code == 433 && !_registered) {
                             if (_autoNickChange) {
+                                String oldNick = _nick;
+
                                 List<String> aliases = getAliases();
                                 _autoNickTries++;
-                                _nick = ((_autoNickTries - 1) <= aliases.size()) ?
-                                    aliases.get(_autoNickTries - 2) :
-                                        getName() + (_autoNickTries - aliases.size());
-                                    this.sendRawLineViaQueue("NICK " + _nick);
+
+                                if (_autoNickTries - 1 <= aliases.size()) {
+                                    // Try next alias
+                                    _nick = aliases.get(_autoNickTries - 2);
+                                } else {
+                                    // Append a number to the nickname
+                                    _nick = getName() + (_autoNickTries - aliases.size());
+                                }
+
+                                // Notify ourself about the change
+                                this.onNickChange(oldNick, getLogin(), "", _nick);
+
+                                this.sendRawLineViaQueue("NICK " + _nick);
                             }
                             else {
                                 _socket.close();
@@ -893,8 +906,6 @@ public abstract class PircBot implements ReplyConstants {
                             }
                         }
 
-                        this.processServerResponse(code, response);
-                        // Return from the method.
                         return;
                     }
                     else {
