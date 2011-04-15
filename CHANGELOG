@@ -1,4 +1,16 @@
 --------------------------------------------------------------------------------
+Yaaic 0.8 - 2011-03-15 - 27 commits, 35 files changed
+--------------------------------------------------------------------------------
+ * Support for mIRC colors (liato)
+ * Support for graphical smilies (liato)
+ * Bugfix: Connection issues when nickname already in use (pocmo)
+ * Bugfix: Only automatically change nickname on server code 433 if not already
+   registered with server (pocmo)
+ * Turkish translation (Hasan Kiran)
+ * Several bugs fixed regarding force closes (pocmo)
+ * On own nick change: Display message in server info window (pocmo)
+
+--------------------------------------------------------------------------------
 Yaaic 0.7 - 2011-03-27 - 79 commits, 144 files changed
 --------------------------------------------------------------------------------
  * New setting: Play notification sound on highlight.
