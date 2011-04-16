@@ -124,6 +124,7 @@
     <string name="message_join">%1$s rejoint le canal</string>
     <string name="message_kick">%1$s expulse %2$s</string>
     <string name="message_rename">%1$s s\'appelle désormais %2$s</string>
+    <string name="message_self_rename">Vous vous appelez désormais $1$s</string>
     <string name="message_op">%1$s donne le statut d\'opérateur à %2$s</string>
     <string name="message_part">%1$s quitte le canal</string>
     <string name="message_quit">%1$s quitte le serveur (%2$s)</string>
@@ -151,6 +152,8 @@
     <string name="message_not_connected">Non connecté</string>
     <string name="message_users_on_chan">Utilisateurs sur %1$s :</string>
 
+    <string name="user_action_reply">Répondre</string>
+    <string name="user_action_query">Discussion privée</string>
     <string name="user_action_op">Op</string>
     <string name="user_action_deop">DeOp</string>
     <string name="user_action_voice">Voice</string>
@@ -161,6 +164,7 @@
     <string name="settings_connection">Connexion</string>
     <string name="settings_reconnect_title">Reconnexion</string>
     <string name="settings_reconnect_desc">Se reconnecter automatiquement si déconnecté</string>
+
     <string name="settings_chat">Fenêtre de discussion</string>
     <string name="settings_icons_title">Affiche les icônes</string>
     <string name="settings_icons_desc">Affiche les icônes pour mettre en valeur certains évènements</string>
@@ -172,6 +176,13 @@
     <string name="settings_timestamp_desc">Préfixe chaque message par son heure d\'envoi</string>
     <string name="settings_24h_title">Format 24 heures</string>
     <string name="settings_24h_desc">Utilise le format 24 heures pour les heures d\'envoi</string>
+
+    <string name="settings_highlight">Highlight</string>
+    <string name="settings_sound_highlight_title">Son lors d\'un highlight</string>
+    <string name="settings_sound_highlight_desc">Joue un son lorsque votre pseudo est mentionné</string>
+    <string name="settings_vibrate_highlight_title">Vibrer lors d\'un highlight</string>
+    <string name="settings_vibrate_highlight_desc">Vibrer losque votre pseudo est mentionné</string>
+
     <string name="settings_misc">Divers</string>
     <string name="settings_quitmessage_title">Message de départ</string>
     <string name="settings_quitmessage_desc">Message à afficher quand vous vous déconnectez</string>
@@ -182,4 +193,12 @@
     <string name="settings_fontsize_dialog_title">Taille de police</string>
     <string name="settings_voice_recognition_title">Reconnaissance vocale</string>
     <string name="settings_voice_recognition_desc">Affiche le bouton pour la reconnaissance vocale</string>
+    <string name="settings_joinpartquit_title">Afficher join/part/quit</string>
+    <string name="settings_joinpartquit_desc">Affiche les messages lorsque quelqu\'un rejoint ou part du canal, où lorsqu\'il se déconnecte</string>
+    <string name="settings_noticeserverwindow_title">Notices dans la fenêtre serveur</string>
+    <string name="settings_noticeserverwindow_desc">Affiche les notifications (notices) dans la fenêtre du serveur</string>
+    <string name="settings_mirc_colors_title">Message en couleurs</string>
+    <string name="settings_mirc_colors_desc">Affiche les couleurs mIRC dans les messages</string>
+    <string name="settings_graphical_smilies_title">Smileys graphiques</string>
+    <string name="settings_graphical_smilies_desc">Les smileys textuels seront affichés sous forme d\'images</string>
 </resources>
