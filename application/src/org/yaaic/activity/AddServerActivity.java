@@ -413,8 +413,8 @@ public class AddServerActivity extends Activity implements OnClickListener
             throw new ValidationException(getResources().getString(R.string.validation_invalid_nickname));
         }
 
-        // We currently only allow chars and numbers as ident
-        Pattern identPattern = Pattern.compile("^[a-zA-Z0-9\\[\\]\\-]+$");
+        // We currently only allow chars, numbers and some special chars for ident
+        Pattern identPattern = Pattern.compile("^[a-zA-Z0-9\\[\\]\\-_]+$");
         if (!identPattern.matcher(ident).matches()) {
             throw new ValidationException(getResources().getString(R.string.validation_invalid_ident));
         }
