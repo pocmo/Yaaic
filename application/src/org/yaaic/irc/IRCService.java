@@ -169,7 +169,9 @@ public class IRCService extends Service
             notification = new Notification(R.drawable.icon, "", System.currentTimeMillis());
 
             // The PendingIntent to launch our activity if the user selects this notification
-            PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, ServersActivity.class), 0);
+            Intent notifyIntent = new Intent(this, ServersActivity.class);
+            notifyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0);
 
             // Set the info for the views that show in the notification panel.
             notification.setLatestEventInfo(this, getText(R.string.app_name), "", contentIntent);
@@ -201,7 +203,9 @@ public class IRCService extends Service
         if (foreground) {
             notificationManager.cancel(R.string.app_name);
             notification = new Notification(R.drawable.icon, text, System.currentTimeMillis());
-            PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, ServersActivity.class), 0);
+            Intent notifyIntent = new Intent(this, ServersActivity.class);
+            notifyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0);
             notification.setLatestEventInfo(this, getText(R.string.app_name), text, contentIntent);
 
             if (vibrate) {
