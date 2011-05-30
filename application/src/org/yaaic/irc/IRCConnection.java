@@ -224,6 +224,8 @@ public class IRCConnection extends PircBot
                 );
                 service.sendBroadcast(intent);
             } else {
+                conversation.addMessage(message);
+
                 Intent intent = Broadcast.createConversationIntent(
                     Broadcast.CONVERSATION_MESSAGE,
                     server.getId(),
