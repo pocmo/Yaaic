@@ -372,7 +372,14 @@ public class IRCService extends Service
         for (int i = 0; i < mSize; i++) {
             server = mServers.get(i);
             if (server.isDisconnected()) {
-                connections.remove(server.getId());
+                int serverId = server.getId();
+                synchronized(this) {
+                    IRCConnection connection = connections.get(serverId);
+                    if (connection != null) {
+                        connection.dispose();
+                    }
+                    connections.remove(serverId);
+                }
             } else {
                 shutDown = false;
             }
