@@ -45,6 +45,12 @@
     <string name="key_graphical_smilies">graphical_smilies</string>
     <string name="default_graphical_smilies">false</string>
 
+    <string name="key_autocorrect_text">autocorrect_text</string>
+    <string name="default_autocorrect_text">false</string>
+
+    <string name="key_autocap_sentences">autocap_sentences</string>
+    <string name="default_autocap_sentences">false</string>
+
     <string name="key_history_size">history_size</string>
     <string name="default_history_size">30</string>
 </resources>

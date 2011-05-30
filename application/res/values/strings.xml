@@ -203,6 +203,10 @@
     <string name="settings_mirc_colors_desc">Show mIRC colors in messages</string>
     <string name="settings_graphical_smilies_title">Show graphical smilies</string>
     <string name="settings_graphical_smilies_desc">Text smilies will be displayed as images in chat</string>
+    <string name="settings_autocorrect_text_title">Autocorrect input</string>
+    <string name="settings_autocorrect_text_desc">Use dictionary to autocorrect typed text in chat</string>
+    <string name="settings_autocap_sentences_title">Auto-capitalize sentences</string>
+    <string name="settings_autocap_sentences_desc">Automatically capitalize the first word of sentences</string>
     <string name="settings_history_size_title">History size</string>
     <string name="settings_history_size_desc">Number of lines of conversation history to keep</string>
 </resources>

@@ -65,10 +65,12 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.speech.RecognizerIntent;
+import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -191,6 +193,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
         setContentView(R.layout.conversations);
 
+        boolean isLandscape = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
+
         ((TextView) findViewById(R.id.title)).setText(server.getTitle());
 
         EditText input = (EditText) findViewById(R.id.input);
@@ -229,13 +233,26 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             }
         }
 
-        // keep compatibility with api level 3
-        if ((android.os.Build.VERSION.SDK.charAt(0) - '0') >= 5) {
-            setInputTypeFlag = 0x80000; // InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+        int setInputTypeFlags = 0;
+        if (settings.autoCorrectText()) {
+            setInputTypeFlags |= InputType.TYPE_TEXT_FLAG_AUTO_CORRECT;
+        } else {
+            // keep compatibility with api level 3
+            if ((android.os.Build.VERSION.SDK.charAt(0) - '0') >= 5) {
+                setInputTypeFlags |= 0x80000; // InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+            }
         }
-        else {
-            setInputTypeFlag = 0;
+        if (settings.autoCapSentences()) {
+           setInputTypeFlags |= InputType.TYPE_TEXT_FLAG_CAP_SENTENCES;
         }
+        if (isLandscape) {
+            /* Replace the Enter key with a smiley instead of Send, to make it
+               more difficult to accidentally hit send
+               We'd like to do this in portrait too, but wouldn't have a Send
+               button in that case */
+            setInputTypeFlags |= InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE;
+        }
+        input.setInputType(input.getInputType() | setInputTypeFlags);
 
         // Create a new scrollback history
         scrollback = new Scrollback();

@@ -249,6 +249,28 @@ public class Settings
     }
 
     /**
+     * Whether message text should be autocorrected.
+     */
+    public boolean autoCorrectText()
+    {
+        return preferences.getBoolean(
+            resources.getString(R.string.key_autocorrect_text),
+            Boolean.parseBoolean(resources.getString(R.string.default_autocorrect_text))
+        );
+    }
+
+    /**
+     * Whether sentences in messages should be automatically capitalized.
+     */
+    public boolean autoCapSentences()
+    {
+        return preferences.getBoolean(
+            resources.getString(R.string.key_autocap_sentences),
+            Boolean.parseBoolean(resources.getString(R.string.default_autocap_sentences))
+        );
+    }
+
+    /**
      * Get the conversation history size.
      *
      * @return The conversation history size

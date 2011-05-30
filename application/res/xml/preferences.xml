@@ -85,6 +85,16 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:summary="@string/settings_graphical_smilies_desc"
             android:key="@string/key_graphical_smilies"
             android:defaultValue="@string/default_graphical_smilies" />
+        <CheckBoxPreference
+            android:title="@string/settings_autocorrect_text_title"
+            android:summary="@string/settings_autocorrect_text_desc"
+            android:key="@string/key_autocorrect_text"
+            android:defaultValue="@string/default_autocorrect_text" />
+        <CheckBoxPreference
+            android:title="@string/settings_autocap_sentences_title"
+            android:summary="@string/settings_autocap_sentences_desc"
+            android:key="@string/key_autocap_sentences"
+            android:defaultValue="@string/default_autocap_sentences" />
         <EditTextPreference
             android:title="@string/settings_history_size_title"
             android:summary="@string/settings_history_size_desc"
