@@ -166,7 +166,12 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         Collection<Conversation> mConversations = server.getConversations();
 
         for (Conversation conversation : mConversations) {
-            onNewConversation(conversation.getName());
+            // Only scroll to new conversation if it was selected before
+            if (conversation.getStatus() == Conversation.STATUS_SELECTED) {
+                onNewConversation(conversation.getName());
+            } else {
+                createNewConversation(conversation.getName());
+            }
         }
 
         // keep compatibility with api level 3
@@ -430,12 +435,16 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     @Override
     public void onNewConversation(String target)
     {
-        deckAdapter.addItem(server.getConversation(target));
+        createNewConversation(target);
 
         if (!deckAdapter.isSwitched()) {
             // Scroll to new conversation
             deck.setSelection(deckAdapter.getCount() - 1);
         }
+    }
+    public void createNewConversation(String target)
+    {
+        deckAdapter.addItem(server.getConversation(target));
     }
 
     /**
