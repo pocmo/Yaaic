@@ -244,15 +244,18 @@ public class IRCConnection extends PircBot
             service.sendBroadcast(intent);
         }
 
-        if (isMentioned(action)) {
-            // highlight
-            message.setColor(Message.COLOR_RED);
+        boolean mentioned = isMentioned(action);
+        if (mentioned || target.equals(this.getNick())) {
             service.updateNotification(
                 target + ": " + sender + " " + action,
                 service.getSettings().isVibrateHighlightEnabled(),
                 service.getSettings().isSoundHighlightEnabled()
             );
+        }
 
+        if (mentioned) {
+            // highlight
+            message.setColor(Message.COLOR_RED);
             conversation.setStatus(Conversation.STATUS_HIGHLIGHT);
         }
     }
@@ -608,14 +611,14 @@ public class IRCConnection extends PircBot
             service.sendBroadcast(intent);
         }
 
+        service.updateNotification(
+            "<" + sender + "> " + text,
+            service.getSettings().isVibrateHighlightEnabled(),
+            service.getSettings().isSoundHighlightEnabled()
+        );
+
         if (isMentioned(text)) {
             message.setColor(Message.COLOR_RED);
-            service.updateNotification(
-                "<" + sender + "> " + text,
-                service.getSettings().isVibrateHighlightEnabled(),
-                service.getSettings().isSoundHighlightEnabled()
-            );
-
             conversation.setStatus(Conversation.STATUS_HIGHLIGHT);
         }
     }
