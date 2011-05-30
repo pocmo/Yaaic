@@ -90,7 +90,7 @@ import android.widget.ViewSwitcher;
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class ConversationActivity extends Activity implements ServiceConnection, ServerListener, ConversationListener, OnKeyListener
+public class ConversationActivity extends Activity implements ServiceConnection, ServerListener, ConversationListener
 {
     public static final int REQUEST_CODE_SPEECH = 99;
 
@@ -125,6 +125,51 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
     private int historySize;
 
+    OnKeyListener inputKeyListener = new OnKeyListener() {
+        /**
+         * On key pressed (input line)
+         */
+        @Override
+        public boolean onKey(View view, int keyCode, KeyEvent event)
+        {
+            EditText input = (EditText) view;
+
+            if (event.getAction() != KeyEvent.ACTION_DOWN) {
+                return false;
+            }
+
+            if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+                String message = scrollback.goBack();
+                if (message != null) {
+                    input.setText(message);
+                }
+                return true;
+            }
+
+            if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
+                String message = scrollback.goForward();
+                if (message != null) {
+                    input.setText(message);
+                }
+                return true;
+            }
+
+            if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                sendMessage(input.getText().toString());
+                input.setText("");
+                return true;
+            }
+
+            // Nick completion
+            if (keyCode == KeyEvent.KEYCODE_SEARCH) {
+                doNickCompletion(input);
+                return true;
+            }
+
+            return false;
+        }
+    };
+
     /**
      * On create
      */
@@ -147,7 +192,9 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         setContentView(R.layout.conversations);
 
         ((TextView) findViewById(R.id.title)).setText(server.getTitle());
-        ((EditText) findViewById(R.id.input)).setOnKeyListener(this);
+
+        EditText input = (EditText) findViewById(R.id.input);
+        input.setOnKeyListener(inputKeyListener);
 
         switcher = (ViewSwitcher) findViewById(R.id.switcher);
 
@@ -605,176 +652,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     }
 
     /**
-     * On key pressed (input line)
-     */
-    @Override
-    public boolean onKey(View view, int keyCode, KeyEvent event)
-    {
-        EditText input = (EditText) view;
-
-        if (keyCode == KeyEvent.KEYCODE_DPAD_UP && event.getAction() == KeyEvent.ACTION_DOWN) {
-            String message = scrollback.goBack();
-            if (message != null) {
-                input.setText(message);
-            }
-            return true;
-        }
-
-        if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN && event.getAction() == KeyEvent.ACTION_DOWN) {
-            String message = scrollback.goForward();
-            if (message != null) {
-                input.setText(message);
-            }
-            return true;
-        }
-
-        // Nick completion
-        if (keyCode == KeyEvent.KEYCODE_SEARCH && event.getAction() == KeyEvent.ACTION_DOWN) {
-            String text = input.getText().toString();
-
-            if (text.length() <= 0) {
-                return true;
-            }
-
-            String[] tokens = text.split("[\\s,.-]+");
-
-            if (tokens.length <= 0) {
-                return true;
-            }
-
-            String word = tokens[tokens.length - 1].toLowerCase();
-            tokens[tokens.length - 1] = null;
-
-            int begin   = input.getSelectionStart();
-            int end     = input.getSelectionEnd();
-            int cursor  = Math.min(begin, end);
-            int sel_end = Math.max(begin, end);
-
-            boolean in_selection = cursor != sel_end;
-
-            if (in_selection) {
-                word = text.substring(cursor, sel_end);
-            } else {
-                // use the word at the curent cursor position
-                while(true) {
-                    cursor -= 1;
-                    if (cursor <= 0 || text.charAt(cursor) == ' ') {
-                        break;
-                    }
-                }
-
-                if (cursor < 0) {
-                    cursor = 0;
-                }
-
-                if (text.charAt(cursor) == ' ') {
-                    cursor += 1;
-                }
-
-                sel_end = text.indexOf(' ', cursor);
-
-                if (sel_end == -1) {
-                    sel_end = text.length();
-                }
-
-                word = text.substring(cursor, sel_end);
-            }
-            // Log.d("Yaaic", "Trying to complete nick: " + word);
-
-            Conversation conversationForUserList = deckAdapter.getItem(deck.getSelectedItemPosition());
-
-            String[] users = null;
-
-            if (conversationForUserList.getType() == Conversation.TYPE_CHANNEL) {
-                users = binder.getService().getConnection(server.getId()).getUsersAsStringArray(
-                    conversationForUserList.getName()
-                );
-            }
-
-            // go through users and add matches
-            if (users != null) {
-                List<Integer> result = new ArrayList<Integer>();
-
-                for (int i = 0; i < users.length; i++) {
-                    if (users[i].toLowerCase().startsWith(word)) {
-                        result.add(Integer.valueOf(i));
-                    }
-                }
-
-                if (result.size() == 1) {
-                    String text1 = users[result.get(0).intValue()];
-
-                    if (cursor == 0) {
-                        text1 += ":";
-                    }
-
-                    text1 += " ";
-                    input.getText().replace(cursor, sel_end, text1, 0, text1.length());
-                    int old = input.getInputType();
-                    input.setInputType(old | setInputTypeFlag);
-                } else if (result.size() > 0) {
-                    Intent intent  = new Intent(this, UsersActivity.class);
-                    String[] extra = new String[result.size()];
-                    int i = 0;
-
-                    for (Integer n : result) {
-                        extra[i++] = users[n.intValue()];
-                    }
-
-                    input.setSelection(cursor, sel_end);
-                    intent.putExtra(Extra.USERS, extra);
-                    startActivityForResult(intent, REQUEST_CODE_NICK_COMPLETION);
-                }
-            }
-            return true;
-        }
-
-        if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
-            if (!server.isConnected()) {
-                Message message = new Message(getString(R.string.message_not_connected));
-                message.setColor(Message.COLOR_RED);
-                message.setIcon(R.drawable.error);
-                server.getConversation(server.getSelectedConversation()).addMessage(message);
-                onConversationMessage(server.getSelectedConversation());
-            }
-
-            String text = input.getText().toString();
-            input.setText("");
-
-            if (text.equals("")) {
-                // ignore empty messages
-                return true;
-            }
-
-            scrollback.addMessage(text);
-
-            Conversation conversation = deckAdapter.getItem(deck.getSelectedItemPosition());
-
-            if (conversation != null) {
-                if (!text.trim().startsWith("/")) {
-                    if (conversation.getType() != Conversation.TYPE_SERVER) {
-                        String nickname = binder.getService().getConnection(serverId).getNick();
-                        //conversation.addMessage(new Message("<" + nickname + "> " + text));
-                        conversation.addMessage(new Message(text, nickname));
-                        binder.getService().getConnection(serverId).sendMessage(conversation.getName(), text);
-                    } else {
-                        Message message = new Message(getString(R.string.chat_only_form_channel));
-                        message.setColor(Message.COLOR_YELLOW);
-                        message.setIcon(R.drawable.warning);
-                        conversation.addMessage(message);
-                    }
-                    onConversationMessage(conversation.getName());
-                } else {
-                    CommandParser.getInstance().parse(text, server, conversation, binder.getService());
-                }
-            }
-
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * On activity result
      */
     @Override
@@ -801,29 +678,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                 startActivityForResult(intent, REQUEST_CODE_USER);
                 break;
             case REQUEST_CODE_NICK_COMPLETION:
-                EditText input = (EditText) findViewById(R.id.input);
-                String src        = data.getExtras().getString(Extra.USER);
-                int start        = input.getSelectionStart();
-                int end        = input.getSelectionEnd();
-
-                if (start == 0) {
-                    src += ":";
-                }
-
-                src += " ";
-                input.getText().replace(start, end, src, 0, src.length());
-                // put cursor after inserted text
-                input.setSelection(start + src.length());
-                input.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        // make the softkeyboard come up again (only if no hw keyboard is attached)
-                        EditText input = (EditText) findViewById(R.id.input);
-                        InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        mgr.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
-                    }
-                });
-                input.requestFocus();
+                insertNickCompletion((EditText) findViewById(R.id.input), data.getExtras().getString(Extra.USER));
                 break;
             case REQUEST_CODE_USER:
                 final int actionId = data.getExtras().getInt(Extra.ACTION);
@@ -909,5 +764,178 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
                 break;
         }
+    }
+
+    /**
+     * Send a message in this conversation
+     *
+     * @param text The text of the message
+     */
+    private void sendMessage(String text) {
+        if (text.equals("")) {
+            // ignore empty messages
+            return;
+        }
+
+        if (!server.isConnected()) {
+            Message message = new Message(getString(R.string.message_not_connected));
+            message.setColor(Message.COLOR_RED);
+            message.setIcon(R.drawable.error);
+            server.getConversation(server.getSelectedConversation()).addMessage(message);
+            onConversationMessage(server.getSelectedConversation());
+        }
+
+        scrollback.addMessage(text);
+
+        Conversation conversation = deckAdapter.getItem(deck.getSelectedItemPosition());
+
+        if (conversation != null) {
+            if (!text.trim().startsWith("/")) {
+                if (conversation.getType() != Conversation.TYPE_SERVER) {
+                    String nickname = binder.getService().getConnection(serverId).getNick();
+                    //conversation.addMessage(new Message("<" + nickname + "> " + text));
+                    conversation.addMessage(new Message(text, nickname));
+                    binder.getService().getConnection(serverId).sendMessage(conversation.getName(), text);
+                } else {
+                    Message message = new Message(getString(R.string.chat_only_form_channel));
+                    message.setColor(Message.COLOR_YELLOW);
+                    message.setIcon(R.drawable.warning);
+                    conversation.addMessage(message);
+                }
+                onConversationMessage(conversation.getName());
+            } else {
+                CommandParser.getInstance().parse(text, server, conversation, binder.getService());
+            }
+        }
+    }
+
+    /**
+     * Complete a nick in the input line
+     */
+    private void doNickCompletion(EditText input) {
+        String text = input.getText().toString();
+
+        if (text.length() <= 0) {
+            return;
+        }
+
+        String[] tokens = text.split("[\\s,.-]+");
+
+        if (tokens.length <= 0) {
+            return;
+        }
+
+        String word = tokens[tokens.length - 1].toLowerCase();
+        tokens[tokens.length - 1] = null;
+
+        int begin   = input.getSelectionStart();
+        int end     = input.getSelectionEnd();
+        int cursor  = Math.min(begin, end);
+        int sel_end = Math.max(begin, end);
+
+        boolean in_selection = (cursor != sel_end);
+
+        if (in_selection) {
+            word = text.substring(cursor, sel_end);
+        } else {
+            // use the word at the curent cursor position
+            while(true) {
+                cursor -= 1;
+                if (cursor <= 0 || text.charAt(cursor) == ' ') {
+                    break;
+                }
+            }
+
+            if (cursor < 0) {
+                cursor = 0;
+            }
+
+            if (text.charAt(cursor) == ' ') {
+                cursor += 1;
+            }
+
+            sel_end = text.indexOf(' ', cursor);
+
+            if (sel_end == -1) {
+                sel_end = text.length();
+            }
+
+            word = text.substring(cursor, sel_end);
+        }
+        // Log.d("Yaaic", "Trying to complete nick: " + word);
+
+        Conversation conversationForUserList = deckAdapter.getItem(deck.getSelectedItemPosition());
+
+        String[] users = null;
+
+        if (conversationForUserList.getType() == Conversation.TYPE_CHANNEL) {
+            users = binder.getService().getConnection(server.getId()).getUsersAsStringArray(
+                conversationForUserList.getName()
+            );
+        }
+
+        // go through users and add matches
+        if (users != null) {
+            List<Integer> result = new ArrayList<Integer>();
+
+            for (int i = 0; i < users.length; i++) {
+                if (users[i].toLowerCase().startsWith(word)) {
+                    result.add(Integer.valueOf(i));
+                }
+            }
+
+            if (result.size() == 1) {
+                input.setSelection(cursor, sel_end);
+                insertNickCompletion(input, users[result.get(0).intValue()]);
+            } else if (result.size() > 0) {
+                Intent intent  = new Intent(this, UsersActivity.class);
+                String[] extra = new String[result.size()];
+                int i = 0;
+
+                for (Integer n : result) {
+                    extra[i++] = users[n.intValue()];
+                }
+
+                input.setSelection(cursor, sel_end);
+                intent.putExtra(Extra.USERS, extra);
+                startActivityForResult(intent, REQUEST_CODE_NICK_COMPLETION);
+            }
+        }
+    }
+
+    /**
+     * Insert a given nick completion into the input line
+     *
+     * @param input The input line widget, with the incomplete nick selected
+     * @param nick The completed nick
+     */
+    private void insertNickCompletion(EditText input, String nick) {
+        int start = input.getSelectionStart();
+        int end  = input.getSelectionEnd();
+
+        if (start == 0) {
+            nick += ":";
+        }
+
+        nick += " ";
+        input.getText().replace(start, end, nick, 0, nick.length());
+        // put cursor after inserted text
+        input.setSelection(start + nick.length());
+        input.post(new Runnable() {
+            @Override
+            public void run() {
+                // make the softkeyboard come up again (only if no hw keyboard is attached)
+                EditText input = (EditText) findViewById(R.id.input);
+                openSoftKeyboard(input);
+            }
+        });
+        input.requestFocus();
+    }
+
+    /**
+     * Open the soft keyboard (helper function)
+     */
+    private void openSoftKeyboard(View view) {
+        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
     }
 }
