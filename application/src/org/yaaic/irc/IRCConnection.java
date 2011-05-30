@@ -218,6 +218,7 @@ public class IRCConnection extends PircBot
         if (conversation == null) {
             // Open a query if there's none yet
             conversation = new Query(queryNick);
+            conversation.setHistorySize(service.getSettings().getHistorySize());
             server.addConversation(conversation);
             conversation.addMessage(message);
 
@@ -349,7 +350,9 @@ public class IRCConnection extends PircBot
     {
         if (sender.equalsIgnoreCase(getNick())) {
             // We joined a new channel
-            server.addConversation(new Channel(target));
+            Conversation conversation = new Channel(target);
+            conversation.setHistorySize(service.getSettings().getHistorySize());
+            server.addConversation(conversation);
 
             Intent intent = Broadcast.createConversationIntent(
                 Broadcast.CONVERSATION_NEW,
@@ -601,6 +604,7 @@ public class IRCConnection extends PircBot
         if (conversation == null) {
             // Open a query if there's none yet
             conversation = new Query(queryNick);
+            conversation.setHistorySize(service.getSettings().getHistorySize());
             conversation.addMessage(message);
             server.addConversation(conversation);
 

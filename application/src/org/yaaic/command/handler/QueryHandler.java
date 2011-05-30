@@ -60,6 +60,7 @@ public class QueryHandler extends BaseHandler
             }
 
             query = new Query(params[1]);
+            query.setHistorySize(service.getSettings().getHistorySize());
             server.addConversation(query);
 
             Intent intent = Broadcast.createConversationIntent(

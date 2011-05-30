@@ -41,13 +41,14 @@ public abstract class Conversation
     public static final int STATUS_HIGHLIGHT = 4;
     public static final int STATUS_MISC      = 5; // join/part/quit
 
-    public static final int HISTORY_SIZE = 30;
+    private static final int DEFAULT_HISTORY_SIZE = 30;
 
     private final LinkedList<Message> buffer;
     private final LinkedList<Message> history;
     private final String name;
     private int status = 1;
     private int newMentions = 0;
+    private int historySize = DEFAULT_HISTORY_SIZE;
 
     /**
      * Get the type of conversation (channel, query, ..)
@@ -84,7 +85,7 @@ public abstract class Conversation
         buffer.add(0, message);
         history.add(message);
 
-        if (history.size() > HISTORY_SIZE) {
+        if (history.size() > historySize) {
             history.remove(0);
         }
     }
@@ -203,5 +204,32 @@ public abstract class Conversation
     public int getNewMentions()
     {
         return newMentions;
+    }
+
+    /**
+     * Get this conversation's history size.
+     *
+     * @return The conversation's history size.
+     */
+    public int getHistorySize()
+    {
+        return historySize;
+    }
+
+    /**
+     * Set this conversation's history size.
+     *
+     * @param size The new history size for this conversation.
+     */
+    public void setHistorySize(int size)
+    {
+        if (size <= 0) {
+            return;
+        }
+
+        historySize = size;
+        if (history.size() > size) {
+            history.subList(size, history.size()).clear();
+        }
     }
 }

@@ -40,6 +40,7 @@ public class MessageListAdapter extends BaseAdapter
 {
     private final LinkedList<TextView> messages;
     private final Context context;
+    private int historySize;
 
     /**
      * Create a new MessageAdapter
@@ -72,6 +73,7 @@ public class MessageListAdapter extends BaseAdapter
 
         this.messages = messages;
         this.context = context;
+        historySize = conversation.getHistorySize();
     }
 
     /**
@@ -83,7 +85,7 @@ public class MessageListAdapter extends BaseAdapter
     {
         messages.add(message.renderTextView(context));
 
-        if (messages.size() > Conversation.HISTORY_SIZE) {
+        if (messages.size() > historySize) {
             messages.remove(0);
         }
 
@@ -104,7 +106,7 @@ public class MessageListAdapter extends BaseAdapter
         for (int i = mSize - 1; i > -1; i--) {
             mMessages.add(messages.get(i).renderTextView(mContext));
 
-            if (mMessages.size() > Conversation.HISTORY_SIZE) {
+            if (mMessages.size() > historySize) {
                 mMessages.remove(0);
             }
         }

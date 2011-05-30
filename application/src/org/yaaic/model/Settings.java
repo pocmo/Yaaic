@@ -247,4 +247,21 @@ public class Settings
             Boolean.parseBoolean(resources.getString(R.string.default_graphical_smilies))
         );
     }
+
+    /**
+     * Get the conversation history size.
+     *
+     * @return The conversation history size
+     */
+    public int getHistorySize()
+    {
+        try {
+            return Integer.parseInt(preferences.getString(
+                resources.getString(R.string.key_history_size),
+                resources.getString(R.string.default_history_size)
+            ));
+        } catch (NumberFormatException e) {
+            return Integer.parseInt(resources.getString(R.string.default_history_size));
+        }
+    }
 }

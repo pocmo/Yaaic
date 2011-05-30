@@ -44,4 +44,7 @@
 
     <string name="key_graphical_smilies">graphical_smilies</string>
     <string name="default_graphical_smilies">false</string>
+
+    <string name="key_history_size">history_size</string>
+    <string name="default_history_size">30</string>
 </resources>

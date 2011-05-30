@@ -123,6 +123,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     // We'll set it to 0 if it's not supported
     private int setInputTypeFlag;
 
+    private int historySize;
+
     /**
      * On create
      */
@@ -159,9 +161,13 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         deck.setOnItemClickListener(new ConversationClickListener(deckAdapter, switcher));
         deck.setBackgroundDrawable(new NonScalingBackgroundDrawable(this, deck, R.drawable.background));
 
+        Settings settings = new Settings(this);
+        historySize = settings.getHistorySize();
+
         if (server.getStatus() == Status.PRE_CONNECTING) {
             server.clearConversations();
             deckAdapter.clearConversations();
+            server.getConversation(ServerInfo.DEFAULT_NAME).setHistorySize(historySize);
         }
 
         // Optimization : cache field lookups
@@ -538,7 +544,9 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
             if (server.getStatus() == Status.CONNECTING) {
                 deckAdapter.clearConversations();
-                deckAdapter.addItem(server.getConversation(ServerInfo.DEFAULT_NAME));
+                Conversation serverInfo = server.getConversation(ServerInfo.DEFAULT_NAME);
+                serverInfo.setHistorySize(historySize);
+                deckAdapter.addItem(serverInfo);
                 return;
             }
 
@@ -559,7 +567,9 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                         );
                         server.clearConversations();
                         deckAdapter.clearConversations();
-                        deckAdapter.addItem(server.getConversation(ServerInfo.DEFAULT_NAME));
+                        Conversation serverInfo = server.getConversation(ServerInfo.DEFAULT_NAME);
+                        serverInfo.setHistorySize(historySize);
+                        deckAdapter.addItem(serverInfo);
                         binder.connect(server);
                     }
                 })
@@ -864,6 +874,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                                 if (query == null) {
                                     // Open a query if there's none yet
                                     query = new Query(nicknameWithoutPrefix);
+                                    query.setHistorySize(binder.getService().getSettings().getHistorySize());
                                     server.addConversation(query);
 
                                     Intent intent = Broadcast.createConversationIntent(

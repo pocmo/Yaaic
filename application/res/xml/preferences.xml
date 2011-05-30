@@ -85,6 +85,12 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:summary="@string/settings_graphical_smilies_desc"
             android:key="@string/key_graphical_smilies"
             android:defaultValue="@string/default_graphical_smilies" />
+        <EditTextPreference
+            android:title="@string/settings_history_size_title"
+            android:summary="@string/settings_history_size_desc"
+            android:key="@string/key_history_size"
+            android:defaultValue="@string/default_history_size"
+            android:inputType="number" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/settings_highlight">
