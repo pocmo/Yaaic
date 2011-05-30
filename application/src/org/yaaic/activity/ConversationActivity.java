@@ -154,7 +154,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
         deckAdapter = new DeckAdapter();
         deck = (Gallery) findViewById(R.id.deck);
-        deck.setOnItemSelectedListener(new ConversationSelectedListener(server, (TextView) findViewById(R.id.title), dots));
+        deck.setOnItemSelectedListener(new ConversationSelectedListener(this, server, (TextView) findViewById(R.id.title), dots));
         deck.setAdapter(deckAdapter);
         deck.setOnItemClickListener(new ConversationClickListener(deckAdapter, switcher));
         deck.setBackgroundDrawable(new NonScalingBackgroundDrawable(this, deck, R.drawable.background));
@@ -244,6 +244,14 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                 mAdapter.addBulkMessages(conversation.getBuffer());
                 conversation.clearBuffer();
             }
+
+            // Clear new message notifications for the selected conversation
+            if (conversation.getStatus() == Conversation.STATUS_SELECTED && conversation.getNewMentions() > 0) {
+                Intent ackIntent = new Intent(this, IRCService.class);
+                ackIntent.setAction(IRCService.ACTION_ACK_NEW_MENTIONS);
+                ackIntent.putExtra(IRCService.EXTRA_ACK_CONVTITLE, conversation.getName());
+                startService(ackIntent);
+            }
         }
 
         // Join channel that has been selected in JoinActivity (onActivityResult())
@@ -256,6 +264,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                 }
             }.start();
         }
+
+        server.setIsForeground(true);
     }
 
     /**
@@ -265,6 +275,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     public void onPause()
     {
         super.onPause();
+
+        server.setIsForeground(false);
 
         if (binder != null && binder.getService() != null) {
             binder.getService().checkServiceStatus();

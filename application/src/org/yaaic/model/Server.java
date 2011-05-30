@@ -48,6 +48,7 @@ public class Server
 
     private int status = Status.DISCONNECTED;
     private String selected = "";
+    private boolean isForeground = false;
 
     /**
      * Create a new server object
@@ -403,5 +404,21 @@ public class Server
         }
 
         return R.drawable.connecting;
+    }
+
+    /**
+     * Get whether a ConversationActivity for this server is currently in the foreground.
+     */
+    public boolean getIsForeground()
+    {
+        return isForeground;
+    }
+
+    /**
+     * Set whether a ConversationActivity for this server is currently in the foreground.
+     */
+    public void setIsForeground(boolean isForeground)
+    {
+        this.isForeground = isForeground;
     }
 }

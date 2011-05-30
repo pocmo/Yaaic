@@ -24,11 +24,14 @@ import org.yaaic.model.Channel;
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Server;
 import org.yaaic.view.ConversationSwitcher;
+import org.yaaic.irc.IRCService;
 
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.TextView;
+import android.content.Context;
+import android.content.Intent;
 
 /**
  * Listener for conversation selections
@@ -37,6 +40,7 @@ import android.widget.TextView;
  */
 public class ConversationSelectedListener implements OnItemSelectedListener
 {
+    private final Context ctx;
     private final Server server;
     private final TextView titleView;
     private final ConversationSwitcher switcher;
@@ -47,8 +51,9 @@ public class ConversationSelectedListener implements OnItemSelectedListener
      * @param server
      * @param titleView
      */
-    public ConversationSelectedListener(Server server, TextView titleView, ConversationSwitcher switcher)
+    public ConversationSelectedListener(Context ctx, Server server, TextView titleView, ConversationSwitcher switcher)
     {
+        this.ctx = ctx;
         this.server = server;
         this.titleView = titleView;
         this.switcher = switcher;
@@ -78,6 +83,13 @@ public class ConversationSelectedListener implements OnItemSelectedListener
 
             if (previousConversation != null) {
                 previousConversation.setStatus(Conversation.STATUS_DEFAULT);
+            }
+
+            if (conversation.getNewMentions() > 0) {
+                Intent i = new Intent(ctx, IRCService.class);
+                i.setAction(IRCService.ACTION_ACK_NEW_MENTIONS);
+                i.putExtra(IRCService.EXTRA_ACK_CONVTITLE, conversation.getName());
+                ctx.startService(i);
             }
 
             conversation.setStatus(Conversation.STATUS_SELECTED);

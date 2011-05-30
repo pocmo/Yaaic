@@ -47,6 +47,7 @@ public abstract class Conversation
     private final LinkedList<Message> history;
     private final String name;
     private int status = 1;
+    private int newMentions = 0;
 
     /**
      * Get the type of conversation (channel, query, ..)
@@ -178,5 +179,29 @@ public abstract class Conversation
     public int getStatus()
     {
         return status;
+    }
+
+    /**
+     * Increment the count of unread mentions in this conversation
+     */
+    public void addNewMention()
+    {
+        ++newMentions;
+    }
+
+    /**
+     * Mark all new mentions as unread
+     */
+    public void clearNewMentions()
+    {
+        newMentions = 0;
+    }
+
+    /**
+     * Get the number of unread mentions in this conversation
+     */
+    public int getNewMentions()
+    {
+        return newMentions;
     }
 }

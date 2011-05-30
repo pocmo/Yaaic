@@ -141,7 +141,7 @@ public class IRCConnection extends PircBot
             Broadcast.createServerIntent(Broadcast.SERVER_UPDATE, server.getId())
         );
 
-        service.updateNotification(service.getString(R.string.notification_connected, server.getTitle()));
+        service.notifyConnected(server.getTitle());
 
         Message message = new Message(service.getString(R.string.message_connected, server.getTitle()));
         message.setColor(Message.COLOR_GREEN);
@@ -245,11 +245,14 @@ public class IRCConnection extends PircBot
 
         boolean mentioned = isMentioned(action);
         if (mentioned || target.equals(this.getNick())) {
-            service.updateNotification(
-                target + ": " + sender + " " + action,
-                service.getSettings().isVibrateHighlightEnabled(),
-                service.getSettings().isSoundHighlightEnabled()
-            );
+            if (conversation.getStatus() != Conversation.STATUS_SELECTED || !server.getIsForeground()) {
+                service.addNewMention(
+                    conversation,
+                    conversation.getName() + ": " + sender + " " + action,
+                    service.getSettings().isVibrateHighlightEnabled(),
+                    service.getSettings().isSoundHighlightEnabled()
+                );
+            }
         }
 
         if (mentioned) {
@@ -410,20 +413,24 @@ public class IRCConnection extends PircBot
     protected void onMessage(String target, String sender, String login, String hostname, String text)
     {
         Message message = new Message(text, sender);
+        Conversation conversation = server.getConversation(target);
 
         if (isMentioned(text)) {
             // highlight
             message.setColor(Message.COLOR_RED);
-            service.updateNotification(
-                target + ": <" + sender + "> " + text,
-                service.getSettings().isVibrateHighlightEnabled(),
-                service.getSettings().isSoundHighlightEnabled()
-            );
+            if (conversation.getStatus() != Conversation.STATUS_SELECTED || !server.getIsForeground()) {
+                service.addNewMention(
+                    conversation,
+                    target + ": <" + sender + "> " + text,
+                    service.getSettings().isVibrateHighlightEnabled(),
+                    service.getSettings().isSoundHighlightEnabled()
+                );
+            }
 
-            server.getConversation(target).setStatus(Conversation.STATUS_HIGHLIGHT);
+            conversation.setStatus(Conversation.STATUS_HIGHLIGHT);
         }
 
-        server.getConversation(target).addMessage(message);
+        conversation.addMessage(message);
 
         Intent intent = Broadcast.createConversationIntent(
             Broadcast.CONVERSATION_MESSAGE,
@@ -619,11 +626,14 @@ public class IRCConnection extends PircBot
             return;
         }
 
-        service.updateNotification(
-            "<" + sender + "> " + text,
-            service.getSettings().isVibrateHighlightEnabled(),
-            service.getSettings().isSoundHighlightEnabled()
-        );
+        if (conversation.getStatus() != Conversation.STATUS_SELECTED || !server.getIsForeground()) {
+            service.addNewMention(
+                conversation,
+                "<" + sender + "> " + text,
+                service.getSettings().isVibrateHighlightEnabled(),
+                service.getSettings().isSoundHighlightEnabled()
+            );
+        }
 
         if (isMentioned(text)) {
             message.setColor(Message.COLOR_RED);
@@ -1099,7 +1109,7 @@ public class IRCConnection extends PircBot
             server.setStatus(Status.DISCONNECTED);
         }
 
-        service.updateNotification(service.getString(R.string.notification_disconnected, server.getTitle()));
+        service.notifyDisconnected(server.getTitle());
 
         Intent sIntent = Broadcast.createServerIntent(Broadcast.SERVER_UPDATE, server.getId());
         service.sendBroadcast(sIntent);
