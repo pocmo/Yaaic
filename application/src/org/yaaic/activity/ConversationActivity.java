@@ -52,6 +52,7 @@ import org.yaaic.model.User;
 import org.yaaic.receiver.ConversationReceiver;
 import org.yaaic.receiver.ServerReceiver;
 import org.yaaic.view.ConversationSwitcher;
+import org.yaaic.view.MessageListView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -235,7 +236,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
         // Fill view with messages that have been buffered while paused
         for (Conversation conversation : mConversations) {
-            mAdapter = conversation.getMessageListAdapter();
+            mAdapter = deckAdapter.getItemAdapter(conversation.getName());
 
             if (mAdapter != null) {
                 mAdapter.addBulkMessages(conversation.getBuffer());
@@ -401,7 +402,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             return;
         }
 
-        MessageListAdapter adapter = conversation.getMessageListAdapter();
+        MessageListAdapter adapter = deckAdapter.getItemAdapter(target);
 
         while(conversation.hasBufferedMessages()) {
             Message message = conversation.pollBufferedMessage();
@@ -526,8 +527,10 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
             if (deckAdapter.isSwitched()) {
-                switcher.showNext();
-                switcher.removeView(deckAdapter.getSwitchedView());
+                MessageListView canvas = (MessageListView) deckAdapter.getView(deckAdapter.getPositionByName(deckAdapter.getSwitchedName()), null, switcher);
+                canvas.setLayoutParams(new Gallery.LayoutParams(switcher.getWidth()*85/100, switcher.getHeight()));
+                canvas.setTranscriptMode(MessageListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+                canvas.setDelegateTouchEvents(true);
                 deckAdapter.setSwitched(null, null);
                 return true;
             }

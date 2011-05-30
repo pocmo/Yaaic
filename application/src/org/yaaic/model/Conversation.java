@@ -22,8 +22,6 @@ package org.yaaic.model;
 
 import java.util.LinkedList;
 
-import org.yaaic.adapter.MessageListAdapter;
-
 /**
  * Base class for conversations
  * 
@@ -48,7 +46,6 @@ public abstract class Conversation
     private final LinkedList<Message> buffer;
     private final LinkedList<Message> history;
     private final String name;
-    private MessageListAdapter adapter;
     private int status = 1;
 
     /**
@@ -146,22 +143,6 @@ public abstract class Conversation
     public void clearBuffer()
     {
         buffer.clear();
-    }
-
-    /**
-     * Store the adapter of this conversation
-     */
-    public void setMessageListAdapter(MessageListAdapter adapter)
-    {
-        this.adapter = adapter;
-    }
-
-    /**
-     * Get the MessageList Adapter of this conversation if known
-     */
-    public MessageListAdapter getMessageListAdapter()
-    {
-        return adapter;
     }
 
     /**
