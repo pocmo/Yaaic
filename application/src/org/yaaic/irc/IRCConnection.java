@@ -203,24 +203,14 @@ public class IRCConnection extends PircBot
     @Override
     protected void onAction(String sender, String login, String hostname, String target, String action)
     {
+        Conversation conversation;
+
         Message message = new Message(sender + " " + action);
         message.setIcon(R.drawable.action);
 
-        if (isMentioned(action)) {
-            // highlight
-            message.setColor(Message.COLOR_RED);
-            service.updateNotification(
-                target + ": " + sender + " " + action,
-                service.getSettings().isVibrateHighlightEnabled(),
-                service.getSettings().isSoundHighlightEnabled()
-            );
-
-            server.getConversation(target).setStatus(Conversation.STATUS_HIGHLIGHT);
-        }
-
         if (target.equals(this.getNick())) {
             // We are the target - this is an action in a query
-            Conversation conversation = server.getConversation(sender);
+            conversation = server.getConversation(sender);
             if (conversation == null) {
                 // Open a query if there's none yet
                 conversation = new Query(sender);
@@ -243,7 +233,8 @@ public class IRCConnection extends PircBot
             }
         } else {
             // A action in a channel
-            server.getConversation(target).addMessage(message);
+            conversation = server.getConversation(target);
+            conversation.addMessage(message);
 
             Intent intent = Broadcast.createConversationIntent(
                 Broadcast.CONVERSATION_MESSAGE,
@@ -251,6 +242,18 @@ public class IRCConnection extends PircBot
                 target
             );
             service.sendBroadcast(intent);
+        }
+
+        if (isMentioned(action)) {
+            // highlight
+            message.setColor(Message.COLOR_RED);
+            service.updateNotification(
+                target + ": " + sender + " " + action,
+                service.getSettings().isVibrateHighlightEnabled(),
+                service.getSettings().isSoundHighlightEnabled()
+            );
+
+            conversation.setStatus(Conversation.STATUS_HIGHLIGHT);
         }
     }
 
@@ -580,17 +583,6 @@ public class IRCConnection extends PircBot
     {
         Message message = new Message("<" + sender + "> " + text);
 
-        if (isMentioned(text)) {
-            message.setColor(Message.COLOR_RED);
-            service.updateNotification(
-                "<" + sender + "> " + text,
-                service.getSettings().isVibrateHighlightEnabled(),
-                service.getSettings().isSoundHighlightEnabled()
-            );
-
-            server.getConversation(sender).setStatus(Conversation.STATUS_HIGHLIGHT);
-        }
-
         Conversation conversation = server.getConversation(sender);
 
         if (conversation == null) {
@@ -614,6 +606,17 @@ public class IRCConnection extends PircBot
                 sender
             );
             service.sendBroadcast(intent);
+        }
+
+        if (isMentioned(text)) {
+            message.setColor(Message.COLOR_RED);
+            service.updateNotification(
+                "<" + sender + "> " + text,
+                service.getSettings().isVibrateHighlightEnabled(),
+                service.getSettings().isSoundHighlightEnabled()
+            );
+
+            conversation.setStatus(Conversation.STATUS_HIGHLIGHT);
         }
     }
 
