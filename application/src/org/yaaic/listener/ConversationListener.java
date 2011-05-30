@@ -47,4 +47,11 @@ public interface ConversationListener
      * @param target
      */
     public void onRemoveConversation(String target);
+
+    /**
+     * On topic changed (for given target)
+     *
+     * @param target
+     */
+    public void onTopicChanged(String target);
 }

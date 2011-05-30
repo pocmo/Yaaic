@@ -39,6 +39,7 @@ import org.yaaic.listener.ConversationSelectedListener;
 import org.yaaic.listener.ServerListener;
 import org.yaaic.listener.SpeechClickListener;
 import org.yaaic.model.Broadcast;
+import org.yaaic.model.Channel;
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Extra;
 import org.yaaic.model.Message;
@@ -198,6 +199,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_MESSAGE));
         registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_NEW));
         registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_REMOVE));
+        registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_TOPIC));
 
         serverReceiver = new ServerReceiver(this);
         registerReceiver(serverReceiver, new IntentFilter(Broadcast.SERVER_UPDATE));
@@ -487,6 +489,23 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             switcher.showNext();
             switcher.removeView(deckAdapter.getSwitchedView());
             deckAdapter.setSwitched(null, null);
+        }
+    }
+
+    /**
+     * On topic change
+     */
+    public void onTopicChanged(String target)
+    {
+        String selected = server.getSelectedConversation();
+        if (selected.equals(target)) {
+            // onTopicChanged is only called for channels
+            Channel channel = (Channel) server.getConversation(selected);
+            StringBuilder sb = new StringBuilder();
+            sb.append(server.getTitle() + " - " + channel.getName());
+            if (!(channel.getTopic()).equals(""))
+                sb.append(" - " + channel.getTopic());
+            ((TextView) findViewById(R.id.title)).setText(sb.toString());
         }
     }
 

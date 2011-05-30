@@ -20,6 +20,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.yaaic.listener;
 
+import org.yaaic.model.Channel;
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Server;
 import org.yaaic.view.ConversationSwitcher;
@@ -62,7 +63,11 @@ public class ConversationSelectedListener implements OnItemSelectedListener
         Conversation conversation = (Conversation) deck.getItemAtPosition(position);
 
         if (conversation != null && conversation.getType() != Conversation.TYPE_SERVER) {
-            titleView.setText(server.getTitle() + " - " + conversation.getName());
+            StringBuilder sb = new StringBuilder();
+            sb.append(server.getTitle() + " - " + conversation.getName());
+            if (conversation.getType() == Conversation.TYPE_CHANNEL && !((Channel)conversation).getTopic().equals(""))
+                sb.append(" - " + ((Channel)conversation).getTopic());
+            titleView.setText(sb.toString());
         } else {
             onNothingSelected(deck);
         }

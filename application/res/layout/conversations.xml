@@ -42,6 +42,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:paddingLeft="3dp"
             android:textSize="12sp"
             android:text="Server"
+            android:maxLines="1"
             android:layout_weight="1" />
     </LinearLayout>
     <ViewSwitcher

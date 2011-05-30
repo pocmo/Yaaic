@@ -34,6 +34,7 @@ public abstract class Broadcast
     public static final String CONVERSATION_MESSAGE    = "org.yaaic.conversation.message";
     public static final String CONVERSATION_NEW        = "org.yaaic.conversation.new";
     public static final String CONVERSATION_REMOVE    = "org.yaaic.conversation.remove";
+    public static final String CONVERSATION_TOPIC    = "org.yaaic.conversation.topic";
 
     /**
      * Create an Intent for conversation broadcasting
