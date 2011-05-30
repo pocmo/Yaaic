@@ -274,6 +274,33 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     }
 
     /**
+     * On save instance state (e.g. before a configuration change)
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+
+        if (deckAdapter.isSwitched()) {
+            outState.putBoolean("isSwitched", deckAdapter.isSwitched());
+            outState.putString("switchedName", deckAdapter.getSwitchedName());
+        }
+    }
+
+    /**
+     * On restore instance state (e.g. after a configuration change)
+     */
+    @Override
+    protected void onRestoreInstanceState(Bundle inState)
+    {
+        super.onRestoreInstanceState(inState);
+
+        if (inState.getBoolean("isSwitched")) {
+            deckAdapter.setSwitched(inState.getString("switchedName"), null);
+        }
+    }
+
+    /**
      * On service connected
      */
     @Override
@@ -528,9 +555,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
             if (deckAdapter.isSwitched()) {
                 MessageListView canvas = (MessageListView) deckAdapter.getView(deckAdapter.getPositionByName(deckAdapter.getSwitchedName()), null, switcher);
-                canvas.setLayoutParams(new Gallery.LayoutParams(switcher.getWidth()*85/100, switcher.getHeight()));
-                canvas.setTranscriptMode(MessageListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
-                canvas.setDelegateTouchEvents(true);
+                canvas.setSwitched(false);
                 deckAdapter.setSwitched(null, null);
                 return true;
             }

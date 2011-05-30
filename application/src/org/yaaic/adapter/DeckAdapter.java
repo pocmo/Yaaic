@@ -225,7 +225,7 @@ public class DeckAdapter extends BaseAdapter
      */
     public boolean isSwitched()
     {
-        return currentView != null;
+        return currentChannel != null;
     }
 
     /**
@@ -272,20 +272,12 @@ public class DeckAdapter extends BaseAdapter
         }
 
         list.setAdapter(adapter);
+        list.setSelection(adapter.getCount() - 1); // scroll to bottom
 
-        list.setDivider(null);
-        list.setLayoutParams(new Gallery.LayoutParams(
-            parent.getWidth()*85/100,
-            parent.getHeight()
-        ));
-
-        list.setBackgroundResource(R.layout.rounded);
-        list.setCacheColorHint(0xee000000);
-        list.setPadding(5, 5, 5, 5);
-        list.setVerticalFadingEdgeEnabled(false);
-        list.setScrollBarStyle(ListView.SCROLLBARS_OUTSIDE_INSET);
-        list.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
-        list.setSelection(list.getAdapter().getCount() - 1); // scroll to bottom
+        if (convInfo.conv.getName().equals(currentChannel)) {
+            list.setSwitched(true);
+            currentView = list;
+        }
 
         return list;
     }

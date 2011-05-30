@@ -62,10 +62,7 @@ public class ConversationClickListener implements OnItemClickListener
         Conversation conversation = adapter.getItem(position);
 
         MessageListView canvas = (MessageListView) adapter.getView(position, null, switcher);
-        canvas.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
-        canvas.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-        canvas.setDelegateTouchEvents(false); // Do not delegate
-
+        canvas.setSwitched(true);
         adapter.setSwitched(conversation.getName(), canvas);
     }
 }

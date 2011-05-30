@@ -20,6 +20,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.yaaic.view;
 
+import org.yaaic.R;
 import org.yaaic.adapter.MessageListAdapter;
 import org.yaaic.listener.MessageClickListener;
 
@@ -37,10 +38,12 @@ import android.widget.ListView;
  */
 public class MessageListView extends ListView
 {
-    private boolean delegate = true;
+    private boolean switched = false;
     private final View parent;
     private int parentWidth;
     private int parentHeight;
+    private int padding;
+    private int paddingWide;
 
     /**
      * Create a new MessageListView
@@ -52,20 +55,28 @@ public class MessageListView extends ListView
         super(context);
 
         this.parent = parent;
-        this.setOnItemClickListener(MessageClickListener.getInstance());
+        setOnItemClickListener(MessageClickListener.getInstance());
 
         parentWidth = parent.getWidth();
         parentHeight = parent.getHeight();
-    }
 
-    /**
-     * Should all touch events delegated?
-     * 
-     * @param delegate If true all touch events will be delegated, otherwise the listview will handle them
-     */
-    public void setDelegateTouchEvents(boolean delegate)
-    {
-        this.delegate = delegate;
+        setDivider(null);
+        setLayoutParams(new Gallery.LayoutParams(
+            parentWidth*85/100,
+            parentHeight
+        ));
+
+        setBackgroundResource(R.layout.rounded);
+        setCacheColorHint(0xee000000);
+        setVerticalFadingEdgeEnabled(false);
+        setScrollBarStyle(SCROLLBARS_OUTSIDE_INSET);
+        setTranscriptMode(TRANSCRIPT_MODE_ALWAYS_SCROLL);
+
+        // Scale padding by screen density
+        float density = context.getResources().getDisplayMetrics().density;
+        padding = (int)(5 * density);
+        paddingWide = (int)(12 * density);
+        setPadding(padding, padding, padding, padding);
     }
 
     /**
@@ -74,7 +85,7 @@ public class MessageListView extends ListView
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        if (delegate) {
+        if (!switched) {
             // We delegate the touch events to the underlying view
             return false;
         } else {
@@ -88,16 +99,18 @@ public class MessageListView extends ListView
     @Override
     protected void onDraw(Canvas canvas)
     {
-        if (delegate && (parent.getWidth() != parentWidth || parent.getHeight() != parentHeight)) {
+        if (parent.getWidth() != parentWidth || parent.getHeight() != parentHeight) {
             // parent size changed, resizing this child too
 
             parentWidth = parent.getWidth();
             parentHeight = parent.getHeight();
 
-            this.setLayoutParams(new Gallery.LayoutParams(
-                parentWidth*85/100,
-                parentHeight
-            ));
+            if (!switched) {
+                setLayoutParams(new Gallery.LayoutParams(
+                    parentWidth*85/100,
+                    parentHeight
+                ));
+            }
         }
 
         super.onDraw(canvas);
@@ -113,5 +126,24 @@ public class MessageListView extends ListView
     public MessageListAdapter getAdapter()
     {
         return (MessageListAdapter) super.getAdapter();
+    }
+
+    /**
+     * Set whether this conversation is switched (taking up all of deck's space
+     * and handling touch events itself)
+     */
+    public void setSwitched(boolean switched)
+    {
+        this.switched = switched;
+
+        if (switched) {
+            setLayoutParams(new Gallery.LayoutParams(Gallery.LayoutParams.FILL_PARENT, Gallery.LayoutParams.FILL_PARENT));
+            setTranscriptMode(TRANSCRIPT_MODE_NORMAL);
+            setPadding(paddingWide, padding, paddingWide, padding);
+        } else {
+            setLayoutParams(new Gallery.LayoutParams(parentWidth*85/100, parentHeight));
+            setTranscriptMode(TRANSCRIPT_MODE_ALWAYS_SCROLL);
+            setPadding(padding, padding, padding, padding);
+        }
     }
 }
