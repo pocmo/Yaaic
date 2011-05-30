@@ -991,7 +991,8 @@ public abstract class PircBot implements ReplyConstants {
         }
         else if (command.equals("PRIVMSG")) {
             // This is a private message to us.
-            this.onPrivateMessage(sourceNick, sourceLogin, sourceHostname, line.substring(line.indexOf(" :") + 2));
+            // XXX PircBot patch to pass target info to privmsg callback
+            this.onPrivateMessage(sourceNick, sourceLogin, sourceHostname, target, line.substring(line.indexOf(" :") + 2));
         }
         else if (command.equals("JOIN")) {
             // Someone is joining a channel.
@@ -1305,7 +1306,8 @@ public abstract class PircBot implements ReplyConstants {
      * @param hostname The hostname of the person who sent the private message.
      * @param message The actual message.
      */
-    protected void onPrivateMessage(String sender, String login, String hostname, String message) {}
+    // XXX PircBot patch to pass target info to privmsg callback
+    protected void onPrivateMessage(String sender, String login, String hostname, String target, String message) {}
 
 
     /**

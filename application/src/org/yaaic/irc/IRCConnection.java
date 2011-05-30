@@ -208,42 +208,39 @@ public class IRCConnection extends PircBot
         Message message = new Message(sender + " " + action);
         message.setIcon(R.drawable.action);
 
-        if (target.equals(this.getNick())) {
+        String queryNick = target;
+        if (queryNick.equals(this.getNick())) {
             // We are the target - this is an action in a query
-            conversation = server.getConversation(sender);
-            if (conversation == null) {
-                // Open a query if there's none yet
-                conversation = new Query(sender);
-                server.addConversation(conversation);
-                conversation.addMessage(message);
+            queryNick = sender;
+        }
+        conversation = server.getConversation(queryNick);
 
-                Intent intent = Broadcast.createConversationIntent(
-                    Broadcast.CONVERSATION_NEW,
-                    server.getId(),
-                    sender
-                );
-                service.sendBroadcast(intent);
-            } else {
-                conversation.addMessage(message);
+        if (conversation == null) {
+            // Open a query if there's none yet
+            conversation = new Query(queryNick);
+            server.addConversation(conversation);
+            conversation.addMessage(message);
 
-                Intent intent = Broadcast.createConversationIntent(
-                    Broadcast.CONVERSATION_MESSAGE,
-                    server.getId(),
-                    sender
-                );
-                service.sendBroadcast(intent);
-            }
+            Intent intent = Broadcast.createConversationIntent(
+                Broadcast.CONVERSATION_NEW,
+                server.getId(),
+                queryNick
+            );
+            service.sendBroadcast(intent);
         } else {
-            // A action in a channel
-            conversation = server.getConversation(target);
             conversation.addMessage(message);
 
             Intent intent = Broadcast.createConversationIntent(
                 Broadcast.CONVERSATION_MESSAGE,
                 server.getId(),
-                target
+                queryNick
             );
             service.sendBroadcast(intent);
+        }
+
+        if (sender.equals(this.getNick())) {
+           // Don't notify for something sent in our name
+           return;
         }
 
         boolean mentioned = isMentioned(action);
@@ -584,22 +581,26 @@ public class IRCConnection extends PircBot
      * On Private Message
      */
     @Override
-    protected void onPrivateMessage(String sender, String login, String hostname, String text)
+    protected void onPrivateMessage(String sender, String login, String hostname, String target, String text)
     {
         Message message = new Message("<" + sender + "> " + text);
+        String queryNick = sender;
 
-        Conversation conversation = server.getConversation(sender);
+        if (queryNick.equals(this.getNick())) {
+            queryNick = target;
+        }
+        Conversation conversation = server.getConversation(queryNick);
 
         if (conversation == null) {
             // Open a query if there's none yet
-            conversation = new Query(sender);
+            conversation = new Query(queryNick);
             conversation.addMessage(message);
             server.addConversation(conversation);
 
             Intent intent = Broadcast.createConversationIntent(
                 Broadcast.CONVERSATION_NEW,
                 server.getId(),
-                sender
+                queryNick
             );
             service.sendBroadcast(intent);
         } else {
@@ -608,9 +609,14 @@ public class IRCConnection extends PircBot
             Intent intent = Broadcast.createConversationIntent(
                 Broadcast.CONVERSATION_MESSAGE,
                 server.getId(),
-                sender
+                queryNick
             );
             service.sendBroadcast(intent);
+        }
+
+        if (sender.equals(this.getNick())) {
+            // Don't notify for something sent in our name
+            return;
         }
 
         service.updateNotification(
