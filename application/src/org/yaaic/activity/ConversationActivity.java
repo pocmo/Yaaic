@@ -939,6 +939,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         input.getText().replace(start, end, nick, 0, nick.length());
         // put cursor after inserted text
         input.setSelection(start + nick.length());
+        input.clearComposingText();
         input.post(new Runnable() {
             @Override
             public void run() {
