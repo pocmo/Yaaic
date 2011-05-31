@@ -727,6 +727,14 @@ public class IRCConnection extends PircBot
             target
         );
         service.sendBroadcast(intent);
+
+        // update the displayed conversation title if necessary
+        intent = Broadcast.createConversationIntent(
+            Broadcast.CONVERSATION_TOPIC,
+            server.getId(),
+            target
+        );
+        service.sendBroadcast(intent);
     }
 
     /**
@@ -751,14 +759,6 @@ public class IRCConnection extends PircBot
 
         Intent intent = Broadcast.createConversationIntent(
             Broadcast.CONVERSATION_MESSAGE,
-            server.getId(),
-            target
-        );
-        service.sendBroadcast(intent);
-
-        // update the displayed conversation title if necessary
-        intent = Broadcast.createConversationIntent(
-            Broadcast.CONVERSATION_TOPIC,
             server.getId(),
             target
         );
