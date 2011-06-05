@@ -53,6 +53,10 @@ public class IRCConnection extends PircBot
     private ArrayList<String> autojoinChannels;
     private Pattern mNickMatch;
 
+    private boolean isQuitting = false;
+    private boolean disposeRequested = false;
+    private Object isQuittingLock = new Object();
+
     /**
      * Create a new connection
      * 
@@ -1136,6 +1140,12 @@ public class IRCConnection extends PircBot
             );
             service.sendBroadcast(cIntent);
         }
+
+        synchronized(isQuittingLock) {
+            isQuitting = false;
+            if (disposeRequested)
+                super.dispose();
+        }
     }
 
     /**
@@ -1210,12 +1220,27 @@ public class IRCConnection extends PircBot
     @Override
     public void quitServer()
     {
+        quitServer(service.getSettings().getQuitMessage());
+    }
+
+    @Override
+    public void quitServer(final String message)
+    {
+        synchronized(isQuittingLock) {
+            isQuitting = true;
+        }
+
         new Thread() {
             @Override
             public void run() {
-                quitServer(service.getSettings().getQuitMessage());
+                superClassQuitServer(message);
             }
         }.start();
+    }
+
+    private final void superClassQuitServer(String message)
+    {
+        super.quitServer(message);
     }
 
     /**
@@ -1235,5 +1260,16 @@ public class IRCConnection extends PircBot
     private void updateNickMatchPattern()
     {
         mNickMatch = Pattern.compile("(?:^|[\\s?!'�:;,.])"+Pattern.quote(getNick())+"(?:[\\s?!'�:;,.]|$)", Pattern.CASE_INSENSITIVE);
+    }
+
+    @Override
+    public void dispose()
+    {
+        synchronized(isQuittingLock) {
+            if (isQuitting)
+                disposeRequested = true;
+            else
+                super.dispose();
+        }
     }
 }

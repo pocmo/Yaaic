@@ -357,7 +357,8 @@ public abstract class PircBot implements ReplyConstants {
      *
      * @param reason The reason for quitting the server.
      */
-    public final void quitServer(String reason) {
+    // XXX PircBot patch -- we need to override this method in Yaaic
+    public void quitServer(String reason) {
         this.sendRawLine("QUIT :" + reason);
     }
 
