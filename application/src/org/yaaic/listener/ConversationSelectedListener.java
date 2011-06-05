@@ -88,6 +88,7 @@ public class ConversationSelectedListener implements OnItemSelectedListener
             if (conversation.getNewMentions() > 0) {
                 Intent i = new Intent(ctx, IRCService.class);
                 i.setAction(IRCService.ACTION_ACK_NEW_MENTIONS);
+                i.putExtra(IRCService.EXTRA_ACK_SERVERID, server.getId());
                 i.putExtra(IRCService.EXTRA_ACK_CONVTITLE, conversation.getName());
                 ctx.startService(i);
             }

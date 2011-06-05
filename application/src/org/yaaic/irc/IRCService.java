@@ -70,6 +70,7 @@ public class IRCService extends Service
     public static final String ACTION_FOREGROUND = "org.yaaic.service.foreground";
     public static final String ACTION_BACKGROUND = "org.yaaic.service.background";
     public static final String ACTION_ACK_NEW_MENTIONS = "org.yaaic.service.ack_new_mentions";
+    public static final String EXTRA_ACK_SERVERID = "org.yaaic.service.ack_serverid";
     public static final String EXTRA_ACK_CONVTITLE = "org.yaaic.service.ack_convtitle";
 
     private NotificationManager notificationManager;
@@ -191,7 +192,7 @@ public class IRCService extends Service
         } else if (ACTION_BACKGROUND.equals(intent.getAction()) && !foreground) {
             stopForegroundCompat(FOREGROUND_NOTIFICATION);
         } else if (ACTION_ACK_NEW_MENTIONS.equals(intent.getAction())) {
-            ackNewMentions(intent.getStringExtra(EXTRA_ACK_CONVTITLE));
+            ackNewMentions(intent.getIntExtra(EXTRA_ACK_SERVERID, -1), intent.getStringExtra(EXTRA_ACK_CONVTITLE));
         }
     }
 
@@ -212,7 +213,13 @@ public class IRCService extends Service
             PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0);
 
             if (contentText == null) {
-                if (!connectedServerTitles.isEmpty()) {
+                if (newMentions >= 1) {
+                    StringBuilder sb = new StringBuilder();
+                    for (Conversation conv : mentions.values()) {
+                        sb.append(conv.getName() + " (" + conv.getNewMentions() + "), ");
+                    }
+                    contentText = getString(R.string.notification_mentions, sb.substring(0, sb.length()-2));
+                } else if (!connectedServerTitles.isEmpty()) {
                     StringBuilder sb = new StringBuilder();
                     for (String title : connectedServerTitles) {
                         sb.append(title + ", ");
@@ -240,23 +247,10 @@ public class IRCService extends Service
     }
 
     /**
-     * Update the status bar notification for a new mention
+     * Generates a string uniquely identifying a conversation.
      */
-    private void notifyMention(String msg, boolean vibrate, boolean sound)
-    {
-        String contentText = null;
-
-        if (newMentions == 1 && msg != null) {
-            contentText = msg;
-        } else if (newMentions >= 1) {
-            StringBuilder sb = new StringBuilder();
-            for (Conversation conv : mentions.values()) {
-                sb.append(conv.getName() + " (" + conv.getNewMentions() + "), ");
-            }
-            contentText = getString(R.string.notification_mentions, sb.substring(0, sb.length()-2));
-        }
-
-        updateNotification(msg, contentText, vibrate, sound);
+    public String getConversationId(int serverId, String title) {
+        return "" + serverId + ":" + title;
     }
 
     /**
@@ -267,20 +261,23 @@ public class IRCService extends Service
      * @param vibrate Whether the notification should include vibration
      * @param sound Whether the notification should include sound
      */
-    public void addNewMention(Conversation conversation, String msg, boolean vibrate, boolean sound)
+    public synchronized void addNewMention(int serverId, Conversation conversation, String msg, boolean vibrate, boolean sound)
     {
         if (conversation == null)
             return;
 
-        String convTitle = conversation.getName();
-
         conversation.addNewMention();
         ++newMentions;
-        if (!mentions.containsKey(convTitle)) {
-            mentions.put(convTitle, conversation);
+        String convId = getConversationId(serverId, conversation.getName());
+        if (!mentions.containsKey(convId)) {
+            mentions.put(convId, conversation);
         }
 
-        notifyMention(msg, vibrate, sound);
+        if (newMentions == 1) {
+            updateNotification(msg, msg, vibrate, sound);
+        } else {
+            updateNotification(msg, null, vibrate, sound);
+        }
     }
 
     /**
@@ -288,12 +285,12 @@ public class IRCService extends Service
      *
      * @param convTitle The title of the conversation whose new mentions have been read
      */
-    public void ackNewMentions(String convTitle)
+    public synchronized void ackNewMentions(int serverId, String convTitle)
     {
         if (convTitle == null)
             return;
 
-        Conversation conversation = mentions.remove(convTitle);
+        Conversation conversation = mentions.remove(getConversationId(serverId, convTitle));
         if (conversation == null)
             return;
         newMentions -= conversation.getNewMentions();
@@ -301,7 +298,7 @@ public class IRCService extends Service
         if (newMentions < 0)
             newMentions = 0;
 
-        notifyMention(null, false, false);
+        updateNotification(null, null, false, false);
     }
 
     /**
@@ -309,7 +306,7 @@ public class IRCService extends Service
      *
      * @param title The title of the newly connected server
      */
-    public void notifyConnected(String title)
+    public synchronized void notifyConnected(String title)
     {
         connectedServerTitles.add(title);
         updateNotification(getString(R.string.notification_connected, title), null, false, false);
@@ -320,7 +317,7 @@ public class IRCService extends Service
      *
      * @param title The title of the disconnected server
      */
-    public void notifyDisconnected(String title)
+    public synchronized void notifyDisconnected(String title)
     {
         connectedServerTitles.remove(title);
         updateNotification(getString(R.string.notification_disconnected, title), null, false, false);

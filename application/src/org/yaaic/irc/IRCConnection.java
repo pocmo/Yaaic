@@ -248,6 +248,7 @@ public class IRCConnection extends PircBot
         if (mentioned || target.equals(this.getNick())) {
             if (conversation.getStatus() != Conversation.STATUS_SELECTED || !server.getIsForeground()) {
                 service.addNewMention(
+                    server.getId(),
                     conversation,
                     conversation.getName() + ": " + sender + " " + action,
                     service.getSettings().isVibrateHighlightEnabled(),
@@ -423,6 +424,7 @@ public class IRCConnection extends PircBot
             message.setColor(Message.COLOR_RED);
             if (conversation.getStatus() != Conversation.STATUS_SELECTED || !server.getIsForeground()) {
                 service.addNewMention(
+                    server.getId(),
                     conversation,
                     target + ": <" + sender + "> " + text,
                     service.getSettings().isVibrateHighlightEnabled(),
@@ -632,6 +634,7 @@ public class IRCConnection extends PircBot
 
         if (conversation.getStatus() != Conversation.STATUS_SELECTED || !server.getIsForeground()) {
             service.addNewMention(
+                server.getId(),
                 conversation,
                 "<" + sender + "> " + text,
                 service.getSettings().isVibrateHighlightEnabled(),
