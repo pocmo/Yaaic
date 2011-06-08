@@ -56,15 +56,15 @@ public class IRCService extends Service
     private final IRCBinder binder;
     private final HashMap<Integer, IRCConnection> connections;
     private boolean foreground = false;
-    private ArrayList<String> connectedServerTitles;
-    private LinkedHashMap<String, Conversation> mentions;
+    private final ArrayList<String> connectedServerTitles;
+    private final LinkedHashMap<String, Conversation> mentions;
     private int newMentions = 0;
 
     private static final int FOREGROUND_NOTIFICATION = 1;
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings("unchecked")
     private static final Class[] mStartForegroundSignature = new Class[] { int.class, Notification.class };
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings("unchecked")
     private static final Class[] mStopForegroundSignature = new Class[] { boolean.class };
 
     public static final String ACTION_FOREGROUND = "org.yaaic.service.foreground";
@@ -263,8 +263,9 @@ public class IRCService extends Service
      */
     public synchronized void addNewMention(int serverId, Conversation conversation, String msg, boolean vibrate, boolean sound)
     {
-        if (conversation == null)
+        if (conversation == null) {
             return;
+        }
 
         conversation.addNewMention();
         ++newMentions;
@@ -287,16 +288,19 @@ public class IRCService extends Service
      */
     public synchronized void ackNewMentions(int serverId, String convTitle)
     {
-        if (convTitle == null)
+        if (convTitle == null) {
             return;
+        }
 
         Conversation conversation = mentions.remove(getConversationId(serverId, convTitle));
-        if (conversation == null)
+        if (conversation == null) {
             return;
+        }
         newMentions -= conversation.getNewMentions();
         conversation.clearNewMentions();
-        if (newMentions < 0)
+        if (newMentions < 0) {
             newMentions = 0;
+        }
 
         updateNotification(null, null, false, false);
     }
