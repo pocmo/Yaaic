@@ -30,20 +30,20 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         android:text="@string/channel_add_description"
         android:padding="5dp" />
     <ListView
-		android:id="@+id/channels"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" />
+        android:id="@+id/channels"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
         <LinearLayout
-			android:orientation="horizontal"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content">
-	        <EditText
-	            android:id="@+id/channel"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:singleLine="true"
-	            android:text="#"
-	            android:layout_weight="1" />
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/channel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="#"
+                android:layout_weight="1" />
             <Button
                 android:id="@+id/add"
                 android:layout_width="wrap_content"
@@ -52,20 +52,20 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
                 android:minWidth="75dp" />
         </LinearLayout>
         <LinearLayout
-	        android:orientation="horizontal"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content">
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
             <Button
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:id="@+id/ok"
-				android:text="@string/action_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ok"
+                android:text="@string/action_ok"
                 android:minWidth="90dp" />
-			<Button
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:id="@+id/cancel"
-				android:text="@string/action_cancel"
-				android:minWidth="90dp" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cancel"
+                android:text="@string/action_cancel"
+                android:minWidth="90dp" />
         </LinearLayout>
 </LinearLayout>
