@@ -22,7 +22,6 @@ package org.yaaic.adapter;
 
 import java.util.LinkedList;
 
-import org.yaaic.R;
 import org.yaaic.listener.MessageClickListener;
 import org.yaaic.model.Conversation;
 import org.yaaic.view.MessageListView;
@@ -30,8 +29,6 @@ import org.yaaic.view.MessageListView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Gallery;
-import android.widget.ListView;
 import android.widget.TextView;
 
 /**
