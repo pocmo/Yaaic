@@ -58,7 +58,6 @@ import org.yaaic.view.MessageListView;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -76,8 +75,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnKeyListener;
 import android.view.Window;
+import android.view.View.OnKeyListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -119,11 +118,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     //      join command would be called in onActivityResult(). joinChannelBuffer will save the
     //      channel name in onActivityResult() and run the join command in onResume().
     private String joinChannelBuffer;
-
-    // flag passed to setInputType later
-    // shall be TYPE_TEXT_FLAG_NO_SUGGESTIONS but it's not supported in all API levels (only in 5+)
-    // We'll set it to 0 if it's not supported
-    private int setInputTypeFlag;
 
     private int historySize;
 
@@ -234,6 +228,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         }
 
         int setInputTypeFlags = 0;
+
         if (settings.autoCorrectText()) {
             setInputTypeFlags |= InputType.TYPE_TEXT_FLAG_AUTO_CORRECT;
         } else {
@@ -243,7 +238,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             }
         }
         if (settings.autoCapSentences()) {
-           setInputTypeFlags |= InputType.TYPE_TEXT_FLAG_CAP_SENTENCES;
+            setInputTypeFlags |= InputType.TYPE_TEXT_FLAG_CAP_SENTENCES;
         }
         if (isLandscape) {
             /* Replace the Enter key with a smiley instead of Send, to make it
@@ -586,8 +581,9 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             Channel channel = (Channel) server.getConversation(selected);
             StringBuilder sb = new StringBuilder();
             sb.append(server.getTitle() + " - " + channel.getName());
-            if (!(channel.getTopic()).equals(""))
+            if (!(channel.getTopic()).equals("")) {
                 sb.append(" - " + channel.getTopic());
+            }
             ((TextView) findViewById(R.id.title)).setText(sb.toString());
         }
     }
