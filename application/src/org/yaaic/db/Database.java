@@ -410,6 +410,11 @@ public class Database extends SQLiteOpenHelper
         server.setId(cursor.getInt(cursor.getColumnIndex((ServerConstants._ID))));
         server.setCharset(cursor.getString(cursor.getColumnIndex(ServerConstants.CHARSET)));
 
+        String autoConnectvalue = cursor.getString(cursor.getColumnIndex(ServerConstants.AUTOCONNECT));
+        if (autoConnectvalue != null && autoConnectvalue.equals("1")) {
+            server.setautoConnect(true);
+        }
+
         String useSSLvalue = cursor.getString(cursor.getColumnIndex(ServerConstants.USE_SSL));
         if (useSSLvalue != null && useSSLvalue.equals("1")) {
             server.setUseSSL(true);

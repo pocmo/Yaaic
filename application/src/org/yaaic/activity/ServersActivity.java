@@ -149,6 +149,18 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
     public void onServiceConnected(ComponentName name, IBinder service)
     {
         binder = (IRCBinder) service;
+        for (int i = 0; i < adapter.getCount(); i++) {
+            Server server = adapter.getItem(i);
+            if (server != null && server.getStatus() == Status.DISCONNECTED && server.autoConnect() == true) {
+                server.setStatus(Status.CONNECTING);
+                binder.connect(server);
+            }
+        }
+        // Start service
+        Intent intent = new Intent(this, IRCService.class);
+        intent.setAction(IRCService.ACTION_FOREGROUND);
+        startService(intent);
+        bindService(intent, this, 0);
     }
 
     /**

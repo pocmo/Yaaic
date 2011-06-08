@@ -106,6 +106,7 @@ public class AddServerActivity extends Activity implements OnClickListener
             ((EditText) findViewById(R.id.nickname)).setText(server.getIdentity().getNickname());
             ((EditText) findViewById(R.id.ident)).setText(server.getIdentity().getIdent());
             ((EditText) findViewById(R.id.realname)).setText(server.getIdentity().getRealName());
+            ((CheckBox) findViewById(R.id.autoConnect)).setChecked(server.autoConnect());
             ((CheckBox) findViewById(R.id.useSSL)).setChecked(server.useSSL());
 
             // Select charset
@@ -225,7 +226,7 @@ public class AddServerActivity extends Activity implements OnClickListener
             server.getHost(),
             server.getPort(),
             server.getPassword(),
-            false, // auto connect
+            server.autoConnect(),
             server.useSSL(),
             identityId,
             server.getCharset()
@@ -261,7 +262,7 @@ public class AddServerActivity extends Activity implements OnClickListener
             server.getHost(),
             server.getPort(),
             server.getPassword(),
-            false, // auto connect
+            server.autoConnect(),
             server.useSSL(),
             identityId,
             server.getCharset()
@@ -301,10 +302,8 @@ public class AddServerActivity extends Activity implements OnClickListener
         int port = Integer.parseInt(((EditText) findViewById(R.id.port)).getText().toString().trim());
         String password = ((EditText) findViewById(R.id.password)).getText().toString().trim();
         String charset = ((Spinner) findViewById(R.id.charset)).getSelectedItem().toString();
+        Boolean autoConnect = ((CheckBox) findViewById(R.id.autoConnect)).isChecked();
         Boolean useSSL = ((CheckBox) findViewById(R.id.useSSL)).isChecked();
-
-        // not in use yet
-        //boolean autoConnect = ((CheckBox) findViewById(R.id.autoconnect)).isChecked();
 
         Server server = new Server();
         server.setHost(host);
@@ -312,6 +311,7 @@ public class AddServerActivity extends Activity implements OnClickListener
         server.setPassword(password);
         server.setTitle(title);
         server.setCharset(charset);
+        server.setautoConnect(autoConnect);
         server.setUseSSL(useSSL);
         server.setStatus(Status.DISCONNECTED);
 
