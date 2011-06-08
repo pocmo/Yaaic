@@ -893,7 +893,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             List<Integer> result = new ArrayList<Integer>();
 
             for (int i = 0; i < users.length; i++) {
-                if (users[i].toLowerCase().startsWith(word)) {
+                String nick = removeStatusChar(users[i].toLowerCase());
+                if (nick.startsWith(word)) {
                     result.add(Integer.valueOf(i));
                 }
             }
@@ -926,6 +927,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     private void insertNickCompletion(EditText input, String nick) {
         int start = input.getSelectionStart();
         int end  = input.getSelectionEnd();
+        nick = removeStatusChar(nick);
 
         if (start == 0) {
             nick += ":";
@@ -952,5 +954,21 @@ public class ConversationActivity extends Activity implements ServiceConnection,
      */
     private void openSoftKeyboard(View view) {
         ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    /**
+     * Remove the status char off the front of a nick if one is present
+     * 
+     * @param nick
+     * @return nick without statuschar
+     */
+    private String removeStatusChar(String nick)
+    {
+        /* Discard status characters */
+        if (nick.startsWith("@") || nick.startsWith("+")
+            || nick.startsWith("%")) {
+            nick = nick.substring(1);
+        }
+        return nick;
     }
 }
