@@ -151,6 +151,10 @@ public class IRCConnection extends PircBot
         message.setColor(Message.COLOR_GREEN);
         server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(message);
 
+        Message infoMessage = new Message(service.getString(R.string.message_now_login));
+        infoMessage.setColor(Message.COLOR_GREY);
+        server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(infoMessage);
+
         Intent intent = Broadcast.createConversationIntent(
             Broadcast.CONVERSATION_MESSAGE,
             server.getId(),
@@ -203,6 +207,18 @@ public class IRCConnection extends PircBot
                 joinChannel(channel);
             }
         }
+
+        Message infoMessage = new Message(service.getString(R.string.message_login_done));
+        infoMessage.setColor(Message.COLOR_GREY);
+        server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(infoMessage);
+
+        Intent intent = Broadcast.createConversationIntent(
+            Broadcast.CONVERSATION_MESSAGE,
+            server.getId(),
+            ServerInfo.DEFAULT_NAME
+        );
+
+        service.sendBroadcast(intent);
     }
     /**
      * On channel action
