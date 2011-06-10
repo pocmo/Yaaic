@@ -38,7 +38,7 @@ public class Authentication
      */
     public boolean hasNickservCredentials()
     {
-        return this.nickservPassword != null;
+        return nickservPassword != null && nickservPassword.length() > 0;
     }
 
     /**
@@ -48,7 +48,7 @@ public class Authentication
      */
     public boolean hasSaslCredentials()
     {
-        return this.saslUsername != null;
+        return saslUsername != null && saslUsername.length() > 0;
     }
 
     /**

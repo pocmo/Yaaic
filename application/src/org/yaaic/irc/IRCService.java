@@ -399,6 +399,13 @@ public class IRCService extends Service
                         connection.setEncoding(server.getCharset());
                     }
 
+                    if (server.getAuthentication().hasSaslCredentials()) {
+                        connection.setSaslCredentials(
+                            server.getAuthentication().getSaslUsername(),
+                            server.getAuthentication().getSaslPassword()
+                        );
+                    }
+
                     if (server.getPassword() != "") {
                         connection.connect(server.getHost(), server.getPort(), server.getPassword());
                     } else {
