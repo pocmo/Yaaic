@@ -55,7 +55,7 @@ public class IRCConnection extends PircBot
 
     private boolean isQuitting = false;
     private boolean disposeRequested = false;
-    private Object isQuittingLock = new Object();
+    private final Object isQuittingLock = new Object();
 
     /**
      * Create a new connection
@@ -157,9 +157,12 @@ public class IRCConnection extends PircBot
             ServerInfo.DEFAULT_NAME
         );
 
+        if (server.getAuthentication().hasNickservCredentials()) {
+            identify(server.getAuthentication().getNickservPassword());
+        }
+
         service.sendBroadcast(intent);
     }
-
 
     /**
      * On register
@@ -244,8 +247,8 @@ public class IRCConnection extends PircBot
         }
 
         if (sender.equals(this.getNick())) {
-           // Don't notify for something sent in our name
-           return;
+            // Don't notify for something sent in our name
+            return;
         }
 
         boolean mentioned = isMentioned(action);
@@ -1143,8 +1146,9 @@ public class IRCConnection extends PircBot
 
         synchronized(isQuittingLock) {
             isQuitting = false;
-            if (disposeRequested)
+            if (disposeRequested) {
                 super.dispose();
+            }
         }
     }
 
@@ -1266,10 +1270,11 @@ public class IRCConnection extends PircBot
     public void dispose()
     {
         synchronized(isQuittingLock) {
-            if (isQuitting)
+            if (isQuitting) {
                 disposeRequested = true;
-            else
+            } else {
                 super.dispose();
+            }
         }
     }
 }
