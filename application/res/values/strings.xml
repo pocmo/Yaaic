@@ -56,6 +56,13 @@
     <string name="channel_add_description">These channels will be automatically joined after connect.</string>
     <string name="command_add_description">These commands will be executed after connect.</string>
 
+    <string name="auth_description">Yaaic will authenticate you with these services after connect.</string>
+    <string name="auth_nickserv">Authenticate with Nickserv</string>
+    <string name="auth_nickserv_password">Nickserv password</string>
+    <string name="auth_sasl">Authenticate via SASL</string>
+    <string name="auth_sasl_username">SASL username</string>
+    <string name="auth_sasl_password">SASL password</string>
+
     <string name="validation_blank_title">Title cannot be blank</string>
     <string name="validation_blank_host">Host cannot be blank</string>
     <string name="validation_invalid_port">Enter a numeric port</string>

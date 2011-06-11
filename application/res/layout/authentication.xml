@@ -28,18 +28,18 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Yaaic will authenticate you with these services after connect."
+        android:text="@string/auth_description"
         android:padding="5dp" />
     <CheckBox
         android:id="@+id/nickserv_checkbox"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Authenticate with Nickserv" />
+        android:text="@string/auth_nickserv" />
     <TextView
         android:id="@+id/nickserv_label_password"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Nickserv password"
+        android:text="@string/auth_nickserv_password"
         android:enabled="false" />
     <EditText
         android:id="@+id/nickserv_password"
@@ -51,12 +51,12 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/sasl_checkbox"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Authenticate via SASL" />
+        android:text="@string/auth_sasl" />
     <TextView
         android:id="@+id/sasl_label_username"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="SASL username"
+        android:text="@string/auth_sasl_username"
         android:enabled="false" />
     <EditText
         android:id="@+id/sasl_username"
@@ -67,7 +67,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/sasl_label_password"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="SASL password"
+        android:text="@string/auth_sasl_password"
         android:enabled="false"/>
     <EditText
         android:id="@+id/sasl_password"
