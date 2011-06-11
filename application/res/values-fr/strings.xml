@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="add_server_menu">Ajouter un serveur</string>
-    <string name="add_server_list">Ajouter ce serveur</string>
+    <string name="add_server_list">Ajouter un serveur</string>
 
     <string name="settings_menu">Paramètres</string>
     <string name="about_menu">A propos</string>
@@ -29,6 +29,7 @@
     <string name="realname">Nom réel</string>
 
     <string name="server">Serveur</string>
+    <string name="authentication">Identification</string>
     <string name="channel">Canal</string>
     <string name="channels">Canaux</string>
     <string name="commands">Commandes</string>
@@ -54,6 +55,13 @@
     <string name="alias_add_description">Ces aliases seront utilisées si le pseudo principal n\'est pas disponible.</string>
     <string name="channel_add_description">Ces canaux seront rejoints automatiquement après la connexion.</string>
     <string name="command_add_description">Ces commandes seront exécutées après la connexion.</string>
+
+    <string name="auth_description">Yaaic vous identifiera auprès de ces services après la connexion.</string>
+    <string name="auth_nickserv">S\'identifier avec Nickserv</string>
+    <string name="auth_nickserv_password">Mot de passe Nickserv</string>
+    <string name="auth_sasl">S\'identifier avec SASL</string>
+    <string name="auth_sasl_username">Utilisateur SASL</string>
+    <string name="auth_sasl_password">Mot de passe SASL</string>
 
     <string name="validation_blank_title">Le nom ne peut pas être vide</string>
     <string name="validation_blank_host">L\'adresse ne peut pas être vide</string>
@@ -113,10 +121,14 @@
     <string name="command_desc_voice">Donne le statut de voicé à un utilisateur</string>
     <string name="command_desc_whois">Obtient des informations sur un utilisateur</string>
 
+    <string name="notification_running">Yaaic est en cours</string>
     <string name="notification_connected">Connecté à %1$s</string>
     <string name="notification_disconnected">Déconnecté de %1$s</string>
+    <string name="notification_mentions">Nouveaux messages dans : %1$s</string>
 
     <string name="message_connected">Connecté à %1$s</string>
+    <string name="message_now_login">Identification en cours...</string>
+    <string name="message_login_done">Identification terminée.</string>
     <string name="message_deop">%1$s retire le statut d\'opérateur de %2$s</string>
     <string name="message_devoice">%1$s retire le statut voicé de %2$s</string>
     <string name="message_invite_you">%1$s vous invite dans le canal %2$s</string>
@@ -201,4 +213,10 @@
     <string name="settings_mirc_colors_desc">Affiche les couleurs mIRC dans les messages</string>
     <string name="settings_graphical_smilies_title">Smileys graphiques</string>
     <string name="settings_graphical_smilies_desc">Les smileys textuels seront affichés sous forme d\'images</string>
+    <string name="settings_autocorrect_text_title">Correction automatique</string>
+    <string name="settings_autocorrect_text_desc">Utilise un dictionnaire pour corriger automatiquement le texte entré dans une discussion</string>
+    <string name="settings_autocap_sentences_title">Ajouter des majuscules automatiquement</string>
+    <string name="settings_autocap_sentences_desc">Ajoute automatiquement une masjucule au premier mot de chaque phrase</string>
+    <string name="settings_history_size_title">Taille de l\'historique</string>
+    <string name="settings_history_size_desc">Nombre de lignes de conversation à stocker dans l\'historique</string>
 </resources>
