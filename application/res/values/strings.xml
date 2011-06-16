@@ -129,6 +129,7 @@
     <string name="message_connected">Connected to %1$s</string>
     <string name="message_now_login">Now logging in...</string>
     <string name="message_login_done">Server login done.</string>
+    <string name="message_motd_suppressed">MOTD suppressed. To see it, use the ‘/motd’ command.</string>
     <string name="message_deop">%1$s deops %2$s</string>
     <string name="message_devoice">%1$s devoices %2$s</string>
     <string name="message_invite_you">%1$s invites you into %2$s</string>

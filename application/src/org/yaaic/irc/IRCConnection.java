@@ -1098,6 +1098,9 @@ public class IRCConnection extends PircBot
             return;
         }
         if (code == 376 && ignoreMOTD) {
+            Message motdMessage = new Message(service.getString(R.string.message_motd_suppressed));
+            motdMessage.setColor(Message.COLOR_GREY);
+            server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(motdMessage);
             ignoreMOTD = false;
             return;
         }
