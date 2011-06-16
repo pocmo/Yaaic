@@ -176,9 +176,13 @@
     <string name="settings_connection">Connection</string>
     <string name="settings_reconnect_title">Reconnect</string>
     <string name="settings_reconnect_desc">Automatically reconnect on disconnect</string>
+
     <string name="settings_reconnect_interval_title">Reconnect interval</string>
     <string name="settings_reconnect_interval_desc">Number of minutes between reconnection tries</string>
     <string name="settings_reconnect_interval_dialog_title">Reconnect interval</string>
+
+    <string name="settings_ignore_motd_title">Ignore MOTD</string>
+    <string name="settings_ignore_motd_desc">Don\'t show the automatic ‘Message of the Day’ sent by the server</string>
 
     <string name="settings_chat">Chat</string>
     <string name="settings_icons_title">Show icons</string>

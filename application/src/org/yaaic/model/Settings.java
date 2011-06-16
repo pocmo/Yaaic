@@ -143,6 +143,19 @@ public class Settings
             resources.getString(R.string.default_reconnect_interval)
         ));
     }
+     
+    /**
+     * Ignore the automatic MOTD?
+     *
+     * @return
+     */
+    public boolean isIgnoreMOTDEnabled()
+    {
+        return preferences.getBoolean(
+            resources.getString(R.string.key_ignore_motd),
+            Boolean.parseBoolean(resources.getString(R.string.default_ignore_motd))
+        );
+    }
 
     /**
      * Get the quit message

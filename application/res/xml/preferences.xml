@@ -37,6 +37,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:entryValues="@array/reconnect_interval_values"
             android:key="@string/key_reconnect_interval"
             android:defaultValue="@string/default_reconnect_interval" />
+        <CheckBoxPreference
+            android:title="@string/settings_ignore_motd_title"
+            android:summary="@string/settings_ignore_motd_desc"
+            android:key="@string/key_ignore_motd"
+            android:defaultValue="@string/default_ignore_motd" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/settings_chat">
