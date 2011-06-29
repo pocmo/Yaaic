@@ -134,6 +134,12 @@ public class AddServerActivity extends Activity implements OnClickListener
             if (uri.getPort() != -1) {
                 ((EditText) findViewById(R.id.port)).setText(String.valueOf(uri.getPort()));
             }
+            if (uri.getPath() != null) {
+                channels.add(uri.getPath().replace('/', '#'));
+            }
+            if (uri.getQuery() != null) {
+                ((EditText) findViewById(R.id.password)).setText(String.valueOf(uri.getQuery()));
+            }
         }
     }
 
