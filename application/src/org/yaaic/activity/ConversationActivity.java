@@ -831,7 +831,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
      * Complete a nick in the input line
      */
     private void doNickCompletion(EditText input) {
-        String text = input.getText().toString();
+        String text = input.getText().toString().toLowerCase();
 
         if (text.length() <= 0) {
             return;
