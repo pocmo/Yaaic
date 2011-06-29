@@ -104,6 +104,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:summary="@string/settings_autocap_sentences_desc"
             android:key="@string/key_autocap_sentences"
             android:defaultValue="@string/default_autocap_sentences" />
+        <CheckBoxPreference
+            android:title="@string/settings_fullscreen_conversation_title"
+            android:summary="@string/settings_fullscreen_conversation_desc"
+            android:key="@string/key_fullscreen_conversation"
+            android:defaultValue="@string/default_fullscreen_conversation" />
         <EditTextPreference
             android:title="@string/settings_history_size_title"
             android:summary="@string/settings_history_size_desc"

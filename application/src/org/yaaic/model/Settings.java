@@ -284,6 +284,17 @@ public class Settings
     }
 
     /**
+     * Whether conversations should be viewed in Fullscreen glory
+     */
+    public boolean fullscreenConversations()
+    {
+        return preferences.getBoolean(
+            resources.getString(R.string.key_fullscreen_conversation),
+            Boolean.parseBoolean(resources.getString(R.string.default_fullscreen_conversation))
+        );
+    }
+
+    /**
      * Get the conversation history size.
      *
      * @return The conversation history size

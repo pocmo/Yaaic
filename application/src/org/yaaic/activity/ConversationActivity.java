@@ -76,6 +76,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.View.OnKeyListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -179,6 +180,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
         serverId = getIntent().getExtras().getInt("serverId");
         server = Yaaic.getInstance().getServerById(serverId);
+        Settings settings = new Settings(this);
 
         // Finish activity if server does not exist anymore - See #55
         if (server == null) {
@@ -188,6 +190,9 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         setTitle("Yaaic - " + server.getTitle());
 
         setContentView(R.layout.conversations);
+        if (settings.fullscreenConversations()){
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
 
         boolean isLandscape = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
 
@@ -208,7 +213,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         deck.setOnItemClickListener(new ConversationClickListener(deckAdapter, switcher));
         deck.setBackgroundDrawable(new NonScalingBackgroundDrawable(this, deck, R.drawable.background));
 
-        Settings settings = new Settings(this);
         historySize = settings.getHistorySize();
 
         if (server.getStatus() == Status.PRE_CONNECTING) {
