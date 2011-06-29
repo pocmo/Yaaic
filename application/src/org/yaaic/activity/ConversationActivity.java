@@ -121,6 +121,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
     private int historySize;
 
+    private boolean reconnectDialogActive = false;
+
     OnKeyListener inputKeyListener = new OnKeyListener() {
         /**
          * On key pressed (input line)
@@ -392,6 +394,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         if (server.getStatus() == Status.PRE_CONNECTING && getIntent().hasExtra("connect")) {
             server.setStatus(Status.CONNECTING);
             binder.connect(server);
+        } else {
+            onStatusUpdate();
         }
     }
 
@@ -441,6 +445,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         switch (item.getItemId()) {
             case R.id.disconnect:
                 server.setStatus(Status.DISCONNECTED);
+                server.setMayReconnect(false);
                 binder.getService().getConnection(serverId).quitServer();
                 server.clearConversations();
                 setResult(RESULT_OK);
@@ -604,10 +609,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             input.setEnabled(false);
 
             if (server.getStatus() == Status.CONNECTING) {
-                deckAdapter.clearConversations();
-                Conversation serverInfo = server.getConversation(ServerInfo.DEFAULT_NAME);
-                serverInfo.setHistorySize(historySize);
-                deckAdapter.addItem(serverInfo);
                 return;
             }
 
@@ -616,27 +617,31 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                 return;
             }
 
-            if (!binder.getService().getSettings().isReconnectEnabled()) {
+            if (!binder.getService().getSettings().isReconnectEnabled() && !reconnectDialogActive) {
+                reconnectDialogActive = true;
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage(getResources().getString(R.string.reconnect_after_disconnect, server.getTitle()))
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
+                        if (!server.isDisconnected()) {
+                            reconnectDialogActive = false;
+                            return;
+                        }
                         binder.getService().getConnection(server.getId()).setAutojoinChannels(
                             server.getCurrentChannelNames()
                         );
-                        server.clearConversations();
-                        deckAdapter.clearConversations();
-                        Conversation serverInfo = server.getConversation(ServerInfo.DEFAULT_NAME);
-                        serverInfo.setHistorySize(historySize);
-                        deckAdapter.addItem(serverInfo);
+                        server.setStatus(Status.CONNECTING);
                         binder.connect(server);
+                        reconnectDialogActive = false;
                     }
                 })
                 .setNegativeButton(getString(R.string.negative_button), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
+                        server.setMayReconnect(false);
+                        reconnectDialogActive = false;
                         dialog.cancel();
                     }
                 });

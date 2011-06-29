@@ -140,6 +140,7 @@ public class IRCConnection extends PircBot
     public void onConnect()
     {
         server.setStatus(Status.CONNECTED);
+        server.setMayReconnect(true);
 
         service.sendBroadcast(
             Broadcast.createServerIntent(Broadcast.SERVER_UPDATE, server.getId())
@@ -372,7 +373,7 @@ public class IRCConnection extends PircBot
     @Override
     protected void onJoin(String target, String sender, String login, String hostname)
     {
-        if (sender.equalsIgnoreCase(getNick())) {
+        if (sender.equalsIgnoreCase(getNick()) && server.getConversation(target) == null) {
             // We joined a new channel
             Conversation conversation = new Channel(target);
             conversation.setHistorySize(service.getSettings().getHistorySize());
@@ -1132,7 +1133,6 @@ public class IRCConnection extends PircBot
         if (service.getSettings().isReconnectEnabled() && server.getStatus() != Status.DISCONNECTED) {
             setAutojoinChannels(server.getCurrentChannelNames());
 
-            server.clearConversations();
             server.setStatus(Status.CONNECTING);
             service.connect(server);
         } else {

@@ -51,6 +51,7 @@ public class Server
     private int status = Status.DISCONNECTED;
     private String selected = "";
     private boolean isForeground = false;
+    private boolean mayReconnect = false;
 
     /**
      * Create a new server object
@@ -442,5 +443,21 @@ public class Server
     public void setIsForeground(boolean isForeground)
     {
         this.isForeground = isForeground;
+    }
+
+    /**
+     * Get whether a reconnect may be attempted if we're disconnected.
+     */
+    public boolean mayReconnect()
+    {
+        return mayReconnect;
+    }
+
+    /**
+     * Set whether a reconnect may be attempted if we're disconnected.
+     */
+    public void setMayReconnect(boolean mayReconnect)
+    {
+        this.mayReconnect = mayReconnect;
     }
 }

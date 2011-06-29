@@ -485,7 +485,7 @@ public class IRCService extends Service
 
         for (int i = 0; i < mSize; i++) {
             server = mServers.get(i);
-            if (server.isDisconnected()) {
+            if (server.isDisconnected() && !server.mayReconnect()) {
                 int serverId = server.getId();
                 synchronized(this) {
                     IRCConnection connection = connections.get(serverId);
