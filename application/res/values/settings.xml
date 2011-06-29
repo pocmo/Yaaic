@@ -51,6 +51,9 @@
     <string name="key_autocap_sentences">autocap_sentences</string>
     <string name="default_autocap_sentences">false</string>
 
+    <string name="key_fullscreen_conversation">fullscreen conversation</string>
+    <string name="default_fullscreen_conversation">false</string>
+
     <string name="key_history_size">history_size</string>
     <string name="default_history_size">30</string>
 </resources>
