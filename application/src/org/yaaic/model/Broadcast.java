@@ -30,6 +30,7 @@ import android.content.Intent;
 public abstract class Broadcast
 {
     public static final String SERVER_UPDATE         = "org.yaaic.server.status";
+    public static final String SERVER_RECONNECT      = "org.yaaic.server.reconnect.";
 
     public static final String CONVERSATION_MESSAGE    = "org.yaaic.conversation.message";
     public static final String CONVERSATION_NEW        = "org.yaaic.conversation.new";

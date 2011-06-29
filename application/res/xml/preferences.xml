@@ -28,6 +28,15 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:summary="@string/settings_reconnect_desc"
             android:key="@string/key_reconnect"
             android:defaultValue="@string/default_reconnect" />
+        <ListPreference
+            android:title="@string/settings_reconnect_interval_title"
+            android:summary="@string/settings_reconnect_interval_desc"
+            android:dialogTitle="@string/settings_reconnect_interval_dialog_title"
+            android:dependency="@string/key_reconnect"
+            android:entries="@array/reconnect_interval_labels"
+            android:entryValues="@array/reconnect_interval_values"
+            android:key="@string/key_reconnect_interval"
+            android:defaultValue="@string/default_reconnect_interval" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/settings_chat">

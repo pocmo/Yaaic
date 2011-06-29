@@ -132,6 +132,19 @@ public class Settings
     }
 
     /**
+     * Get the reconnect interval
+     * 
+     * @return The reconnect interval in minutes
+     */
+    public int getReconnectInterval()
+    {
+        return Integer.parseInt(preferences.getString(
+            resources.getString(R.string.key_reconnect_interval),
+            resources.getString(R.string.default_reconnect_interval)
+        ));
+    }
+
+    /**
      * Get the quit message
      * 
      * @return The message to display when the user disconnects

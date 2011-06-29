@@ -18,6 +18,9 @@
     <string name="key_reconnect">reconnect</string>
     <string name="default_reconnect">false</string>
     
+    <string name="key_reconnect_interval">reconnect_interval</string>
+    <string name="default_reconnect_interval">5</string>
+    
     <string name="key_quitmessage">quitmessage</string>
     <string name="default_quitmessage">Yaaic - Yet another Android IRC client - http://www.yaaic.org</string>
     
