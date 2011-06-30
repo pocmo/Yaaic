@@ -199,9 +199,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
         EditText input = (EditText) findViewById(R.id.input);
         input.setOnKeyListener(inputKeyListener);
-        if (!settings.imeExtract()){
-            input.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
-        }
 
         switcher = (ViewSwitcher) findViewById(R.id.switcher);
 
@@ -254,7 +251,10 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                We'd like to do this in portrait too, but wouldn't have a Send
                button in that case */
             setInputTypeFlags |= InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE;
+        } else if (!settings.imeExtract()){
+            input.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         }
+
         input.setInputType(input.getInputType() | setInputTypeFlags);
 
         // Create a new scrollback history
