@@ -172,7 +172,8 @@
     <string name="settings_timestamp_desc">Anteponer fecha y hora en todos los mensajes</string>
     <string name="settings_24h_title">Formato de 24 horas</string>
     <string name="settings_24h_desc">Usar formato de 24h para fecha y hora</string>
-    <string name="settings_misc">Misc</string>
+    
+    <string name="settings_misc">Miscelaneo</string>
     <string name="settings_quitmessage_title">Quitar mensaje</string>
     <string name="settings_quitmessage_desc">Mensaje para mostrar cuando te desconectas</string>
     <string name="settings_quitmessage_dialog_title">Mensaje de desconexión</string>
@@ -182,4 +183,22 @@
     <string name="settings_fontsize_dialog_title">Tamaño de la fuente</string>
     <string name="settings_voice_recognition_title">Reconocimiento de voz</string>
     <string name="settings_voice_recognition_desc">Mostrar boton para reconocimiento de voz</string>
+    <string name="settings_joinpartquit_title">Mostrar menjes de partida</string>
+    <string name="settings_joinpartquit_desc">Mostra mensajes cuando jente sale y entra</string>
+    <string name="settings_noticeserverwindow_title">Noticias en ventana del servidor</string>
+    <string name="settings_noticeserverwindow_desc">Muestra noticias del systema en la ventana del servidor</string>
+    <string name="settings_mirc_colors_title">Mostrar colores de mensajes</string>
+    <string name="settings_mirc_colors_desc">Mostrar mensajes mIRC con color</string>
+    <string name="settings_graphical_smilies_title">Mostrar esmilys graficos</string>
+    <string name="settings_graphical_smilies_desc">Esmilys seran convertidos a imagenes</string>
+    <string name="settings_autocorrect_text_title">Auto correjir entradas</string>
+    <string name="settings_autocorrect_text_desc">Usar un diccionario para autocorrejir texto</string>
+    <string name="settings_autocap_sentences_title">Auto-capitalizar mensajes</string>
+    <string name="settings_autocap_sentences_desc">Automaticamenta capitalizar la primera lentra en oraciones</string>
+    <string name="settings_ime_extract_title">Ingresos multilinia</string>
+    <string name="settings_ime_extract_desc">Hace la ventana de ingreso mas grande en modo paisaje</string>
+    <string name="settings_fullscreen_conversation_title">Maximizar chateo</string>
+    <string name="settings_fullscreen_conversation_desc">Maximiza la ventana de chateo</string>
+    <string name="settings_history_size_title">Tamaño de historial</string>
+    <string name="settings_history_size_desc">Numero de linias que debemos mandener en la ventana</string>
 </resources>

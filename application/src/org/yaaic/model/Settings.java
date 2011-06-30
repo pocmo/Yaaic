@@ -273,6 +273,17 @@ public class Settings
     /**
      * Whether conversations should be viewed in Fullscreen glory
      */
+    public boolean imeExtract()
+    {
+        return preferences.getBoolean(
+            resources.getString(R.string.key_ime_extract),
+            Boolean.parseBoolean(resources.getString(R.string.default_ime_extract))
+        );
+    }
+
+    /**
+     * Whether conversations should be viewed in Fullscreen glory
+     */
     public boolean fullscreenConversations()
     {
         return preferences.getBoolean(
