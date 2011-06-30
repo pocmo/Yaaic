@@ -78,6 +78,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.View.OnKeyListener;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -200,6 +201,9 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
         EditText input = (EditText) findViewById(R.id.input);
         input.setOnKeyListener(inputKeyListener);
+        if (!settings.imeExtract()){
+            input.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+        }
 
         switcher = (ViewSwitcher) findViewById(R.id.switcher);
 

@@ -54,7 +54,10 @@
     <string name="key_autocap_sentences">autocap_sentences</string>
     <string name="default_autocap_sentences">false</string>
 
-    <string name="key_fullscreen_conversation">fullscreen conversation</string>
+	<string name="key_ime_extract">Large landscape input</string>
+    <string name="default_ime_extract">true</string>
+
+    <string name="key_fullscreen_conversation">Fullscreen chatting</string>
     <string name="default_fullscreen_conversation">false</string>
 
     <string name="key_history_size">history_size</string>
