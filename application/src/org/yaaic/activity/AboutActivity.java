@@ -58,9 +58,5 @@ public class AboutActivity extends Activity
                 startActivity(i);
             }
         });
-
     }
-
-
-
 }

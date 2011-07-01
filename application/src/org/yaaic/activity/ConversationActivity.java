@@ -245,14 +245,15 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         if (settings.autoCapSentences()) {
             setInputTypeFlags |= InputType.TYPE_TEXT_FLAG_CAP_SENTENCES;
         }
-        if (isLandscape) {
+        if (isLandscape && !settings.imeExtract()) {
             /* Replace the Enter key with a smiley instead of Send, to make it
                more difficult to accidentally hit send
                We'd like to do this in portrait too, but wouldn't have a Send
                button in that case */
             setInputTypeFlags |= InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE;
-        } else if (!settings.imeExtract()){
             input.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+        }else {
+            input.setImeOptions(input.getImeOptions() | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         }
 
         input.setInputType(input.getInputType() | setInputTypeFlags);

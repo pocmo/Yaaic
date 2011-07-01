@@ -271,7 +271,7 @@ public class Settings
     }
 
     /**
-     * Whether conversations should be viewed in Fullscreen glory
+     * Whether the fullscreen keyboard should be used in landscape mode.
      */
     public boolean imeExtract()
     {
@@ -282,7 +282,7 @@ public class Settings
     }
 
     /**
-     * Whether conversations should be viewed in Fullscreen glory
+     * Whether conversations should be viewed in Fullscreen glory.
      */
     public boolean fullscreenConversations()
     {
