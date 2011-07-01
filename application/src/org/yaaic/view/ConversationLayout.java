@@ -105,6 +105,10 @@ public class ConversationLayout extends LinearLayout
     {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
+        if(!fullscreen && !isLandscape){
+            return;
+        }
+
         int height = getWindowHeight();
         if (curHeight != height) {
             curHeight = height;
@@ -112,8 +116,6 @@ public class ConversationLayout extends LinearLayout
             status = (ImageView) findViewById(R.id.status);
             title = (TextView) findViewById(R.id.title);
             final float scale = getResources().getDisplayMetrics().density;
-            android.util.Log.d("CONVO height",String.valueOf(height)+", Scale: "+String.valueOf(height*scale));
-
 
             //Give us at least an inch, or we'll have to make sacrifices.
             if (height < 160*scale) {
