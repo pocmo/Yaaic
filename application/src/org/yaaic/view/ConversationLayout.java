@@ -31,9 +31,7 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 /**
  * ConversationLayout: LinearLayout that resizes correctly when an IME
@@ -44,10 +42,10 @@ import android.widget.TextView;
 public class ConversationLayout extends LinearLayout
 {
     private Activity activity;
-    private TextView title;
-    private ImageView status;
+
     int curHeight = 0;
-    boolean fullscreen = false, isLandscape = false;
+    boolean fullscreen = false;
+    boolean isLandscape = false;
     boolean redoLayout = false;
 
     /**
@@ -94,37 +92,65 @@ public class ConversationLayout extends LinearLayout
     }
 
     /**
+     * Check if starving the gui is necessary, and starves
+     * Starves when less then a vertical inch is available to us
+     * @return true if we are able to check, false if not.
+     * @author Reynaldo Cortorreal <reyncor@gmail.com>
+     */
+    private boolean setStarvationMode(int height)
+    {
+        if (height == 0) {
+            return false;
+        } else if (height == curHeight){
+            return false;
+        }
+
+        LinearLayout status = (LinearLayout) findViewById(R.id.status_layout);
+        ConversationSwitcher dots = (ConversationSwitcher) findViewById(R.id.dots);
+
+        float scale = getResources().getDisplayMetrics().density;
+
+        //Give us at least an inch, or we'll have to make sacrifices.
+        if (height < 160*scale) {
+            status.setVisibility(GONE);
+            dots.setVisibility(GONE);
+        } else {
+            status.setVisibility(VISIBLE);
+            dots.setVisibility(VISIBLE);
+        }
+        return true;
+    }
+
+    /**
      * onMeasure (ask the view how much space it wants)
      * This is called when the window size changes, so we can hook into it to
      * resize ourselves when the IME comes up
      * @author Steven Luo <stevenandroid@steven676.net>
-     * @author Reynaldo Cortorreal <reyncor@gmail.com>
      */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
     {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        if(!fullscreen && !isLandscape){
-            return;
-        }
 
         int height = getWindowHeight();
-        if (curHeight != height) {
-            curHeight = height;
 
-            status = (ImageView) findViewById(R.id.status);
-            title = (TextView) findViewById(R.id.title);
-            final float scale = getResources().getDisplayMetrics().density;
-
-            //Give us at least an inch, or we'll have to make sacrifices.
-            if (height < 160*scale) {
-                status.setVisibility(GONE);
-                title.setVisibility(GONE);
-            } else if (status.getVisibility() == GONE || title.getVisibility() == GONE){
-                status.setVisibility(VISIBLE);
-                title.setVisibility(VISIBLE);
+        if(!fullscreen) {
+            if (setStarvationMode(height)){
+                curHeight = height;
+                redoLayout = true;
+                super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+                return;
+            } else {
+                super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+                return;
             }
+        }
+
+        //here to forth the code applies only to full screen
+        if (isLandscape && !setStarvationMode(height)) {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            return;
+        } else if (curHeight != height && height != 0) {
+            curHeight = height;
 
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.FILL_PARENT,
@@ -134,7 +160,10 @@ public class ConversationLayout extends LinearLayout
             params.gravity = Gravity.BOTTOM | Gravity.CLIP_VERTICAL;
             setLayoutParams(params);
             redoLayout = true;
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            return;
         }
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     /**
