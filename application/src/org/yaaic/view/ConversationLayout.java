@@ -20,6 +20,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.yaaic.view;
 
+import org.yaaic.R;
 import org.yaaic.model.Settings;
 
 import android.app.Activity;
@@ -30,7 +31,9 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 /**
  * ConversationLayout: LinearLayout that resizes correctly when an IME
@@ -40,7 +43,9 @@ import android.widget.LinearLayout;
  */
 public class ConversationLayout extends LinearLayout
 {
-    Activity activity;
+    private Activity activity;
+    private TextView title;
+    private ImageView status;
     int curHeight = 0;
     boolean fullscreen = false, isLandscape = false;
     boolean redoLayout = false;
@@ -92,26 +97,38 @@ public class ConversationLayout extends LinearLayout
      * onMeasure (ask the view how much space it wants)
      * This is called when the window size changes, so we can hook into it to
      * resize ourselves when the IME comes up
+     * @author Steven Luo <stevenandroid@steven676.net>
+     * @author Reynaldo Cortorreal <reyncor@gmail.com>
      */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
     {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        /* XXX: We should probably use some heuristic of how many pixels are
-           available for deciding whether to scroll instead of resize, instead
-           of refusing to resize in landscape */
-        if (!fullscreen || isLandscape) {
-            return;
-        }
-
         int height = getWindowHeight();
         if (curHeight != height) {
             curHeight = height;
+
+            status = (ImageView) findViewById(R.id.status);
+            title = (TextView) findViewById(R.id.title);
+            final float scale = getResources().getDisplayMetrics().density;
+            android.util.Log.d("CONVO height",String.valueOf(height)+", Scale: "+String.valueOf(height*scale));
+
+
+            //Give us at least an inch, or we'll have to make sacrifices.
+            if (height < 160*scale) {
+                status.setVisibility(GONE);
+                title.setVisibility(GONE);
+            } else if (status.getVisibility() == GONE || title.getVisibility() == GONE){
+                status.setVisibility(VISIBLE);
+                title.setVisibility(VISIBLE);
+            }
+
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.FILL_PARENT,
                 height
             );
+
             params.gravity = Gravity.BOTTOM | Gravity.CLIP_VERTICAL;
             setLayoutParams(params);
             redoLayout = true;
