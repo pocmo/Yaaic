@@ -42,8 +42,8 @@ public class MessageListView extends ListView
     private final View parent;
     private int parentWidth;
     private int parentHeight;
-    private int padding;
-    private int paddingWide;
+    private final int padding;
+    private final int paddingWide;
 
     /**
      * Create a new MessageListView
@@ -139,11 +139,11 @@ public class MessageListView extends ListView
         if (switched) {
             setLayoutParams(new Gallery.LayoutParams(Gallery.LayoutParams.FILL_PARENT, Gallery.LayoutParams.FILL_PARENT));
             setTranscriptMode(TRANSCRIPT_MODE_NORMAL);
-            setPadding(paddingWide, padding, paddingWide, padding);
+            setPadding(paddingWide, padding, paddingWide, 0);
         } else {
             setLayoutParams(new Gallery.LayoutParams(parentWidth*85/100, parentHeight));
             setTranscriptMode(TRANSCRIPT_MODE_ALWAYS_SCROLL);
-            setPadding(padding, padding, padding, padding);
+            setPadding(padding, padding, padding, 0);
         }
     }
 }
