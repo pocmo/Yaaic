@@ -76,7 +76,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.View.OnKeyListener;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -177,6 +179,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
         serverId = getIntent().getExtras().getInt("serverId");
         server = Yaaic.getInstance().getServerById(serverId);
+        Settings settings = new Settings(this);
 
         // Finish activity if server does not exist anymore - See #55
         if (server == null) {
@@ -186,6 +189,9 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         setTitle("Yaaic - " + server.getTitle());
 
         setContentView(R.layout.conversations);
+        if (settings.fullscreenConversations()){
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
 
         boolean isLandscape = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
 
@@ -206,7 +212,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         deck.setOnItemClickListener(new ConversationClickListener(deckAdapter, switcher));
         deck.setBackgroundDrawable(new NonScalingBackgroundDrawable(this, deck, R.drawable.background));
 
-        Settings settings = new Settings(this);
         historySize = settings.getHistorySize();
 
         if (server.getStatus() == Status.PRE_CONNECTING) {
@@ -240,13 +245,15 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         if (settings.autoCapSentences()) {
             setInputTypeFlags |= InputType.TYPE_TEXT_FLAG_CAP_SENTENCES;
         }
-        if (isLandscape) {
-            /* Replace the Enter key with a smiley instead of Send, to make it
-               more difficult to accidentally hit send
-               We'd like to do this in portrait too, but wouldn't have a Send
-               button in that case */
+
+        if (isLandscape && settings.imeExtract()) {
             setInputTypeFlags |= InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE;
         }
+
+        if (!settings.imeExtract()) {
+            input.setImeOptions(input.getImeOptions() | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+        }
+
         input.setInputType(input.getInputType() | setInputTypeFlags);
 
         // Create a new scrollback history
@@ -827,7 +834,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
      * Complete a nick in the input line
      */
     private void doNickCompletion(EditText input) {
-        String text = input.getText().toString();
+        String text = input.getText().toString().toLowerCase();
 
         if (text.length() <= 0) {
             return;

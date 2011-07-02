@@ -271,6 +271,28 @@ public class Settings
     }
 
     /**
+     * Whether the fullscreen keyboard should be used in landscape mode.
+     */
+    public boolean imeExtract()
+    {
+        return preferences.getBoolean(
+            resources.getString(R.string.key_ime_extract),
+            Boolean.parseBoolean(resources.getString(R.string.default_ime_extract))
+        );
+    }
+
+    /**
+     * Whether conversations should be viewed in Fullscreen glory.
+     */
+    public boolean fullscreenConversations()
+    {
+        return preferences.getBoolean(
+            resources.getString(R.string.key_fullscreen_conversation),
+            Boolean.parseBoolean(resources.getString(R.string.default_fullscreen_conversation))
+        );
+    }
+
+    /**
      * Get the conversation history size.
      *
      * @return The conversation history size
