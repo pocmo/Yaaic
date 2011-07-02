@@ -258,8 +258,9 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                We'd like to do this in portrait too, but wouldn't have a Send
                button in that case */
             setInputTypeFlags |= InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE;
+            input.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         } else {
-            input.setImeOptions(input.getImeOptions() | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+            input.setImeOptions(input.getImeOptions() & EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         }
         input.setInputType(input.getInputType() | setInputTypeFlags);
 
