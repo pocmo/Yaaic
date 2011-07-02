@@ -259,7 +259,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                button in that case */
             setInputTypeFlags |= InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE;
         } else {
-            input.setImeOptions(input.getImeOptions() | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+            input.setImeOptions(input.getImeOptions());
         }
         input.setInputType(input.getInputType() | setInputTypeFlags);
 
