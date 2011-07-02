@@ -70,7 +70,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/about_irclink"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/app_irc"
+		android:text="@string/app_irc"
         android:linksClickable="false"
         android:autoLink="none"
         android:textSize="16sp"
