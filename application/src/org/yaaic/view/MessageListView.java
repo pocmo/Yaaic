@@ -76,7 +76,7 @@ public class MessageListView extends ListView
         float density = context.getResources().getDisplayMetrics().density;
         padding = (int)(5 * density);
         paddingWide = (int)(12 * density);
-        setPadding(padding, padding, padding, padding);
+        setPadding(padding, padding, padding, 0);
     }
 
     /**
