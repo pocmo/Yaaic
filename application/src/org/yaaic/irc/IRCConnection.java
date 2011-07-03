@@ -417,6 +417,7 @@ public class IRCConnection extends PircBot
     {
         if (recipientNick.equals(getNick())) {
             // We are kicked
+            service.ackNewMentions(server.getId(), target);
             server.removeConversation(target);
 
             Intent intent = Broadcast.createConversationIntent(
@@ -591,6 +592,7 @@ public class IRCConnection extends PircBot
     {
         if (sender.equals(getNick())) {
             // We parted a channel
+            service.ackNewMentions(server.getId(), target);
             server.removeConversation(target);
 
             Intent intent = Broadcast.createConversationIntent(
