@@ -201,9 +201,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
         EditText input = (EditText) findViewById(R.id.input);
         input.setOnKeyListener(inputKeyListener);
-        if (!settings.imeExtract()){
-            input.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
-        }
 
         switcher = (ViewSwitcher) findViewById(R.id.switcher);
 
