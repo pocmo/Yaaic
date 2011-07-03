@@ -49,7 +49,7 @@ public class ConversationLayout extends LinearLayout
     boolean redoLayout = false;
 
     /**
-     * Create a new conversation view switcher
+     * Create a new conversation linear layout
      * 
      * @param context
      */
@@ -60,7 +60,7 @@ public class ConversationLayout extends LinearLayout
     }
 
     /**
-     * Create a new conversation view switcher
+     * Create a new conversation linear layout
      * 
      * @param context
      * @param attrs
@@ -94,14 +94,13 @@ public class ConversationLayout extends LinearLayout
     /**
      * Check if starving the gui is necessary, and starves
      * Starves when less then a vertical inch is available to us
+     *
      * @return true if we are able to check, false if not.
      * @author Reynaldo Cortorreal <reyncor@gmail.com>
      */
     private boolean setStarvationMode(int height)
     {
-        if (height == 0) {
-            return false;
-        } else if (height == curHeight){
+        if (height == 0 || height == curHeight) {
             return false;
         }
 
@@ -122,32 +121,26 @@ public class ConversationLayout extends LinearLayout
     }
 
     /**
-     * onMeasure (ask the view how much space it wants)
-     * This is called when the window size changes, so we can hook into it to
-     * resize ourselves when the IME comes up
-     * @author Steven Luo <stevenandroid@steven676.net>
+     * Adjust the height of the view to avoid scrolling and hide UI components
+     * if necessary to save space
+     *
+     * @author Steven Luo <steven+android@steven676.net>
+     * @author Reynaldo Cortorreal <reyncor@gmail.com>
      */
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
+    private void adjustHeight()
     {
-
         int height = getWindowHeight();
 
-        if(!fullscreen) {
-            if (setStarvationMode(height)){
+        if (!fullscreen) {
+            if (setStarvationMode(height)) {
                 curHeight = height;
                 redoLayout = true;
-                super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-                return;
-            } else {
-                super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-                return;
             }
+            return;
         }
 
         //here to forth the code applies only to full screen
         if (isLandscape && !setStarvationMode(height)) {
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
             return;
         } else if (curHeight != height && height != 0) {
             curHeight = height;
@@ -160,9 +153,18 @@ public class ConversationLayout extends LinearLayout
             params.gravity = Gravity.BOTTOM | Gravity.CLIP_VERTICAL;
             setLayoutParams(params);
             redoLayout = true;
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-            return;
         }
+    }
+
+    /**
+     * onMeasure (ask the view how much space it wants)
+     * This is called when the window size changes, so we can hook into it to
+     * resize ourselves when the IME comes up
+     */
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
+    {
+        adjustHeight();
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
