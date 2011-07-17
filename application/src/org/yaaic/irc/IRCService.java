@@ -66,9 +66,9 @@ public class IRCService extends Service
 
     private static final int FOREGROUND_NOTIFICATION = 1;
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     private static final Class[] mStartForegroundSignature = new Class[] { int.class, Notification.class };
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     private static final Class[] mStopForegroundSignature = new Class[] { boolean.class };
 
     public static final String ACTION_FOREGROUND = "org.yaaic.service.foreground";
@@ -87,7 +87,7 @@ public class IRCService extends Service
 
     private HashMap<Integer, PendingIntent> alarmIntents;
     private HashMap<Integer, ReconnectReceiver> alarmReceivers;
-    private Object alarmIntentsLock;
+    private final Object alarmIntentsLock;
 
     /**
      * Create new service
@@ -434,7 +434,7 @@ public class IRCService extends Service
                         connection.setSaslCredentials(
                             server.getAuthentication().getSaslUsername(),
                             server.getAuthentication().getSaslPassword()
-                        );
+                            );
                     }
 
                     if (server.getPassword() != "") {
@@ -483,7 +483,7 @@ public class IRCService extends Service
                         Broadcast.CONVERSATION_MESSAGE,
                         serverId,
                         ServerInfo.DEFAULT_NAME
-                    );
+                        );
                     sendBroadcast(cIntent);
                 }
             }
