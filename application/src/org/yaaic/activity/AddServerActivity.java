@@ -244,7 +244,7 @@ public class AddServerActivity extends Activity implements OnClickListener
             identity.getIdent(),
             identity.getRealName(),
             identity.getAliases()
-        );
+            );
 
         Server server = getServerFromView();
         server.setAuthentication(authentication);
@@ -283,9 +283,9 @@ public class AddServerActivity extends Activity implements OnClickListener
             identityId,
             identity.getNickname(),
             identity.getIdent(),
-            identity.getNickname(),
+            identity.getRealName(),
             identity.getAliases()
-        );
+            );
 
         db.setChannels(serverId, channels);
         db.setCommands(serverId, commands);
