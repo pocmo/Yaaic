@@ -335,6 +335,17 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             }
         }
 
+        // Remove views for conversations that ended while we were paused
+        int numViews = deckAdapter.getCount();
+        if (numViews > mConversations.size()) {
+            for (int i = 0; i < numViews; ++i) {
+                if (!mConversations.contains(deckAdapter.getItem(i))) {
+                    deckAdapter.removeItem(i--);
+                    --numViews;
+                }
+            }
+        }
+
         // Join channel that has been selected in JoinActivity (onActivityResult())
         if (joinChannelBuffer != null) {
             new Thread() {
