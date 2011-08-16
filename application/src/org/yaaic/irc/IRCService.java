@@ -197,7 +197,7 @@ public class IRCService extends Service
             PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0);
 
             // Set the info for the views that show in the notification panel.
-            notification.setLatestEventInfo(this, getText(R.string.app_name), "", contentIntent);
+            notification.setLatestEventInfo(this, getText(R.string.app_name), getText(R.string.notification_not_connected), contentIntent);
 
             startForegroundCompat(FOREGROUND_NOTIFICATION, notification);
         } else if (ACTION_BACKGROUND.equals(intent.getAction()) && !foreground) {
@@ -237,7 +237,7 @@ public class IRCService extends Service
                     }
                     contentText = getString(R.string.notification_connected, sb.substring(0, sb.length()-2));
                 } else {
-                    contentText = "";
+                    contentText = getString(R.string.notification_not_connected);
                 }
             }
 

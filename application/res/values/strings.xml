@@ -122,6 +122,7 @@
     <string name="command_desc_whois">Get information about a user</string>
 
     <string name="notification_running">Yaaic is running</string>
+    <string name="notification_not_connected">Not connected</string>
     <string name="notification_connected">Connected to %1$s</string>
     <string name="notification_disconnected">Disconnected from %1$s</string>
     <string name="notification_mentions">New messages in: %1$s</string>
