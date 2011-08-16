@@ -312,11 +312,17 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
         // Fill view with messages that have been buffered while paused
         for (Conversation conversation : mConversations) {
-            mAdapter = deckAdapter.getItemAdapter(conversation.getName());
+            String name = conversation.getName();
+            mAdapter = deckAdapter.getItemAdapter(name);
 
             if (mAdapter != null) {
                 mAdapter.addBulkMessages(conversation.getBuffer());
                 conversation.clearBuffer();
+            } else {
+                // Was conversation created while we were paused?
+                if (deckAdapter.getPositionByName(name) == -1) {
+                    onNewConversation(name);
+                }
             }
 
             // Clear new message notifications for the selected conversation
@@ -324,7 +330,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                 Intent ackIntent = new Intent(this, IRCService.class);
                 ackIntent.setAction(IRCService.ACTION_ACK_NEW_MENTIONS);
                 ackIntent.putExtra(IRCService.EXTRA_ACK_SERVERID, serverId);
-                ackIntent.putExtra(IRCService.EXTRA_ACK_CONVTITLE, conversation.getName());
+                ackIntent.putExtra(IRCService.EXTRA_ACK_CONVTITLE, name);
                 startService(ackIntent);
             }
         }
