@@ -51,6 +51,7 @@ public class Message
 
     /* normal message, this is the default */
     public static final int TYPE_MESSAGE = 0;
+
     /* join, part or quit */
     public static final int TYPE_MISC    = 1;
 

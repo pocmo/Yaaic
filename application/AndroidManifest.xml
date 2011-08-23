@@ -21,8 +21,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.yaaic"
-    android:versionCode="10"
-    android:versionName="0.8">
+    android:versionCode="11"
+    android:versionName="0.9">
     <application
         android:icon="@drawable/icon"
         android:label="Yaaic">
@@ -87,7 +87,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         <activity
             android:name=".activity.UserActivity"
             android:theme="@android:style/Theme.Dialog">
-           </activity>
+        </activity>
+        <activity
+            android:name=".activity.AuthenticationActivity"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
         <service android:name=".irc.IRCService"></service>
     </application>
     <uses-sdk android:minSdkVersion="4" />

@@ -18,6 +18,12 @@
     <string name="key_reconnect">reconnect</string>
     <string name="default_reconnect">false</string>
     
+    <string name="key_reconnect_interval">reconnect_interval</string>
+    <string name="default_reconnect_interval">5</string>
+    
+    <string name="key_ignore_motd">ignore_motd</string>
+    <string name="default_ignore_motd">true</string>
+
     <string name="key_quitmessage">quitmessage</string>
     <string name="default_quitmessage">Yaaic - Yet another Android IRC client - http://www.yaaic.org</string>
     
@@ -51,6 +57,12 @@
     <string name="key_autocap_sentences">autocap_sentences</string>
     <string name="default_autocap_sentences">false</string>
 
+	<string name="key_ime_extract">ime_extract</string>
+    <string name="default_ime_extract">true</string>
+
+	<string name="key_fullscreen_conversation">fullscreen_conversations</string>
+	<string name="default_fullscreen_conversation">false</string>
+
     <string name="key_history_size">history_size</string>
-    <string name="default_history_size">30</string>
+    <string name="default_history_size">50</string>
 </resources>

@@ -31,14 +31,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * Adding auto join channels to a server
@@ -64,6 +64,7 @@ public class AddChannelActivity extends Activity implements OnClickListener, OnI
         setContentView(R.layout.channeladd);
 
         channelInput = (EditText) findViewById(R.id.channel);
+        channelInput.setSelection(1);
 
         adapter = new ArrayAdapter<String>(this, R.layout.channelitem);
 
@@ -97,6 +98,7 @@ public class AddChannelActivity extends Activity implements OnClickListener, OnI
                 channels.add(channel);
                 adapter.add(channel);
                 channelInput.setText("#");
+                channelInput.setSelection(1);
                 okButton.setEnabled(true);
                 break;
 

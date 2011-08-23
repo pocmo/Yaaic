@@ -29,6 +29,7 @@
     <string name="realname">Real Name</string>
 
     <string name="server">Server</string>
+    <string name="authentication">Authentication</string>
     <string name="channel">Channel</string>
     <string name="channels">Channels</string>
     <string name="commands">Commands</string>
@@ -54,6 +55,13 @@
     <string name="alias_add_description">These aliases will be used if the main nickname is unavailable.</string>
     <string name="channel_add_description">These channels will be automatically joined after connect.</string>
     <string name="command_add_description">These commands will be executed after connect.</string>
+
+    <string name="auth_description">Yaaic will authenticate you with these services after connect.</string>
+    <string name="auth_nickserv">Authenticate with Nickserv</string>
+    <string name="auth_nickserv_password">Nickserv password</string>
+    <string name="auth_sasl">Authenticate via SASL</string>
+    <string name="auth_sasl_username">SASL username</string>
+    <string name="auth_sasl_password">SASL password</string>
 
     <string name="validation_blank_title">Title cannot be blank</string>
     <string name="validation_blank_host">Host cannot be blank</string>
@@ -114,11 +122,15 @@
     <string name="command_desc_whois">Get information about a user</string>
 
     <string name="notification_running">Yaaic is running</string>
+    <string name="notification_not_connected">Not connected</string>
     <string name="notification_connected">Connected to %1$s</string>
     <string name="notification_disconnected">Disconnected from %1$s</string>
     <string name="notification_mentions">New messages in: %1$s</string>
 
     <string name="message_connected">Connected to %1$s</string>
+    <string name="message_now_login">Now logging in...</string>
+    <string name="message_login_done">Server login done.</string>
+    <string name="message_motd_suppressed">MOTD suppressed. To see it, use the ‘/motd’ command.</string>
     <string name="message_deop">%1$s deops %2$s</string>
     <string name="message_devoice">%1$s devoices %2$s</string>
     <string name="message_invite_you">%1$s invites you into %2$s</string>
@@ -167,6 +179,13 @@
     <string name="settings_reconnect_title">Reconnect</string>
     <string name="settings_reconnect_desc">Automatically reconnect on disconnect</string>
 
+    <string name="settings_reconnect_interval_title">Reconnect interval</string>
+    <string name="settings_reconnect_interval_desc">Number of minutes between reconnection tries</string>
+    <string name="settings_reconnect_interval_dialog_title">Reconnect interval</string>
+
+    <string name="settings_ignore_motd_title">Ignore MOTD</string>
+    <string name="settings_ignore_motd_desc">Don\'t show the automatic ‘Message of the Day’ sent by the server</string>
+
     <string name="settings_chat">Chat</string>
     <string name="settings_icons_title">Show icons</string>
     <string name="settings_icons_desc">Show icons to highlight special events</string>
@@ -207,6 +226,10 @@
     <string name="settings_autocorrect_text_desc">Use dictionary to autocorrect typed text in chat</string>
     <string name="settings_autocap_sentences_title">Auto-capitalize sentences</string>
     <string name="settings_autocap_sentences_desc">Automatically capitalize the first word of sentences</string>
+    <string name="settings_ime_extract_title">Fullscreen input in landscape</string>
+    <string name="settings_ime_extract_desc">Use fullscreen keyboard when in landscape mode</string>
+    <string name="settings_fullscreen_conversation_title">Fullscreen chats</string>
+    <string name="settings_fullscreen_conversation_desc">Fullscreen the application when chatting</string>
     <string name="settings_history_size_title">History size</string>
     <string name="settings_history_size_desc">Number of lines of conversation history to keep</string>
 </resources>

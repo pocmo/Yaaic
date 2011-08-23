@@ -53,9 +53,11 @@ public class IRCConnection extends PircBot
     private ArrayList<String> autojoinChannels;
     private Pattern mNickMatch;
 
+    private boolean ignoreMOTD = true;
+
     private boolean isQuitting = false;
     private boolean disposeRequested = false;
-    private Object isQuittingLock = new Object();
+    private final Object isQuittingLock = new Object();
 
     /**
      * Create a new connection
@@ -140,6 +142,10 @@ public class IRCConnection extends PircBot
     public void onConnect()
     {
         server.setStatus(Status.CONNECTED);
+        
+        server.setMayReconnect(true);
+
+        ignoreMOTD = service.getSettings().isIgnoreMOTDEnabled();
 
         service.sendBroadcast(
             Broadcast.createServerIntent(Broadcast.SERVER_UPDATE, server.getId())
@@ -151,15 +157,22 @@ public class IRCConnection extends PircBot
         message.setColor(Message.COLOR_GREEN);
         server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(message);
 
+        Message infoMessage = new Message(service.getString(R.string.message_now_login));
+        infoMessage.setColor(Message.COLOR_GREY);
+        server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(infoMessage);
+
         Intent intent = Broadcast.createConversationIntent(
             Broadcast.CONVERSATION_MESSAGE,
             server.getId(),
             ServerInfo.DEFAULT_NAME
         );
 
+        if (server.getAuthentication().hasNickservCredentials()) {
+            identify(server.getAuthentication().getNickservPassword());
+        }
+
         service.sendBroadcast(intent);
     }
-
 
     /**
      * On register
@@ -200,6 +213,18 @@ public class IRCConnection extends PircBot
                 joinChannel(channel);
             }
         }
+
+        Message infoMessage = new Message(service.getString(R.string.message_login_done));
+        infoMessage.setColor(Message.COLOR_GREY);
+        server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(infoMessage);
+
+        Intent intent = Broadcast.createConversationIntent(
+            Broadcast.CONVERSATION_MESSAGE,
+            server.getId(),
+            ServerInfo.DEFAULT_NAME
+        );
+
+        service.sendBroadcast(intent);
     }
     /**
      * On channel action
@@ -244,8 +269,8 @@ public class IRCConnection extends PircBot
         }
 
         if (sender.equals(this.getNick())) {
-           // Don't notify for something sent in our name
-           return;
+            // Don't notify for something sent in our name
+            return;
         }
 
         boolean mentioned = isMentioned(action);
@@ -353,7 +378,7 @@ public class IRCConnection extends PircBot
     @Override
     protected void onJoin(String target, String sender, String login, String hostname)
     {
-        if (sender.equalsIgnoreCase(getNick())) {
+        if (sender.equalsIgnoreCase(getNick()) && server.getConversation(target) == null) {
             // We joined a new channel
             Conversation conversation = new Channel(target);
             conversation.setHistorySize(service.getSettings().getHistorySize());
@@ -392,6 +417,7 @@ public class IRCConnection extends PircBot
     {
         if (recipientNick.equals(getNick())) {
             // We are kicked
+            service.ackNewMentions(server.getId(), target);
             server.removeConversation(target);
 
             Intent intent = Broadcast.createConversationIntent(
@@ -566,6 +592,7 @@ public class IRCConnection extends PircBot
     {
         if (sender.equals(getNick())) {
             // We parted a channel
+            service.ackNewMentions(server.getId(), target);
             server.removeConversation(target);
 
             Intent intent = Broadcast.createConversationIntent(
@@ -1069,8 +1096,14 @@ public class IRCConnection extends PircBot
             onRegister();
             return;
         }
-        if (code == 372 || code == 375 || code == 376) {
-            // Skip MOTD
+        if ((code == 372 || code == 375) && ignoreMOTD) {
+            return;
+        }
+        if (code == 376 && ignoreMOTD) {
+            Message motdMessage = new Message(service.getString(R.string.message_motd_suppressed));
+            motdMessage.setColor(Message.COLOR_GREY);
+            server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(motdMessage);
+            ignoreMOTD = false;
             return;
         }
 
@@ -1113,7 +1146,6 @@ public class IRCConnection extends PircBot
         if (service.getSettings().isReconnectEnabled() && server.getStatus() != Status.DISCONNECTED) {
             setAutojoinChannels(server.getCurrentChannelNames());
 
-            server.clearConversations();
             server.setStatus(Status.CONNECTING);
             service.connect(server);
         } else {
@@ -1143,8 +1175,9 @@ public class IRCConnection extends PircBot
 
         synchronized(isQuittingLock) {
             isQuitting = false;
-            if (disposeRequested)
+            if (disposeRequested) {
                 super.dispose();
+            }
         }
     }
 
@@ -1266,10 +1299,11 @@ public class IRCConnection extends PircBot
     public void dispose()
     {
         synchronized(isQuittingLock) {
-            if (isQuitting)
+            if (isQuitting) {
                 disposeRequested = true;
-            else
+            } else {
                 super.dispose();
+            }
         }
     }
 }

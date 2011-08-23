@@ -175,7 +175,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 
         Intent intent = new Intent(this, ConversationActivity.class);
 
-        if (server.getStatus() == Status.DISCONNECTED) {
+        if (server.getStatus() == Status.DISCONNECTED && !server.mayReconnect()) {
             server.setStatus(Status.PRE_CONNECTING);
             intent.putExtra("connect", true);
         }
@@ -220,6 +220,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
                     case 1: // Disconnect
                         server.clearConversations();
                         server.setStatus(Status.DISCONNECTED);
+                        server.setMayReconnect(false);
                         binder.getService().getConnection(server.getId()).quitServer();
                         break;
                     case 2: // Edit
@@ -292,6 +293,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
                 for (Server server : mServers) {
                     if (binder.getService().hasConnection(server.getId())) {
                         server.setStatus(Status.DISCONNECTED);
+                        server.setMayReconnect(false);
                         binder.getService().getConnection(server.getId()).quitServer();
                     }
                 }

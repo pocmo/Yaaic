@@ -76,7 +76,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.View.OnKeyListener;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -120,6 +122,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     private String joinChannelBuffer;
 
     private int historySize;
+
+    private boolean reconnectDialogActive = false;
 
     OnKeyListener inputKeyListener = new OnKeyListener() {
         /**
@@ -177,6 +181,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
         serverId = getIntent().getExtras().getInt("serverId");
         server = Yaaic.getInstance().getServerById(serverId);
+        Settings settings = new Settings(this);
 
         // Finish activity if server does not exist anymore - See #55
         if (server == null) {
@@ -186,6 +191,9 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         setTitle("Yaaic - " + server.getTitle());
 
         setContentView(R.layout.conversations);
+        if (settings.fullscreenConversations()){
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
 
         boolean isLandscape = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
 
@@ -206,7 +214,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         deck.setOnItemClickListener(new ConversationClickListener(deckAdapter, switcher));
         deck.setBackgroundDrawable(new NonScalingBackgroundDrawable(this, deck, R.drawable.background));
 
-        Settings settings = new Settings(this);
         historySize = settings.getHistorySize();
 
         if (server.getStatus() == Status.PRE_CONNECTING) {
@@ -240,13 +247,15 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         if (settings.autoCapSentences()) {
             setInputTypeFlags |= InputType.TYPE_TEXT_FLAG_CAP_SENTENCES;
         }
-        if (isLandscape) {
-            /* Replace the Enter key with a smiley instead of Send, to make it
-               more difficult to accidentally hit send
-               We'd like to do this in portrait too, but wouldn't have a Send
-               button in that case */
+
+        if (isLandscape && settings.imeExtract()) {
             setInputTypeFlags |= InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE;
         }
+
+        if (!settings.imeExtract()) {
+            input.setImeOptions(input.getImeOptions() | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+        }
+
         input.setInputType(input.getInputType() | setInputTypeFlags);
 
         // Create a new scrollback history
@@ -303,11 +312,17 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
         // Fill view with messages that have been buffered while paused
         for (Conversation conversation : mConversations) {
-            mAdapter = deckAdapter.getItemAdapter(conversation.getName());
+            String name = conversation.getName();
+            mAdapter = deckAdapter.getItemAdapter(name);
 
             if (mAdapter != null) {
                 mAdapter.addBulkMessages(conversation.getBuffer());
                 conversation.clearBuffer();
+            } else {
+                // Was conversation created while we were paused?
+                if (deckAdapter.getPositionByName(name) == -1) {
+                    onNewConversation(name);
+                }
             }
 
             // Clear new message notifications for the selected conversation
@@ -315,8 +330,19 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                 Intent ackIntent = new Intent(this, IRCService.class);
                 ackIntent.setAction(IRCService.ACTION_ACK_NEW_MENTIONS);
                 ackIntent.putExtra(IRCService.EXTRA_ACK_SERVERID, serverId);
-                ackIntent.putExtra(IRCService.EXTRA_ACK_CONVTITLE, conversation.getName());
+                ackIntent.putExtra(IRCService.EXTRA_ACK_CONVTITLE, name);
                 startService(ackIntent);
+            }
+        }
+
+        // Remove views for conversations that ended while we were paused
+        int numViews = deckAdapter.getCount();
+        if (numViews > mConversations.size()) {
+            for (int i = 0; i < numViews; ++i) {
+                if (!mConversations.contains(deckAdapter.getItem(i))) {
+                    deckAdapter.removeItem(i--);
+                    --numViews;
+                }
             }
         }
 
@@ -392,6 +418,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         if (server.getStatus() == Status.PRE_CONNECTING && getIntent().hasExtra("connect")) {
             server.setStatus(Status.CONNECTING);
             binder.connect(server);
+        } else {
+            onStatusUpdate();
         }
     }
 
@@ -441,6 +469,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         switch (item.getItemId()) {
             case R.id.disconnect:
                 server.setStatus(Status.DISCONNECTED);
+                server.setMayReconnect(false);
                 binder.getService().getConnection(serverId).quitServer();
                 server.clearConversations();
                 setResult(RESULT_OK);
@@ -604,10 +633,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             input.setEnabled(false);
 
             if (server.getStatus() == Status.CONNECTING) {
-                deckAdapter.clearConversations();
-                Conversation serverInfo = server.getConversation(ServerInfo.DEFAULT_NAME);
-                serverInfo.setHistorySize(historySize);
-                deckAdapter.addItem(serverInfo);
                 return;
             }
 
@@ -616,27 +641,31 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                 return;
             }
 
-            if (!binder.getService().getSettings().isReconnectEnabled()) {
+            if (!binder.getService().getSettings().isReconnectEnabled() && !reconnectDialogActive) {
+                reconnectDialogActive = true;
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage(getResources().getString(R.string.reconnect_after_disconnect, server.getTitle()))
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
+                        if (!server.isDisconnected()) {
+                            reconnectDialogActive = false;
+                            return;
+                        }
                         binder.getService().getConnection(server.getId()).setAutojoinChannels(
                             server.getCurrentChannelNames()
                         );
-                        server.clearConversations();
-                        deckAdapter.clearConversations();
-                        Conversation serverInfo = server.getConversation(ServerInfo.DEFAULT_NAME);
-                        serverInfo.setHistorySize(historySize);
-                        deckAdapter.addItem(serverInfo);
+                        server.setStatus(Status.CONNECTING);
                         binder.connect(server);
+                        reconnectDialogActive = false;
                     }
                 })
                 .setNegativeButton(getString(R.string.negative_button), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
+                        server.setMayReconnect(false);
+                        reconnectDialogActive = false;
                         dialog.cancel();
                     }
                 });

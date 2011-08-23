@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Yaaic - Yet Another Android IRC Client
+
+Copyright 2009-2011 Sebastian Kaspari
+
+This file is part of Yaaic.
+
+Yaaic is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Yaaic is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="5dp">
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/auth_description"
+        android:padding="5dp" />
+    <CheckBox
+        android:id="@+id/nickserv_checkbox"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/auth_nickserv" />
+    <TextView
+        android:id="@+id/nickserv_label_password"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/auth_nickserv_password"
+        android:enabled="false" />
+    <EditText
+        android:id="@+id/nickserv_password"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+		android:password="true" />
+    <CheckBox
+        android:id="@+id/sasl_checkbox"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/auth_sasl" />
+    <TextView
+        android:id="@+id/sasl_label_username"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/auth_sasl_username"
+        android:enabled="false" />
+    <EditText
+        android:id="@+id/sasl_username"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false" />
+    <TextView
+        android:id="@+id/sasl_label_password"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/auth_sasl_password"
+        android:enabled="false"/>
+    <EditText
+        android:id="@+id/sasl_password"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+		android:password="true" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ok"
+            android:text="@string/action_ok"
+            android:minWidth="90dp" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cancel"
+            android:text="@string/action_cancel"
+            android:minWidth="90dp" />
+    </LinearLayout>
+</LinearLayout>

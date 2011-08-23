@@ -23,8 +23,12 @@ package org.yaaic.activity;
 import org.yaaic.R;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 
 /**
  * About activity
@@ -33,6 +37,7 @@ import android.view.Window;
  */
 public class AboutActivity extends Activity
 {
+    private TextView mIRCLink;
     /**
      * On create
      */
@@ -44,5 +49,14 @@ public class AboutActivity extends Activity
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.about);
+
+        mIRCLink = (TextView) findViewById(R.id.about_irclink);
+        mIRCLink.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent i = new Intent(getBaseContext(), org.yaaic.activity.AddServerActivity.class);
+                i.setData(Uri.parse(getString(R.string.app_irc)));
+                startActivity(i);
+            }
+        });
     }
 }

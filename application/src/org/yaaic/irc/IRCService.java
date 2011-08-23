@@ -39,12 +39,16 @@ import org.yaaic.model.Server;
 import org.yaaic.model.ServerInfo;
 import org.yaaic.model.Settings;
 import org.yaaic.model.Status;
+import org.yaaic.receiver.ReconnectReceiver;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.SystemClock;
 
 /**
  * The background service for managing the irc connections
@@ -62,9 +66,9 @@ public class IRCService extends Service
 
     private static final int FOREGROUND_NOTIFICATION = 1;
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     private static final Class[] mStartForegroundSignature = new Class[] { int.class, Notification.class };
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     private static final Class[] mStopForegroundSignature = new Class[] { boolean.class };
 
     public static final String ACTION_FOREGROUND = "org.yaaic.service.foreground";
@@ -81,6 +85,10 @@ public class IRCService extends Service
     private Notification notification;
     private Settings settings;
 
+    private HashMap<Integer, PendingIntent> alarmIntents;
+    private HashMap<Integer, ReconnectReceiver> alarmReceivers;
+    private final Object alarmIntentsLock;
+
     /**
      * Create new service
      */
@@ -92,6 +100,9 @@ public class IRCService extends Service
         this.binder = new IRCBinder(this);
         this.connectedServerTitles = new ArrayList<String>();
         this.mentions = new LinkedHashMap<String, Conversation>();
+        this.alarmIntents = new HashMap<Integer, PendingIntent>();
+        this.alarmReceivers = new HashMap<Integer, ReconnectReceiver>();
+        this.alarmIntentsLock = new Object();
     }
 
     /**
@@ -186,7 +197,7 @@ public class IRCService extends Service
             PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0);
 
             // Set the info for the views that show in the notification panel.
-            notification.setLatestEventInfo(this, getText(R.string.app_name), "", contentIntent);
+            notification.setLatestEventInfo(this, getText(R.string.app_name), getText(R.string.notification_not_connected), contentIntent);
 
             startForegroundCompat(FOREGROUND_NOTIFICATION, notification);
         } else if (ACTION_BACKGROUND.equals(intent.getAction()) && !foreground) {
@@ -226,7 +237,7 @@ public class IRCService extends Service
                     }
                     contentText = getString(R.string.notification_connected, sb.substring(0, sb.length()-2));
                 } else {
-                    contentText = "";
+                    contentText = getString(R.string.notification_not_connected);
                 }
             }
 
@@ -383,11 +394,31 @@ public class IRCService extends Service
      */
     public void connect(final Server server)
     {
-        new Thread() {
+        final int serverId = server.getId();
+        final int reconnectInterval = settings.getReconnectInterval()*60000;
+        final IRCService service = this;
+
+        if (settings.isReconnectEnabled()) {
+            server.setMayReconnect(true);
+        }
+
+        new Thread("Connect thread for " + server.getTitle()) {
             @Override
             public void run() {
+                synchronized(alarmIntentsLock) {
+                    alarmIntents.remove(serverId);
+                    ReconnectReceiver lastReceiver = alarmReceivers.remove(serverId);
+                    if (lastReceiver != null) {
+                        unregisterReceiver(lastReceiver);
+                    }
+                }
+
+                if (settings.isReconnectEnabled() && !server.mayReconnect()) {
+                    return;
+                }
+
                 try {
-                    IRCConnection connection = getConnection(server.getId());
+                    IRCConnection connection = getConnection(serverId);
 
                     connection.setNickname(server.getIdentity().getNickname());
                     connection.setAliases(server.getIdentity().getAliases());
@@ -399,6 +430,13 @@ public class IRCService extends Service
                         connection.setEncoding(server.getCharset());
                     }
 
+                    if (server.getAuthentication().hasSaslCredentials()) {
+                        connection.setSaslCredentials(
+                            server.getAuthentication().getSaslUsername(),
+                            server.getAuthentication().getSaslPassword()
+                            );
+                    }
+
                     if (server.getPassword() != "") {
                         connection.connect(server.getHost(), server.getPort(), server.getPassword());
                     } else {
@@ -408,19 +446,33 @@ public class IRCService extends Service
                 catch (Exception e) {
                     server.setStatus(Status.DISCONNECTED);
 
-                    Intent sIntent = Broadcast.createServerIntent(Broadcast.SERVER_UPDATE, server.getId());
+                    Intent sIntent = Broadcast.createServerIntent(Broadcast.SERVER_UPDATE, serverId);
                     sendBroadcast(sIntent);
 
-                    IRCConnection connection = getConnection(server.getId());
+                    IRCConnection connection = getConnection(serverId);
 
                     Message message;
 
                     if (e instanceof NickAlreadyInUseException) {
                         message = new Message(getString(R.string.nickname_in_use, connection.getNick()));
+                        server.setMayReconnect(false);
                     } else if (e instanceof IrcException) {
                         message = new Message(getString(R.string.irc_login_error, server.getHost(), server.getPort()));
+                        server.setMayReconnect(false);
                     } else {
                         message = new Message(getString(R.string.could_not_connect, server.getHost(), server.getPort()));
+                        if (settings.isReconnectEnabled()) {
+                            Intent rIntent = new Intent(Broadcast.SERVER_RECONNECT + serverId);
+                            PendingIntent pendingRIntent = PendingIntent.getBroadcast(service, 0, rIntent, 0);
+                            AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+                            ReconnectReceiver receiver = new ReconnectReceiver(service, server);
+                            synchronized(alarmIntentsLock) {
+                                alarmReceivers.put(serverId, receiver);
+                                registerReceiver(receiver, new IntentFilter(Broadcast.SERVER_RECONNECT + serverId));
+                                am.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + reconnectInterval, pendingRIntent);
+                                alarmIntents.put(serverId, pendingRIntent);
+                            }
+                        }
                     }
 
                     message.setColor(Message.COLOR_RED);
@@ -429,9 +481,9 @@ public class IRCService extends Service
 
                     Intent cIntent = Broadcast.createConversationIntent(
                         Broadcast.CONVERSATION_MESSAGE,
-                        server.getId(),
+                        serverId,
                         ServerInfo.DEFAULT_NAME
-                    );
+                        );
                     sendBroadcast(cIntent);
                 }
             }
@@ -478,7 +530,7 @@ public class IRCService extends Service
 
         for (int i = 0; i < mSize; i++) {
             server = mServers.get(i);
-            if (server.isDisconnected()) {
+            if (server.isDisconnected() && !server.mayReconnect()) {
                 int serverId = server.getId();
                 synchronized(this) {
                     IRCConnection connection = connections.get(serverId);
@@ -486,6 +538,20 @@ public class IRCService extends Service
                         connection.dispose();
                     }
                     connections.remove(serverId);
+                }
+
+                synchronized(alarmIntentsLock) {
+                    PendingIntent pendingRIntent = alarmIntents.get(serverId);
+                    if (pendingRIntent != null) {
+                        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+                        am.cancel(pendingRIntent);
+                        alarmIntents.remove(serverId);
+                    }
+                    ReconnectReceiver receiver = alarmReceivers.get(serverId);
+                    if (receiver != null) {
+                        unregisterReceiver(receiver);
+                        alarmReceivers.remove(serverId);
+                    }
                 }
             } else {
                 shutDown = false;
@@ -508,6 +574,20 @@ public class IRCService extends Service
         // Make sure our notification is gone.
         if (foreground) {
             stopForegroundCompat(R.string.app_name);
+        }
+
+        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+        synchronized(alarmIntentsLock) {
+            for (PendingIntent pendingRIntent : alarmIntents.values()) {
+                am.cancel(pendingRIntent);
+            }
+            for (ReconnectReceiver receiver : alarmReceivers.values()) {
+                unregisterReceiver(receiver);
+            }
+            alarmIntents.clear();
+            alarmIntents = null;
+            alarmReceivers.clear();
+            alarmReceivers = null;
         }
     }
 

@@ -28,6 +28,7 @@ import org.yaaic.R;
 import org.yaaic.Yaaic;
 import org.yaaic.db.Database;
 import org.yaaic.exception.ValidationException;
+import org.yaaic.model.Authentication;
 import org.yaaic.model.Extra;
 import org.yaaic.model.Identity;
 import org.yaaic.model.Server;
@@ -53,11 +54,13 @@ import android.widget.Toast;
  */
 public class AddServerActivity extends Activity implements OnClickListener
 {
-    private static final int REQUEST_CODE_CHANNELS = 1;
-    private static final int REQUEST_CODE_COMMANDS = 2;
-    private static final int REQUEST_CODE_ALIASES  = 3;
+    private static final int REQUEST_CODE_CHANNELS       = 1;
+    private static final int REQUEST_CODE_COMMANDS       = 2;
+    private static final int REQUEST_CODE_ALIASES        = 3;
+    private static final int REQUEST_CODE_AUTHENTICATION = 4;
 
     private Server server;
+    private Authentication authentication;
     private ArrayList<String> aliases;
     private ArrayList<String> channels;
     private ArrayList<String> commands;
@@ -71,6 +74,8 @@ public class AddServerActivity extends Activity implements OnClickListener
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.serveradd);
+
+        authentication = new Authentication();
         aliases = new ArrayList<String>();
         channels = new ArrayList<String>();
         commands = new ArrayList<String>();
@@ -80,6 +85,7 @@ public class AddServerActivity extends Activity implements OnClickListener
         ((Button) findViewById(R.id.aliases)).setOnClickListener(this);
         ((Button) findViewById(R.id.channels)).setOnClickListener(this);
         ((Button) findViewById(R.id.commands)).setOnClickListener(this);
+        ((Button) findViewById(R.id.authentication)).setOnClickListener(this);
 
         Spinner spinner = (Spinner) findViewById(R.id.charset);
         String[] charsets = getResources().getStringArray(R.array.charsets);
@@ -95,6 +101,7 @@ public class AddServerActivity extends Activity implements OnClickListener
             aliases.addAll(server.getIdentity().getAliases());
             this.channels = db.getChannelsByServerId(server.getId());
             this.commands = db.getCommandsByServerId(server.getId());
+            this.authentication = server.getAuthentication();
             db.close();
 
             // Set server values
@@ -127,6 +134,12 @@ public class AddServerActivity extends Activity implements OnClickListener
             if (uri.getPort() != -1) {
                 ((EditText) findViewById(R.id.port)).setText(String.valueOf(uri.getPort()));
             }
+            if (uri.getPath() != null) {
+                channels.add(uri.getPath().replace('/', '#'));
+            }
+            if (uri.getQuery() != null) {
+                ((EditText) findViewById(R.id.password)).setText(String.valueOf(uri.getQuery()));
+            }
         }
     }
 
@@ -153,6 +166,12 @@ public class AddServerActivity extends Activity implements OnClickListener
             case REQUEST_CODE_COMMANDS:
                 commands = data.getExtras().getStringArrayList(Extra.COMMANDS);
                 break;
+
+            case REQUEST_CODE_AUTHENTICATION:
+                authentication.setSaslUsername(data.getExtras().getString(Extra.SASL_USER));
+                authentication.setSaslPassword(data.getExtras().getString(Extra.SASL_PASSWORD));
+                authentication.setNickservPassword(data.getExtras().getString(Extra.NICKSERV_PASSWORD));
+                break;
         }
     }
 
@@ -167,6 +186,14 @@ public class AddServerActivity extends Activity implements OnClickListener
                 Intent aliasIntent = new Intent(this, AddAliasActivity.class);
                 aliasIntent.putExtra(Extra.ALIASES, aliases);
                 startActivityForResult(aliasIntent, REQUEST_CODE_ALIASES);
+                break;
+
+            case R.id.authentication:
+                Intent authIntent = new Intent(this, AuthenticationActivity.class);
+                authIntent.putExtra(Extra.NICKSERV_PASSWORD, authentication.getNickservPassword());
+                authIntent.putExtra(Extra.SASL_USER, authentication.getSaslUsername());
+                authIntent.putExtra(Extra.SASL_PASSWORD, authentication.getSaslPassword());
+                startActivityForResult(authIntent, REQUEST_CODE_AUTHENTICATION);
                 break;
 
             case R.id.channels:
@@ -217,19 +244,12 @@ public class AddServerActivity extends Activity implements OnClickListener
             identity.getIdent(),
             identity.getRealName(),
             identity.getAliases()
-        );
+            );
 
         Server server = getServerFromView();
-        long serverId = db.addServer(
-            server.getTitle(),
-            server.getHost(),
-            server.getPort(),
-            server.getPassword(),
-            false, // auto connect
-            server.useSSL(),
-            identityId,
-            server.getCharset()
-        );
+        server.setAuthentication(authentication);
+
+        long serverId = db.addServer(server, (int) identityId);
 
         db.setChannels((int) serverId, channels);
         db.setCommands((int) serverId, commands);
@@ -255,26 +275,17 @@ public class AddServerActivity extends Activity implements OnClickListener
         int identityId = db.getIdentityIdByServerId(serverId);
 
         Server server = getServerFromView();
-        db.updateServer(
-            serverId,
-            server.getTitle(),
-            server.getHost(),
-            server.getPort(),
-            server.getPassword(),
-            false, // auto connect
-            server.useSSL(),
-            identityId,
-            server.getCharset()
-        );
+        server.setAuthentication(authentication);
+        db.updateServer(serverId, server, identityId);
 
         Identity identity = getIdentityFromView();
         db.updateIdentity(
             identityId,
             identity.getNickname(),
             identity.getIdent(),
-            identity.getNickname(),
+            identity.getRealName(),
             identity.getAliases()
-        );
+            );
 
         db.setChannels(serverId, channels);
         db.setCommands(serverId, commands);

@@ -1,4 +1,38 @@
 --------------------------------------------------------------------------------
+Yaaic 0.9 - 2011-07-17 - 67 commits, 49 files changed, 7 authors
+--------------------------------------------------------------------------------
+ * SASL support (pocmo)
+ * Fullscreen chat setting (reyncor)
+ * Extended IRC URI support (reyncor)
+ * GUI for adding authentication data for Nickserv/SASL (pocmo)
+ * Only hide MOTD once (dsalt)
+ * Ignore status characters in front of nicks for the purpose of nick
+   completion (rasher)
+ * Configurable history size (Steven Luo)
+ * Overhaul notifications system (Steven Luo)
+   * Now displays the number of mentions that the user has not seen in the
+     notification.
+   * When no mentions are outstanding, display which servers the user is
+     connected to, not the last message.
+   * When more than one mention is outstanding, display the names of the
+     conversations with new mentions, not just the last message received.
+   * Notifications of mentions are suppressed if you're in the conversation
+     at the time of the mention.
+   * Notifications of mentions automatically clear when you bring up the
+     conversation.
+   * Vibrate notifications now generate the user's chosen default vibrate
+     pattern, not a hard-coded one.
+   * Add ticker text to the notification that's displayed when the IRCService
+     goes into the foreground, instead of displaying a blank ticker.
+ * Include channel topic in the displayed conversation title (Steven Luo)
+ * Actually deliver actions to existing private message windows (Steven Luo)
+ * Notify the user on receipt of all private messages, not just ones with nick
+   mentions. (Steven Luo)
+ * Ensure privmsg with mention of user's nick opens new query when appropriate
+   (Steven Luo)
+ * Remembers which conversation was last selected (Steven Luo)
+ * Danish translation (rasher)
+--------------------------------------------------------------------------------
 Yaaic 0.8 - 2011-03-15 - 27 commits, 35 files changed
 --------------------------------------------------------------------------------
  * Support for mIRC colors (liato)

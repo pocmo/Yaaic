@@ -28,6 +28,20 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:summary="@string/settings_reconnect_desc"
             android:key="@string/key_reconnect"
             android:defaultValue="@string/default_reconnect" />
+        <ListPreference
+            android:title="@string/settings_reconnect_interval_title"
+            android:summary="@string/settings_reconnect_interval_desc"
+            android:dialogTitle="@string/settings_reconnect_interval_dialog_title"
+            android:dependency="@string/key_reconnect"
+            android:entries="@array/reconnect_interval_labels"
+            android:entryValues="@array/reconnect_interval_values"
+            android:key="@string/key_reconnect_interval"
+            android:defaultValue="@string/default_reconnect_interval" />
+        <CheckBoxPreference
+            android:title="@string/settings_ignore_motd_title"
+            android:summary="@string/settings_ignore_motd_desc"
+            android:key="@string/key_ignore_motd"
+            android:defaultValue="@string/default_ignore_motd" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/settings_chat">
@@ -95,6 +109,16 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:summary="@string/settings_autocap_sentences_desc"
             android:key="@string/key_autocap_sentences"
             android:defaultValue="@string/default_autocap_sentences" />
+        <CheckBoxPreference
+            android:title="@string/settings_ime_extract_title"
+            android:summary="@string/settings_ime_extract_desc"
+            android:key="@string/key_ime_extract"
+            android:defaultValue="@string/default_ime_extract" />
+        <CheckBoxPreference
+            android:title="@string/settings_fullscreen_conversation_title"
+            android:summary="@string/settings_fullscreen_conversation_desc"
+            android:key="@string/key_fullscreen_conversation"
+            android:defaultValue="@string/default_fullscreen_conversation" />
         <EditTextPreference
             android:title="@string/settings_history_size_title"
             android:summary="@string/settings_history_size_desc"

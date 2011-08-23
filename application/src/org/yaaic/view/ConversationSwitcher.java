@@ -32,7 +32,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * The ConversationSwitcher - The small funny dots at the top ;)
+ * The ConversationSwitcher - The small funny dots at the bottom ;)
  * 
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */

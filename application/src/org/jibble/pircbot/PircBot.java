@@ -39,6 +39,7 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 
 import org.yaaic.ssl.NaiveTrustManager;
+import org.yaaic.tools.Base64;
 
 /**
  * PircBot is a Java framework for writing IRC bots quickly and easily.
@@ -200,6 +201,33 @@ public abstract class PircBot implements ReplyConstants {
             OutputThread.sendRawLine(this, bwriter, "PASS " + password);
         }
         String nick = this.getName();
+
+
+        if (saslUsername != null) {
+            OutputThread.sendRawLine(this, bwriter, "CAP LS");
+            OutputThread.sendRawLine(this, bwriter, "CAP REQ : sasl multi-prefix");
+            OutputThread.sendRawLine(this, bwriter, "CAP END");
+
+            OutputThread.sendRawLine(this, bwriter, "AUTHENTICATE PLAIN");
+
+            String authString = saslUsername + "\0" + saslUsername + "\0" + saslPassword;
+
+            String authStringEncoded = Base64.encodeBytes(authString.getBytes());
+
+            while (authStringEncoded.length() >= 400) {
+                String toSend = authStringEncoded.substring(0, 400);
+                authString = authStringEncoded.substring(400);
+
+                OutputThread.sendRawLine(this, bwriter, "AUTHENTICATE " + toSend);
+            }
+
+            if (authStringEncoded.length() > 0) {
+                OutputThread.sendRawLine(this, bwriter, "AUTHENTICATE " + authStringEncoded);
+            } else {
+                OutputThread.sendRawLine(this, bwriter, "AUTHENTICATE +");
+            }
+        }
+
         OutputThread.sendRawLine(this, bwriter, "NICK " + nick);
         OutputThread.sendRawLine(this, bwriter, "USER " + this.getLogin() + " 8 * :" + this.getVersion());
 
@@ -257,15 +285,28 @@ public abstract class PircBot implements ReplyConstants {
         connect(getServer(), getPort(), getPassword());
     }
 
-
     /**
-     * Set wether SSL should be used to connect to the server
+     * Set wether SSL should be used to connect to the server.
      * 
      * @author Sebastian Kaspari <sebastian@yaaic.org>
      */
     public void setUseSSL(boolean useSSL)
     {
         _useSSL = useSSL;
+    }
+
+    /**
+     * Set credentials for SASL authentication.
+     *
+     * @param username
+     * @param password
+     *
+     * @author Sebastian Kaspari <sebastian@yaaic.org>
+     */
+    public void setSaslCredentials(String username, String password)
+    {
+        this.saslUsername = username;
+        this.saslPassword = password;
     }
 
 
@@ -2942,8 +2983,12 @@ public abstract class PircBot implements ReplyConstants {
      */
     public synchronized void dispose() {
         //System.out.println("disposing...");
-        _outputThread.interrupt();
-        _inputThread.dispose();
+        if (_outputThread != null) {
+            _outputThread.interrupt();
+        }
+        if (_inputThread != null) {
+            _inputThread.dispose();
+        }
     }
 
 
@@ -3105,6 +3150,10 @@ public abstract class PircBot implements ReplyConstants {
     // Outgoing message stuff.
     private final Queue _outQueue = new Queue();
     private long _messageDelay = 1000;
+
+    // SASL
+    private String saslUsername;
+    private String saslPassword;
 
     // A Hashtable of channels that points to a selfreferential Hashtable of
     // User objects (used to remember which users are in which channels).
