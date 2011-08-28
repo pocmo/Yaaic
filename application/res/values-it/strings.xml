@@ -91,6 +91,7 @@
 
     <string name="command_desc_amsg">Invia un messaggio a tutti i canali</string>
     <string name="command_desc_away">Imposta il tuo stato \'assente\'</string>
+    <string name="command_desc_back">Disattiva il tuo stato \'assente\'</string>
     <string name="command_desc_close">Chiude la finestra corrente</string>
     <string name="command_desc_dcc">Invia un file ad un utente</string>
     <string name="command_desc_deop">Rimuovi lo stato di operatore ad un utente</string>

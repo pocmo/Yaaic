@@ -24,6 +24,7 @@ import java.util.HashMap;
 
 import org.yaaic.command.handler.AMsgHandler;
 import org.yaaic.command.handler.AwayHandler;
+import org.yaaic.command.handler.BackHandler;
 import org.yaaic.command.handler.CloseHandler;
 import org.yaaic.command.handler.DCCHandler;
 import org.yaaic.command.handler.DeopHandler;
@@ -94,6 +95,7 @@ public class CommandParser
         commands.put("mode", new ModeHandler());
         commands.put("help", new HelpHandler());
         commands.put("away", new AwayHandler());
+        commands.put("back", new BackHandler());
         commands.put("whois", new WhoisHandler());
         commands.put("msg", new MsgHandler());
         commands.put("quote", new RawHandler());

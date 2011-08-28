@@ -98,6 +98,7 @@
 
     <string name="command_desc_amsg">Send a message to all channels</string>
     <string name="command_desc_away">Sets you away</string>
+    <string name="command_desc_back">Turn off the away status</string>
     <string name="command_desc_close">Closes the current window</string>
     <string name="command_desc_dcc">Send a file to a user</string>
     <string name="command_desc_deop">Remove operator status from a user</string>
