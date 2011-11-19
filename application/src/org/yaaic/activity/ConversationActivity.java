@@ -923,7 +923,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
             for (int i = 0; i < users.length; i++) {
                 String nick = removeStatusChar(users[i].toLowerCase());
-                if (nick.startsWith(word)) {
+                if (nick.startsWith(word.toLowerCase())) {
                     result.add(Integer.valueOf(i));
                 }
             }
