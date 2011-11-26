@@ -20,6 +20,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.test.scenario;
 
+import org.yaaic.R;
 import org.yaaic.activity.ConversationActivity;
 import org.yaaic.activity.ServersActivity;
 
@@ -63,7 +64,7 @@ public class ScenarioHelper
 			solo.enterText(4, "YaaicBotium");
 			solo.enterText(6, "Robotium and Yaaic");
 			
-			solo.clickOnButton(4);
+			solo.clickOnButton(solo.getString(R.string.server_save));
 			
 			solo.waitForActivity("ServersActivity", 2000);
 		}
