@@ -22,9 +22,12 @@ package org.yaaic.test.scenario;
 
 
 
-import com.jayway.android.robotium.solo.Solo;
+import org.yaaic.R;
+
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
+
+import com.jayway.android.robotium.solo.Solo;
 
 /**
  * Scenario Tests for the ServersActivity
@@ -108,7 +111,7 @@ public class ServerListScenarios extends ActivityInstrumentationTestCase2
 		solo.enterText(4, "YaaicBotium");
 		solo.enterText(6, "Robotium and Yaaic");
 		
-		solo.clickOnButton(4);
+		solo.clickOnButton(solo.getString(R.string.server_save));
 		
 		solo.waitForActivity("ServersActivity", 1000);
 		solo.assertCurrentActivity("Switched back to ServersActivity", "ServersActivity");
