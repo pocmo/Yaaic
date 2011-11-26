@@ -60,8 +60,10 @@ public class ServerListScenarios extends ActivityInstrumentationTestCase2
 	@Override
 	protected void setUp()
 	{
-		solo   = new Solo(getInstrumentation(), getActivity());
-		helper = new ScenarioHelper(solo);
+		if (solo == null) {
+			solo   = new Solo(getInstrumentation(), getActivity());
+			helper = new ScenarioHelper(solo);
+		}
 	}
 	
 	/**
@@ -70,11 +72,7 @@ public class ServerListScenarios extends ActivityInstrumentationTestCase2
 	@Override
 	protected void tearDown()
 	{
-		try {
-			solo.finalize();
-		} catch (Throwable t) {
-			Log.d("Yaaic/ChannelScenarios", t.getMessage());
-		}
+		solo.finishOpenedActivities();
 	}
 
 	/**

@@ -58,8 +58,10 @@ public class ChannelScenarios extends ActivityInstrumentationTestCase2
 	@Override
 	protected void setUp()
 	{
-		solo   = new Solo(getInstrumentation(), getActivity());
-		helper = new ScenarioHelper(solo);
+		if (solo == null) {
+			solo   = new Solo(getInstrumentation(), getActivity());
+			helper = new ScenarioHelper(solo);
+		}
 		
 		helper.createTestServer();
 		helper.connectToServer();
@@ -74,11 +76,7 @@ public class ChannelScenarios extends ActivityInstrumentationTestCase2
 		helper.disconnectFromServer();
 		helper.deleteTestServer();
 		
-		try {
-			solo.finalize();
-		} catch (Throwable t) {
-			Log.d("Yaaic/ChannelScenarios", t.getMessage());
-		}
+		solo.finishOpenedActivities();
 	}
 	
 	/**
