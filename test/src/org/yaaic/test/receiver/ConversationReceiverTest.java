@@ -29,7 +29,7 @@ import android.test.AndroidTestCase;
 
 /**
  * Test case for org.yaaic.receiver.ConversationReceiver
- * 
+ *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
 public class ConversationReceiverTest extends AndroidTestCase implements ConversationListener
@@ -37,45 +37,45 @@ public class ConversationReceiverTest extends AndroidTestCase implements Convers
 	private boolean onConversationMessageCalled;
 	private boolean onNewConversationCalled;
 	private boolean onRemoveConversationCalled;
-	
+
 	private ConversationReceiver receiver;
 	private String testTarget = "#unittest";
 	private int serverId = 42;
-	
+
 	public void setUp()
 	{
 		onConversationMessageCalled = false;
 		onNewConversationCalled = false;
 		onRemoveConversationCalled = false;
-		
+
 		receiver = new ConversationReceiver(serverId, this);
 	}
-	
+
 	public void testMessageBroadcast()
 	{
 		Intent intent = Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, serverId, testTarget);
 		receiver.onReceive(getContext(), intent);
-		
+
 		assertTrue(onConversationMessageCalled);
 		assertFalse(onNewConversationCalled);
 		assertFalse(onRemoveConversationCalled);
 	}
-	
+
 	public void testNewBroadcast()
 	{
 		Intent intent = Broadcast.createConversationIntent(Broadcast.CONVERSATION_NEW, serverId, testTarget);
 		receiver.onReceive(getContext(), intent);
-		
+
 		assertFalse(onConversationMessageCalled);
 		assertTrue(onNewConversationCalled);
 		assertFalse(onRemoveConversationCalled);
 	}
-	
+
 	public void testRemoveBroadcast()
 	{
 		Intent intent = Broadcast.createConversationIntent(Broadcast.CONVERSATION_REMOVE, serverId, testTarget);
 		receiver.onReceive(getContext(), intent);
-		
+
 		assertFalse(onConversationMessageCalled);
 		assertFalse(onNewConversationCalled);
 		assertTrue(onRemoveConversationCalled);
@@ -85,7 +85,7 @@ public class ConversationReceiverTest extends AndroidTestCase implements Convers
 	public void onConversationMessage(String target)
 	{
 		assertEquals(testTarget, target);
-		
+
 		onConversationMessageCalled = true;
 	}
 
@@ -93,7 +93,7 @@ public class ConversationReceiverTest extends AndroidTestCase implements Convers
 	public void onNewConversation(String target)
 	{
 		assertEquals(testTarget, target);
-		
+
 		onNewConversationCalled = true;
 	}
 
@@ -101,7 +101,13 @@ public class ConversationReceiverTest extends AndroidTestCase implements Convers
 	public void onRemoveConversation(String target)
 	{
 		assertEquals(testTarget, target);
-		
+
 		onRemoveConversationCalled = true;
+	}
+
+	@Override
+	public void onTopicChanged(String topic)
+	{
+		// XXX: Implement me!
 	}
 }
