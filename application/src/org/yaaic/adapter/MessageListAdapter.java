@@ -26,6 +26,7 @@ import org.yaaic.model.Conversation;
 import org.yaaic.model.Message;
 
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -161,5 +162,16 @@ public class MessageListAdapter extends BaseAdapter
     public View getView(int position, View convertView, ViewGroup parent)
     {
         return getItem(position);
+    }
+
+    /**
+     * XXX This is almost certainly covering up a bug elsewhere -- find it!
+     */
+    @Override
+    public void unregisterDataSetObserver(DataSetObserver observer) {
+        if (observer == null) {
+            return;
+        }
+        super.unregisterDataSetObserver(observer);
     }
 }

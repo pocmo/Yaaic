@@ -5,8 +5,9 @@ bin/
 gen/
 R.java
 
-# local ant properties
+# Build files
 local.properties
+ant.properties
+build.xml
+proguard.cfg
 
-# Config file for the build_release.sh script (Because everyone has a different version)
-build.conf
