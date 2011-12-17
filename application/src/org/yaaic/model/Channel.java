@@ -29,6 +29,8 @@ public class Channel extends Conversation
 {
     private String topic;
 
+    private String key;
+
     /**
      * Create a new channel object
      * 
@@ -38,6 +40,7 @@ public class Channel extends Conversation
     {
         super(name);
         this.topic = "";
+        this.key = "";
     }
 
     /**
@@ -68,4 +71,26 @@ public class Channel extends Conversation
     {
         return topic;
     }
+
+    /**
+     * Get the channel's key
+     * 
+     * @return The channel's key, or an empty string if the channel has no key
+     */
+    public String getKey()
+    {
+        return key;
+    }
+
+    /**
+     * Set the channel's key
+     * 
+     * @param key The key of the channel
+     */
+    public void setKey(String key)
+    {
+        this.key = key;
+    }
+
+
 }

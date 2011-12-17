@@ -22,6 +22,7 @@ package org.yaaic.irc;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
@@ -38,6 +39,7 @@ import org.yaaic.model.Query;
 import org.yaaic.model.Server;
 import org.yaaic.model.ServerInfo;
 import org.yaaic.model.Status;
+import org.yaaic.utils.ModeParser;
 
 import android.content.Intent;
 
@@ -390,6 +392,9 @@ public class IRCConnection extends PircBot
                 target
             );
             service.sendBroadcast(intent);
+
+            this.sendRawLine("MODE " + target);
+
         } else if (service.getSettings().showJoinPartAndQuit()) {
             Message message = new Message(
                 service.getString(R.string.message_join, sender),
@@ -802,13 +807,19 @@ public class IRCConnection extends PircBot
     @Override
     protected void onRemoveChannelKey(String target, String sourceNick, String sourceLogin, String sourceHostname, String key)
     {
+        Conversation conversation = server.getConversation(target);
+
         Message message = new Message(service.getString(R.string.message_remove_channel_key, sourceNick));
         message.setColor(Message.COLOR_BLUE);
-        server.getConversation(target).addMessage(message);
+        conversation.addMessage(message);
 
         service.sendBroadcast(
             Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
         );
+
+        if( conversation.getType() == Conversation.TYPE_CHANNEL ) {
+            ((Channel) conversation).setKey("");
+        }
     }
 
     /**
@@ -817,13 +828,19 @@ public class IRCConnection extends PircBot
     @Override
     protected void onSetChannelKey(String target, String sourceNick, String sourceLogin, String sourceHostname, String key)
     {
+        Conversation conversation = server.getConversation(target);
+
         Message message = new Message(service.getString(R.string.message_set_channel_key, sourceNick, key));
         message.setColor(Message.COLOR_BLUE);
-        server.getConversation(target).addMessage(message);
+        conversation.addMessage(message);
 
         service.sendBroadcast(
             Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), target)
         );
+
+        if( conversation.getType() == Conversation.TYPE_CHANNEL ) {
+            ((Channel) conversation).setKey(key);
+        }
     }
 
     /**
@@ -1107,12 +1124,18 @@ public class IRCConnection extends PircBot
             return;
         }
 
+        if (code == 324) {
+            // Reply to MODE #channel
+            processModeReply(response);
+            return;
+        }
+
         if (code >= 200 && code < 300) {
             // Skip 2XX responses
             return;
         }
 
-        if (code == 353 || code == 366 || code == 332 || code == 333) {
+        if (code == 353 || code == 366 || code == 332 || code == 333 || code == 329) {
             return;
         }
 
@@ -1144,7 +1167,7 @@ public class IRCConnection extends PircBot
         super.onDisconnect();
 
         if (service.getSettings().isReconnectEnabled() && server.getStatus() != Status.DISCONNECTED) {
-            setAutojoinChannels(server.getCurrentChannelNames());
+            setAutojoinChannels(server.getCurrentChannelNamesWithKeys());
 
             server.setStatus(Status.CONNECTING);
             service.connect(server);
@@ -1294,6 +1317,39 @@ public class IRCConnection extends PircBot
     {
         mNickMatch = Pattern.compile("(?:^|[\\s?!'�:;,.])"+Pattern.quote(getNick())+"(?:[\\s?!'�:;,.]|$)", Pattern.CASE_INSENSITIVE);
     }
+
+
+
+    /**
+     * Process the MODE reply.
+     */
+    protected void processModeReply(String responseString)
+    {
+        try {
+            ModeParser.ChannelModeReply response = ModeParser.parseModeReply(responseString);
+
+            Conversation conversation = server.getConversation(response.getChannelName());
+            if( conversation == null || conversation.getType() != Conversation.TYPE_CHANNEL ) {
+                return;
+            }
+
+            Channel channel = (Channel) conversation;
+            Map<Character, String> modes = response.getChannelModes();
+
+            if( modes.containsKey('k') ) {
+                String key = modes.get('k');
+                channel.setKey(key);
+            }
+            else {
+                channel.setKey("");
+            }
+        }
+        catch(ModeParser.InvalidModeStringException ime) {
+            // do nothing
+        }
+    }
+
+
 
     @Override
     public void dispose()
