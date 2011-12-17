@@ -112,12 +112,5 @@ public class ModeParserTest extends TestCase {
 		}
 	}
 	
-	public void testAddingAndRemovingInSingleModeString() throws InvalidModeStringException
-	{
-		String replyString = "testuser #test +s-s";
-	    ChannelModeReply reply = ModeParser.parseChannelModeReply(replyString);
-	    Map<Character, String> modes = reply.getChannelModes();
-	    assertFalse( modes.containsKey('s'));
-	}
 	
 }

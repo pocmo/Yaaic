@@ -75,7 +75,9 @@ public class ModeParser
 
         for(ModeChange modeChange : modeChanges) {
             if( modeChange.getAction() == ModeChange.ACTION.REMOVING_MODE ) {
-                effectiveModes.remove(modeChange.getMode());
+                // The mode string is just a list of effective modes,  not
+                // changes to the channel modes, so there should be no removals.
+                throw new InvalidModeStringException();
             }
             else if( modeChange.getAction() == ModeChange.ACTION.ADDING_MODE ) {
                 effectiveModes.put(modeChange.getMode(), modeChange.getParam());
@@ -143,7 +145,7 @@ public class ModeParser
                     throw new InvalidModeStringException();
                 }
 
-                if( "ovklb".contains(""+atPos) ) {
+                if( "ovkb".contains(""+atPos) || ("l".contains(""+atPos) && action == ModeChange.ACTION.ADDING_MODE) ) {
                     if( !paramsIterator.hasNext() ) {
                         throw new InvalidModeStringException();
                     }
