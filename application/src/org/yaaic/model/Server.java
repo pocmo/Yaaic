@@ -395,14 +395,21 @@ public class Server
      * 
      * @return
      */
-    public ArrayList<String> getCurrentChannelNames()
+    public ArrayList<String> getCurrentChannelNamesWithKeys()
     {
         ArrayList<String> channels = new ArrayList<String>();
         Collection<Conversation> mConversations = conversations.values();
 
         for (Conversation conversation : mConversations) {
             if (conversation.getType() == Conversation.TYPE_CHANNEL) {
-                channels.add(conversation.getName());
+                Channel channel = (Channel) conversation;
+                String name = channel.getName();
+                String key = channel.getKey();
+                if( key.length() > 0 ) {
+                    channels.add(name + " " + key);
+                } else {
+                    channels.add(name);
+                }
             }
         }
 

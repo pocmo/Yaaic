@@ -654,7 +654,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                             return;
                         }
                         binder.getService().getConnection(server.getId()).setAutojoinChannels(
-                            server.getCurrentChannelNames()
+                            server.getCurrentChannelNamesWithKeys()
                         );
                         server.setStatus(Status.CONNECTING);
                         binder.connect(server);

@@ -1,7 +1,7 @@
 /*
 Yaaic - Yet Another Android IRC Client
 
-Copyright 2009-2010 Sebastian Kaspari
+Copyright 2011 Michael Kowalchuk
 
 This file is part of Yaaic.
 
@@ -18,27 +18,22 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
-package org.yaaic.test;
+package org.yaaic.test.utils;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
 /**
- * All tests for Yaaic (org.yaaic.test.*)
+ * All util tests 
  *  
- * @author Sebastian Kaspari <sebastian@yaaic.org>
+ * @author Michael Kowalchuk <michael.kowalchuk@gmail.com>
  */
 public class AllTests {
-
 	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for org.yaaic.test");
+		TestSuite suite = new TestSuite("Utils-Tests");
 		//$JUnit-BEGIN$
-		suite.addTest(org.yaaic.test.model.AllTests.suite());
-		suite.addTest(org.yaaic.test.receiver.AllTests.suite());
-		suite.addTest(org.yaaic.test.scenario.AllTests.suite());
-		suite.addTest(org.yaaic.test.utils.AllTests.suite());
+		suite.addTestSuite(ModeParserTest.class);
 		//$JUnit-END$
 		return suite;
 	}
-
 }
