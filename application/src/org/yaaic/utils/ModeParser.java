@@ -56,7 +56,7 @@ public class ModeParser
      * Parses a numeric 324 MODE reply, which is a list of the current modes
      * that apply to a channel.
      */
-    public static ChannelModeReply parseModeReply(String reply) throws InvalidModeStringException
+    public static ChannelModeReply parseChannelModeReply(String reply) throws InvalidModeStringException
     {
         String[] parts = reply.split(" ");
         if( parts.length < 3 ) {

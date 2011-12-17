@@ -72,21 +72,21 @@ public class ModeParserTest extends TestCase {
 	public void testChannelName() throws InvalidModeStringException
 	{
 		String replyString = "testuser #test +ns";
-	    ChannelModeReply reply = ModeParser.parseModeReply(replyString);
+	    ChannelModeReply reply = ModeParser.parseChannelModeReply(replyString);
 	    assertEquals("#test", reply.getChannelName());
 	}
 	
 	public void testNoModesSpecified() throws InvalidModeStringException
 	{
 		String replyString = "testuser #test +";
-		ChannelModeReply reply = ModeParser.parseModeReply(replyString);
+		ChannelModeReply reply = ModeParser.parseChannelModeReply(replyString);
 		assertEquals( 0, reply.getChannelModes().size());
 	}
 	
 	public void testModesWithoutParameters() throws InvalidModeStringException
 	{
 		String replyString = "testuser #test +ns";
-	    ChannelModeReply reply = ModeParser.parseModeReply(replyString);
+	    ChannelModeReply reply = ModeParser.parseChannelModeReply(replyString);
 	    Map<Character, String> modes = reply.getChannelModes();
 	    assertTrue( modes.containsKey('n'));
 	    assertTrue( modes.containsKey('s'));
@@ -95,7 +95,7 @@ public class ModeParserTest extends TestCase {
 	public void testModesWithParameters() throws InvalidModeStringException
 	{
 		String replyString = "testuser #test +ks passkey";
-	    ChannelModeReply reply = ModeParser.parseModeReply(replyString);
+	    ChannelModeReply reply = ModeParser.parseChannelModeReply(replyString);
 	    Map<Character, String> modes = reply.getChannelModes();
 	    assertTrue( modes.containsKey('s'));
 	    assertEquals( "passkey", modes.get('k') );
@@ -105,7 +105,7 @@ public class ModeParserTest extends TestCase {
 	{
 		String replyString = "testuser #test";
 		try {
-			ModeParser.parseModeReply(replyString);
+			ModeParser.parseChannelModeReply(replyString);
 			fail();
 		}
 		catch(InvalidModeStringException ime) {
@@ -115,7 +115,7 @@ public class ModeParserTest extends TestCase {
 	public void testAddingAndRemovingInSingleModeString() throws InvalidModeStringException
 	{
 		String replyString = "testuser #test +s-s";
-	    ChannelModeReply reply = ModeParser.parseModeReply(replyString);
+	    ChannelModeReply reply = ModeParser.parseChannelModeReply(replyString);
 	    Map<Character, String> modes = reply.getChannelModes();
 	    assertFalse( modes.containsKey('s'));
 	}

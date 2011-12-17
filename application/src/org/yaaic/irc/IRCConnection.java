@@ -1326,7 +1326,7 @@ public class IRCConnection extends PircBot
     protected void processModeReply(String responseString)
     {
         try {
-            ModeParser.ChannelModeReply response = ModeParser.parseModeReply(responseString);
+            ModeParser.ChannelModeReply response = ModeParser.parseChannelModeReply(responseString);
 
             Conversation conversation = server.getConversation(response.getChannelName());
             if( conversation == null || conversation.getType() != Conversation.TYPE_CHANNEL ) {
