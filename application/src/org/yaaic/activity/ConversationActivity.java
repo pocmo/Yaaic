@@ -213,7 +213,12 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
-        indicator.setTextSize(settings.getFontSize() * dm.scaledDensity);
+        float fontSize = settings.getFontSize() * dm.scaledDensity;
+        indicator.setTextSize(fontSize);
+
+        int padding = (int) (5 * dm.scaledDensity);
+        input.setPadding(padding, padding, padding, padding);
+        indicator.setTypeface(Typeface.MONOSPACE);
 
         // Optimization : cache field lookups
         Collection<Conversation> mConversations = server.getConversations();
