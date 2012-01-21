@@ -24,6 +24,9 @@ import org.yaaic.R;
 import org.yaaic.activity.ConversationActivity;
 import org.yaaic.activity.ServersActivity;
 
+import android.view.View;
+import android.widget.EditText;
+
 import com.jayway.android.robotium.solo.Solo;
 
 /**
@@ -53,17 +56,23 @@ public class ScenarioHelper
 		if (!solo.searchText("RobotiumTest")) {
 			solo.assertCurrentActivity("Starting at ServersActivity", "ServersActivity");
 			
-			solo.pressMenuItem(0);
+			View view = solo.getView(R.id.add);
+			assert view != null;
+
+			solo.clickOnView(view);
 			
-			solo.waitForActivity("AddServerActivity", 2000);
+			solo.waitForActivity("AddServerActivity");
 			solo.assertCurrentActivity("Switched to AddServerActivity", "AddServerActivity");
 			
 			solo.enterText(0, "RobotiumTest");
 			solo.enterText(1, "irc.epd-me.net");
 			
 			solo.enterText(4, "YaaicBotium");
-			solo.enterText(6, "Robotium and Yaaic");
 			
+			// Somehow robotium doesn't detect the field when using index 5
+			EditText realname = (EditText) solo.getView(R.id.realname);
+			solo.enterText(realname, "Robotium and Yaaic");
+
 			solo.clickOnButton(solo.getString(R.string.server_save));
 			
 			solo.waitForActivity("ServersActivity", 2000);
