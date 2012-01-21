@@ -1,7 +1,7 @@
 /*
 Yaaic - Yet Another Android IRC Client
 
-Copyright 2009-2011 Sebastian Kaspari
+Copyright 2009-2012 Sebastian Kaspari
 
 This file is part of Yaaic.
 
@@ -26,20 +26,16 @@ import java.util.List;
 
 import org.yaaic.R;
 import org.yaaic.Yaaic;
-import org.yaaic.adapter.DeckAdapter;
+import org.yaaic.adapter.ConversationPagerAdapter;
 import org.yaaic.adapter.MessageListAdapter;
 import org.yaaic.command.CommandParser;
 import org.yaaic.irc.IRCBinder;
 import org.yaaic.irc.IRCConnection;
 import org.yaaic.irc.IRCService;
-import org.yaaic.layout.NonScalingBackgroundDrawable;
-import org.yaaic.listener.ConversationClickListener;
 import org.yaaic.listener.ConversationListener;
-import org.yaaic.listener.ConversationSelectedListener;
 import org.yaaic.listener.ServerListener;
 import org.yaaic.listener.SpeechClickListener;
 import org.yaaic.model.Broadcast;
-import org.yaaic.model.Channel;
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Extra;
 import org.yaaic.model.Message;
@@ -52,10 +48,7 @@ import org.yaaic.model.Status;
 import org.yaaic.model.User;
 import org.yaaic.receiver.ConversationReceiver;
 import org.yaaic.receiver.ServerReceiver;
-import org.yaaic.view.ConversationSwitcher;
-import org.yaaic.view.MessageListView;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
@@ -65,35 +58,37 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.speech.RecognizerIntent;
+import android.support.v4.view.ViewPager;
 import android.text.InputType;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.View.OnKeyListener;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Gallery;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewSwitcher;
+
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.viewpagerindicator.TitlePageIndicator;
+import com.viewpagerindicator.TitlePageIndicator.IndicatorStyle;
 
 /**
  * The server view with a scrollable list of all channels
- * 
+ *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class ConversationActivity extends Activity implements ServiceConnection, ServerListener, ConversationListener
+public class ConversationActivity extends SherlockActivity implements ServiceConnection, ServerListener, ConversationListener
 {
     public static final int REQUEST_CODE_SPEECH = 99;
 
@@ -108,11 +103,10 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     private ConversationReceiver channelReceiver;
     private ServerReceiver serverReceiver;
 
-    private ViewSwitcher switcher;
-    private Gallery deck;
-    private DeckAdapter deckAdapter;
+    private ViewPager pager;
+    private ConversationPagerAdapter pagerAdapter;
+
     private Scrollback scrollback;
-    private ConversationSwitcher dots;
 
     // XXX: This is ugly. This is a buffer for a channel that should be joined after showing the
     //      JoinActivity. As onActivityResult() is called before onResume() a "channel joined"
@@ -177,7 +171,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         serverId = getIntent().getExtras().getInt("serverId");
         server = Yaaic.getInstance().getServerById(serverId);
@@ -188,39 +181,58 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             this.finish();
         }
 
-        setTitle("Yaaic - " + server.getTitle());
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
-        setContentView(R.layout.conversations);
-        if (settings.fullscreenConversations()){
+        setTitle(server.getTitle());
+
+        if (settings.fullscreenConversations()) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
 
-        boolean isLandscape = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
+        setContentView(R.layout.conversations);
 
-        ((TextView) findViewById(R.id.title)).setText(server.getTitle());
+        boolean isLandscape = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
 
         EditText input = (EditText) findViewById(R.id.input);
         input.setOnKeyListener(inputKeyListener);
 
-        switcher = (ViewSwitcher) findViewById(R.id.switcher);
+        pager = (ViewPager) findViewById(R.id.pager);
 
-        dots = (ConversationSwitcher) findViewById(R.id.dots);
-        dots.setServer(server);
+        pagerAdapter = new ConversationPagerAdapter(server);
+        pager.setAdapter(pagerAdapter);
 
-        deckAdapter = new DeckAdapter();
-        deck = (Gallery) findViewById(R.id.deck);
-        deck.setOnItemSelectedListener(new ConversationSelectedListener(this, server, (TextView) findViewById(R.id.title), dots));
-        deck.setAdapter(deckAdapter);
-        deck.setOnItemClickListener(new ConversationClickListener(deckAdapter, switcher));
-        deck.setBackgroundDrawable(new NonScalingBackgroundDrawable(this, deck, R.drawable.background));
+        final float density = getResources().getDisplayMetrics().density;
+
+        TitlePageIndicator indicator = (TitlePageIndicator) findViewById(R.id.titleIndicator);
+        indicator.setTypeface(Typeface.MONOSPACE);
+        indicator.setViewPager(pager);
+
+        indicator.setFooterColor(0xFF31B6E7);
+        indicator.setFooterLineHeight(1 * density);
+        indicator.setFooterIndicatorHeight(3 * density);
+        indicator.setFooterIndicatorStyle(IndicatorStyle.Underline);
+        indicator.setTextColor(0xFFDDDDDD);
+        indicator.setSelectedColor(0xFFFFFFFF);
+        indicator.setSelectedBold(true);
+        indicator.setBackgroundColor(0xFF181818);
 
         historySize = settings.getHistorySize();
 
         if (server.getStatus() == Status.PRE_CONNECTING) {
             server.clearConversations();
-            deckAdapter.clearConversations();
+            pagerAdapter.clearConversations();
             server.getConversation(ServerInfo.DEFAULT_NAME).setHistorySize(historySize);
         }
+
+        final float scaledDensity = getResources().getDisplayMetrics().density;
+
+        float fontSize = settings.getFontSize() * scaledDensity;
+        indicator.setTextSize(fontSize);
+
+        int padding = (int) (5 * scaledDensity);
+        input.setPadding(padding, padding, padding, padding);
+        indicator.setTypeface(Typeface.MONOSPACE);
 
         // Optimization : cache field lookups
         Collection<Conversation> mConversations = server.getConversations();
@@ -292,8 +304,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             }
         }
 
-        ((ImageView) findViewById(R.id.status)).setImageResource(server.getStatusIcon());
-
         // Start service
         Intent intent = new Intent(this, IRCService.class);
         intent.setAction(IRCService.ACTION_FOREGROUND);
@@ -313,14 +323,14 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         // Fill view with messages that have been buffered while paused
         for (Conversation conversation : mConversations) {
             String name = conversation.getName();
-            mAdapter = deckAdapter.getItemAdapter(name);
+            mAdapter = pagerAdapter.getItemAdapter(name);
 
             if (mAdapter != null) {
                 mAdapter.addBulkMessages(conversation.getBuffer());
                 conversation.clearBuffer();
             } else {
                 // Was conversation created while we were paused?
-                if (deckAdapter.getPositionByName(name) == -1) {
+                if (pagerAdapter.getPositionByName(name) == -1) {
                     onNewConversation(name);
                 }
             }
@@ -336,11 +346,11 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         }
 
         // Remove views for conversations that ended while we were paused
-        int numViews = deckAdapter.getCount();
+        int numViews = pagerAdapter.getCount();
         if (numViews > mConversations.size()) {
             for (int i = 0; i < numViews; ++i) {
-                if (!mConversations.contains(deckAdapter.getItem(i))) {
-                    deckAdapter.removeItem(i--);
+                if (!mConversations.contains(pagerAdapter.getItem(i))) {
+                    pagerAdapter.removeConversation(i--);
                     --numViews;
                 }
             }
@@ -380,33 +390,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     }
 
     /**
-     * On save instance state (e.g. before a configuration change)
-     */
-    @Override
-    protected void onSaveInstanceState(Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
-
-        if (deckAdapter.isSwitched()) {
-            outState.putBoolean("isSwitched", deckAdapter.isSwitched());
-            outState.putString("switchedName", deckAdapter.getSwitchedName());
-        }
-    }
-
-    /**
-     * On restore instance state (e.g. after a configuration change)
-     */
-    @Override
-    protected void onRestoreInstanceState(Bundle inState)
-    {
-        super.onRestoreInstanceState(inState);
-
-        if (inState.getBoolean("isSwitched")) {
-            deckAdapter.setSwitched(inState.getString("switchedName"), null);
-        }
-    }
-
-    /**
      * On service connected
      */
     @Override
@@ -441,7 +424,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         super.onCreateOptionsMenu(menu);
 
         // inflate from xml
-        MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = new MenuInflater(this);
         inflater.inflate(R.menu.conversations, menu);
 
         return true;
@@ -467,6 +450,10 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     public boolean onMenuItemSelected(int featureId, MenuItem item)
     {
         switch (item.getItemId()) {
+            case  android.R.id.home:
+                finish();
+                break;
+
             case R.id.disconnect:
                 server.setStatus(Status.DISCONNECTED);
                 server.setMayReconnect(false);
@@ -477,7 +464,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                 break;
 
             case R.id.close:
-                Conversation conversationToClose = deckAdapter.getItem(deck.getSelectedItemPosition());
+                Conversation conversationToClose = pagerAdapter.getItem(pager.getCurrentItem());
                 // Make sure we part a channel when closing the channel conversation
                 if (conversationToClose.getType() == Conversation.TYPE_CHANNEL) {
                     binder.getService().getConnection(serverId).partChannel(conversationToClose.getName());
@@ -495,15 +482,15 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                 break;
 
             case R.id.users:
-                Conversation conversationForUserList = deckAdapter.getItem(deck.getSelectedItemPosition());
+                Conversation conversationForUserList = pagerAdapter.getItem(pager.getCurrentItem());
                 if (conversationForUserList.getType() == Conversation.TYPE_CHANNEL) {
                     Intent intent = new Intent(this, UsersActivity.class);
                     intent.putExtra(
-                        Extra.USERS,
-                        binder.getService().getConnection(server.getId()).getUsersAsStringArray(
-                            conversationForUserList.getName()
-                        )
-                    );
+                            Extra.USERS,
+                            binder.getService().getConnection(server.getId()).getUsersAsStringArray(
+                                    conversationForUserList.getName()
+                                    )
+                            );
                     startActivityForResult(intent, REQUEST_CODE_USERS);
                 } else {
                     Toast.makeText(this, getResources().getString(R.string.only_usable_from_channel), Toast.LENGTH_SHORT).show();
@@ -516,7 +503,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
     /**
      * Get server object assigned to this activity
-     * 
+     *
      * @return the server object
      */
     public Server getServer()
@@ -538,7 +525,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             return;
         }
 
-        MessageListAdapter adapter = deckAdapter.getItemAdapter(target);
+        MessageListAdapter adapter = pagerAdapter.getItemAdapter(target);
 
         while(conversation.hasBufferedMessages()) {
             Message message = conversation.pollBufferedMessage();
@@ -560,10 +547,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                 conversation.setStatus(status);
             }
         }
-
-        if (dots != null) {
-            dots.invalidate();
-        }
     }
 
     /**
@@ -574,14 +557,18 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     {
         createNewConversation(target);
 
-        if (!deckAdapter.isSwitched()) {
-            // Scroll to new conversation
-            deck.setSelection(deckAdapter.getCount() - 1);
-        }
+        pager.setCurrentItem(pagerAdapter.getCount() - 1);
     }
+
+    /**
+     * Create a new conversation in the pager adapter for the
+     * given target conversation.
+     *
+     * @param target
+     */
     public void createNewConversation(String target)
     {
-        deckAdapter.addItem(server.getConversation(target));
+        pagerAdapter.addConversation(server.getConversation(target));
     }
 
     /**
@@ -590,31 +577,20 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     @Override
     public void onRemoveConversation(String target)
     {
-        deckAdapter.removeItem(target);
+        int position = pagerAdapter.getPositionByName(target);
 
-        if (deckAdapter.isSwitched()) {
-            switcher.showNext();
-            switcher.removeView(deckAdapter.getSwitchedView());
-            deckAdapter.setSwitched(null, null);
+        if (position != -1) {
+            pagerAdapter.removeConversation(position);
         }
     }
 
     /**
      * On topic change
      */
+    @Override
     public void onTopicChanged(String target)
     {
-        String selected = server.getSelectedConversation();
-        if (selected.equals(target)) {
-            // onTopicChanged is only called for channels
-            Channel channel = (Channel) server.getConversation(selected);
-            StringBuilder sb = new StringBuilder();
-            sb.append(server.getTitle() + " - " + channel.getName());
-            if (!(channel.getTopic()).equals("")) {
-                sb.append(" - " + channel.getTopic());
-            }
-            ((TextView) findViewById(R.id.title)).setText(sb.toString());
-        }
+        // No implementation
     }
 
     /**
@@ -623,8 +599,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     @Override
     public void onStatusUpdate()
     {
-        ((ImageView) findViewById(R.id.status)).setImageResource(server.getStatusIcon());
-
         EditText input = (EditText) findViewById(R.id.input);
 
         if (server.isConnected()) {
@@ -654,8 +628,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                             return;
                         }
                         binder.getService().getConnection(server.getId()).setAutojoinChannels(
-                            server.getCurrentChannelNames()
-                        );
+                                server.getCurrentChannelNames()
+                                );
                         server.setStatus(Status.CONNECTING);
                         binder.connect(server);
                         reconnectDialogActive = false;
@@ -673,25 +647,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                 alert.show();
             }
         }
-    }
-
-    /**
-     * On key down
-     *
-     * XXX: As we only track the back key: Android >= 2.0 will call a method called onBackPressed()
-     */
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-            if (deckAdapter.isSwitched()) {
-                MessageListView canvas = (MessageListView) deckAdapter.getView(deckAdapter.getPositionByName(deckAdapter.getSwitchedName()), null, switcher);
-                canvas.setSwitched(false);
-                deckAdapter.setSwitched(null, null);
-                return true;
-            }
-        }
-        return super.onKeyDown(keyCode, event);
     }
 
     /**
@@ -746,11 +701,11 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                         String nicknameWithoutPrefix = nickname;
 
                         while (
-                            nicknameWithoutPrefix.startsWith("@") ||
-                            nicknameWithoutPrefix.startsWith("+") ||
-                            nicknameWithoutPrefix.startsWith(".") ||
-                            nicknameWithoutPrefix.startsWith("%")
-                        ) {
+                                nicknameWithoutPrefix.startsWith("@") ||
+                                nicknameWithoutPrefix.startsWith("+") ||
+                                nicknameWithoutPrefix.startsWith(".") ||
+                                nicknameWithoutPrefix.startsWith("%")
+                                ) {
                             // Strip prefix(es) now
                             nicknameWithoutPrefix = nicknameWithoutPrefix.substring(1);
                         }
@@ -776,10 +731,10 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                                     server.addConversation(query);
 
                                     Intent intent = Broadcast.createConversationIntent(
-                                        Broadcast.CONVERSATION_NEW,
-                                        server.getId(),
-                                        nicknameWithoutPrefix
-                                    );
+                                            Broadcast.CONVERSATION_NEW,
+                                            server.getId(),
+                                            nicknameWithoutPrefix
+                                            );
                                     binder.getService().sendBroadcast(intent);
                                 }
                                 break;
@@ -830,7 +785,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
         scrollback.addMessage(text);
 
-        Conversation conversation = deckAdapter.getItem(deck.getSelectedItemPosition());
+        Conversation conversation = pagerAdapter.getItem(pager.getCurrentItem());
 
         if (conversation != null) {
             if (!text.trim().startsWith("/")) {
@@ -882,7 +837,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             word = text.substring(cursor, sel_end);
         } else {
             // use the word at the curent cursor position
-            while(true) {
+            while (true) {
                 cursor -= 1;
                 if (cursor <= 0 || text.charAt(cursor) == ' ') {
                     break;
@@ -907,14 +862,14 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         }
         // Log.d("Yaaic", "Trying to complete nick: " + word);
 
-        Conversation conversationForUserList = deckAdapter.getItem(deck.getSelectedItemPosition());
+        Conversation conversationForUserList = pagerAdapter.getItem(pager.getCurrentItem());
 
         String[] users = null;
 
         if (conversationForUserList.getType() == Conversation.TYPE_CHANNEL) {
             users = binder.getService().getConnection(server.getId()).getUsersAsStringArray(
-                conversationForUserList.getName()
-            );
+                    conversationForUserList.getName()
+                    );
         }
 
         // go through users and add matches
@@ -975,6 +930,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                 openSoftKeyboard(input);
             }
         });
+
         input.requestFocus();
     }
 
@@ -987,7 +943,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
     /**
      * Remove the status char off the front of a nick if one is present
-     * 
+     *
      * @param nick
      * @return nick without statuschar
      */
@@ -995,7 +951,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     {
         /* Discard status characters */
         if (nick.startsWith("@") || nick.startsWith("+")
-            || nick.startsWith("%")) {
+                || nick.startsWith("%")) {
             nick = nick.substring(1);
         }
         return nick;

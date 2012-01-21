@@ -1,7 +1,7 @@
 /*
 Yaaic - Yet Another Android IRC Client
 
-Copyright 2009-2011 Sebastian Kaspari
+Copyright 2009-2012 Sebastian Kaspari
 
 This file is part of Yaaic.
 
@@ -33,11 +33,12 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
+import android.text.util.Linkify;
 import android.widget.TextView;
 
 /**
  * A channel or server message
- * 
+ *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
 public class Message
@@ -91,7 +92,7 @@ public class Message
 
     /**
      * Create a new message without an icon defaulting to TYPE_MESSAGE
-     * 
+     *
      * @param text
      */
     public Message(String text)
@@ -101,7 +102,7 @@ public class Message
 
     /**
      * Create a new message without an icon with a specific type
-     * 
+     *
      * @param text
      * @param type Message type
      */
@@ -113,7 +114,7 @@ public class Message
     /**
      * Create a new message sent by a user, without an icon,
      * defaulting to TYPE_MESSAGE
-     * 
+     *
      * @param text
      * @param sender
      */
@@ -147,7 +148,7 @@ public class Message
 
     /**
      * Get the message's icon
-     * 
+     *
      * @return
      */
     public int getIcon()
@@ -157,7 +158,7 @@ public class Message
 
     /**
      * Get the text of this message
-     * 
+     *
      * @return
      */
     public String getText()
@@ -167,7 +168,7 @@ public class Message
 
     /**
      * Get the type of this message
-     * 
+     *
      * @return One of Message.TYPE_*
      */
     public int getType()
@@ -219,7 +220,7 @@ public class Message
 
     /**
      * Render message as spannable string
-     * 
+     *
      * @return
      */
     public SpannableString render(Context context)
@@ -323,6 +324,10 @@ public class Message
 
         TextView canvas = new TextView(context);
 
+        canvas.setAutoLinkMask(Linkify.ALL);
+        canvas.setLinksClickable(true);
+        canvas.setLinkTextColor(COLOR_BLUE);
+
         canvas.setText(this.render(context));
         canvas.setTextSize(settings.getFontSize());
         canvas.setTypeface(Typeface.MONOSPACE);
@@ -333,7 +338,7 @@ public class Message
 
     /**
      * Generate a timestamp
-     * 
+     *
      * @param use24hFormat
      * @return
      */

@@ -1,7 +1,7 @@
 /*
 Yaaic - Yet Another Android IRC Client
 
-Copyright 2009-2011 Sebastian Kaspari
+Copyright 2009-2012 Sebastian Kaspari
 
 This file is part of Yaaic.
 
@@ -23,14 +23,15 @@ package org.yaaic.activity;
 import org.yaaic.R;
 
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
+
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
 
 /**
  * Settings
- * 
+ *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class SettingsActivity extends PreferenceActivity
+public class SettingsActivity extends SherlockPreferenceActivity
 {
     /**
      * On create

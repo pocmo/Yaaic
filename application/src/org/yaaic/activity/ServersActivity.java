@@ -1,7 +1,7 @@
 /*
 Yaaic - Yet Another Android IRC Client
 
-Copyright 2009-2011 Sebastian Kaspari
+Copyright 2009-2012 Sebastian Kaspari
 
 This file is part of Yaaic.
 
@@ -28,7 +28,6 @@ import org.yaaic.adapter.ServerListAdapter;
 import org.yaaic.db.Database;
 import org.yaaic.irc.IRCBinder;
 import org.yaaic.irc.IRCService;
-import org.yaaic.layout.NonScalingBackgroundDrawable;
 import org.yaaic.listener.ServerListener;
 import org.yaaic.model.Broadcast;
 import org.yaaic.model.Extra;
@@ -37,7 +36,6 @@ import org.yaaic.model.Status;
 import org.yaaic.receiver.ServerReceiver;
 
 import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -45,21 +43,24 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemLongClickListener;
+
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 /**
  * List of servers
- * 
+ *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class ServersActivity extends ListActivity implements ServiceConnection, ServerListener, OnItemLongClickListener {
+public class ServersActivity extends SherlockActivity implements ServiceConnection, ServerListener, OnItemClickListener, OnItemLongClickListener {
     private IRCBinder binder;
     private ServerReceiver receiver;
     private ServerListAdapter adapter;
@@ -78,7 +79,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
          * depending on the task the app was started in. In order to avoid
          * stacking up of this duplicated activities we keep a count of this
          * root activity and let it finish if it already exists
-         * 
+         *
          * Launching the app via the notification icon creates a new task,
          * and there doesn't seem to be a way around this so this is needed
          */
@@ -89,11 +90,11 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
         setContentView(R.layout.servers);
 
         adapter = new ServerListAdapter();
-        setListAdapter(adapter);
 
-        list = getListView();
+        list = (ListView) findViewById(android.R.id.list);
+        list.setAdapter(adapter);
+        list.setOnItemClickListener(this);
         list.setOnItemLongClickListener(this);
-        list.setBackgroundDrawable(new NonScalingBackgroundDrawable(this, list, R.drawable.background));
     }
 
     /**
@@ -164,7 +165,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
      * On server selected
      */
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Server server = adapter.getItem(position);
 
         if (server == null) {
@@ -240,7 +241,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 
     /**
      * Start activity to edit server with given id
-     * 
+     *
      * @param serverId The id of the server
      */
     private void editServer(int serverId)
@@ -266,7 +267,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
         super.onCreateOptionsMenu(menu);
 
         // inflate from xml
-        MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = new MenuInflater(this);
         inflater.inflate(R.menu.servers, menu);
 
         return true;
@@ -319,7 +320,7 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
 
     /**
      * Delete server
-     * 
+     *
      * @param serverId
      */
     public void deleteServer(int serverId)
@@ -345,5 +346,4 @@ public class ServersActivity extends ListActivity implements ServiceConnection, 
             list.setBackgroundDrawable(null);
         }
     }
-
 }

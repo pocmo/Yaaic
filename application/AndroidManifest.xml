@@ -2,7 +2,7 @@
 <!-- 
 Yaaic - Yet Another Android IRC Client
 
-Copyright 2009-2011 Sebastian Kaspari
+Copyright 2009-2012 Sebastian Kaspari
 
 This file is part of Yaaic.
 
@@ -23,9 +23,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     package="org.yaaic"
     android:versionCode="11"
     android:versionName="0.9">
+    <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="15" />
     <application
         android:icon="@drawable/icon"
-        android:label="Yaaic">
+        android:label="Yaaic"
+        android:theme="@style/Theme.Sherlock">
         <activity
             android:name=".activity.ServersActivity"
             android:label="@string/app_name"
@@ -94,7 +96,6 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         </activity>
         <service android:name=".irc.IRCService"></service>
     </application>
-    <uses-sdk android:minSdkVersion="4" />
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <uses-permission android:name="android.permission.VIBRATE"></uses-permission>
 </manifest> 

@@ -1,7 +1,7 @@
 /*
 Yaaic - Yet Another Android IRC Client
 
-Copyright 2009-2011 Sebastian Kaspari
+Copyright 2009-2012 Sebastian Kaspari
 
 This file is part of Yaaic.
 
@@ -20,61 +20,63 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.yaaic.listener;
 
+import org.yaaic.adapter.ConversationPagerAdapter;
+import org.yaaic.irc.IRCService;
 import org.yaaic.model.Channel;
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Server;
 import org.yaaic.view.ConversationSwitcher;
-import org.yaaic.irc.IRCService;
 
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.TextView;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.widget.TextView;
 
 /**
  * Listener for conversation selections
- * 
+ *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class ConversationSelectedListener implements OnItemSelectedListener
+public class ConversationSelectedListener implements OnPageChangeListener
 {
     private final Context ctx;
     private final Server server;
     private final TextView titleView;
     private final ConversationSwitcher switcher;
+    private final ConversationPagerAdapter adapter;
 
     /**
      * Create a new ConversationSelectedListener
-     * 
+     *
      * @param server
      * @param titleView
      */
-    public ConversationSelectedListener(Context ctx, Server server, TextView titleView, ConversationSwitcher switcher)
+    public ConversationSelectedListener(Context ctx, Server server, TextView titleView, ConversationPagerAdapter adapter, ConversationSwitcher switcher)
     {
         this.ctx = ctx;
         this.server = server;
         this.titleView = titleView;
         this.switcher = switcher;
+        this.adapter = adapter;
     }
 
     /**
-     * On conversation selected/focused
+     * On page has been selected.
      */
     @Override
-    public void onItemSelected(AdapterView<?> deck, View view, int position, long id)
+    public void onPageSelected(int position)
     {
-        Conversation conversation = (Conversation) deck.getItemAtPosition(position);
+        Conversation conversation = adapter.getItem(position);
 
         if (conversation != null && conversation.getType() != Conversation.TYPE_SERVER) {
             StringBuilder sb = new StringBuilder();
             sb.append(server.getTitle() + " - " + conversation.getName());
-            if (conversation.getType() == Conversation.TYPE_CHANNEL && !((Channel)conversation).getTopic().equals(""))
+            if (conversation.getType() == Conversation.TYPE_CHANNEL && !((Channel)conversation).getTopic().equals("")) {
                 sb.append(" - " + ((Channel)conversation).getTopic());
+            }
             titleView.setText(sb.toString());
         } else {
-            onNothingSelected(deck);
+            titleView.setText(server.getTitle());
         }
 
         // Remember selection
@@ -101,11 +103,18 @@ public class ConversationSelectedListener implements OnItemSelectedListener
     }
 
     /**
-     * On no conversation selected/focused
+     * On scroll state of pager has been chanaged.
      */
     @Override
-    public void onNothingSelected(AdapterView<?> deck)
+    public void onPageScrollStateChanged(int state)
     {
-        titleView.setText(server.getTitle());
+    }
+
+    /**
+     * On page has been scrolled.
+     */
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
+    {
     }
 }

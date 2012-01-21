@@ -13,6 +13,7 @@
     <string name="users_label">Users</string>
     <string name="channels_label">Channels</string>
     <string name="add_server_label">Add new server</string>
+    <string name="edit_server_label">Edit server</string>
 
     <string name="server_title">Title</string>
     <string name="server_host">Host</string>

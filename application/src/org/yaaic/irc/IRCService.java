@@ -1,7 +1,7 @@
 /*
 Yaaic - Yet Another Android IRC Client
 
-Copyright 2009-2011 Sebastian Kaspari
+Copyright 2009-2012 Sebastian Kaspari
 
 This file is part of Yaaic.
 
@@ -52,7 +52,7 @@ import android.os.SystemClock;
 
 /**
  * The background service for managing the irc connections
- * 
+ *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
 public class IRCService extends Service
@@ -70,6 +70,8 @@ public class IRCService extends Service
     private static final Class[] mStartForegroundSignature = new Class[] { int.class, Notification.class };
     @SuppressWarnings("rawtypes")
     private static final Class[] mStopForegroundSignature = new Class[] { boolean.class };
+    @SuppressWarnings("rawtypes")
+    private static final Class[] mSetForegroudSignaure = new Class[] { boolean.class };
 
     public static final String ACTION_FOREGROUND = "org.yaaic.service.foreground";
     public static final String ACTION_BACKGROUND = "org.yaaic.service.background";
@@ -135,7 +137,7 @@ public class IRCService extends Service
 
     /**
      * Get Settings object
-     * 
+     *
      * @return the settings helper object
      */
     public Settings getSettings()
@@ -156,12 +158,13 @@ public class IRCService extends Service
 
     /**
      * On start command (Android >= 2.0)
-     * 
+     *
      * @param intent
      * @param flags
      * @param startId
      * @return
      */
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
         if (intent != null) {
@@ -177,7 +180,7 @@ public class IRCService extends Service
 
     /**
      * Handle command
-     * 
+     *
      * @param intent
      */
     private void handleCommand(Intent intent)
@@ -358,7 +361,17 @@ public class IRCService extends Service
             }
         } else {
             // Fall back on the old API.
-            setForeground(true);
+            try {
+                Method setForeground = getClass().getMethod("setForeground", mSetForegroudSignaure);
+                setForeground.invoke(this, new Object[] { true });
+            } catch (NoSuchMethodException exception) {
+                // Should not happen
+            } catch (InvocationTargetException e) {
+                // Should not happen.
+            } catch (IllegalAccessException e) {
+                // Should not happen.
+            }
+
             notificationManager.notify(id, notification);
         }
     }
@@ -385,7 +398,17 @@ public class IRCService extends Service
             // Fall back on the old API.  Note to cancel BEFORE changing the
             // foreground state, since we could be killed at that point.
             notificationManager.cancel(id);
-            setForeground(false);
+
+            try {
+                Method setForeground = getClass().getMethod("setForeground", mSetForegroudSignaure);
+                setForeground.invoke(this, new Object[] { true });
+            } catch (NoSuchMethodException exception) {
+                // Should not happen
+            } catch (InvocationTargetException e) {
+                // Should not happen.
+            } catch (IllegalAccessException e) {
+                // Should not happen.
+            }
         }
     }
 
@@ -492,7 +515,7 @@ public class IRCService extends Service
 
     /**
      * Get connection for given server
-     * 
+     *
      * @param serverId
      * @return
      */
@@ -510,7 +533,7 @@ public class IRCService extends Service
 
     /**
      * Does the service keep a connection object for this server?
-     * 
+     *
      * @return true if there's a connection object, false otherwise
      */
     public boolean hasConnection(int serverId)
@@ -541,6 +564,7 @@ public class IRCService extends Service
                 }
 
                 synchronized(alarmIntentsLock) {
+                    // XXX: alarmIntents can be null
                     PendingIntent pendingRIntent = alarmIntents.get(serverId);
                     if (pendingRIntent != null) {
                         AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -593,7 +617,7 @@ public class IRCService extends Service
 
     /**
      * On Activity binding to this service
-     * 
+     *
      * @param intent
      * @return
      */

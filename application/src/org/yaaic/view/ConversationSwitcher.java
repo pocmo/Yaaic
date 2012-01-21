@@ -1,7 +1,7 @@
 /*
 Yaaic - Yet Another Android IRC Client
 
-Copyright 2009-2011 Sebastian Kaspari
+Copyright 2009-2012 Sebastian Kaspari
 
 This file is part of Yaaic.
 
@@ -33,7 +33,7 @@ import android.view.View;
 
 /**
  * The ConversationSwitcher - The small funny dots at the bottom ;)
- * 
+ *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
 public class ConversationSwitcher extends View
@@ -43,7 +43,7 @@ public class ConversationSwitcher extends View
 
     /**
      * Create a new ConversationSwitcher
-     * 
+     *
      * @param context The Context the view is running in, through which it can access the current theme, resources, etc.
      */
     public ConversationSwitcher(Context context, AttributeSet attributes)
@@ -56,7 +56,7 @@ public class ConversationSwitcher extends View
 
     /**
      * Set the server whos conversations should be displayed
-     * 
+     *
      * @param server
      */
     public void setServer(Server server)
@@ -66,7 +66,7 @@ public class ConversationSwitcher extends View
 
     /**
      * Measure the size of the view
-     * 
+     *
      * @param widthMeasureSpec
      * @param heightMeasureSpec
      */

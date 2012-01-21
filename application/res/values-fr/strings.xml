@@ -98,6 +98,7 @@
 
     <string name="command_desc_amsg">Envoie un message vers tous les canaux</string>
     <string name="command_desc_away">Vous marque absent</string>
+    <string name="command_desc_back">Retire le statut absent</string>
     <string name="command_desc_close">Ferme la fenêtre actuelle</string>
     <string name="command_desc_dcc">Envoie un fichier à l\'utilisateur</string>
     <string name="command_desc_deop">Retire le statut d\'opérateur d\'un utilisateur</string>
@@ -122,6 +123,7 @@
     <string name="command_desc_whois">Obtient des informations sur un utilisateur</string>
 
     <string name="notification_running">Yaaic est en cours</string>
+    <string name="notification_not_connected">Déconnecté</string>
     <string name="notification_connected">Connecté à %1$s</string>
     <string name="notification_disconnected">Déconnecté de %1$s</string>
     <string name="notification_mentions">Nouveaux messages dans : %1$s</string>
