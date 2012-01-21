@@ -49,7 +49,7 @@ import android.widget.Toast;
 
 /**
  * Add a new server to the list
- * 
+ *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
 public class AddServerActivity extends Activity implements OnClickListener
@@ -124,6 +124,12 @@ public class AddServerActivity extends Activity implements OnClickListener
                     }
                 }
             }
+        }
+
+        // Disable suggestions for host name
+        if (android.os.Build.VERSION.SDK_INT >= 5) {
+            EditText serverHostname = (EditText) findViewById(R.id.host);
+            serverHostname.setInputType(0x80000);
         }
 
         Uri uri = getIntent().getData();
@@ -302,7 +308,7 @@ public class AddServerActivity extends Activity implements OnClickListener
 
     /**
      * Populate a server object from the data in the view
-     * 
+     *
      * @return The server object
      */
     private Server getServerFromView()
@@ -331,7 +337,7 @@ public class AddServerActivity extends Activity implements OnClickListener
 
     /**
      * Populate an identity object from the data in the view
-     * 
+     *
      * @return The identity object
      */
     private Identity getIdentityFromView()
@@ -352,7 +358,7 @@ public class AddServerActivity extends Activity implements OnClickListener
 
     /**
      * Validate the input for a server
-     * 
+     *
      * @throws ValidationException
      */
     private void validateServer() throws ValidationException
@@ -394,7 +400,7 @@ public class AddServerActivity extends Activity implements OnClickListener
 
     /**
      * Validate the input for a identity
-     * 
+     *
      * @throws ValidationException
      */
     private void validateIdentity() throws ValidationException
