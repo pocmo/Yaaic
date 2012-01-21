@@ -247,6 +247,7 @@ public class ConversationPagerAdapter extends PagerAdapter implements TitleProvi
             convInfo.adapter = adapter;
         }
 
+
         list.setAdapter(adapter);
         list.setSelection(adapter.getCount() - 1); // scroll to bottom
 

@@ -24,12 +24,12 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     android:shape="rectangle">
     <stroke
         android:width="1dp"
-        android:color="#3f5d9b" />
+        android:color="#FF181818" />
     <padding
         android:left="3dp"
         android:top="3dp"
         android:right="3dp"
         android:bottom="3dp" />  
     <solid
-        android:color="#ff181818" />
+        android:color="#FF000000" />
 </shape>

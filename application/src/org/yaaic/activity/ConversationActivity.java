@@ -49,7 +49,6 @@ import org.yaaic.model.User;
 import org.yaaic.receiver.ConversationReceiver;
 import org.yaaic.receiver.ServerReceiver;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
@@ -66,14 +65,9 @@ import android.os.IBinder;
 import android.speech.RecognizerIntent;
 import android.support.v4.view.ViewPager;
 import android.text.InputType;
-import android.util.DisplayMetrics;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -81,14 +75,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.viewpagerindicator.TitlePageIndicator;
+import com.viewpagerindicator.TitlePageIndicator.IndicatorStyle;
 
 /**
  * The server view with a scrollable list of all channels
  *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class ConversationActivity extends Activity implements ServiceConnection, ServerListener, ConversationListener
+public class ConversationActivity extends SherlockActivity implements ServiceConnection, ServerListener, ConversationListener
 {
     public static final int REQUEST_CODE_SPEECH = 99;
 
@@ -171,7 +171,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         serverId = getIntent().getExtras().getInt("serverId");
         server = Yaaic.getInstance().getServerById(serverId);
@@ -182,12 +181,16 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             this.finish();
         }
 
-        setTitle("Yaaic - " + server.getTitle());
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
-        setContentView(R.layout.conversations);
-        if (settings.fullscreenConversations()){
+        setTitle(server.getTitle());
+
+        if (settings.fullscreenConversations()) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
+
+        setContentView(R.layout.conversations);
 
         boolean isLandscape = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
 
@@ -199,9 +202,20 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         pagerAdapter = new ConversationPagerAdapter(server);
         pager.setAdapter(pagerAdapter);
 
+        final float density = getResources().getDisplayMetrics().density;
+
         TitlePageIndicator indicator = (TitlePageIndicator) findViewById(R.id.titleIndicator);
         indicator.setTypeface(Typeface.MONOSPACE);
         indicator.setViewPager(pager);
+
+        indicator.setFooterColor(0xFF31B6E7);
+        indicator.setFooterLineHeight(1 * density);
+        indicator.setFooterIndicatorHeight(3 * density);
+        indicator.setFooterIndicatorStyle(IndicatorStyle.Underline);
+        indicator.setTextColor(0xFFDDDDDD);
+        indicator.setSelectedColor(0xFFFFFFFF);
+        indicator.setSelectedBold(true);
+        indicator.setBackgroundColor(0xFF181818);
 
         historySize = settings.getHistorySize();
 
@@ -211,12 +225,12 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             server.getConversation(ServerInfo.DEFAULT_NAME).setHistorySize(historySize);
         }
 
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-        float fontSize = settings.getFontSize() * dm.scaledDensity;
+        final float scaledDensity = getResources().getDisplayMetrics().density;
+
+        float fontSize = settings.getFontSize() * scaledDensity;
         indicator.setTextSize(fontSize);
 
-        int padding = (int) (5 * dm.scaledDensity);
+        int padding = (int) (5 * scaledDensity);
         input.setPadding(padding, padding, padding, padding);
         indicator.setTypeface(Typeface.MONOSPACE);
 
@@ -410,7 +424,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         super.onCreateOptionsMenu(menu);
 
         // inflate from xml
-        MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = new MenuInflater(this);
         inflater.inflate(R.menu.conversations, menu);
 
         return true;
@@ -436,6 +450,10 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     public boolean onMenuItemSelected(int featureId, MenuItem item)
     {
         switch (item.getItemId()) {
+            case  android.R.id.home:
+                finish();
+                break;
+
             case R.id.disconnect:
                 server.setStatus(Status.DISCONNECTED);
                 server.setMayReconnect(false);

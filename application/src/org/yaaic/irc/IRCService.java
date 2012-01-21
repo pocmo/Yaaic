@@ -564,6 +564,7 @@ public class IRCService extends Service
                 }
 
                 synchronized(alarmIntentsLock) {
+                    // XXX: alarmIntents can be null
                     PendingIntent pendingRIntent = alarmIntents.get(serverId);
                     if (pendingRIntent != null) {
                         AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);

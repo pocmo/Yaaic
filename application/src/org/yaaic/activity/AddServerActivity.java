@@ -34,7 +34,6 @@ import org.yaaic.model.Identity;
 import org.yaaic.model.Server;
 import org.yaaic.model.Status;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -47,12 +46,17 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
 /**
  * Add a new server to the list
  *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class AddServerActivity extends Activity implements OnClickListener
+public class AddServerActivity extends SherlockActivity implements OnClickListener
 {
     private static final int REQUEST_CODE_CHANNELS       = 1;
     private static final int REQUEST_CODE_COMMANDS       = 2;
@@ -95,6 +99,8 @@ public class AddServerActivity extends Activity implements OnClickListener
 
         Bundle extras = getIntent().getExtras();
         if (extras != null && extras.containsKey(Extra.SERVER)) {
+            setTitle(R.string.edit_server_label);
+
             // Request to edit an existing server
             Database db = new Database(this);
             this.server = db.getServerById(extras.getInt(Extra.SERVER));
@@ -147,6 +153,35 @@ public class AddServerActivity extends Activity implements OnClickListener
                 ((EditText) findViewById(R.id.password)).setText(String.valueOf(uri.getQuery()));
             }
         }
+    }
+
+    /**
+     * On options menu requested
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        super.onCreateOptionsMenu(menu);
+
+        MenuInflater inflater = new MenuInflater(this);
+        inflater.inflate(R.menu.addserver, menu);
+
+        return true;
+    }
+
+    /**
+     * On menu item selected
+     */
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item)
+    {
+        switch (item.getItemId()) {
+            case R.id.save:
+                save();
+                return true;
+        }
+
+        return super.onMenuItemSelected(featureId, item);
     }
 
     /**
@@ -215,25 +250,32 @@ public class AddServerActivity extends Activity implements OnClickListener
                 break;
 
             case R.id.add:
-                try {
-                    validateServer();
-                    validateIdentity();
-                    if (server == null) {
-                        addServer();
-                    } else {
-                        updateServer();
-                    }
-                    setResult(RESULT_OK);
-                    finish();
-                } catch(ValidationException e) {
-                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
+                save();
                 break;
 
             case R.id.cancel:
                 setResult(RESULT_CANCELED);
                 finish();
                 break;
+        }
+    }
+
+    /**
+     * Try to save server.
+     */
+    private void save() {
+        try {
+            validateServer();
+            validateIdentity();
+            if (server == null) {
+                addServer();
+            } else {
+                updateServer();
+            }
+            setResult(RESULT_OK);
+            finish();
+        } catch(ValidationException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
