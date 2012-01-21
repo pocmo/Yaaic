@@ -24,28 +24,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#ff181818">
-    <LinearLayout
-    	android:id="@+id/status_layout"
-        android:orientation="horizontal"
+    android:background="#ff000000">
+    <com.viewpagerindicator.TitlePageIndicator
+        android:id="@+id/titleIndicator"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="3dp">
-        <ImageView
-            android:id="@+id/status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/disconnected"/>
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="3dp"
-            android:textSize="12sp"
-            android:text="Server"
-            android:maxLines="1"
-            android:layout_weight="1" />
-    </LinearLayout>
+        android:layout_height="wrap_content" />
     <android.support.v4.view.ViewPager
        android:id="@+id/pager"
        android:layout_width="fill_parent"
@@ -53,12 +36,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
        android:layout_weight="1"
        android:layout_margin="0px"
        android:unselectedAlpha="100"
-       android:spacing="5dp"
        android:padding="0dp" />
-    <org.yaaic.view.ConversationSwitcher
-        android:id="@+id/dots"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

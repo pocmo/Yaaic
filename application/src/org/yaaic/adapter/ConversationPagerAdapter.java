@@ -25,19 +25,24 @@ import java.util.LinkedList;
 
 import org.yaaic.listener.MessageClickListener;
 import org.yaaic.model.Conversation;
+import org.yaaic.model.Server;
 import org.yaaic.view.MessageListView;
 
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+import com.viewpagerindicator.TitlePageIndicator;
+import com.viewpagerindicator.TitleProvider;
+
 /**
  * Adapter for displaying a pager of conversations.
  *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class ConversationPagerAdapter extends PagerAdapter
+public class ConversationPagerAdapter extends PagerAdapter implements TitleProvider
 {
+    private final Server server;
     private LinkedList<ConversationInfo> conversations;
     private final HashMap<Integer, View> views;
 
@@ -59,7 +64,9 @@ public class ConversationPagerAdapter extends PagerAdapter
     /**
      * Create a new {@link ConversationPagerAdapter} instance.
      */
-    public ConversationPagerAdapter() {
+    public ConversationPagerAdapter(Server server) {
+        this.server = server;
+
         conversations = new LinkedList<ConversationInfo>();
         views = new HashMap<Integer, View>();
     }
@@ -253,5 +260,20 @@ public class ConversationPagerAdapter extends PagerAdapter
     public void destroyItem(View collection, int position, Object view) {
         ((ViewPager) collection).removeView((View) view);
         views.remove(position);
+    }
+
+    /**
+     * Get the title for the given position. Used by the {@link TitlePageIndicator}.
+     */
+    @Override
+    public String getTitle(int position)
+    {
+        Conversation conversation = getItem(position);
+
+        if (conversation.getType() == Conversation.TYPE_SERVER) {
+            return server.getTitle();
+        } else {
+            return conversation.getName();
+        }
     }
 }

@@ -32,13 +32,10 @@ import org.yaaic.command.CommandParser;
 import org.yaaic.irc.IRCBinder;
 import org.yaaic.irc.IRCConnection;
 import org.yaaic.irc.IRCService;
-import org.yaaic.layout.NonScalingBackgroundDrawable;
 import org.yaaic.listener.ConversationListener;
-import org.yaaic.listener.ConversationSelectedListener;
 import org.yaaic.listener.ServerListener;
 import org.yaaic.listener.SpeechClickListener;
 import org.yaaic.model.Broadcast;
-import org.yaaic.model.Channel;
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Extra;
 import org.yaaic.model.Message;
@@ -51,7 +48,6 @@ import org.yaaic.model.Status;
 import org.yaaic.model.User;
 import org.yaaic.receiver.ConversationReceiver;
 import org.yaaic.receiver.ServerReceiver;
-import org.yaaic.view.ConversationSwitcher;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -63,12 +59,14 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.speech.RecognizerIntent;
 import android.support.v4.view.ViewPager;
 import android.text.InputType;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -81,9 +79,9 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.viewpagerindicator.TitlePageIndicator;
 
 /**
  * The server view with a scrollable list of all channels
@@ -109,7 +107,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     private ConversationPagerAdapter pagerAdapter;
 
     private Scrollback scrollback;
-    private ConversationSwitcher dots;
 
     // XXX: This is ugly. This is a buffer for a channel that should be joined after showing the
     //      JoinActivity. As onActivityResult() is called before onResume() a "channel joined"
@@ -194,31 +191,17 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
         boolean isLandscape = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
 
-        ((TextView) findViewById(R.id.title)).setText(server.getTitle());
-
         EditText input = (EditText) findViewById(R.id.input);
         input.setOnKeyListener(inputKeyListener);
 
         pager = (ViewPager) findViewById(R.id.pager);
 
-        dots = (ConversationSwitcher) findViewById(R.id.dots);
-        dots.setServer(server);
-
-        pagerAdapter = new ConversationPagerAdapter();
+        pagerAdapter = new ConversationPagerAdapter(server);
         pager.setAdapter(pagerAdapter);
-        pager.setPageMargin(5);
 
-        pager.setOnPageChangeListener(
-            new ConversationSelectedListener(
-                this,
-                server,
-                (TextView) findViewById(R.id.title),
-                pagerAdapter,
-                dots
-            )
-        );
-
-        pager.setBackgroundDrawable(new NonScalingBackgroundDrawable(this, pager, R.drawable.background));
+        TitlePageIndicator indicator = (TitlePageIndicator) findViewById(R.id.titleIndicator);
+        indicator.setTypeface(Typeface.MONOSPACE);
+        indicator.setViewPager(pager);
 
         historySize = settings.getHistorySize();
 
@@ -227,6 +210,10 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             pagerAdapter.clearConversations();
             server.getConversation(ServerInfo.DEFAULT_NAME).setHistorySize(historySize);
         }
+
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        indicator.setTextSize(settings.getFontSize() * dm.scaledDensity);
 
         // Optimization : cache field lookups
         Collection<Conversation> mConversations = server.getConversations();
@@ -297,8 +284,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                 speechButton.setVisibility(View.VISIBLE);
             }
         }
-
-        ((ImageView) findViewById(R.id.status)).setImageResource(server.getStatusIcon());
 
         // Start service
         Intent intent = new Intent(this, IRCService.class);
@@ -539,10 +524,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                 conversation.setStatus(status);
             }
         }
-
-        if (dots != null) {
-            dots.invalidate();
-        }
     }
 
     /**
@@ -586,17 +567,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     @Override
     public void onTopicChanged(String target)
     {
-        String selected = server.getSelectedConversation();
-        if (selected.equals(target)) {
-            // onTopicChanged is only called for channels
-            Channel channel = (Channel) server.getConversation(selected);
-            StringBuilder sb = new StringBuilder();
-            sb.append(server.getTitle() + " - " + channel.getName());
-            if (!(channel.getTopic()).equals("")) {
-                sb.append(" - " + channel.getTopic());
-            }
-            ((TextView) findViewById(R.id.title)).setText(sb.toString());
-        }
+        // No implementation
     }
 
     /**
@@ -605,8 +576,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     @Override
     public void onStatusUpdate()
     {
-        ((ImageView) findViewById(R.id.status)).setImageResource(server.getStatusIcon());
-
         EditText input = (EditText) findViewById(R.id.input);
 
         if (server.isConnected()) {
@@ -845,7 +814,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             word = text.substring(cursor, sel_end);
         } else {
             // use the word at the curent cursor position
-            while(true) {
+            while (true) {
                 cursor -= 1;
                 if (cursor <= 0 || text.charAt(cursor) == ' ') {
                     break;
@@ -938,6 +907,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
                 openSoftKeyboard(input);
             }
         });
+
         input.requestFocus();
     }
 

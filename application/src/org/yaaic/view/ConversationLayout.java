@@ -20,7 +20,6 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.yaaic.view;
 
-import org.yaaic.R;
 import org.yaaic.model.Settings;
 
 import android.app.Activity;
@@ -36,7 +35,7 @@ import android.widget.LinearLayout;
 /**
  * ConversationLayout: LinearLayout that resizes correctly when an IME
  * comes up in fullscreen mode
- * 
+ *
  * @author Steven Luo <steven+android@steven676.net>
  */
 public class ConversationLayout extends LinearLayout
@@ -50,7 +49,7 @@ public class ConversationLayout extends LinearLayout
 
     /**
      * Create a new conversation linear layout
-     * 
+     *
      * @param context
      */
     public ConversationLayout(Context context)
@@ -61,7 +60,7 @@ public class ConversationLayout extends LinearLayout
 
     /**
      * Create a new conversation linear layout
-     * 
+     *
      * @param context
      * @param attrs
      */
@@ -92,35 +91,6 @@ public class ConversationLayout extends LinearLayout
     }
 
     /**
-     * Check if starving the gui is necessary, and starves
-     * Starves when less then a vertical inch is available to us
-     *
-     * @return true if we are able to check, false if not.
-     * @author Reynaldo Cortorreal <reyncor@gmail.com>
-     */
-    private boolean setStarvationMode(int height)
-    {
-        if (height == 0 || height == curHeight) {
-            return false;
-        }
-
-        LinearLayout status = (LinearLayout) findViewById(R.id.status_layout);
-        ConversationSwitcher dots = (ConversationSwitcher) findViewById(R.id.dots);
-
-        float scale = getResources().getDisplayMetrics().density;
-
-        //Give us at least an inch, or we'll have to make sacrifices.
-        if (height < 160*scale) {
-            status.setVisibility(GONE);
-            dots.setVisibility(GONE);
-        } else {
-            status.setVisibility(VISIBLE);
-            dots.setVisibility(VISIBLE);
-        }
-        return true;
-    }
-
-    /**
      * Adjust the height of the view to avoid scrolling and hide UI components
      * if necessary to save space
      *
@@ -132,17 +102,11 @@ public class ConversationLayout extends LinearLayout
         int height = getWindowHeight();
 
         if (!fullscreen) {
-            if (setStarvationMode(height)) {
-                curHeight = height;
-                redoLayout = true;
-            }
             return;
         }
 
         //here to forth the code applies only to full screen
-        if (isLandscape && !setStarvationMode(height)) {
-            return;
-        } else if (curHeight != height && height != 0) {
+        if (curHeight != height && height != 0) {
             curHeight = height;
 
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
