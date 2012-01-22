@@ -13,6 +13,7 @@
     <string name="users_label">Utilisateurs</string>
     <string name="channels_label">Canaux</string>
     <string name="add_server_label">Ajouter un nouveau serveur</string>
+    <string name="edit_server_label">Modifier server</string>
 
     <string name="server_title">Nom</string>
     <string name="server_host">Adresse</string>
