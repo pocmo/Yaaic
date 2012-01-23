@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Yaaic" parent="Theme.Sherlock">
+        <item name="absForceOverflow">true</item>
+    </style>
+</resources>
