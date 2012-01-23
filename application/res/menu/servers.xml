@@ -29,7 +29,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/settings"
         android:title="@string/settings_menu"
         android:icon="@drawable/actionbar_settings"
-        android:showAsAction="ifRoom" />
+        android:showAsAction="ifRoom|withText" />
     <item
         android:id="@+id/about"
         android:title="@string/about_menu"
