@@ -26,6 +26,8 @@ import org.yaaic.R;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 
 import com.jayway.android.robotium.solo.Solo;
 
@@ -97,7 +99,9 @@ public class ServerListScenarios extends ActivityInstrumentationTestCase2
 		int numberOfServersBefore = solo.getCurrentListViews().get(0).getCount();
 		
 		// Add server
-		solo.pressMenuItem(0);
+		View view = solo.getView(R.id.add);
+		assert view != null;
+		solo.clickOnView(view);
 		
 		solo.waitForActivity("AddServerActivity", 2000);
 		
@@ -107,7 +111,10 @@ public class ServerListScenarios extends ActivityInstrumentationTestCase2
 		solo.enterText(1, "irc.epd-me.net");
 		
 		solo.enterText(4, "YaaicBotium");
-		solo.enterText(6, "Robotium and Yaaic");
+
+		// Somehow robotium doesn't detect the field when using index 5
+		EditText realname = (EditText) solo.getView(R.id.realname);
+		solo.enterText(realname, "Robotium and Yaaic");
 		
 		solo.clickOnButton(solo.getString(R.string.server_save));
 		
