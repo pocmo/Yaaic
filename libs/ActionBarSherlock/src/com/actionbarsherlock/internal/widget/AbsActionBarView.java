@@ -32,6 +32,8 @@ import com.actionbarsherlock.internal.nineoldandroids.view.NineViewGroup;
 import com.actionbarsherlock.internal.view.menu.ActionMenuPresenter;
 import com.actionbarsherlock.internal.view.menu.ActionMenuView;
 
+import static com.actionbarsherlock.internal.ResourcesCompat.getResources_getBoolean;
+
 public abstract class AbsActionBarView extends NineViewGroup {
     protected ActionMenuView mMenuView;
     protected ActionMenuPresenter mActionMenuPresenter;
@@ -71,6 +73,8 @@ public abstract class AbsActionBarView extends NineViewGroup {
     public void onConfigurationChanged(Configuration newConfig) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
             super.onConfigurationChanged(newConfig);
+        } else if (mMenuView != null) {
+            mMenuView.onConfigurationChanged(newConfig);
         }
 
         // Action bar can change size on configuration changes.
@@ -80,7 +84,7 @@ public abstract class AbsActionBarView extends NineViewGroup {
         setContentHeight(a.getLayoutDimension(R.styleable.SherlockActionBar_height, 0));
         a.recycle();
         if (mSplitWhenNarrow) {
-            setSplitActionBar(getContext().getResources().getBoolean(
+            setSplitActionBar(getResources_getBoolean(getContext(),
                     R.bool.abs__split_action_bar_is_narrow));
         }
         if (mActionMenuPresenter != null) {

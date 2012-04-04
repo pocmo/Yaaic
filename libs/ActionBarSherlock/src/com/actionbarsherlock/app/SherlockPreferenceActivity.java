@@ -18,8 +18,15 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class SherlockPreferenceActivity extends PreferenceActivity implements OnCreatePanelMenuListener, OnPreparePanelListener, OnMenuItemSelectedListener, OnActionModeStartedListener, OnActionModeFinishedListener {
-    final ActionBarSherlock mSherlock = ActionBarSherlock.asDelegateFor(this);
+public abstract class SherlockPreferenceActivity extends PreferenceActivity implements OnCreatePanelMenuListener, OnPreparePanelListener, OnMenuItemSelectedListener, OnActionModeStartedListener, OnActionModeFinishedListener {
+    private ActionBarSherlock mSherlock;
+
+    protected final ActionBarSherlock getSherlock() {
+        if (mSherlock == null) {
+            mSherlock = ActionBarSherlock.wrap(this, ActionBarSherlock.FLAG_DELEGATE);
+        }
+        return mSherlock;
+    }
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -27,22 +34,18 @@ public class SherlockPreferenceActivity extends PreferenceActivity implements On
     ///////////////////////////////////////////////////////////////////////////
 
     public ActionBar getSupportActionBar() {
-        return mSherlock.getActionBar();
+        return getSherlock().getActionBar();
     }
 
     public ActionMode startActionMode(ActionMode.Callback callback) {
-        return mSherlock.startActionMode(callback);
+        return getSherlock().startActionMode(callback);
     }
 
     @Override
-    public void onActionModeStarted(ActionMode mode) {
-        //This space for rent.
-    }
+    public void onActionModeStarted(ActionMode mode) {}
 
     @Override
-    public void onActionModeFinished(ActionMode mode) {
-        //This space for rent.
-    }
+    public void onActionModeFinished(ActionMode mode) {}
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -52,42 +55,42 @@ public class SherlockPreferenceActivity extends PreferenceActivity implements On
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        mSherlock.dispatchConfigurationChanged(newConfig);
+        getSherlock().dispatchConfigurationChanged(newConfig);
     }
 
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        mSherlock.dispatchPostResume();
+        getSherlock().dispatchPostResume();
     }
 
     @Override
     protected void onPause() {
-        mSherlock.dispatchPause();
+        getSherlock().dispatchPause();
         super.onPause();
     }
 
     @Override
     protected void onStop() {
-        mSherlock.dispatchStop();
+        getSherlock().dispatchStop();
         super.onStop();
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
-        mSherlock.dispatchPostCreate(savedInstanceState);
+        getSherlock().dispatchPostCreate(savedInstanceState);
         super.onPostCreate(savedInstanceState);
     }
 
     @Override
     protected void onTitleChanged(CharSequence title, int color) {
-        mSherlock.dispatchTitleChanged(title, color);
+        getSherlock().dispatchTitleChanged(title, color);
         super.onTitleChanged(title, color);
     }
 
     @Override
     public final boolean onMenuOpened(int featureId, android.view.Menu menu) {
-        if (mSherlock.dispatchMenuOpened(featureId, menu)) {
+        if (getSherlock().dispatchMenuOpened(featureId, menu)) {
             return true;
         }
         return super.onMenuOpened(featureId, menu);
@@ -95,31 +98,68 @@ public class SherlockPreferenceActivity extends PreferenceActivity implements On
 
     @Override
     public void onPanelClosed(int featureId, android.view.Menu menu) {
-        mSherlock.dispatchPanelClosed(featureId, menu);
+        getSherlock().dispatchPanelClosed(featureId, menu);
         super.onPanelClosed(featureId, menu);
     }
 
     @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (mSherlock.dispatchKeyUp(keyCode, event)) {
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (getSherlock().dispatchKeyEvent(event)) {
             return true;
         }
-        return super.onKeyUp(keyCode, event);
+        return super.dispatchKeyEvent(event);
     }
 
 
     ///////////////////////////////////////////////////////////////////////////
-    // Menu handling
+    // Native menu handling
     ///////////////////////////////////////////////////////////////////////////
 
     public MenuInflater getSupportMenuInflater() {
-        return mSherlock.getMenuInflater();
+        return getSherlock().getMenuInflater();
+    }
+
+    public void invalidateOptionsMenu() {
+        getSherlock().dispatchInvalidateOptionsMenu();
+    }
+
+    public void supportInvalidateOptionsMenu() {
+        invalidateOptionsMenu();
     }
 
     @Override
     public final boolean onCreateOptionsMenu(android.view.Menu menu) {
-        return true;
+        return getSherlock().dispatchCreateOptionsMenu(menu);
     }
+
+    @Override
+    public final boolean onPrepareOptionsMenu(android.view.Menu menu) {
+        return getSherlock().dispatchPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public final boolean onOptionsItemSelected(android.view.MenuItem item) {
+        return getSherlock().dispatchOptionsItemSelected(item);
+    }
+
+    @Override
+    public void openOptionsMenu() {
+        if (!getSherlock().dispatchOpenOptionsMenu()) {
+            super.openOptionsMenu();
+        }
+    }
+
+    @Override
+    public void closeOptionsMenu() {
+        if (!getSherlock().dispatchCloseOptionsMenu()) {
+            super.closeOptionsMenu();
+        }
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Sherlock menu handling
+    ///////////////////////////////////////////////////////////////////////////
 
     @Override
     public boolean onCreatePanelMenu(int featureId, Menu menu) {
@@ -131,11 +171,6 @@ public class SherlockPreferenceActivity extends PreferenceActivity implements On
 
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
-    }
-
-    @Override
-    public final boolean onPrepareOptionsMenu(android.view.Menu menu) {
-        return mSherlock.dispatchPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -151,11 +186,6 @@ public class SherlockPreferenceActivity extends PreferenceActivity implements On
     }
 
     @Override
-    public final boolean onOptionsItemSelected(android.view.MenuItem item) {
-        throw new RuntimeException("This should never be called. Create reproducible test case and report!");
-    }
-
-    @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         if (featureId == Window.FEATURE_OPTIONS_PANEL) {
             return onOptionsItemSelected(item);
@@ -167,30 +197,6 @@ public class SherlockPreferenceActivity extends PreferenceActivity implements On
         return false;
     }
 
-    public void invalidateOptionsMenu() {
-        mSherlock.dispatchInvalidateOptionsMenu();
-    }
-
-    /** @deprecated Use {@link #invalidateOptionsMenu()}. */
-    @Deprecated
-    public void supportInvalidateOptionsMenu() {
-        invalidateOptionsMenu();
-    }
-
-    @Override
-    public void openOptionsMenu() {
-        if (!mSherlock.dispatchOpenOptionsMenu()) {
-            super.openOptionsMenu();
-        }
-    }
-
-    @Override
-    public void closeOptionsMenu() {
-        if (!mSherlock.dispatchCloseOptionsMenu()) {
-            super.closeOptionsMenu();
-        }
-    }
-
 
     ///////////////////////////////////////////////////////////////////////////
     // Content
@@ -198,26 +204,26 @@ public class SherlockPreferenceActivity extends PreferenceActivity implements On
 
     @Override
     public void addContentView(View view, LayoutParams params) {
-        mSherlock.addContentView(view, params);
+        getSherlock().addContentView(view, params);
     }
 
     @Override
     public void setContentView(int layoutResId) {
-        mSherlock.setContentView(layoutResId);
+        getSherlock().setContentView(layoutResId);
     }
 
     @Override
     public void setContentView(View view, LayoutParams params) {
-        mSherlock.setContentView(view, params);
+        getSherlock().setContentView(view, params);
     }
 
     @Override
     public void setContentView(View view) {
-        mSherlock.setContentView(view);
+        getSherlock().setContentView(view);
     }
 
     public void requestWindowFeature(long featureId) {
-        mSherlock.requestFeature((int)featureId);
+        getSherlock().requestFeature((int)featureId);
     }
 
 
@@ -226,22 +232,22 @@ public class SherlockPreferenceActivity extends PreferenceActivity implements On
     ///////////////////////////////////////////////////////////////////////////
 
     public void setSupportProgress(int progress) {
-        mSherlock.setProgress(progress);
+        getSherlock().setProgress(progress);
     }
 
     public void setSupportProgressBarIndeterminate(boolean indeterminate) {
-        mSherlock.setProgressBarIndeterminate(indeterminate);
+        getSherlock().setProgressBarIndeterminate(indeterminate);
     }
 
     public void setSupportProgressBarIndeterminateVisibility(boolean visible) {
-        mSherlock.setProgressBarIndeterminateVisibility(visible);
+        getSherlock().setProgressBarIndeterminateVisibility(visible);
     }
 
     public void setSupportProgressBarVisibility(boolean visible) {
-        mSherlock.setProgressBarVisibility(visible);
+        getSherlock().setProgressBarVisibility(visible);
     }
 
     public void setSupportSecondaryProgress(int secondaryProgress) {
-        mSherlock.setSecondaryProgress(secondaryProgress);
+        getSherlock().setSecondaryProgress(secondaryProgress);
     }
 }
