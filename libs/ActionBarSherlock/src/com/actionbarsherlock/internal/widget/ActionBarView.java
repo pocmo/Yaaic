@@ -40,17 +40,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
-import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.actionbarsherlock.R;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
+import com.actionbarsherlock.internal.ActionBarSherlockCompat;
 import com.actionbarsherlock.internal.view.menu.ActionMenuItem;
 import com.actionbarsherlock.internal.view.menu.ActionMenuPresenter;
 import com.actionbarsherlock.internal.view.menu.ActionMenuView;
@@ -63,6 +62,8 @@ import com.actionbarsherlock.view.CollapsibleActionView;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
+
+import static com.actionbarsherlock.internal.ResourcesCompat.getResources_getBoolean;
 
 /**
  * @hide
@@ -102,7 +103,7 @@ public class ActionBarView extends AbsActionBarView {
     private TextView mSubtitleView;
     private View mTitleUpView;
 
-    private Spinner mSpinner;
+    private IcsSpinner mSpinner;
     private IcsLinearLayout mListNavLayout;
     private ScrollingTabContainerView mTabScrollView;
     private View mCustomNavView;
@@ -138,16 +139,15 @@ public class ActionBarView extends AbsActionBarView {
 
     Window.Callback mWindowCallback;
 
-    private final AdapterView.OnItemSelectedListener mNavItemSelectedListener =
-            new AdapterView.OnItemSelectedListener() {
-        @SuppressWarnings("rawtypes")
-        public void onItemSelected(AdapterView parent, View view, int position, long id) {
+    @SuppressWarnings("rawtypes")
+    private final IcsAdapterView.OnItemSelectedListener mNavItemSelectedListener =
+            new IcsAdapterView.OnItemSelectedListener() {
+        public void onItemSelected(IcsAdapterView parent, View view, int position, long id) {
             if (mCallback != null) {
                 mCallback.onNavigationItemSelected(position, id);
             }
         }
-        @SuppressWarnings("rawtypes")
-        public void onNothingSelected(AdapterView parent) {
+        public void onNothingSelected(IcsAdapterView parent) {
             // Do nothing
         }
     };
@@ -250,10 +250,11 @@ public class ActionBarView extends AbsActionBarView {
 
         final int customNavId = a.getResourceId(R.styleable.SherlockActionBar_customNavigationLayout, 0);
         if (customNavId != 0) {
-            mCustomNavView = (View) inflater.inflate(customNavId, this, false);
+            mCustomNavView = inflater.inflate(customNavId, this, false);
             mNavigationMode = ActionBar.NAVIGATION_MODE_STANDARD;
             setDisplayOptions(mDisplayOptions | ActionBar.DISPLAY_SHOW_CUSTOM);
         }
+
         mContentHeight = a.getLayoutDimension(R.styleable.SherlockActionBar_height, 0);
 
         a.recycle();
@@ -314,11 +315,7 @@ public class ActionBarView extends AbsActionBarView {
                             if ("logo".equals(attrName)) {
                                 activityLogo = xml.getAttributeResourceValue(i, 0);
                             } else if ("name".equals(attrName)) {
-                                activityPackage = xml.getAttributeValue(i);
-                                //Handle FQCN or relative
-                                if (!activityPackage.startsWith(packageName) && activityPackage.startsWith(".")) {
-                                    activityPackage = packageName + activityPackage;
-                                }
+                                activityPackage = ActionBarSherlockCompat.cleanActivityName(packageName, xml.getAttributeValue(i));
                                 if (!thisPackage.equals(activityPackage)) {
                                     break; //on to the next
                                 }
@@ -352,9 +349,7 @@ public class ActionBarView extends AbsActionBarView {
      */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
-            super.onConfigurationChanged(newConfig);
-        }
+        super.onConfigurationChanged(newConfig);
 
         mTitleView = null;
         mSubtitleView = null;
@@ -371,7 +366,7 @@ public class ActionBarView extends AbsActionBarView {
             ViewGroup.LayoutParams lp = mTabScrollView.getLayoutParams();
             if (lp != null) {
                 lp.width = LayoutParams.WRAP_CONTENT;
-                lp.height = LayoutParams.FILL_PARENT;
+                lp.height = LayoutParams.MATCH_PARENT;
             }
             mTabScrollView.setAllowCollapse(true);
         }
@@ -454,7 +449,7 @@ public class ActionBarView extends AbsActionBarView {
             addView(mTabScrollView);
             ViewGroup.LayoutParams lp = mTabScrollView.getLayoutParams();
             lp.width = LayoutParams.WRAP_CONTENT;
-            lp.height = LayoutParams.FILL_PARENT;
+            lp.height = LayoutParams.MATCH_PARENT;
             tabs.setAllowCollapse(true);
         }
     }
@@ -488,10 +483,10 @@ public class ActionBarView extends AbsActionBarView {
 
         ActionMenuView menuView;
         final LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT,
-                LayoutParams.FILL_PARENT);
+                LayoutParams.MATCH_PARENT);
         if (!mSplitActionBar) {
             mActionMenuPresenter.setExpandedActionViewsExclusive(
-                    getResources().getBoolean(
+                    getResources_getBoolean(getContext(),
                     R.bool.abs__action_bar_expanded_action_views_exclusive));
             configPresenters(builder);
             menuView = (ActionMenuView) mActionMenuPresenter.getMenuView(this);
@@ -508,7 +503,7 @@ public class ActionBarView extends AbsActionBarView {
             // No limit to the item count; use whatever will fit.
             mActionMenuPresenter.setItemLimit(Integer.MAX_VALUE);
             // Span the whole width
-            layoutParams.width = LayoutParams.FILL_PARENT;
+            layoutParams.width = LayoutParams.MATCH_PARENT;
             configPresenters(builder);
             menuView = (ActionMenuView) mActionMenuPresenter.getMenuView(this);
             if (mSplitView != null) {
@@ -621,6 +616,7 @@ public class ActionBarView extends AbsActionBarView {
 
     public void setHomeButtonEnabled(boolean enable) {
         mHomeLayout.setEnabled(enable);
+        mHomeLayout.setFocusable(enable);
         // Make sure the home button has an accurate content description for accessibility.
         if (!enable) {
             mHomeLayout.setContentDescription(null);
@@ -639,7 +635,7 @@ public class ActionBarView extends AbsActionBarView {
 
         if ((flagsChanged & DISPLAY_RELAYOUT_MASK) != 0) {
             final boolean showHome = (options & ActionBar.DISPLAY_SHOW_HOME) != 0;
-            final int vis = showHome ? VISIBLE : GONE;
+            final int vis = showHome && mExpandedActionView == null ? VISIBLE : GONE;
             mHomeLayout.setVisibility(vis);
 
             if ((flagsChanged & ActionBar.DISPLAY_HOME_AS_UP) != 0) {
@@ -741,12 +737,12 @@ public class ActionBarView extends AbsActionBarView {
             switch (mode) {
             case ActionBar.NAVIGATION_MODE_LIST:
                 if (mSpinner == null) {
-                    mSpinner = new Spinner(mContext, null,
+                    mSpinner = new IcsSpinner(mContext, null,
                             R.attr.actionDropDownStyle);
-                    mListNavLayout = new IcsLinearLayout(mContext, null,
-                            R.attr.actionBarTabBarStyle);
+                    mListNavLayout = (IcsLinearLayout) LayoutInflater.from(mContext)
+                            .inflate(R.layout.abs__action_bar_tab_bar_view, null);
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                            LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT);
+                            LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
                     params.gravity = Gravity.CENTER;
                     mListNavLayout.addView(mSpinner, params);
                 }
@@ -829,7 +825,7 @@ public class ActionBarView extends AbsActionBarView {
                     this, false);
             mTitleView = (TextView) mTitleLayout.findViewById(R.id.abs__action_bar_title);
             mSubtitleView = (TextView) mTitleLayout.findViewById(R.id.abs__action_bar_subtitle);
-            mTitleUpView = (View) mTitleLayout.findViewById(R.id.abs__up);
+            mTitleUpView = mTitleLayout.findViewById(R.id.abs__up);
 
             mTitleLayout.setOnClickListener(mUpClickListener);
 
@@ -1030,7 +1026,7 @@ public class ActionBarView extends AbsActionBarView {
 
             // Centering a custom view is treated specially; we try to center within the whole
             // action bar rather than in the available space.
-            if (hgrav == Gravity.CENTER_HORIZONTAL && lp.width == LayoutParams.FILL_PARENT) {
+            if (hgrav == Gravity.CENTER_HORIZONTAL && lp.width == LayoutParams.MATCH_PARENT) {
                 customNavWidth = Math.min(leftOfCenter, rightOfCenter) * 2;
             }
 
