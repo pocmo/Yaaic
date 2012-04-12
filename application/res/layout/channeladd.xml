@@ -43,7 +43,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:text="#"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:inputType="textNoSuggestions" />
             <Button
                 android:id="@+id/add"
                 android:layout_width="wrap_content"

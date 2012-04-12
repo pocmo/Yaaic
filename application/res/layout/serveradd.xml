@@ -53,7 +53,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:contentDescription="@string/server_host"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:inputType="textNoSuggestions" />
         <TextView
             android:text="@string/server_port"
             android:layout_width="fill_parent"
@@ -65,7 +66,9 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:minEms="6"
-            android:text="6667" />
+            android:text="6667"
+            android:numeric="integer"
+            android:maxLength="5" />
         <TextView
             android:text="@string/server_password"
             android:layout_width="fill_parent"

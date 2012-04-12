@@ -5,7 +5,7 @@
 
     <string name="settings_menu">Settings</string>
     <string name="about_menu">About</string>
-    <string name="exit_menu">Exit</string>
+    <string name="disconnect_menu">Disconnect all</string>
 
     <string name="about_label">About</string>
     <string name="settings_label">Settings</string>

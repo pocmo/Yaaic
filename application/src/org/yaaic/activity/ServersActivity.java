@@ -289,7 +289,7 @@ public class ServersActivity extends SherlockActivity implements ServiceConnecti
             case R.id.settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
-            case R.id.exit:
+            case R.id.disconnect_all:
                 ArrayList<Server> mServers = Yaaic.getInstance().getServersAsArrayList();
                 for (Server server : mServers) {
                     if (binder.getService().hasConnection(server.getId())) {
@@ -300,7 +300,6 @@ public class ServersActivity extends SherlockActivity implements ServiceConnecti
                 }
                 // ugly
                 binder.getService().stopForegroundCompat(R.string.app_name);
-                finish();
         }
 
         return true;
