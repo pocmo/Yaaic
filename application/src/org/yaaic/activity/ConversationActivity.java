@@ -65,6 +65,7 @@ import android.os.IBinder;
 import android.speech.RecognizerIntent;
 import android.support.v4.view.ViewPager;
 import android.text.InputType;
+import android.text.method.TextKeyListener;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
@@ -119,7 +120,7 @@ public class ConversationActivity extends SherlockActivity implements ServiceCon
 
     private boolean reconnectDialogActive = false;
 
-    OnKeyListener inputKeyListener = new OnKeyListener() {
+    private final OnKeyListener inputKeyListener = new OnKeyListener() {
         /**
          * On key pressed (input line)
          */
@@ -150,7 +151,14 @@ public class ConversationActivity extends SherlockActivity implements ServiceCon
 
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
                 sendMessage(input.getText().toString());
-                input.setText("");
+
+                // Workaround for a race condition in EditText
+                // Instead of calling input.setText("");
+                // See:
+                // - https://github.com/pocmo/Yaaic/issues/67
+                // - http://code.google.com/p/android/issues/detail?id=17508
+                TextKeyListener.clear(input.getText());
+
                 return true;
             }
 
