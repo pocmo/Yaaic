@@ -13,6 +13,7 @@
     <string name="users_label">参加者</string>
     <string name="channels_label">チャンネル</string>
     <string name="add_server_label">新しいサーバー</string>
+    <string name="edit_server_label">サーバーを編集</string>
 
     <string name="server_title">タイトル</string>
     <string name="server_host">ホスト</string>
@@ -21,6 +22,7 @@
     <string name="server_useSSL">SSL使用</string>
     <string name="server_autoconnect">起動時に接続する</string>
     <string name="server_channels">チャンネル</string>
+    <string name="server_save">保存</string>
     <string name="select_charset">文字コード</string>
     <string name="nickname">ニックネーム</string>
     <string name="aliases">Aliases</string>
@@ -28,6 +30,7 @@
     <string name="realname">本名</string>
 
     <string name="server">サーバー</string>
+    <string name="authentication">Authentication</string>
     <string name="channel">チャンネル</string>
     <string name="channels">チャンネル</string>
     <string name="commands">コマンド</string>
@@ -42,7 +45,7 @@
     <string name="delete">削除</string>
     <string name="on_connect">On connect</string>
     <string name="preferences">設定</string>
-    <string name="charset">Charset</string>
+    <string name="charset">文字コード</string>
 
     <string name="action_remove">削除</string>
     <string name="action_add">追加</string>
@@ -53,6 +56,12 @@
     <string name="alias_add_description">These aliases will be used if the main nickname is unavailable.</string>
     <string name="channel_add_description">These channels will be automatically joined after connect.</string>
     <string name="command_add_description">These commands will be executed after connect.</string>
+    <string name="auth_description">Yaaic will authenticate you with these services after connect.</string>
+    <string name="auth_nickserv">Authenticate with Nickserv</string>
+    <string name="auth_nickserv_password">Nickserv password</string>
+    <string name="auth_sasl">Authenticate via SASL</string>
+    <string name="auth_sasl_username">SASL username</string>
+    <string name="auth_sasl_password">SASL password</string>
 
     <string name="validation_blank_title">Title cannot be blank</string>
     <string name="validation_blank_host">Host cannot be blank</string>
@@ -83,9 +92,13 @@
     <string name="query_to_channel">You cannot open queries to channels</string>
     <string name="query_exists">Query already exists</string>
     <string name="line_missing">Line is missing</string>
+    <string name="nickname_in_use">Nickname %1$s already in use</string>
+    <string name="irc_login_error">Could not log into the IRC server %1$s:%2$d</string>
+    <string name="could_not_connect">Could not connect to %1$s:%2$d</string>
 
     <string name="command_desc_amsg">メッセージをすべてのチャンネルに送信</string>
     <string name="command_desc_away">Sets you away</string>
+    <string name="command_desc_back">Turn off the away status</string>
     <string name="command_desc_close">現在のウィンドウを閉じる</string>
     <string name="command_desc_dcc">Send a file to a user</string>
     <string name="command_desc_deop">Remove operator status from a user</string>
@@ -109,10 +122,16 @@
     <string name="command_desc_voice">Give a user voice status</string>
     <string name="command_desc_whois">Get information about a user</string>
 
+    <string name="notification_running">Yaaic is running</string>
+    <string name="notification_not_connected">Not connected</string>
     <string name="notification_connected">%1$s へ接続しました</string>
     <string name="notification_disconnected">%1$s から切断しました</string>
+    <string name="notification_mentions">New messages in: %1$s</string>
 
     <string name="message_connected">%1$s へ接続しました</string>
+    <string name="message_now_login">ログイン中...</string>
+    <string name="message_login_done">ログインしました。</string>
+    <string name="message_motd_suppressed">MOTD suppressed. To see it, use the ‘/motd’ command.</string>
     <string name="message_deop">%1$s deops %2$s</string>
     <string name="message_devoice">%1$s devoices %2$s</string>
     <string name="message_invite_you">%1$s invites you into %2$s</string>
@@ -120,6 +139,7 @@
     <string name="message_join">%1$s joins</string>
     <string name="message_kick">%1$s kicks %2$s</string>
     <string name="message_rename">%1$s is now known as %2$s</string>
+    <string name="message_self_rename">You are now known as %1$s</string>
     <string name="message_op">%1$s ops %2$s</string>
     <string name="message_part">%1$s parts</string>
     <string name="message_quit">%1$s quits (%2$s)</string>
@@ -144,7 +164,11 @@
     <string name="message_set_moderated">%1$s sets moderated</string>
     <string name="message_remove_moderated">%1$s removes moderated</string>
     <string name="message_disconnected">切断しました</string>
+    <string name="message_not_connected">Not connected</string>
+    <string name="message_users_on_chan">Users on %1$s:</string>
 
+    <string name="user_action_reply">Reply</string>
+    <string name="user_action_query">Query</string>
     <string name="user_action_op">Op</string>
     <string name="user_action_deop">DeOp</string>
     <string name="user_action_voice">Voice</string>
@@ -155,6 +179,14 @@
     <string name="settings_connection">接続</string>
     <string name="settings_reconnect_title">再接続</string>
     <string name="settings_reconnect_desc">切断する時、自動的に再接続する</string>
+
+    <string name="settings_reconnect_interval_title">Reconnect interval</string>
+    <string name="settings_reconnect_interval_desc">Number of minutes between reconnection tries</string>
+    <string name="settings_reconnect_interval_dialog_title">Reconnect interval</string>
+
+    <string name="settings_ignore_motd_title">Ignore MOTD</string>
+    <string name="settings_ignore_motd_desc">Don\'t show the automatic ‘Message of the Day’ sent by the server</string>
+
     <string name="settings_chat">チャット</string>
     <string name="settings_icons_title">アイコンを表示</string>
     <string name="settings_icons_desc">Show icons to highlight special events</string>
@@ -166,6 +198,13 @@
     <string name="settings_timestamp_desc">Prefix all messages with a timestamp</string>
     <string name="settings_24h_title">24時間形式</string>
     <string name="settings_24h_desc">タイムスタンプで24時間形式を使用</string>
+
+    <string name="settings_highlight">強調</string>
+    <string name="settings_sound_highlight_title">Play sound on highlight</string>
+    <string name="settings_sound_highlight_desc">Play sound when your nick is mentioned</string>
+    <string name="settings_vibrate_highlight_title">Vibrate on highlight</string>
+    <string name="settings_vibrate_highlight_desc">Vibrate when your nick is mentioned</string>
+
     <string name="settings_misc">その他</string>
     <string name="settings_quitmessage_title">Quit message</string>
     <string name="settings_quitmessage_desc">Message to show when you disconnect</string>
@@ -176,4 +215,22 @@
     <string name="settings_fontsize_dialog_title">フォントサイズ</string>
     <string name="settings_voice_recognition_title">音声認識</string>
     <string name="settings_voice_recognition_desc">音声認識のボタンを表示</string>
+    <string name="settings_joinpartquit_title">Show join, part and quit</string>
+    <string name="settings_joinpartquit_desc">Show join, part and quit messages in channels</string>
+    <string name="settings_noticeserverwindow_title">Notices server window</string>
+    <string name="settings_noticeserverwindow_desc">Show notices in server window</string>
+    <string name="settings_mirc_colors_title">Show message colors</string>
+    <string name="settings_mirc_colors_desc">Show mIRC colors in messages</string>
+    <string name="settings_graphical_smilies_title">Show graphical smilies</string>
+    <string name="settings_graphical_smilies_desc">Text smilies will be displayed as images in chat</string>
+    <string name="settings_autocorrect_text_title">入力のオートコレクト</string>
+    <string name="settings_autocorrect_text_desc">Use dictionary to autocorrect typed text in chat</string>
+    <string name="settings_autocap_sentences_title">文章を自動的に大文字にする</string>
+    <string name="settings_autocap_sentences_desc">Automatically capitalize the first word of sentences</string>
+    <string name="settings_ime_extract_title">Fullscreen input in landscape</string>
+    <string name="settings_ime_extract_desc">Use fullscreen keyboard when in landscape mode</string>
+    <string name="settings_fullscreen_conversation_title">フルスクリーンチャット</string>
+    <string name="settings_fullscreen_conversation_desc">Fullscreen the application when chatting</string>
+    <string name="settings_history_size_title">History size</string>
+    <string name="settings_history_size_desc">Number of lines of conversation history to keep</string>
 </resources>
