@@ -37,7 +37,6 @@ import com.actionbarsherlock.view.MenuItem;
  * counterpart and you should refer to its documentation for instruction.</p>
  *
  * @author Jake Wharton <jakewharton@gmail.com>
- * @version 4.0.0
  */
 public abstract class ActionBarSherlock {
     protected static final String TAG = "ActionBarSherlock";
@@ -523,6 +522,20 @@ public abstract class ActionBarSherlock {
      * @param menu
      */
     public void dispatchPanelClosed(int featureId, android.view.Menu menu) {}
+
+    /**
+     * Notify the action bar that the activity has been destroyed. This method
+     * should be called before the superclass implementation.
+     *
+     * <blockquote><p>
+     * @Override
+     * public void onDestroy() {
+     *     mSherlock.dispatchDestroy();
+     *     super.onDestroy();
+     * }
+     * </p></blockquote>
+     */
+    public void dispatchDestroy() {}
 
 
     ///////////////////////////////////////////////////////////////////////////
