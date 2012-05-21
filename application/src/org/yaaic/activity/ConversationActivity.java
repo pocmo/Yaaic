@@ -253,14 +253,8 @@ public class ConversationActivity extends SherlockActivity implements ServiceCon
 
         int setInputTypeFlags = 0;
 
-        if (settings.autoCorrectText()) {
-            setInputTypeFlags |= InputType.TYPE_TEXT_FLAG_AUTO_CORRECT;
-        } else {
-            // keep compatibility with api level 3
-            if ((android.os.Build.VERSION.SDK.charAt(0) - '0') >= 5) {
-                setInputTypeFlags |= 0x80000; // InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
-            }
-        }
+        setInputTypeFlags |= InputType.TYPE_TEXT_FLAG_AUTO_CORRECT;
+
         if (settings.autoCapSentences()) {
             setInputTypeFlags |= InputType.TYPE_TEXT_FLAG_CAP_SENTENCES;
         }
