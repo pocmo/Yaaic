@@ -33,14 +33,13 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.viewpagerindicator.TitlePageIndicator;
-import com.viewpagerindicator.TitleProvider;
 
 /**
  * Adapter for displaying a pager of conversations.
  *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class ConversationPagerAdapter extends PagerAdapter implements TitleProvider
+public class ConversationPagerAdapter extends PagerAdapter
 {
     private final Server server;
     private LinkedList<ConversationInfo> conversations;
@@ -267,7 +266,7 @@ public class ConversationPagerAdapter extends PagerAdapter implements TitleProvi
      * Get the title for the given position. Used by the {@link TitlePageIndicator}.
      */
     @Override
-    public String getTitle(int position)
+    public String getPageTitle(int position)
     {
         Conversation conversation = getItem(position);
 
