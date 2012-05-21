@@ -237,7 +237,6 @@ public class ConversationActivity extends SherlockActivity implements ServiceCon
 
         float fontSize = settings.getFontSize() * scaledDensity;
         indicator.setTextSize(fontSize);
-        indicator.setTypeface(Typeface.MONOSPACE);
 
         input.setTextSize(fontSize);
         input.setTypeface(Typeface.MONOSPACE);
