@@ -233,10 +233,10 @@ public class ConversationActivity extends SherlockActivity implements ServiceCon
             server.getConversation(ServerInfo.DEFAULT_NAME).setHistorySize(historySize);
         }
 
-        float fontSize = settings.getFontSize() * density;
-        indicator.setTextSize(fontSize);
+        float fontSize = settings.getFontSize();
+        indicator.setTextSize(fontSize * density);
 
-        input.setTextSize(fontSize);
+        input.setTextSize(settings.getFontSize());
         input.setTypeface(Typeface.MONOSPACE);
 
         // Optimization : cache field lookups
