@@ -430,19 +430,6 @@ public class ConversationActivity extends SherlockActivity implements ServiceCon
     }
 
     /**
-     * On prepare options menu
-     */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu)
-    {
-        menu.getItem(0).setEnabled(server.isConnected()); // join
-        menu.getItem(1).setEnabled(server.isConnected()); // users
-        menu.getItem(2).setEnabled(server.isConnected()); // close
-
-        return true;
-    }
-
-    /**
      * On menu item selected
      */
     @Override
