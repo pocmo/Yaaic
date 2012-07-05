@@ -5,7 +5,7 @@
 
     <string name="settings_menu">Paramètres</string>
     <string name="about_menu">A propos</string>
-    <string name="exit_menu">Quitter</string>
+    <string name="disconnect_menu">Tout déconnecter</string>
 
     <string name="about_label">A propos</string>
     <string name="settings_label">Paramètres</string>
