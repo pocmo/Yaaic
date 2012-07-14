@@ -44,7 +44,7 @@ public abstract class Smilies
 
     /**
      * Converts all smilies in a string to graphical smilies.
-     * 
+     *
      * @param text  A string with smilies.
      * @return      A SpannableString with graphical smilies.
      */
@@ -88,6 +88,8 @@ public abstract class Smilies
         mappings.put(":�-(", R.drawable.smiley_cry);
         mappings.put(":X", R.drawable.smiley_sealed);
         mappings.put(":-X", R.drawable.smiley_sealed);
+        mappings.put("o_O", R.drawable.smiley_wtf);
+        mappings.put("O_o", R.drawable.smiley_wtf);
 
         StringBuilder regex = new StringBuilder("(");
         String[] smilies = mappings.keySet().toArray(new String[mappings.size()]);
@@ -116,7 +118,7 @@ public abstract class Smilies
 
     /**
      * Converts all smilies in a string to graphical smilies.
-     * 
+     *
      * @param text  A string with smilies.
      * @return      A SpannableString with graphical smilies.
      */
