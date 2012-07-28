@@ -24,7 +24,9 @@ import org.yaaic.R;
 
 import android.os.Bundle;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import com.actionbarsherlock.view.MenuItem;
 
 /**
  * Settings
@@ -41,6 +43,22 @@ public class SettingsActivity extends SherlockPreferenceActivity
     {
         super.onCreate(savedInstanceState);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         addPreferencesFromResource(R.xml.preferences);
+    }
+
+    /**
+     * On menu item selected.
+     */
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item)
+    {
+        if (item.getItemId() ==  android.R.id.home) {
+            finish();
+        }
+
+        return true;
     }
 }
