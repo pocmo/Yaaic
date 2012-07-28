@@ -279,6 +279,8 @@ public class ConversationIndicator extends FrameLayout implements OnPageChangeLi
         } else {
             rightIndicatorView.setVisibility(View.INVISIBLE);
         }
+
+        titleIndicator.invalidate();
     }
 
     /**
