@@ -69,7 +69,6 @@ import android.text.method.TextKeyListener;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -193,10 +192,6 @@ public class ConversationActivity extends SherlockActivity implements ServiceCon
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         setTitle(server.getTitle());
-
-        if (settings.fullscreenConversations()) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
 
         setContentView(R.layout.conversations);
 

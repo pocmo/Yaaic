@@ -30,11 +30,11 @@ import android.preference.PreferenceManager;
 /**
  * The settings class is a helper class to access the different preferences via
  * small and simple methods.
- * 
+ *
  * Note: As this class carries a Context instance as private member, instances of
  *          this class should be thrown away not later than when the Context should
  *          be gone. Otherwise this could leak memory.
- * 
+ *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
 public class Settings
@@ -44,7 +44,7 @@ public class Settings
 
     /**
      * Create a new Settings instance
-     * 
+     *
      * @param context
      */
     public Settings(Context context)
@@ -55,7 +55,7 @@ public class Settings
 
     /**
      * Prefix all messages with a timestamp?
-     * 
+     *
      * @return
      */
     public boolean showTimestamp()
@@ -68,7 +68,7 @@ public class Settings
 
     /**
      * Show icons to highlight special events
-     * 
+     *
      * @return
      */
     public boolean showIcons()
@@ -81,7 +81,7 @@ public class Settings
 
     /**
      * Show colors to highlight special events?
-     * 
+     *
      * @return
      */
     public boolean showColors()
@@ -107,7 +107,7 @@ public class Settings
 
     /**
      * Use 24 hour format for timestamps?
-     * 
+     *
      * @return
      */
     public boolean use24hFormat()
@@ -120,7 +120,7 @@ public class Settings
 
     /**
      * Is reconnect on disconnect enabled?
-     * 
+     *
      * @return
      */
     public boolean isReconnectEnabled()
@@ -133,7 +133,7 @@ public class Settings
 
     /**
      * Get the reconnect interval
-     * 
+     *
      * @return The reconnect interval in minutes
      */
     public int getReconnectInterval()
@@ -143,7 +143,7 @@ public class Settings
             resources.getString(R.string.default_reconnect_interval)
         ));
     }
-     
+
     /**
      * Ignore the automatic MOTD?
      *
@@ -159,7 +159,7 @@ public class Settings
 
     /**
      * Get the quit message
-     * 
+     *
      * @return The message to display when the user disconnects
      */
     public String getQuitMessage()
@@ -172,7 +172,7 @@ public class Settings
 
     /**
      * Get the font size
-     * 
+     *
      * @return The font size for conversation messages
      */
     public int getFontSize()
@@ -185,7 +185,7 @@ public class Settings
 
     /**
      * Is voice recognition enabled?
-     * 
+     *
      * @return True if voice recognition is enabled, false otherwise
      */
     public boolean isVoiceRecognitionEnabled()
@@ -198,7 +198,7 @@ public class Settings
 
     /**
      * Play notification sound on highlight?
-     * 
+     *
      * @return True if sound should be played on highlight, false otherwise
      */
     public boolean isSoundHighlightEnabled()
@@ -304,17 +304,6 @@ public class Settings
         return preferences.getBoolean(
             resources.getString(R.string.key_ime_extract),
             Boolean.parseBoolean(resources.getString(R.string.default_ime_extract))
-        );
-    }
-
-    /**
-     * Whether conversations should be viewed in Fullscreen glory.
-     */
-    public boolean fullscreenConversations()
-    {
-        return preferences.getBoolean(
-            resources.getString(R.string.key_fullscreen_conversation),
-            Boolean.parseBoolean(resources.getString(R.string.default_fullscreen_conversation))
         );
     }
 
