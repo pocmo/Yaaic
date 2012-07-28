@@ -46,6 +46,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -78,6 +79,9 @@ public class AddServerActivity extends SherlockActivity implements OnClickListen
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.serveradd);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         authentication = new Authentication();
         aliases = new ArrayList<String>();
@@ -179,6 +183,10 @@ public class AddServerActivity extends SherlockActivity implements OnClickListen
             case R.id.save:
                 save();
                 return true;
+
+            case  android.R.id.home:
+                finish();
+                break;
         }
 
         return super.onMenuItemSelected(featureId, item);
