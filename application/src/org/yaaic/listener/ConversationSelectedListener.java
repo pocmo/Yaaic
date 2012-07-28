@@ -21,11 +21,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 package org.yaaic.listener;
 
 import org.yaaic.adapter.ConversationPagerAdapter;
+import org.yaaic.indicator.ConversationIndicator;
 import org.yaaic.irc.IRCService;
 import org.yaaic.model.Channel;
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Server;
-import org.yaaic.view.ConversationSwitcher;
 
 import android.content.Context;
 import android.content.Intent;
@@ -33,16 +33,16 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.widget.TextView;
 
 /**
- * Listener for conversation selections
+ * Listener for conversation selections.
  *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
 public class ConversationSelectedListener implements OnPageChangeListener
 {
-    private final Context ctx;
+    private final Context context;
     private final Server server;
     private final TextView titleView;
-    private final ConversationSwitcher switcher;
+    private final ConversationIndicator indicator;
     private final ConversationPagerAdapter adapter;
 
     /**
@@ -51,13 +51,13 @@ public class ConversationSelectedListener implements OnPageChangeListener
      * @param server
      * @param titleView
      */
-    public ConversationSelectedListener(Context ctx, Server server, TextView titleView, ConversationPagerAdapter adapter, ConversationSwitcher switcher)
+    public ConversationSelectedListener(Context ctx, Server server, TextView titleView, ConversationPagerAdapter adapter, ConversationIndicator indicator)
     {
-        this.ctx = ctx;
-        this.server = server;
+        this.context       = ctx;
+        this.server    = server;
         this.titleView = titleView;
-        this.switcher = switcher;
-        this.adapter = adapter;
+        this.indicator = indicator;
+        this.adapter   = adapter;
     }
 
     /**
@@ -88,18 +88,18 @@ public class ConversationSelectedListener implements OnPageChangeListener
             }
 
             if (conversation.getNewMentions() > 0) {
-                Intent i = new Intent(ctx, IRCService.class);
+                Intent i = new Intent(context, IRCService.class);
                 i.setAction(IRCService.ACTION_ACK_NEW_MENTIONS);
                 i.putExtra(IRCService.EXTRA_ACK_SERVERID, server.getId());
                 i.putExtra(IRCService.EXTRA_ACK_CONVTITLE, conversation.getName());
-                ctx.startService(i);
+                context.startService(i);
             }
 
             conversation.setStatus(Conversation.STATUS_SELECTED);
             server.setSelectedConversation(conversation.getName());
         }
 
-        switcher.invalidate();
+        indicator.invalidate();
     }
 
     /**

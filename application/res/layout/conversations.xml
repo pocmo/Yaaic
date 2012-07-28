@@ -25,7 +25,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#ff000000">
-    <com.viewpagerindicator.TitlePageIndicator
+    <org.yaaic.indicator.ConversationIndicator
         android:id="@+id/titleIndicator"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />

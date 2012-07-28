@@ -29,6 +29,8 @@ import org.yaaic.Yaaic;
 import org.yaaic.adapter.ConversationPagerAdapter;
 import org.yaaic.adapter.MessageListAdapter;
 import org.yaaic.command.CommandParser;
+import org.yaaic.indicator.ConversationIndicator;
+import org.yaaic.indicator.ConversationTitlePageIndicator.IndicatorStyle;
 import org.yaaic.irc.IRCBinder;
 import org.yaaic.irc.IRCConnection;
 import org.yaaic.irc.IRCService;
@@ -80,8 +82,6 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.viewpagerindicator.TitlePageIndicator;
-import com.viewpagerindicator.TitlePageIndicator.IndicatorStyle;
 
 /**
  * The server view with a scrollable list of all channels
@@ -104,6 +104,7 @@ public class ConversationActivity extends SherlockActivity implements ServiceCon
     private ServerReceiver serverReceiver;
 
     private ViewPager pager;
+    private ConversationIndicator indicator;
     private ConversationPagerAdapter pagerAdapter;
 
     private Scrollback scrollback;
@@ -202,12 +203,13 @@ public class ConversationActivity extends SherlockActivity implements ServiceCon
 
         pager = (ViewPager) findViewById(R.id.pager);
 
-        pagerAdapter = new ConversationPagerAdapter(server);
+        pagerAdapter = new ConversationPagerAdapter(this, server);
         pager.setAdapter(pagerAdapter);
 
         final float density = getResources().getDisplayMetrics().density;
 
-        TitlePageIndicator indicator = (TitlePageIndicator) findViewById(R.id.titleIndicator);
+        indicator = (ConversationIndicator) findViewById(R.id.titleIndicator);
+        indicator.setServer(server);
         indicator.setTypeface(Typeface.MONOSPACE);
         indicator.setViewPager(pager);
 
@@ -215,7 +217,6 @@ public class ConversationActivity extends SherlockActivity implements ServiceCon
         indicator.setFooterLineHeight(1 * density);
         indicator.setFooterIndicatorHeight(3 * density);
         indicator.setFooterIndicatorStyle(IndicatorStyle.Underline);
-        indicator.setTextColor(0xFFDDDDDD);
         indicator.setSelectedColor(0xFFFFFFFF);
         indicator.setSelectedBold(true);
         indicator.setBackgroundColor(0xFF181818);
@@ -528,6 +529,8 @@ public class ConversationActivity extends SherlockActivity implements ServiceCon
                 conversation.setStatus(status);
             }
         }
+
+        indicator.updateStateColors();
     }
 
     /**
