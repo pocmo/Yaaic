@@ -32,14 +32,13 @@ import android.widget.TextView;
 
 /**
  * About activity
- * 
+ *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
 public class AboutActivity extends Activity
 {
-    private TextView mIRCLink;
     /**
-     * On create
+     * On activity getting created.
      */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -50,12 +49,13 @@ public class AboutActivity extends Activity
 
         setContentView(R.layout.about);
 
-        mIRCLink = (TextView) findViewById(R.id.about_irclink);
-        mIRCLink.setOnClickListener(new View.OnClickListener() {
+        TextView ircLinkView = (TextView) findViewById(R.id.about_irclink);
+        ircLinkView.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View view) {
-                Intent i = new Intent(getBaseContext(), org.yaaic.activity.AddServerActivity.class);
-                i.setData(Uri.parse(getString(R.string.app_irc)));
-                startActivity(i);
+                Intent intent = new Intent(AboutActivity.this, AddServerActivity.class);
+                intent.setData(Uri.parse(getString(R.string.app_irc)));
+                startActivity(intent);
             }
         });
     }
