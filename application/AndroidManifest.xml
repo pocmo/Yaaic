@@ -23,7 +23,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     package="org.yaaic"
     android:installLocation="auto"
     android:versionCode="12"
-    android:versionName="1.0" >
+    android:versionName="1.1-SNAPSHOT" >
 
     <uses-sdk
         android:minSdkVersion="4"
