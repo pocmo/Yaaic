@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-Yaaic 1.0 - 2012-07-28
+Yaaic 1.0 - 2012-07-29 - 89 commits, 685 files changed, 7 authors
 --------------------------------------------------------------------------------
  * New cleaned up UI using ActionBar and ViewPager.
  * Yaaic can now be installed on SD cards.
