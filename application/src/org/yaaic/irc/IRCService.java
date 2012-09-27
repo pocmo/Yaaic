@@ -2,6 +2,7 @@
 Yaaic - Yet Another Android IRC Client
 
 Copyright 2009-2012 Sebastian Kaspari
+Copyright 2012 Daniel E. Moctezuma <democtezuma@gmail.com>
 
 This file is part of Yaaic.
 
@@ -211,14 +212,15 @@ public class IRCService extends Service
     }
 
     /**
-     * Update notification and vibrate if needed
+     * Update notification and vibrate and/or flash a LED light if needed
      *
      * @param text       The ticker text to display
      * @param contentText       The text to display in the notification dropdown
      * @param vibrate True if the device should vibrate, false otherwise
      * @param sound True if the device should make sound, false otherwise
+     * @param light True if the device should flash a LED light, false otherwise
      */
-    private void updateNotification(String text, String contentText, boolean vibrate, boolean sound)
+    private void updateNotification(String text, String contentText, boolean vibrate, boolean sound, boolean light)
     {
         if (foreground) {
             notification = new Notification(R.drawable.icon, text, System.currentTimeMillis());
@@ -254,6 +256,13 @@ public class IRCService extends Service
                 notification.defaults |= Notification.DEFAULT_SOUND;
             }
 
+            if (light) {
+                notification.ledARGB   = 0xff00ff00;
+                notification.ledOnMS   = 300;
+                notification.ledOffMS  = 1000;
+                notification.flags    |= Notification.FLAG_SHOW_LIGHTS;
+            }
+
             notification.number = newMentions;
 
             notificationManager.notify(FOREGROUND_NOTIFICATION, notification);
@@ -274,8 +283,9 @@ public class IRCService extends Service
      * @param msg The text of the new message
      * @param vibrate Whether the notification should include vibration
      * @param sound Whether the notification should include sound
+     * @param light Whether the notification should include a flashing LED light
      */
-    public synchronized void addNewMention(int serverId, Conversation conversation, String msg, boolean vibrate, boolean sound)
+    public synchronized void addNewMention(int serverId, Conversation conversation, String msg, boolean vibrate, boolean sound, boolean light)
     {
         if (conversation == null) {
             return;
@@ -289,9 +299,9 @@ public class IRCService extends Service
         }
 
         if (newMentions == 1) {
-            updateNotification(msg, msg, vibrate, sound);
+            updateNotification(msg, msg, vibrate, sound, light);
         } else {
-            updateNotification(msg, null, vibrate, sound);
+            updateNotification(msg, null, vibrate, sound, light);
         }
     }
 
@@ -316,7 +326,7 @@ public class IRCService extends Service
             newMentions = 0;
         }
 
-        updateNotification(null, null, false, false);
+        updateNotification(null, null, false, false, false);
     }
 
     /**
@@ -327,7 +337,7 @@ public class IRCService extends Service
     public synchronized void notifyConnected(String title)
     {
         connectedServerTitles.add(title);
-        updateNotification(getString(R.string.notification_connected, title), null, false, false);
+        updateNotification(getString(R.string.notification_connected, title), null, false, false, false);
     }
 
     /**
@@ -338,7 +348,7 @@ public class IRCService extends Service
     public synchronized void notifyDisconnected(String title)
     {
         connectedServerTitles.remove(title);
-        updateNotification(getString(R.string.notification_disconnected, title), null, false, false);
+        updateNotification(getString(R.string.notification_disconnected, title), null, false, false, false);
     }
 
 
