@@ -11,3 +11,6 @@ ant.properties
 build.xml
 proguard.cfg
 
+# Maven
+target/
+

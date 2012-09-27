@@ -29,6 +29,8 @@ import org.yaaic.Yaaic;
 import org.yaaic.adapter.ConversationPagerAdapter;
 import org.yaaic.adapter.MessageListAdapter;
 import org.yaaic.command.CommandParser;
+import org.yaaic.indicator.ConversationIndicator;
+import org.yaaic.indicator.ConversationTitlePageIndicator.IndicatorStyle;
 import org.yaaic.irc.IRCBinder;
 import org.yaaic.irc.IRCConnection;
 import org.yaaic.irc.IRCService;
@@ -69,7 +71,6 @@ import android.text.method.TextKeyListener;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -81,8 +82,6 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.viewpagerindicator.TitlePageIndicator;
-import com.viewpagerindicator.TitlePageIndicator.IndicatorStyle;
 
 /**
  * The server view with a scrollable list of all channels
@@ -105,6 +104,7 @@ public class ConversationActivity extends SherlockActivity implements ServiceCon
     private ServerReceiver serverReceiver;
 
     private ViewPager pager;
+    private ConversationIndicator indicator;
     private ConversationPagerAdapter pagerAdapter;
 
     private Scrollback scrollback;
@@ -194,10 +194,6 @@ public class ConversationActivity extends SherlockActivity implements ServiceCon
 
         setTitle(server.getTitle());
 
-        if (settings.fullscreenConversations()) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
-
         setContentView(R.layout.conversations);
 
         boolean isLandscape = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
@@ -207,12 +203,13 @@ public class ConversationActivity extends SherlockActivity implements ServiceCon
 
         pager = (ViewPager) findViewById(R.id.pager);
 
-        pagerAdapter = new ConversationPagerAdapter(server);
+        pagerAdapter = new ConversationPagerAdapter(this, server);
         pager.setAdapter(pagerAdapter);
 
         final float density = getResources().getDisplayMetrics().density;
 
-        TitlePageIndicator indicator = (TitlePageIndicator) findViewById(R.id.titleIndicator);
+        indicator = (ConversationIndicator) findViewById(R.id.titleIndicator);
+        indicator.setServer(server);
         indicator.setTypeface(Typeface.MONOSPACE);
         indicator.setViewPager(pager);
 
@@ -220,7 +217,6 @@ public class ConversationActivity extends SherlockActivity implements ServiceCon
         indicator.setFooterLineHeight(1 * density);
         indicator.setFooterIndicatorHeight(3 * density);
         indicator.setFooterIndicatorStyle(IndicatorStyle.Underline);
-        indicator.setTextColor(0xFFDDDDDD);
         indicator.setSelectedColor(0xFFFFFFFF);
         indicator.setSelectedBold(true);
         indicator.setBackgroundColor(0xFF181818);
@@ -233,13 +229,10 @@ public class ConversationActivity extends SherlockActivity implements ServiceCon
             server.getConversation(ServerInfo.DEFAULT_NAME).setHistorySize(historySize);
         }
 
-        final float scaledDensity = getResources().getDisplayMetrics().density;
+        float fontSize = settings.getFontSize();
+        indicator.setTextSize(fontSize * density);
 
-        float fontSize = settings.getFontSize() * scaledDensity;
-        indicator.setTextSize(fontSize);
-        indicator.setTypeface(Typeface.MONOSPACE);
-
-        input.setTextSize(fontSize);
+        input.setTextSize(settings.getFontSize());
         input.setTypeface(Typeface.MONOSPACE);
 
         // Optimization : cache field lookups
@@ -256,14 +249,8 @@ public class ConversationActivity extends SherlockActivity implements ServiceCon
 
         int setInputTypeFlags = 0;
 
-        if (settings.autoCorrectText()) {
-            setInputTypeFlags |= InputType.TYPE_TEXT_FLAG_AUTO_CORRECT;
-        } else {
-            // keep compatibility with api level 3
-            if ((android.os.Build.VERSION.SDK.charAt(0) - '0') >= 5) {
-                setInputTypeFlags |= 0x80000; // InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
-            }
-        }
+        setInputTypeFlags |= InputType.TYPE_TEXT_FLAG_AUTO_CORRECT;
+
         if (settings.autoCapSentences()) {
             setInputTypeFlags |= InputType.TYPE_TEXT_FLAG_CAP_SENTENCES;
         }
@@ -439,19 +426,6 @@ public class ConversationActivity extends SherlockActivity implements ServiceCon
     }
 
     /**
-     * On prepare options menu
-     */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu)
-    {
-        menu.getItem(0).setEnabled(server.isConnected()); // join
-        menu.getItem(1).setEnabled(server.isConnected()); // users
-        menu.getItem(2).setEnabled(server.isConnected()); // close
-
-        return true;
-    }
-
-    /**
      * On menu item selected
      */
     @Override
@@ -555,6 +529,8 @@ public class ConversationActivity extends SherlockActivity implements ServiceCon
                 conversation.setStatus(status);
             }
         }
+
+        indicator.updateStateColors();
     }
 
     /**
