@@ -2,6 +2,7 @@
 Yaaic - Yet Another Android IRC Client
 
 Copyright 2009-2012 Sebastian Kaspari
+Copyright 2012 Daniel E. Moctezuma <democtezuma@gmail.com>
 
 This file is part of Yaaic.
 
@@ -219,6 +220,19 @@ public class Settings
         return preferences.getBoolean(
             resources.getString(R.string.key_vibrate_highlight),
             Boolean.parseBoolean(resources.getString(R.string.default_vibrate_highlight))
+        );
+    }
+
+    /**
+     * LED light notification on highlight?
+     *
+     * @return True if LED light on highlight is enabled, false otherwise
+     */
+    public boolean isLedHighlightEnabled()
+    {
+        return preferences.getBoolean(
+            resources.getString(R.string.key_led_highlight),
+            Boolean.parseBoolean(resources.getString(R.string.default_led_highlight))
         );
     }
 
