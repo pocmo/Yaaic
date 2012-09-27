@@ -120,7 +120,7 @@ public class IRCConnection extends PircBot
     {
         this.sendRawLine(
             "NOTICE " + sourceNick + " :\u0001VERSION " +
-            "Yaaic - Yet another Android IRC client - http://www.yaaic.org" +
+            "Yaaic - Yet Another Android IRC Client - http://www.yaaic.org" +
             "\u0001"
         );
     }
