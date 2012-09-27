@@ -12,7 +12,7 @@ homepage at:
 
  http://www.yaaic.org
 
-Yaaic is also avaiable at the official Android market.
+Yaaic is also avaiable at the Google Play Store.
 
 If you are a developer and want to contribute to Yaaic, checkout
 our repository at github:
@@ -21,14 +21,14 @@ our repository at github:
 
 The application project is located in application/ while the test/
 folder contains unit and scenario tests. (Both folders are two
-separate eclipse projects!)
+separate Eclipse projects!)
 
 Drop me a line for questions regarding Yaaic or use one of the
 following resources:
 
 IRC:           irc.epd-me.net #yaaic
 Homepage:      http://www.yaaic.org
-Google Group:  http://groups.google.com/group/yaaic/
+Google Group:  http://groups.google.com/group/yaaic
 Twitter:       http://twitter.com/Yaaic
 Facebook:      http://www.facebook.com/pages/Yaaic/359902798214
 
