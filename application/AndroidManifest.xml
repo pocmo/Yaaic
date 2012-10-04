@@ -26,7 +26,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     android:versionName="1.1-SNAPSHOT" >
 
     <uses-sdk
-        android:minSdkVersion="4"
+        android:minSdkVersion="7"
         android:targetSdkVersion="15" />
 
     <uses-permission android:name="android.permission.INTERNET" />
