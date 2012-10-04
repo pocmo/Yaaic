@@ -3,6 +3,7 @@
 Yaaic - Yet Another Android IRC Client
 
 Copyright 2009-2012 Sebastian Kaspari
+Copyright 2012 Daniel E. Moctezuma <democtezuma@gmail.com>
 
 This file is part of Yaaic.
 
@@ -133,6 +134,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:summary="@string/settings_vibrate_highlight_desc"
             android:key="@string/key_vibrate_highlight"
             android:defaultValue="@string/default_vibrate_highlight" />
+        <CheckBoxPreference
+            android:title="@string/settings_led_highlight_title"
+            android:summary="@string/settings_led_highlight_desc"
+            android:key="@string/key_led_highlight"
+            android:defaultValue="@string/default_led_highlight" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/settings_misc">

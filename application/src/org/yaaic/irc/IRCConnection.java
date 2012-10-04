@@ -2,6 +2,7 @@
 Yaaic - Yet Another Android IRC Client
 
 Copyright 2009-2012 Sebastian Kaspari
+Copyright 2012 Daniel E. Moctezuma <democtezuma@gmail.com>
 
 This file is part of Yaaic.
 
@@ -120,7 +121,7 @@ public class IRCConnection extends PircBot
     {
         this.sendRawLine(
             "NOTICE " + sourceNick + " :\u0001VERSION " +
-            "Yaaic - Yet another Android IRC client - http://www.yaaic.org" +
+            "Yaaic - Yet Another Android IRC Client - http://www.yaaic.org" +
             "\u0001"
         );
     }
@@ -281,7 +282,8 @@ public class IRCConnection extends PircBot
                     conversation,
                     conversation.getName() + ": " + sender + " " + action,
                     service.getSettings().isVibrateHighlightEnabled(),
-                    service.getSettings().isSoundHighlightEnabled()
+                    service.getSettings().isSoundHighlightEnabled(),
+                    service.getSettings().isLedHighlightEnabled()
                 );
             }
         }
@@ -458,7 +460,8 @@ public class IRCConnection extends PircBot
                     conversation,
                     target + ": <" + sender + "> " + text,
                     service.getSettings().isVibrateHighlightEnabled(),
-                    service.getSettings().isSoundHighlightEnabled()
+                    service.getSettings().isSoundHighlightEnabled(),
+                    service.getSettings().isLedHighlightEnabled()
                 );
             }
 
@@ -669,7 +672,8 @@ public class IRCConnection extends PircBot
                 conversation,
                 "<" + sender + "> " + text,
                 service.getSettings().isVibrateHighlightEnabled(),
-                service.getSettings().isSoundHighlightEnabled()
+                service.getSettings().isSoundHighlightEnabled(),
+                service.getSettings().isLedHighlightEnabled()
             );
         }
 
