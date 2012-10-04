@@ -210,6 +210,20 @@ public class Settings
     }
 
     /**
+     * Play notification sound on highlight?
+     *
+     * @return True if sound should be played on highlight, false otherwise
+     */
+    public String getHighlightWords()
+    {
+        return preferences.getString(
+            resources.getString(R.string.key_highlight_words),
+            resources.getString(R.string.default_highlight_words)
+        );
+    }
+
+
+    /**
      * Vibrate on highlight?
      *
      * @return True if vibrate on highlight is enabled, false otherwise

@@ -133,6 +133,13 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:summary="@string/settings_vibrate_highlight_desc"
             android:key="@string/key_vibrate_highlight"
             android:defaultValue="@string/default_vibrate_highlight" />
+        <EditTextPreference
+            android:title="@string/settings_highlight_words_title"
+            android:summary="@string/settings_highlight_words_desc"
+            android:key="@string/key_highlight_words"
+            android:defaultValue="@string/default_highlight_words"
+            android:dialogTitle="@string/settings_highlight_words_dialog_title"
+            android:dialogMessage="@string/settings_highlight_words_dialog_desc" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/settings_misc">

@@ -52,6 +52,7 @@ public class IRCConnection extends PircBot
     private final Server server;
     private ArrayList<String> autojoinChannels;
     private Pattern mNickMatch;
+    private String lastHighlightWords="";
 
     private boolean ignoreMOTD = true;
 
@@ -1284,15 +1285,30 @@ public class IRCConnection extends PircBot
      */
     public boolean isMentioned(String text)
     {
+        // Update the nick match pattern if the hightlight words changes.
+        String words = service.getSettings().getHighlightWords();
+        if( !lastHighlightWords.equals(words) ) {
+            lastHighlightWords = words;
+            updateNickMatchPattern();
+        }
+
         return mNickMatch.matcher(text).find();
     }
 
     /**
-     * Update the nick matching pattern, should be called when the nickname changes.
+     * Update the nick matching pattern, should be called when the nickname changes
+     * or when the highlight words change.
      */
     private void updateNickMatchPattern()
     {
-        mNickMatch = Pattern.compile("(?:^|[\\s?!'�:;,.])"+Pattern.quote(getNick())+"(?:[\\s?!'�:;,.]|$)", Pattern.CASE_INSENSITIVE);
+        String regex = "(?:^|[\\s?!'�:;,.])"+Pattern.quote(getNick())+"(?:[\\s?!'�:;,.]|$)";
+        String words = service.getSettings().getHighlightWords();
+        for ( String word : words.split("\\s+") ) {
+            if( word.length() > 0 ) {
+                regex += "|"+Pattern.quote(word);
+            }
+        }
+        mNickMatch = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
     }
 
     @Override
