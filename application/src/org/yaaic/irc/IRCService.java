@@ -58,14 +58,16 @@ import android.os.SystemClock;
  */
 public class IRCService extends Service
 {
-    private final IRCBinder binder;
-    private final HashMap<Integer, IRCConnection> connections;
-    private boolean foreground = false;
-    private final ArrayList<String> connectedServerTitles;
-    private final LinkedHashMap<String, Conversation> mentions;
-    private int newMentions = 0;
+    public static final String ACTION_FOREGROUND = "org.yaaic.service.foreground";
+    public static final String ACTION_BACKGROUND = "org.yaaic.service.background";
+    public static final String ACTION_ACK_NEW_MENTIONS = "org.yaaic.service.ack_new_mentions";
+    public static final String EXTRA_ACK_SERVERID = "org.yaaic.service.ack_serverid";
+    public static final String EXTRA_ACK_CONVTITLE = "org.yaaic.service.ack_convtitle";
 
     private static final int FOREGROUND_NOTIFICATION = 1;
+    private static final int NOTIFICATION_LED_OFF_MS = 1000;
+    private static final int NOTIFICATION_LED_ON_MS = 300;
+    private static final int NOTIFICATION_LED_COLOR = 0xff00ff00;
 
     @SuppressWarnings("rawtypes")
     private static final Class[] mStartForegroundSignature = new Class[] { int.class, Notification.class };
@@ -74,11 +76,12 @@ public class IRCService extends Service
     @SuppressWarnings("rawtypes")
     private static final Class[] mSetForegroudSignaure = new Class[] { boolean.class };
 
-    public static final String ACTION_FOREGROUND = "org.yaaic.service.foreground";
-    public static final String ACTION_BACKGROUND = "org.yaaic.service.background";
-    public static final String ACTION_ACK_NEW_MENTIONS = "org.yaaic.service.ack_new_mentions";
-    public static final String EXTRA_ACK_SERVERID = "org.yaaic.service.ack_serverid";
-    public static final String EXTRA_ACK_CONVTITLE = "org.yaaic.service.ack_convtitle";
+    private final IRCBinder binder;
+    private final HashMap<Integer, IRCConnection> connections;
+    private boolean foreground = false;
+    private final ArrayList<String> connectedServerTitles;
+    private final LinkedHashMap<String, Conversation> mentions;
+    private int newMentions = 0;
 
     private NotificationManager notificationManager;
     private Method mStartForeground;
@@ -257,9 +260,9 @@ public class IRCService extends Service
             }
 
             if (light) {
-                notification.ledARGB   = 0xff00ff00;
-                notification.ledOnMS   = 300;
-                notification.ledOffMS  = 1000;
+                notification.ledARGB   = NOTIFICATION_LED_COLOR;
+                notification.ledOnMS   = NOTIFICATION_LED_ON_MS;
+                notification.ledOffMS  = NOTIFICATION_LED_OFF_MS;
                 notification.flags    |= Notification.FLAG_SHOW_LIGHTS;
             }
 
