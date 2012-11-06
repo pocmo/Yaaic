@@ -31,78 +31,78 @@ import com.jayway.android.robotium.solo.Solo;
 
 /**
  * Scenario helper for performing common actions
- * 
+ *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
 public class ScenarioHelper
 {
 	private Solo solo;
-	
+
 	public ScenarioHelper(Solo solo)
 	{
 		this.solo = solo;
 	}
-	
+
 	/**
 	 * Create a test server (RobotiumTest)
-	 * 
+	 *
 	 * Starting Point: ServersActivity
 	 * Ending Point:   ServersActivity
-	 * 
+	 *
 	 * @param solo
 	 */
 	public void createTestServer()
 	{
 		if (!solo.searchText("RobotiumTest")) {
 			solo.assertCurrentActivity("Starting at ServersActivity", "ServersActivity");
-			
+
 			View view = solo.getView(R.id.add);
 			assert view != null;
 
 			solo.clickOnView(view);
-			
+
 			solo.waitForActivity("AddServerActivity");
 			solo.assertCurrentActivity("Switched to AddServerActivity", "AddServerActivity");
-			
+
 			solo.enterText(0, "RobotiumTest");
 			solo.enterText(1, "irc.epd-me.net");
-			
+
 			solo.enterText(4, "YaaicBotium");
-			
+
 			// Somehow robotium doesn't detect the field when using index 5
 			EditText realname = (EditText) solo.getView(R.id.realname);
 			solo.enterText(realname, "Robotium and Yaaic");
 
 			solo.clickOnButton(solo.getString(R.string.server_save));
-			
+
 			solo.waitForActivity("ServersActivity", 2000);
 		}
 	}
-	
+
 	/**
 	 * Connect to the test server
-	 * 
+	 *
 	 * Starting Point: ServersActivity
 	 * Ending Point:   ConversationsActivity
-	 * 
+	 *
 	 * @param solo
 	 */
 	public void connectToServer()
 	{
 		solo.clickOnText("RobotiumTest");
-		
+
 		solo.waitForActivity("ConversationActivity", 3000);
 		solo.assertCurrentActivity("Assert is ConversationActivity", ConversationActivity.class);
-		
-		solo.waitForText("Connected to RobotiumTest");
+
+		solo.waitForText(solo.getString(R.string.message_login_done));
 	}
-	
+
 	/**
 	 * Disconnect from the test server
-	 * 
+	 *
 	 * Starting Point: ConversationsActivity
 	 * Ending Point:   ServersActivity
-	 * 
+	 *
 	 * @param solo
 	 */
 	public void disconnectFromServer()
@@ -115,17 +115,17 @@ public class ScenarioHelper
 		// Disconnect
 		solo.clickLongOnText("RobotiumTest");
 		solo.clickOnText("Disconnect");
-		
+
 		solo.waitForActivity("ServersActivity", 1000);
 		solo.assertCurrentActivity("Assert is ServersActivity", ServersActivity.class);
 	}
-	
+
 	/**
 	 * Delete the test server (RobotiumTest)
-	 * 
+	 *
 	 * Starting Point: ServersActivity
 	 * Ending Point:   ServersActivity
-	 * 
+	 *
 	 * @param solo
 	 */
 	public void deleteTestServer()
@@ -134,18 +134,18 @@ public class ScenarioHelper
 			// Delete server again
 			solo.clickLongOnText("RobotiumTest");
 			solo.clickOnText("Delete");
-			
+
 			solo.waitForActivity("ServersActivity", 1000);
 			solo.assertCurrentActivity("Assert is ServersActivity", ServersActivity.class);
 		}
 	}
-	
+
 	/**
 	 * Join the test channel
-	 * 
+	 *
 	 * Starting Point: ConversationsActivity
 	 * Ending Point:   ConversationsActivity
-	 * 
+	 *
 	 * @param solo
 	 */
 	public void joinTestChannel()
@@ -156,13 +156,13 @@ public class ScenarioHelper
 		// Wait for channel joined
 		solo.waitForText("#yaaic-test");
 	}
-	
+
 	/**
 	 * Send a message via the command line
-	 * 
+	 *
 	 * Starting Point: ConversationsActivity
 	 * Ending Point:   ConversationsActivity
-	 * 
+	 *
 	 * @param solo
 	 * @param message
 	 */
