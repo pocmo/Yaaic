@@ -20,12 +20,10 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.test.scenario;
 
-
-
 import org.yaaic.R;
+import org.yaaic.activity.ServersActivity;
 
 import android.test.ActivityInstrumentationTestCase2;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -50,10 +48,7 @@ public class ServerListScenarios extends ActivityInstrumentationTestCase2
 	@SuppressWarnings("unchecked")
 	public ServerListScenarios() throws ClassNotFoundException
 	{
-		super(
-			"org.yaaic",
-			Class.forName("org.yaaic.activity.ServersActivity")
-		);
+	    super("org.yaaic", ServersActivity.class);
 	}
 	
 	/**
@@ -95,9 +90,10 @@ public class ServerListScenarios extends ActivityInstrumentationTestCase2
 	{
 		// Delete Testserver if already exists
 		helper.deleteTestServer();
-		
-		int numberOfServersBefore = solo.getCurrentListViews().get(0).getCount();
-		
+
+		// Assert server does not exist
+        assertFalse(solo.searchText("RobotiumTest"));
+
 		// Add server
 		View view = solo.getView(R.id.add);
 		assert view != null;
@@ -122,21 +118,14 @@ public class ServerListScenarios extends ActivityInstrumentationTestCase2
 		solo.assertCurrentActivity("Switched back to ServersActivity", "ServersActivity");
 
 		// Assert new server exists
-		int numberOfServersAfter = solo.getCurrentListViews().get(0).getCount();
-		assertEquals(numberOfServersBefore + 1, numberOfServersAfter);
 		assertTrue(solo.searchText("RobotiumTest"));
 		
 		// Remove new server again
 		solo.clickLongOnText("RobotiumTest");
-		
+
 		solo.clickOnText("Delete");
 		
 		solo.waitForActivity("ServersActivity", 1000);
 		solo.assertCurrentActivity("Switched back to ServersActivity", "ServersActivity");
-
-		// Assert server is gone again
-		numberOfServersAfter = solo.getCurrentListViews().get(0).getCount();
-		assertEquals(numberOfServersBefore, numberOfServersAfter);
-		assertFalse(solo.searchText("RobotiumTest"));
 	}
 }
