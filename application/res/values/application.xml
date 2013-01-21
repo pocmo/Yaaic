@@ -5,7 +5,7 @@
     <string name="app_version">1.1-SNAPSHOT</string>
     <string name="app_homepage">http://www.yaaic.org</string>
     <string name="app_irc">irc://irc.epd-me.net/yaaic</string>
-    <string name="app_copyright">&#169; 2009-2012 Sebastian Kaspari</string>
+    <string name="app_copyright">&#169; 2009-2013 Sebastian Kaspari</string>
     
     <string name="licence_info">
         Yaaic is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
