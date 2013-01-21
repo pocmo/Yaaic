@@ -51,15 +51,13 @@ public class MessageListView extends ListView
         setVerticalFadingEdgeEnabled(false);
         setBackgroundResource(R.layout.conversation_background);
         setScrollBarStyle(SCROLLBARS_OUTSIDE_INSET);
-        setTranscriptMode(TRANSCRIPT_MODE_ALWAYS_SCROLL);
 
         // Scale padding by screen density
         float density = context.getResources().getDisplayMetrics().density;
         int padding = (int) (5 * density);
         setPadding(padding, padding, padding, padding);
 
-        // XXX: This should be dynamically
-        setTranscriptMode(TRANSCRIPT_MODE_ALWAYS_SCROLL);
+        setTranscriptMode(TRANSCRIPT_MODE_NORMAL);
     }
 
     /**
