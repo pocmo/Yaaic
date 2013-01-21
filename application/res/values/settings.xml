@@ -10,7 +10,7 @@
     <string name="default_show_colors">true</string>
     
     <string name="key_show_colors_nick">show_colors_nick</string>
-    <string name="default_show_colors_nick">false</string>
+    <string name="default_show_colors_nick">true</string>
     
     <string name="key_24h_format">24h_format</string>
     <string name="default_24h_format">true</string>
@@ -49,13 +49,13 @@
     <string name="default_notice_server_window">false</string>
     
     <string name="key_mirc_colors">mirc_colors</string>
-    <string name="default_mirc_colors">false</string>
+    <string name="default_mirc_colors">true</string>
 
     <string name="key_graphical_smilies">graphical_smilies</string>
-    <string name="default_graphical_smilies">false</string>
+    <string name="default_graphical_smilies">true</string>
 
     <string name="key_autocorrect_text">autocorrect_text</string>
-    <string name="default_autocorrect_text">false</string>
+    <string name="default_autocorrect_text">true</string>
 
     <string name="key_autocap_sentences">autocap_sentences</string>
     <string name="default_autocap_sentences">false</string>
