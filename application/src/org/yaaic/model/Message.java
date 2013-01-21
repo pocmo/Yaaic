@@ -25,9 +25,11 @@ import java.util.Date;
 import org.yaaic.utils.MircColors;
 import org.yaaic.utils.Smilies;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -333,7 +335,16 @@ public class Message
         canvas.setTypeface(Typeface.MONOSPACE);
         canvas.setTextColor(COLOR_DEFAULT);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            setupViewForHoneycombAndLater(canvas);
+        }
+
         return canvas;
+    }
+
+    @TargetApi(11)
+    private void setupViewForHoneycombAndLater(TextView canvas) {
+        canvas.setTextIsSelectable(true);
     }
 
     /**
