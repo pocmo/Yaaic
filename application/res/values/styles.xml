@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.Yaaic" parent="Theme.Sherlock">
-        <item name="absForceOverflow">true</item>
         <item name="android:editTextStyle">@style/edittext_holo</item>
     </style>
     <style name="edittext_holo" parent="@android:style/Widget.EditText">
