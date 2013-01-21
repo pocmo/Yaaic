@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Yaaic</string>
-    <string name="app_full_name">Yet Another Android IRC Client</string>
-    <string name="app_version">1.1-SNAPSHOT</string>
-    <string name="app_homepage">http://www.yaaic.org</string>
-    <string name="app_irc">irc://irc.epd-me.net/yaaic</string>
-    <string name="app_copyright">&#169; 2009-2013 Sebastian Kaspari</string>
+    <string name="app_name" translatable="false">Yaaic</string>
+    <string name="app_full_name" translatable="false">Yet Another Android IRC Client</string>
+    <string name="app_version" translatable="false">1.1-SNAPSHOT</string>
+    <string name="app_homepage" translatable="false">http://www.yaaic.org</string>
+    <string name="app_irc" translatable="false">irc://irc.epd-me.net/yaaic</string>
+    <string name="app_copyright" translatable="false">&#169; 2009-2013 Sebastian Kaspari</string>
     
-    <string name="licence_info">
+    <string name="licence_info" translatable="false">
         Yaaic is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
         Yaaic is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
     </string>
