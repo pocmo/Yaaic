@@ -77,12 +77,12 @@
         <plugins>
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
-                <version>3.3.0</version>
+                <version>3.5.0</version>
                 <artifactId>android-maven-plugin</artifactId>
                 <extensions>true</extensions>
                 <configuration>
                     <sdk>
-                        <platform>14</platform>
+                        <platform>17</platform>
                     </sdk>
                 </configuration>
             </plugin>
