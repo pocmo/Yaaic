@@ -32,10 +32,6 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
-    <uses-feature
-        android:name="android.hardware.touchscreen"
-        android:required="false" />
-
     <application
         android:icon="@drawable/icon"
         android:label="Yaaic"
