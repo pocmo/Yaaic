@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="charsets">
+    <string-array name="charsets" translatable="false">
         <item name="UTF-8">UTF-8</item>
         <item name="Big">Big5</item>
         <item name="BOCU-1">BOCU-1</item>
