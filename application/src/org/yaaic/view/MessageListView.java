@@ -49,7 +49,7 @@ public class MessageListView extends ListView
 
         setCacheColorHint(0x000000);
         setVerticalFadingEdgeEnabled(false);
-        setBackgroundResource(R.layout.conversation_background);
+        setBackgroundResource(R.drawable.conversation_background);
         setScrollBarStyle(SCROLLBARS_OUTSIDE_INSET);
 
         // Scale padding by screen density
