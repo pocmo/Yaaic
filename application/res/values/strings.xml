@@ -234,4 +234,11 @@
     <string name="settings_ime_extract_desc">Use fullscreen keyboard when in landscape mode</string>
     <string name="settings_history_size_title">History size</string>
     <string name="settings_history_size_desc">Number of lines of conversation history to keep</string>
+
+    <string name="minute_1">1 minute</string>
+    <string name="minutes_5">5 minutes</string>
+    <string name="minutes_10">10 minutes</string>
+    <string name="minutes_15">15 minutes</string>
+    <string name="minutes_20">20 minutes</string>
+    <string name="minutes_30">30 minutes</string>
 </resources>

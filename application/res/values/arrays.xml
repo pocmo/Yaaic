@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="fontsize_labels">
+    <string-array name="fontsize_labels" translatable="false">
         <item>8px</item>
         <item>9px</item>
         <item>10px</item>
@@ -15,7 +15,7 @@
         <item>19px</item>
         <item>20px</item>
     </string-array>
-    <string-array name="fontsize_values">
+    <string-array name="fontsize_values" translatable="false">
         <item>8</item>
         <item>9</item>
         <item>10</item>
@@ -31,14 +31,14 @@
         <item>20</item>
     </string-array>
     <string-array name="reconnect_interval_labels">
-        <item>1 minute</item>
-        <item>5 minutes</item>
-        <item>10 minutes</item>
-        <item>15 minutes</item>
-        <item>20 minutes</item>
-        <item>30 minutes</item>
+        <item>@string/minute_1</item>
+        <item>@string/minutes_5</item>
+        <item>@string/minutes_10</item>
+        <item>@string/minutes_15</item>
+        <item>@string/minutes_20</item>
+        <item>@string/minutes_30</item>
     </string-array>
-    <string-array name="reconnect_interval_values">
+    <string-array name="reconnect_interval_values" translatable="false">
         <item>1</item>
         <item>5</item>
         <item>10</item>
