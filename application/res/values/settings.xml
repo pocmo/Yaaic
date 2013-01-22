@@ -1,68 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="key_show_timestamp">show_timestamp</string>
-    <string name="default_show_timestamp">false</string>
+    <string name="key_show_timestamp" translatable="false">show_timestamp</string>
+    <string name="default_show_timestamp" translatable="false">false</string>
     
-    <string name="key_show_icons">show_icons</string>
-    <string name="default_show_icons">true</string>
+    <string name="key_show_icons" translatable="false">show_icons</string>
+    <string name="default_show_icons" translatable="false">true</string>
     
-    <string name="key_show_colors">show_colors</string>
-    <string name="default_show_colors">true</string>
+    <string name="key_show_colors" translatable="false">show_colors</string>
+    <string name="default_show_colors" translatable="false">true</string>
     
-    <string name="key_show_colors_nick">show_colors_nick</string>
-    <string name="default_show_colors_nick">true</string>
+    <string name="key_show_colors_nick" translatable="false">show_colors_nick</string>
+    <string name="default_show_colors_nick" translatable="false">true</string>
     
-    <string name="key_24h_format">24h_format</string>
-    <string name="default_24h_format">true</string>
+    <string name="key_24h_format" translatable="false">24h_format</string>
+    <string name="default_24h_format" translatable="false">true</string>
     
-    <string name="key_reconnect">reconnect</string>
-    <string name="default_reconnect">false</string>
+    <string name="key_reconnect" translatable="false">reconnect</string>
+    <string name="default_reconnect" translatable="false">false</string>
     
-    <string name="key_reconnect_interval">reconnect_interval</string>
-    <string name="default_reconnect_interval">5</string>
+    <string name="key_reconnect_interval" translatable="false">reconnect_interval</string>
+    <string name="default_reconnect_interval" translatable="false">5</string>
     
-    <string name="key_ignore_motd">ignore_motd</string>
-    <string name="default_ignore_motd">true</string>
+    <string name="key_ignore_motd" translatable="false">ignore_motd</string>
+    <string name="default_ignore_motd" translatable="false">true</string>
 
-    <string name="key_quitmessage">quitmessage</string>
-    <string name="default_quitmessage">Yaaic - Yet another Android IRC client - http://www.yaaic.org</string>
+    <string name="key_quitmessage" translatable="false">quitmessage</string>
+    <string name="default_quitmessage" translatable="false">Yaaic - Yet another Android IRC client - http://www.yaaic.org</string>
     
-    <string name="key_fontsize">fontsize</string>
-    <string name="default_fontsize">11</string>
+    <string name="key_fontsize" translatable="false">fontsize</string>
+    <string name="default_fontsize" translatable="false">11</string>
     
-    <string name="key_voice_recognition">voice_recognition</string>
-    <string name="default_voice_recognition">false</string>
+    <string name="key_voice_recognition" translatable="false">voice_recognition</string>
+    <string name="default_voice_recognition" translatable="false">false</string>
 
-    <string name="key_show_joinpartquit">show_joinpartquit</string>
-    <string name="default_show_joinpartquit">true</string>
+    <string name="key_show_joinpartquit" translatable="false">show_joinpartquit</string>
+    <string name="default_show_joinpartquit" translatable="false">true</string>
 
-    <string name="key_vibrate_highlight">vibrate_highlight</string>
-    <string name="default_vibrate_highlight">true</string>
+    <string name="key_vibrate_highlight" translatable="false">vibrate_highlight</string>
+    <string name="default_vibrate_highlight" translatable="false">true</string>
 
-    <string name="key_sound_highlight">sound_highlight</string>
-    <string name="default_sound_highlight">false</string>
+    <string name="key_sound_highlight" translatable="false">sound_highlight</string>
+    <string name="default_sound_highlight" translatable="false">false</string>
 
-    <string name="key_led_highlight">led_highlight</string>
-    <string name="default_led_highlight">true</string>
+    <string name="key_led_highlight" translatable="false">led_highlight</string>
+    <string name="default_led_highlight" translatable="false">true</string>
 
-    <string name="key_notice_server_window">notice_server_window</string>
-    <string name="default_notice_server_window">false</string>
+    <string name="key_notice_server_window" translatable="false">notice_server_window</string>
+    <string name="default_notice_server_window" translatable="false">false</string>
     
-    <string name="key_mirc_colors">mirc_colors</string>
-    <string name="default_mirc_colors">true</string>
+    <string name="key_mirc_colors" translatable="false">mirc_colors</string>
+    <string name="default_mirc_colors" translatable="false">true</string>
 
-    <string name="key_graphical_smilies">graphical_smilies</string>
-    <string name="default_graphical_smilies">true</string>
+    <string name="key_graphical_smilies" translatable="false">graphical_smilies</string>
+    <string name="default_graphical_smilies" translatable="false">true</string>
 
-    <string name="key_autocorrect_text">autocorrect_text</string>
-    <string name="default_autocorrect_text">true</string>
+    <string name="key_autocorrect_text" translatable="false">autocorrect_text</string>
+    <string name="default_autocorrect_text" translatable="false">true</string>
 
-    <string name="key_autocap_sentences">autocap_sentences</string>
-    <string name="default_autocap_sentences">false</string>
+    <string name="key_autocap_sentences" translatable="false">autocap_sentences</string>
+    <string name="default_autocap_sentences" translatable="false">false</string>
 
-	<string name="key_ime_extract">ime_extract</string>
-    <string name="default_ime_extract">true</string>
+    <string name="key_ime_extract" translatable="false">ime_extract</string>
+    <string name="default_ime_extract" translatable="false">true</string>
 
-    <string name="key_history_size">history_size</string>
-    <string name="default_history_size">50</string>
+    <string name="key_history_size" translatable="false">history_size</string>
+    <string name="default_history_size" translatable="false">50</string>
 </resources>
