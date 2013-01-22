@@ -195,6 +195,8 @@
   <string name="settings_sound_highlight_desc">Reproducir sonido cuando mencionan tu nombre de usuario</string>
   <string name="settings_vibrate_highlight_title">Vibrar al resaltar</string>
   <string name="settings_vibrate_highlight_desc">Vibrar cuando mencionan tu nombre de usuario</string>
+  <string name="settings_led_highlight_title">Flash LED on highlight</string>
+  <string name="settings_led_highlight_desc">Flash LED light when your nick is mentioned</string>
   <string name="settings_misc">Misceláneo</string>
   <string name="settings_quitmessage_title">Quitar mensaje</string>
   <string name="settings_quitmessage_desc">Mensaje para mostrar cuando te desconectas</string>
@@ -221,4 +223,10 @@
   <string name="settings_ime_extract_desc">Hacer la ventana de acceso mas grande en modo paisaje</string>
   <string name="settings_history_size_title">Tamaño del historial</string>
   <string name="settings_history_size_desc">Número de líneas a mantener en la ventana</string>
+  <string name="minute_1">1 minute</string>
+  <string name="minutes_5">5 minutes</string>
+  <string name="minutes_10">10 minutes</string>
+  <string name="minutes_15">15 minutes</string>
+  <string name="minutes_20">20 minutes</string>
+  <string name="minutes_30">30 minutes</string>
 </resources>

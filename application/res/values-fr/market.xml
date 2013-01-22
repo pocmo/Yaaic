@@ -8,24 +8,24 @@
 
 -->
 <resources>
-  <string name="google_play_promo">Yaaic (Yet Another Android IRC Client) is an Internet Relay Chat (IRC) client.</string>
-  <string name="google_play_description">Yaaic (Yet Another Android IRC Client) is an Internet Relay Chat (IRC) client.
+  <string name="google_play_promo">Yaaic (Yet Another Android IRC Client) est un client pour l\'Internet Relay Chat (IRC).</string>
+  <string name="google_play_description">Yaaic (Yet Another Android IRC Client) est un client pour l\'Internet Relay Chat (IRC).
 
-Some of the features:
- * multi-server/channel support
- * SASL support
- * Colored text as well as mIRC colors
- * Smooth channel scrolling / swiping
- * Message icons
- * A bunch of commands
- * Many supported charsets
- * Colored nicknames
- * Nick completion (use search button)
- * Graphical smilies
- * Scrollback history
+Quelques unes de ses principales fonctionnalités :
+ * support de multiples serveurs/canaux
+ * supporte SASL
+ * Texte en couleur et couleurs mIRC
+ * Défilement fluite dans les canaux et swiping
+ * Icônes de message
+ * Des commandes
+ * Une multitude d\'encodage supportés
+ * Coloration des pseudonymes
+ * Autocomplétion des pseudonymes (bouton chercher)
+ * Smilies graphiques
+ * Historique
 
-Yaaic is open source / free software (GPL).
+Yaaic est opensource (GPL).
 
-Official Homepage:
+Site officiel :
 http://www.yaaic.org</string>
 </resources>
