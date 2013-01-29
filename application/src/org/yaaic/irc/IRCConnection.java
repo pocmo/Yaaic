@@ -21,11 +21,13 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.yaaic.irc;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
+import org.jibble.pircbot.NickAlreadyInUseException;
 import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.User;
 import org.yaaic.R;
@@ -41,28 +43,30 @@ import org.yaaic.model.ServerInfo;
 import org.yaaic.model.Status;
 
 import android.content.Intent;
+import android.util.Log;
 
 /**
  * The class that actually handles the connection to an IRC server
- * 
+ *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
 public class IRCConnection extends PircBot
 {
+    private static final String TAG = "Yaaic/IRCConnection";
     private final IRCService service;
     private final Server server;
     private ArrayList<String> autojoinChannels;
     private Pattern mNickMatch;
 
     private boolean ignoreMOTD = true;
-
+    private boolean debugTraffic = false;
     private boolean isQuitting = false;
     private boolean disposeRequested = false;
     private final Object isQuittingLock = new Object();
 
     /**
      * Create a new connection
-     * 
+     *
      * @param service
      * @param serverId
      */
@@ -70,6 +74,8 @@ public class IRCConnection extends PircBot
     {
         this.server = Yaaic.getInstance().getServerById(serverId);
         this.service = service;
+
+        this.debugTraffic = service.getSettings().debugTraffic();
 
         // XXX: Should be configurable via settings
         this.setAutoNickChange(true);
@@ -79,8 +85,23 @@ public class IRCConnection extends PircBot
     }
 
     /**
+     * This method handles events when any line of text arrives from the server.
+     *
+     * We are intercepting this method call for logging the IRC traffic if
+     * this debug option is set.
+     */
+    @Override
+    protected void handleLine(String line) throws NickAlreadyInUseException, IOException {
+        if (debugTraffic) {
+            Log.v(TAG, server.getTitle() + " :: " + line);
+        }
+
+        super.handleLine(line);
+    }
+
+    /**
      * Set the nickname of the user
-     * 
+     *
      * @param nickname The nickname to use
      */
     public void setNickname(String nickname)
@@ -91,7 +112,7 @@ public class IRCConnection extends PircBot
 
     /**
      * Set the real name of the user
-     * 
+     *
      * @param realname The realname to use
      */
     public void setRealName(String realname)
@@ -103,7 +124,7 @@ public class IRCConnection extends PircBot
 
     /**
      * Set channels to autojoin after connect
-     * 
+     *
      * @param channels
      */
     public void setAutojoinChannels(ArrayList<String> channels)
@@ -113,7 +134,7 @@ public class IRCConnection extends PircBot
 
     /**
      * On version (CTCP version)
-     * 
+     *
      * This is a fix for pircbot as pircbot uses the version as "real name" and as "version"
      */
     @Override
@@ -128,7 +149,7 @@ public class IRCConnection extends PircBot
 
     /**
      * Set the ident of the user
-     * 
+     *
      * @param ident The ident to use
      */
     public void setIdent(String ident)
@@ -143,7 +164,7 @@ public class IRCConnection extends PircBot
     public void onConnect()
     {
         server.setStatus(Status.CONNECTED);
-        
+
         server.setMayReconnect(true);
 
         ignoreMOTD = service.getSettings().isIgnoreMOTDEnabled();
@@ -1187,7 +1208,7 @@ public class IRCConnection extends PircBot
 
     /**
      * Get all channels where the user with the given nickname is online
-     * 
+     *
      * @param nickname
      * @return Array of channel names
      */
@@ -1211,7 +1232,7 @@ public class IRCConnection extends PircBot
 
     /**
      * Get list of users in a channel as array of strings
-     * 
+     *
      * @param channel Name of the channel
      */
     public String[] getUsersAsStringArray(String channel)
@@ -1229,7 +1250,7 @@ public class IRCConnection extends PircBot
 
     /**
      * Get a user by channel and nickname
-     * 
+     *
      * @param channel The channel the user is in
      * @param nickname The nickname of the user (with or without prefix)
      * @return the User object or null if user was not found
@@ -1282,7 +1303,7 @@ public class IRCConnection extends PircBot
 
     /**
      * Check whether the nickname has been mentioned.
-     * 
+     *
      * @param text The text to check for the nickname
      * @return true if nickname was found, otherwise false
      */

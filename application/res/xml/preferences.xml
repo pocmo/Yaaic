@@ -154,5 +154,10 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:defaultValue="@string/default_quitmessage"
             android:dialogTitle="@string/settings_quitmessage_dialog_title"
             android:dialogMessage="@string/settings_quitmessage_dialog_desc" />
+        <CheckBoxPreference
+            android:title="@string/settings_debug_traffic_title"
+            android:summary="@string/settings_debug_traffic_desc"
+            android:key="@string/key_debug_traffic"
+            android:defaultValue="@string/default_debug_traffic" />
     </PreferenceCategory>
 </PreferenceScreen>

@@ -300,6 +300,17 @@ public class Settings
     }
 
     /**
+     * Should IRC traffic be logged to the verbose log?
+     * @return
+     */
+    public boolean debugTraffic() {
+        return preferences.getBoolean(
+            resources.getString(R.string.key_debug_traffic),
+            Boolean.parseBoolean(resources.getString(R.string.default_debug_traffic))
+        );
+    }
+
+    /**
      * Whether sentences in messages should be automatically capitalized.
      */
     public boolean autoCapSentences()

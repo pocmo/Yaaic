@@ -65,4 +65,7 @@
 
     <string name="key_history_size" translatable="false">history_size</string>
     <string name="default_history_size" translatable="false">50</string>
+
+    <string name="key_debug_traffic" translatable="false">debug_traffic</string>
+    <string name="default_debug_traffic" translatable="false">false</string>
 </resources>
