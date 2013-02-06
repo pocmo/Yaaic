@@ -32,6 +32,7 @@ import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 
 import android.content.Context;
+import android.support.v4.content.LocalBroadcastManager;
 
 /**
  * Command: /dcc SEND <nickname> <file>
@@ -63,7 +64,7 @@ public class DCCHandler extends BaseHandler
             message.setColor(Message.COLOR_GREY);
             conversation.addMessage(message);
 
-            service.sendBroadcast(
+            LocalBroadcastManager.getInstance(service).sendBroadcast(
                 Broadcast.createConversationIntent(Broadcast.CONVERSATION_MESSAGE, server.getId(), conversation.getName())
             );
         } else {

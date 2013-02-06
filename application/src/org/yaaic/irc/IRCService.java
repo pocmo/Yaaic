@@ -50,6 +50,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.SystemClock;
+import android.support.v4.content.LocalBroadcastManager;
 
 /**
  * The background service for managing the irc connections
@@ -136,7 +137,7 @@ public class IRCService extends Service
         db.close();
 
         // Broadcast changed server list
-        sendBroadcast(new Intent(Broadcast.SERVER_UPDATE));
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(Broadcast.SERVER_UPDATE));
     }
 
     /**
@@ -483,7 +484,7 @@ public class IRCService extends Service
                     server.setStatus(Status.DISCONNECTED);
 
                     Intent sIntent = Broadcast.createServerIntent(Broadcast.SERVER_UPDATE, serverId);
-                    sendBroadcast(sIntent);
+                    LocalBroadcastManager.getInstance(IRCService.this).sendBroadcast(sIntent);
 
                     IRCConnection connection = getConnection(serverId);
 
@@ -520,7 +521,7 @@ public class IRCService extends Service
                         serverId,
                         ServerInfo.DEFAULT_NAME
                         );
-                    sendBroadcast(cIntent);
+                    LocalBroadcastManager.getInstance(IRCService.this).sendBroadcast(cIntent);
                 }
             }
         }.start();

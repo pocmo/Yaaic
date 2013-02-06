@@ -28,10 +28,11 @@ import org.yaaic.db.Database;
 import org.yaaic.model.Server;
 
 import android.content.Context;
+import android.support.v4.content.LocalBroadcastManager;
 
 /**
  * Global Master Class :)
- * 
+ *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
 public class Yaaic
@@ -51,7 +52,7 @@ public class Yaaic
 
     /**
      * Load servers from database
-     * 
+     *
      * @param context
      */
     public void loadServers(Context context)
@@ -61,14 +62,14 @@ public class Yaaic
             servers = db.getServers();
             db.close();
 
-            // context.sendBroadcast(new Intent(Broadcast.SERVER_UPDATE));
+            // LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(Broadcast.SERVER_UPDATE));
             serversLoaded = true;
         }
     }
 
     /**
      * Get global Yaaic instance
-     * 
+     *
      * @return the global Yaaic instance
      */
     public static Yaaic getInstance()
@@ -82,7 +83,7 @@ public class Yaaic
 
     /**
      * Get server by id
-     * 
+     *
      * @return Server object with given unique id
      */
     public Server getServerById(int serverId)
@@ -92,7 +93,7 @@ public class Yaaic
 
     /**
      * Remove server with given unique id from list
-     * 
+     *
      * @param serverId
      */
     public void removeServerById(int serverId)
@@ -102,7 +103,7 @@ public class Yaaic
 
     /**
      * Set servers
-     * 
+     *
      * @param servers
      */
     public void setServers(HashMap<Integer, Server> servers)
@@ -130,7 +131,7 @@ public class Yaaic
 
     /**
      * Get list of servers
-     * 
+     *
      * @return list of servers
      */
     public ArrayList<Server> getServersAsArrayList()

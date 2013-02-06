@@ -31,6 +31,7 @@ import org.yaaic.model.Server;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 
 /**
  * Command: /notice <nickname> <message>
@@ -59,7 +60,7 @@ public class NoticeHandler extends BaseHandler
                 server.getId(),
                 conversation.getName()
             );
-            service.sendBroadcast(intent);
+            LocalBroadcastManager.getInstance(service).sendBroadcast(intent);
 
             service.getConnection(server.getId()).sendNotice(params[1], text);
         } else {

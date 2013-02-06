@@ -35,10 +35,11 @@ import org.yaaic.model.Server;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 
 /**
  * Command: /help
- * 
+ *
  * @author Karol Gliniecki <karol.gliniecki@googlemail.com>
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
@@ -61,7 +62,7 @@ public class HelpHandler extends BaseHandler
 
     /**
      * Show all available commands
-     * 
+     *
      * @param conversation
      * @param server
      * @param service
@@ -100,12 +101,12 @@ public class HelpHandler extends BaseHandler
             conversation.getName()
         );
 
-        service.sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(service).sendBroadcast(intent);
     }
 
     /**
      * Show details of a single command
-     * 
+     *
      * @param conversation
      * @param server
      * @param service
@@ -129,7 +130,7 @@ public class HelpHandler extends BaseHandler
                 conversation.getName()
             );
 
-            service.sendBroadcast(intent);
+            LocalBroadcastManager.getInstance(service).sendBroadcast(intent);
         } else {
             throw new CommandException(service.getString(R.string.unknown_command, command));
         }

@@ -31,6 +31,7 @@ import org.yaaic.model.Server;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 
 /**
  * Command: /echo <text>
@@ -54,7 +55,7 @@ public class EchoHandler extends BaseHandler
                 server.getId(),
                 conversation.getName()
             );
-            service.sendBroadcast(intent);
+            LocalBroadcastManager.getInstance(service).sendBroadcast(intent);
         } else {
             throw new CommandException(service.getString(R.string.text_missing));
         }

@@ -55,6 +55,7 @@ import org.yaaic.model.Message;
 import org.yaaic.model.Server;
 
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 
 /**
  * Parser for commands
@@ -195,7 +196,7 @@ public class CommandParser
                     conversation.getName()
                 );
 
-                service.sendBroadcast(intent);
+                LocalBroadcastManager.getInstance(service).sendBroadcast(intent);
             }
         }
     }
