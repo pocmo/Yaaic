@@ -139,6 +139,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:summary="@string/settings_led_highlight_desc"
             android:key="@string/key_led_highlight"
             android:defaultValue="@string/default_led_highlight" />
+        <CheckBoxPreference
+            android:title="@string/settings_highlight_notice_title"
+            android:summary="@string/settings_highlight_notice_desc"
+            android:key="@string/key_highlight_notice"
+            android:defaultValue="@string/default_highlight_notice" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/settings_misc">

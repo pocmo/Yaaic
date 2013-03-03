@@ -235,6 +235,20 @@ public class Settings
             Boolean.parseBoolean(resources.getString(R.string.default_led_highlight))
         );
     }
+    
+    /**
+     * Send message to server window on highlight?
+     * 
+     * @return True if server window notice is enabled, false otherwise
+     */
+    public boolean isHighlightMsgEnabled()
+    {
+    	return preferences.getBoolean(
+    			resources.getString(R.string.key_highlight_notice),
+    			Boolean.parseBoolean(resources.getString(R.string.default_highlight_notice))
+    		);
+    			
+    }
 
     /**
      * Should join, part and quit messages be displayed?

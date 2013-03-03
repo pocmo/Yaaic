@@ -207,7 +207,9 @@
     <string name="settings_vibrate_highlight_desc">Vibrate when your nick is mentioned</string>
     <string name="settings_led_highlight_title">Flash LED on highlight</string>
     <string name="settings_led_highlight_desc">Flash LED light when your nick is mentioned</string>
-
+    <string name="settings_highlight_notice_title">Notice on Highlight</string>
+    <string name="settings_highlight_notice_desc">Display message in server window on highlight</string>
+    
     <string name="settings_misc">Misc</string>
     <string name="settings_quitmessage_title">Quit message</string>
     <string name="settings_quitmessage_desc">Message to show when you disconnect</string>

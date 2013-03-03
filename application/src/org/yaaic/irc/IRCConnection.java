@@ -313,6 +313,11 @@ public class IRCConnection extends PircBot
             // highlight
             message.setColor(Message.COLOR_RED);
             conversation.setStatus(Conversation.STATUS_HIGHLIGHT);
+            if (service.getSettings().isHighlightMsgEnabled())
+            {
+            	server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(message);
+            	return;
+            }
         }
     }
 
@@ -475,6 +480,13 @@ public class IRCConnection extends PircBot
         if (isMentioned(text)) {
             // highlight
             message.setColor(Message.COLOR_RED);
+            
+            if (service.getSettings().isHighlightMsgEnabled())
+            {
+            	server.getConversation(ServerInfo.DEFAULT_NAME).addMessage(message);
+            	return;
+            }
+            
             if (conversation.getStatus() != Conversation.STATUS_SELECTED || !server.getIsForeground()) {
                 service.addNewMention(
                     server.getId(),
@@ -487,6 +499,7 @@ public class IRCConnection extends PircBot
             }
 
             conversation.setStatus(Conversation.STATUS_HIGHLIGHT);
+            
         }
 
         conversation.addMessage(message);

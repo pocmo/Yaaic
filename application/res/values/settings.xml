@@ -44,6 +44,9 @@
 
     <string name="key_led_highlight" translatable="false">led_highlight</string>
     <string name="default_led_highlight" translatable="false">true</string>
+    
+    <string name="key_highlight_notice" translatable="false">highlight_notice</string>
+    <string name="default_highlight_notice" translatable="false">false</string>
 
     <string name="key_notice_server_window" translatable="false">notice_server_window</string>
     <string name="default_notice_server_window" translatable="false">false</string>
