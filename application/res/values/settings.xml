@@ -15,6 +15,9 @@
     <string name="key_24h_format" translatable="false">24h_format</string>
     <string name="default_24h_format" translatable="false">true</string>
     
+    <string name="key_include_seconds" translatable="false">include_seconds</string>
+    <string name="default_include_seconds" translatable="false">true</string>
+
     <string name="key_reconnect" translatable="false">reconnect</string>
     <string name="default_reconnect" translatable="false">false</string>
     

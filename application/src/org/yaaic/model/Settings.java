@@ -120,6 +120,20 @@ public class Settings
     }
 
     /**
+     * Include seconds in timestamps?
+     *
+     * @return
+     */
+    public boolean includeSeconds()
+    {
+        return preferences.getBoolean(
+            resources.getString(R.string.key_include_seconds),
+            Boolean.parseBoolean(resources.getString(R.string.default_include_seconds))
+        );
+    }
+
+
+    /**
      * Is reconnect on disconnect enabled?
      *
      * @return

@@ -232,7 +232,7 @@ public class Message
         if (canvas == null) {
             String prefix    = hasIcon() && settings.showIcons() ? "  " : "";
             String nick      = hasSender() ? "<" + sender + "> " : "";
-            String timestamp = settings.showTimestamp() ? renderTimeStamp(settings.use24hFormat()) : "";
+            String timestamp = settings.showTimestamp() ? renderTimeStamp(settings.use24hFormat(), settings.includeSeconds()) : "";
 
             canvas = new SpannableString(prefix + timestamp + nick);
             SpannableString renderedText;
@@ -353,12 +353,13 @@ public class Message
      * @param use24hFormat
      * @return
      */
-    public String renderTimeStamp(boolean use24hFormat)
+    public String renderTimeStamp(boolean use24hFormat, boolean includeSeconds)
     {
         Date date = new Date(timestamp);
 
         int hours = date.getHours();
         int minutes = date.getMinutes();
+        int seconds = date.getSeconds();
 
         if (!use24hFormat) {
             hours = Math.abs(12 - hours);
@@ -367,6 +368,17 @@ public class Message
             }
         }
 
-        return "[" + (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + "] ";
+        if (includeSeconds) {
+            return String.format(
+                "[%02d:%02d:%02d]",
+                hours,
+                minutes,
+                seconds);
+        } else {
+            return String.format(
+                "[%02d:%02d]",
+                hours,
+                minutes);
+        }
     }
 }

@@ -81,6 +81,12 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:defaultValue="@string/default_24h_format"
             android:dependency="@string/key_show_timestamp" />
         <CheckBoxPreference
+            android:title="@string/settings_include_seconds_title"
+            android:summary="@string/settings_include_seconds_desc"
+            android:key="@string/key_include_seconds"
+            android:defaultValue="@string/default_include_seconds"
+            android:dependency="@string/key_show_timestamp" />
+        <CheckBoxPreference
             android:title="@string/settings_joinpartquit_title"
             android:summary="@string/settings_joinpartquit_desc"
             android:key="@string/key_show_joinpartquit"
