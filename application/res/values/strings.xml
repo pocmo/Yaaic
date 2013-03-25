@@ -199,6 +199,8 @@
     <string name="settings_timestamp_desc">Prefix all messages with a timestamp</string>
     <string name="settings_24h_title">24 hour format</string>
     <string name="settings_24h_desc">Use 24 hour format for timestamps</string>
+    <string name="settings_include_seconds_title">Show seconds</string>
+    <string name="settings_include_seconds_desc">Include seconds in timestamps</string>
 
     <string name="settings_highlight">Highlight</string>
     <string name="settings_sound_highlight_title">Play sound on highlight</string>
