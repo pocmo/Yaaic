@@ -686,6 +686,7 @@ public class ConversationActivity extends SherlockActivity implements ServiceCon
 
                         while (
                                 nicknameWithoutPrefix.startsWith("~") ||
+                                nicknameWithoutPrefix.startsWith("&") ||
                                 nicknameWithoutPrefix.startsWith("@") ||
                                 nicknameWithoutPrefix.startsWith("+") ||
                                 nicknameWithoutPrefix.startsWith(".") ||
@@ -935,7 +936,7 @@ public class ConversationActivity extends SherlockActivity implements ServiceCon
     private String removeStatusChar(String nick)
     {
         /* Discard status characters */
-        if (nick.startsWith("~") || nick.startsWith("@") 
+        if (nick.startsWith("~") || nick.startsWith("&") || nick.startsWith("@")
                 || nick.startsWith("+") || nick.startsWith("%")) {
             nick = nick.substring(1);
         }
