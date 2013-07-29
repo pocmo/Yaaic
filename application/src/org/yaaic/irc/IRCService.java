@@ -26,6 +26,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.security.cert.CertPathValidatorException;
 
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.NickAlreadyInUseException;
@@ -460,7 +461,8 @@ public class IRCService extends Service
                     connection.setAliases(server.getIdentity().getAliases());
                     connection.setIdent(server.getIdentity().getIdent());
                     connection.setRealName(server.getIdentity().getRealName());
-                    connection.setUseSSL(server.useSSL());
+                    connection.setSecurityType(server.securityType());
+                    connection.setFingerprint(server.fingerprint());
 
                     if (server.getCharset() != null) {
                         connection.setEncoding(server.getCharset());
@@ -495,8 +497,13 @@ public class IRCService extends Service
                     } else if (e instanceof IrcException) {
                         message = new Message(getString(R.string.irc_login_error, server.getHost(), server.getPort()));
                         server.setMayReconnect(false);
+                    } else if (e instanceof CertPathValidatorException) {
+                        message = new Message(getString(R.string.ssl_handshake_error,
+                            server.getHost(), server.getPort(), e.getLocalizedMessage()));
+                        server.setMayReconnect(false);
                     } else {
-                        message = new Message(getString(R.string.could_not_connect, server.getHost(), server.getPort()));
+                        message = new Message(getString(R.string.could_not_connect,
+                            server.getHost(), server.getPort(), e.getLocalizedMessage()));
                         if (settings.isReconnectEnabled()) {
                             Intent rIntent = new Intent(Broadcast.SERVER_RECONNECT + serverId);
                             PendingIntent pendingRIntent = PendingIntent.getBroadcast(service, 0, rIntent, 0);

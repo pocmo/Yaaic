@@ -33,6 +33,8 @@ import org.yaaic.model.Extra;
 import org.yaaic.model.Identity;
 import org.yaaic.model.Server;
 import org.yaaic.model.Status;
+import org.yaaic.ssl.FixedTrustManager;
+import org.jibble.pircbot.PircBot;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -44,6 +46,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -57,7 +61,8 @@ import com.actionbarsherlock.view.MenuItem;
  *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class AddServerActivity extends SherlockActivity implements OnClickListener
+public class AddServerActivity extends SherlockActivity
+    implements OnClickListener, OnItemSelectedListener
 {
     private static final int REQUEST_CODE_CHANNELS       = 1;
     private static final int REQUEST_CODE_COMMANDS       = 2;
@@ -94,6 +99,7 @@ public class AddServerActivity extends SherlockActivity implements OnClickListen
         ((Button) findViewById(R.id.channels)).setOnClickListener(this);
         ((Button) findViewById(R.id.commands)).setOnClickListener(this);
         ((Button) findViewById(R.id.authentication)).setOnClickListener(this);
+        ((Spinner) findViewById(R.id.securityType)).setOnItemSelectedListener(this);
 
         Spinner spinner = (Spinner) findViewById(R.id.charset);
         String[] charsets = getResources().getStringArray(R.array.charsets);
@@ -123,7 +129,8 @@ public class AddServerActivity extends SherlockActivity implements OnClickListen
             ((EditText) findViewById(R.id.nickname)).setText(server.getIdentity().getNickname());
             ((EditText) findViewById(R.id.ident)).setText(server.getIdentity().getIdent());
             ((EditText) findViewById(R.id.realname)).setText(server.getIdentity().getRealName());
-            ((CheckBox) findViewById(R.id.useSSL)).setChecked(server.useSSL());
+            ((Spinner)  findViewById(R.id.securityType)).setSelection(server.securityType().ordinal());
+            ((EditText) findViewById(R.id.fingerprint)).setText(server.fingerprint());
 
             // Select charset
             if (server.getCharset() != null) {
@@ -157,6 +164,8 @@ public class AddServerActivity extends SherlockActivity implements OnClickListen
                 ((EditText) findViewById(R.id.password)).setText(String.valueOf(uri.getQuery()));
             }
         }
+
+        showHide();
     }
 
     /**
@@ -222,6 +231,37 @@ public class AddServerActivity extends SherlockActivity implements OnClickListen
                 authentication.setNickservPassword(data.getExtras().getString(Extra.NICKSERV_PASSWORD));
                 break;
         }
+    }
+
+    private void showHide()
+    {
+        Spinner v_securityType = (Spinner) findViewById(R.id.securityType);
+        if (v_securityType.getSelectedItemPosition() >= 0){
+            PircBot.SecurityType securityType = PircBot.SecurityType.values()[v_securityType.getSelectedItemPosition()];
+            if (securityType == PircBot.SecurityType.TLS_FIXED_KEY){
+                findViewById(R.id.fingerprint_label).setVisibility(View.VISIBLE);
+                findViewById(R.id.fingerprint).setVisibility(View.VISIBLE);
+            } else {
+                findViewById(R.id.fingerprint_label).setVisibility(View.GONE);
+                findViewById(R.id.fingerprint).setVisibility(View.GONE);
+            }
+        }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView parent, View v, int position, long id)
+    {
+        switch (parent.getId()) {
+            case R.id.securityType:
+                showHide();
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView parent)
+    {
+
     }
 
     /**
@@ -368,7 +408,12 @@ public class AddServerActivity extends SherlockActivity implements OnClickListen
         int port = Integer.parseInt(((EditText) findViewById(R.id.port)).getText().toString().trim());
         String password = ((EditText) findViewById(R.id.password)).getText().toString().trim();
         String charset = ((Spinner) findViewById(R.id.charset)).getSelectedItem().toString();
-        Boolean useSSL = ((CheckBox) findViewById(R.id.useSSL)).isChecked();
+        PircBot.SecurityType securityType = PircBot.SecurityType.values()[
+            ((Spinner) findViewById(R.id.securityType)).getSelectedItemPosition()];
+        String fingerprint = "";
+        if (securityType == PircBot.SecurityType.TLS_FIXED_KEY){
+            fingerprint = ((EditText) findViewById(R.id.fingerprint)).getText().toString().trim();
+        }
 
         // not in use yet
         //boolean autoConnect = ((CheckBox) findViewById(R.id.autoconnect)).isChecked();
@@ -379,7 +424,8 @@ public class AddServerActivity extends SherlockActivity implements OnClickListen
         server.setPassword(password);
         server.setTitle(title);
         server.setCharset(charset);
-        server.setUseSSL(useSSL);
+        server.setSecurityType(securityType);
+        server.setFingerprint(fingerprint);
         server.setStatus(Status.DISCONNECTED);
 
         return server;
@@ -431,6 +477,15 @@ public class AddServerActivity extends SherlockActivity implements OnClickListen
             Integer.parseInt(port);
         } catch (NumberFormatException e) {
             throw new ValidationException(getResources().getString(R.string.validation_invalid_port));
+        }
+
+        PircBot.SecurityType securityType = PircBot.SecurityType.values()
+            [((Spinner) findViewById(R.id.securityType)).getSelectedItemPosition()];
+        if (securityType == PircBot.SecurityType.TLS_FIXED_KEY){
+            String fingerprint = ((EditText) findViewById(R.id.fingerprint)).getText().toString().trim();
+            if (FixedTrustManager.parseDigest(fingerprint) == null){
+                throw new ValidationException(getResources().getString(R.string.validation_bad_fingerprint));
+            }
         }
 
         try {

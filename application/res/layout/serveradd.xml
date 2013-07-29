@@ -89,12 +89,29 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:layout_height="wrap_content"
             android:text="@string/server_port"
             android:visibility="gone" />
-        <CheckBox
-            android:id="@+id/useSSL"
-            android:contentDescription="@string/server_useSSL"
+        <TextView
+            android:text="@string/server_securityType"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/securityType"
+            android:contentDescription="@string/server_securityType"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/server_useSSL" />
+            android:entries="@array/server_securityTypes" />
+        <TextView
+            android:id="@+id/fingerprint_label"
+            android:text="@string/server_fingerprint"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+        <EditText
+            android:id="@+id/fingerprint"
+            android:contentDescription="@string/server_fingerprint"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textNoSuggestions"
+            android:visibility="gone" />
 <!-- ############################################################################ -->
         <TextView
             android:text="@string/user"

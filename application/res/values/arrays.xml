@@ -46,4 +46,10 @@
         <item>20</item>
         <item>30</item>
     </string-array>
+    <string-array name="server_securityTypes">
+        <item>None</item>
+        <item>SSL/TLS (Accept all certificates)</item>
+        <item>SSL/TLS</item>
+        <item>SSL/TLS (Fixed key)</item>
+    </string-array>
 </resources>

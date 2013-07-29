@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 
 import org.yaaic.R;
+import org.jibble.pircbot.PircBot;
 
 /**
  * A server as we know it
@@ -39,7 +40,8 @@ public class Server
     private int port;
     private String password;
     private String charset;
-    private boolean useSSL = false;
+    private PircBot.SecurityType securityType = PircBot.SecurityType.NONE;
+    private String fingerprint = null;
 
     private Identity identity;
     private Authentication authentication;
@@ -222,22 +224,24 @@ public class Server
         return charset;
     }
 
-    /**
-     * Set if this connections needs to use ssl
-     */
-    public void setUseSSL(boolean useSSL)
+    public void setSecurityType(PircBot.SecurityType securityType)
     {
-        this.useSSL = useSSL;
+        this.securityType = securityType;
     }
 
-    /**
-     * Does this connection use SSL?
-     * 
-     * @return true if SSL should be used, false otherwise
-     */
-    public boolean useSSL()
+    public PircBot.SecurityType securityType()
     {
-        return useSSL;
+        return securityType;
+    }
+
+    public void setFingerprint(String fingerprint)
+    {
+        this.fingerprint = fingerprint;
+    }
+
+    public String fingerprint()
+    {
+        return fingerprint;
     }
 
     /**

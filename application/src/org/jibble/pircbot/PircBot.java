@@ -37,8 +37,11 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
+import java.security.NoSuchAlgorithmException;
+import java.security.KeyManagementException;
 
 import org.yaaic.ssl.NaiveTrustManager;
+import org.yaaic.ssl.FixedTrustManager;
 import org.yaaic.tools.Base64;
 
 /**
@@ -88,6 +91,8 @@ public abstract class PircBot implements ReplyConstants {
     private static final int VOICE_ADD = 3;
     private static final int VOICE_REMOVE = 4;
 
+    public enum SecurityType { NONE, TLS_INSECURE, TLS, TLS_FIXED_KEY };
+
     /**
      * Constructs a PircBot with the default settings.  Your own constructors
      * in classes which extend the PircBot abstract class should be responsible
@@ -105,7 +110,10 @@ public abstract class PircBot implements ReplyConstants {
      * @throws IrcException if the server would not let us join it.
      * @throws NickAlreadyInUseException if our nick is already in use on the server.
      */
-    public final synchronized void connect(String hostname) throws IOException, IrcException, NickAlreadyInUseException {
+    public final synchronized void connect(String hostname)
+        throws IOException, IrcException, NickAlreadyInUseException,
+        NoSuchAlgorithmException, KeyManagementException
+    {
         this.connect(hostname, 6667, null);
     }
 
@@ -121,7 +129,10 @@ public abstract class PircBot implements ReplyConstants {
      * @throws IrcException if the server would not let us join it.
      * @throws NickAlreadyInUseException if our nick is already in use on the server.
      */
-    public final synchronized void connect(String hostname, int port) throws IOException, IrcException, NickAlreadyInUseException {
+    public final synchronized void connect(String hostname, int port)
+        throws IOException, IrcException, NickAlreadyInUseException,
+        NoSuchAlgorithmException, KeyManagementException
+    {
         this.connect(hostname, port, null);
     }
 
@@ -139,7 +150,7 @@ public abstract class PircBot implements ReplyConstants {
      * @throws IrcException if the server would not let us join it.
      * @throws NickAlreadyInUseException if our nick is already in use on the server.
      */
-    public final synchronized void connect(String hostname, int port, String password) throws IOException, IrcException, NickAlreadyInUseException {
+    public final synchronized void connect(String hostname, int port, String password) throws IOException, IrcException, NickAlreadyInUseException, NoSuchAlgorithmException, KeyManagementException {
         _registered = false;
 
         _server = hostname;
@@ -159,20 +170,24 @@ public abstract class PircBot implements ReplyConstants {
         // Connect to the server.
 
         // XXX: PircBot Patch for SSL
-        if (_useSSL) {
-            try {
-                SSLContext context = SSLContext.getInstance("TLS");
-                context.init(null, new X509TrustManager[] { new NaiveTrustManager() }, null);
-                SSLSocketFactory factory = context.getSocketFactory();
-                SSLSocket ssocket = (SSLSocket) factory.createSocket(hostname, port);
-                ssocket.startHandshake();
-                _socket = ssocket;
+        if (_securityType != SecurityType.NONE){
+            SSLContext context = SSLContext.getInstance("TLS");
+            switch (_securityType){
+                case TLS_INSECURE:
+                    context.init(null, new X509TrustManager[] { new NaiveTrustManager() }, null);
+                    break;
+                case TLS:
+                    /* Use default certificate validation. */
+                    context.init(null, null, null);
+                    break;
+                case TLS_FIXED_KEY:
+                    context.init(null, new X509TrustManager[] { new FixedTrustManager(_fingerprint) }, null);
+                    break;
             }
-            catch(Exception e)
-            {
-                // XXX: It's not really an IOException :)
-                throw new IOException("Cannot open SSL socket");
-            }
+            SSLSocketFactory factory = context.getSocketFactory();
+            SSLSocket ssocket = (SSLSocket) factory.createSocket(hostname, port);
+            ssocket.startHandshake();
+            _socket = ssocket;
         } else {
             _socket =  new Socket(hostname, port);
         }
@@ -278,21 +293,24 @@ public abstract class PircBot implements ReplyConstants {
      * @throws IrcException if the server would not let us join it.
      * @throws NickAlreadyInUseException if our nick is already in use on the server.
      */
-    public final synchronized void reconnect() throws IOException, IrcException, NickAlreadyInUseException{
+    public final synchronized void reconnect()
+        throws IOException, IrcException, NickAlreadyInUseException,
+        NoSuchAlgorithmException, KeyManagementException
+    {
         if (getServer() == null) {
             throw new IrcException("Cannot reconnect to an IRC server because we were never connected to one previously!");
         }
         connect(getServer(), getPort(), getPassword());
     }
 
-    /**
-     * Set wether SSL should be used to connect to the server.
-     * 
-     * @author Sebastian Kaspari <sebastian@yaaic.org>
-     */
-    public void setUseSSL(boolean useSSL)
+    public void setSecurityType(SecurityType securityType)
     {
-        _useSSL = useSSL;
+        _securityType = securityType;
+    }
+
+    public void setFingerprint(String fingerprint)
+    {
+        _fingerprint = fingerprint;
     }
 
     /**
@@ -3171,7 +3189,8 @@ public abstract class PircBot implements ReplyConstants {
     // Default settings for the PircBot.
     private boolean _autoNickChange = false;
     private int _autoNickTries = 1;
-    private boolean _useSSL = false;
+    private SecurityType _securityType = SecurityType.NONE;
+    private String _fingerprint = "";
     private boolean _registered = false;
 
     private String _name = "PircBot";

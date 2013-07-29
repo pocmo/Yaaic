@@ -28,6 +28,7 @@ import org.yaaic.model.Authentication;
 import org.yaaic.model.Identity;
 import org.yaaic.model.Server;
 import org.yaaic.model.Status;
+import org.jibble.pircbot.PircBot;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -44,7 +45,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class Database extends SQLiteOpenHelper
 {
     private static final String DATABASE_NAME = "servers.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
     /**
      * Create a new helper for database access
@@ -69,7 +70,8 @@ public class Database extends SQLiteOpenHelper
             + ServerConstants.PORT + " INTEGER, "
             + ServerConstants.PASSWORD + " TEXT, "
             + ServerConstants.AUTOCONNECT + " BOOLEAN, "
-            + ServerConstants.USE_SSL + " BOOLEAN, "
+            + ServerConstants.SECURITY_TYPE + " INTEGER, "
+            + ServerConstants.FINGERPRINT + " TEXT, "
             + ServerConstants.CHARSET + " TEXT, "
             + ServerConstants.IDENTITY + " INTEGER, "
             + ServerConstants.NICKSERV_PASSWORD + " TEXT, "
@@ -158,6 +160,13 @@ public class Database extends SQLiteOpenHelper
             db.execSQL("ALTER TABLE " + ServerConstants.TABLE_NAME + " ADD " + ServerConstants.NICKSERV_PASSWORD + " TEXT AFTER " + ServerConstants.CHARSET + ";");
             db.execSQL("ALTER TABLE " + ServerConstants.TABLE_NAME + " ADD " + ServerConstants.SASL_USERNAME + " TEXT AFTER " + ServerConstants.NICKSERV_PASSWORD + ";");
             db.execSQL("ALTER TABLE " + ServerConstants.TABLE_NAME + " ADD " + ServerConstants.SASL_PASSWORD + " TEXT AFTER " + ServerConstants.SASL_USERNAME + ";");
+            oldVersion = 5;
+        }
+
+        if (oldVersion == 5) {
+            db.execSQL("ALTER TABLE " + ServerConstants.TABLE_NAME + " ADD " + ServerConstants.SECURITY_TYPE + " INTEGER AFTER " + ServerConstants.USE_SSL + ";");
+            db.execSQL("ALTER TABLE " + ServerConstants.TABLE_NAME + " ADD " + ServerConstants.FINGERPRINT + " TEXT AFTER " + ServerConstants.SECURITY_TYPE + ";");
+            oldVersion = 6;
         }
     }
 
@@ -176,7 +185,8 @@ public class Database extends SQLiteOpenHelper
         values.put(ServerConstants.PORT, server.getPort());
         values.put(ServerConstants.PASSWORD, server.getPassword());
         values.put(ServerConstants.AUTOCONNECT, false);
-        values.put(ServerConstants.USE_SSL, server.useSSL());
+        values.put(ServerConstants.SECURITY_TYPE, server.securityType().ordinal());
+        values.put(ServerConstants.FINGERPRINT, server.fingerprint());
         values.put(ServerConstants.IDENTITY, identityId);
         values.put(ServerConstants.CHARSET, server.getCharset());
 
@@ -204,7 +214,8 @@ public class Database extends SQLiteOpenHelper
         values.put(ServerConstants.PORT, server.getPort());
         values.put(ServerConstants.PASSWORD, server.getPassword());
         values.put(ServerConstants.AUTOCONNECT, false);
-        values.put(ServerConstants.USE_SSL, server.useSSL());
+        values.put(ServerConstants.SECURITY_TYPE, server.securityType().ordinal());
+        values.put(ServerConstants.FINGERPRINT, server.fingerprint());
         values.put(ServerConstants.IDENTITY, identityId);
         values.put(ServerConstants.CHARSET, server.getCharset());
 
@@ -423,11 +434,8 @@ public class Database extends SQLiteOpenHelper
         server.setPassword(cursor.getString(cursor.getColumnIndex(ServerConstants.PASSWORD)));
         server.setId(cursor.getInt(cursor.getColumnIndex((ServerConstants._ID))));
         server.setCharset(cursor.getString(cursor.getColumnIndex(ServerConstants.CHARSET)));
-
-        String useSSLvalue = cursor.getString(cursor.getColumnIndex(ServerConstants.USE_SSL));
-        if (useSSLvalue != null && useSSLvalue.equals("1")) {
-            server.setUseSSL(true);
-        }
+        server.setSecurityType(PircBot.SecurityType.values()[cursor.getInt(cursor.getColumnIndex(ServerConstants.SECURITY_TYPE))]);
+        server.setFingerprint(cursor.getString(cursor.getColumnIndex(ServerConstants.FINGERPRINT)));
 
         server.setStatus(Status.DISCONNECTED);
 

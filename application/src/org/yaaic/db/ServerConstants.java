@@ -38,6 +38,8 @@ public interface ServerConstants extends BaseColumns
     public static final String PASSWORD          = "password";
     public static final String AUTOCONNECT       = "autoConnect";
     public static final String USE_SSL           = "useSSL";
+    public static final String SECURITY_TYPE     = "securityType";
+    public static final String FINGERPRINT       = "fingerprint";
     public static final String CHARSET           = "charset";
     public static final String IDENTITY          = "identity";
     public static final String NICKSERV_PASSWORD = "nickserv_password";
@@ -54,7 +56,8 @@ public interface ServerConstants extends BaseColumns
         PORT,
         PASSWORD,
         AUTOCONNECT,
-        USE_SSL,
+        SECURITY_TYPE,
+        FINGERPRINT,
         CHARSET,
         IDENTITY,
         NICKSERV_PASSWORD,
