@@ -475,7 +475,7 @@ public class AddServerActivity extends SherlockActivity implements OnClickListen
         // <special>    ::= '-' | '[' | ']' | '\' | '`' | '^' | '{' | '}'
         // Chars that are not in RFC 1459 but are supported too:
         // | and _
-        Pattern nickPattern = Pattern.compile("^[a-zA-Z_][a-zA-Z0-9^\\-`\\[\\]{}|_\\\\]*$");
+        Pattern nickPattern = Pattern.compile("^[a-zA-Z_][a-zA-Z0-9^\\-`\\[\\]{}|_\\\\\\/]*$");
         if (!nickPattern.matcher(nickname).matches()) {
             throw new ValidationException(getResources().getString(R.string.validation_invalid_nickname));
         }
