@@ -22,8 +22,10 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 package org.yaaic.irc;
 
 import java.io.IOException;
+import java.lang.StringBuilder;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
@@ -1317,7 +1319,16 @@ public class IRCConnection extends PircBot
      */
     private void updateNickMatchPattern()
     {
-        mNickMatch = Pattern.compile("(?:^|[\\s?!'�:;,.])"+Pattern.quote(getNick())+"(?:[\\s?!'�:;,.]|$)", Pattern.CASE_INSENSITIVE);
+        List<String> aliases = this.server.getIdentity().getAliases();
+        StringBuilder nicks = new StringBuilder();
+        nicks.append(Pattern.quote(getNick()));
+        for (String alias : aliases) {
+            nicks.append("|");
+            nicks.append(Pattern.quote(alias));
+        }
+        mNickMatch = Pattern.compile(
+            "(?:^|[\\s?!'�:;,.])" + nicks.toString() + "(?:[\\s?!'�:;,.]|$)",
+            Pattern.CASE_INSENSITIVE);
     }
 
     @Override
