@@ -167,9 +167,13 @@ public class OverviewFragment extends Fragment implements ServerListener, Server
         if (binder != null) {
             binder.getService().getConnection(server.getId()).quitServer();
 
-            Database db = new Database(getActivity());
-            db.removeServerById(server.getId());
-            db.close();
+            Database db = null;
+            try {
+                db = new Database(getActivity());
+                db.removeServerById(server.getId());
+            } finally {
+                Database.close(db);
+            }
 
             Yaaic.getInstance().removeServerById(server.getId());
             adapter.loadServers();
