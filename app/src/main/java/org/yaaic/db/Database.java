@@ -281,12 +281,14 @@ public class Database extends SQLiteOpenHelper
             null
         );
 
-        while (cursor.moveToNext()) {
-            String command = cursor.getString(cursor.getColumnIndex(CommandConstants.COMMAND));
-            commands.add(command);
+        try {
+            while (cursor.moveToNext()) {
+                String command = cursor.getString(cursor.getColumnIndex(CommandConstants.COMMAND));
+                commands.add(command);
+            }
+        } finally {
+            cursor.close();
         }
-
-        cursor.close();
 
         return commands;
     }
@@ -490,12 +492,14 @@ public class Database extends SQLiteOpenHelper
             ChannelConstants.NAME + " ASC"
         );
 
-        while (cursor.moveToNext()) {
-            String channel = cursor.getString(cursor.getColumnIndex(ChannelConstants.NAME));
-            channels.add(channel);
+        try {
+            while (cursor.moveToNext()) {
+                String channel = cursor.getString(cursor.getColumnIndex(ChannelConstants.NAME));
+                channels.add(channel);
+            }
+        } finally {
+            cursor.close();
         }
-
-        cursor.close();
 
         return channels;
     }
@@ -558,10 +562,14 @@ public class Database extends SQLiteOpenHelper
             null
         );
 
-        while (cursor.moveToNext()) {
-            aliases.add(cursor.getString(cursor.getColumnIndex(AliasConstants.ALIAS)));
+        try {
+            while (cursor.moveToNext()) {
+                aliases.add(cursor.getString(cursor.getColumnIndex(AliasConstants.ALIAS)));
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
         }
-        cursor.close();
 
         return aliases;
     }
@@ -636,17 +644,20 @@ public class Database extends SQLiteOpenHelper
             null
         );
 
-        if (cursor.moveToNext()) {
-            identity = new Identity();
+        try {
+            if (cursor.moveToNext()) {
+                identity = new Identity();
 
-            identity.setNickname(cursor.getString(cursor.getColumnIndex(IdentityConstants.NICKNAME)));
-            identity.setIdent(cursor.getString(cursor.getColumnIndex(IdentityConstants.IDENT)));
-            identity.setRealName(cursor.getString(cursor.getColumnIndex(IdentityConstants.REALNAME)));
+                identity.setNickname(cursor.getString(cursor.getColumnIndex(IdentityConstants.NICKNAME)));
+                identity.setIdent(cursor.getString(cursor.getColumnIndex(IdentityConstants.IDENT)));
+                identity.setRealName(cursor.getString(cursor.getColumnIndex(IdentityConstants.REALNAME)));
 
-            identity.setAliases(getAliasesByIdentityId(identityId));
+                identity.setAliases(getAliasesByIdentityId(identityId));
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
         }
-
-        cursor.close();
 
         return identity;
     }
@@ -671,11 +682,14 @@ public class Database extends SQLiteOpenHelper
             null
         );
 
-        if (cursor.moveToNext()) {
-            identityId = cursor.getInt(cursor.getColumnIndex(ServerConstants.IDENTITY));
+        try {
+            if (cursor.moveToNext()) {
+                identityId = cursor.getInt(cursor.getColumnIndex(ServerConstants.IDENTITY));
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
         }
-
-        cursor.close();
 
         return identityId;
     }
