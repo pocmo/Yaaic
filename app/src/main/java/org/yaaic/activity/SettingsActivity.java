@@ -22,18 +22,17 @@ package org.yaaic.activity;
 
 import org.yaaic.R;
 
+import android.app.ActionBar;
 import android.os.Bundle;
-
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
-import com.actionbarsherlock.view.MenuItem;
+import android.preference.PreferenceActivity;
+import android.view.MenuItem;
 
 /**
  * Settings
  *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class SettingsActivity extends SherlockPreferenceActivity
+public class SettingsActivity extends PreferenceActivity
 {
     /**
      * On create
@@ -43,7 +42,7 @@ public class SettingsActivity extends SherlockPreferenceActivity
     {
         super.onCreate(savedInstanceState);
 
-        ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         addPreferencesFromResource(R.xml.preferences);

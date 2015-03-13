@@ -51,6 +51,8 @@ import org.yaaic.model.User;
 import org.yaaic.receiver.ConversationReceiver;
 import org.yaaic.receiver.ServerReceiver;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
@@ -69,6 +71,9 @@ import android.support.v4.view.ViewPager;
 import android.text.InputType;
 import android.text.method.TextKeyListener;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.inputmethod.EditorInfo;
@@ -77,18 +82,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-
 /**
  * The server view with a scrollable list of all channels
  *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class ConversationActivity extends SherlockActivity implements ServiceConnection, ServerListener, ConversationListener
+public class ConversationActivity extends Activity implements ServiceConnection, ServerListener, ConversationListener
 {
     public static final int REQUEST_CODE_SPEECH = 99;
 
@@ -189,7 +188,7 @@ public class ConversationActivity extends SherlockActivity implements ServiceCon
             this.finish();
         }
 
-        ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         setTitle(server.getTitle());
