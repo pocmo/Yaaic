@@ -30,7 +30,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         android:layout_height="wrap_content"
         android:src="@drawable/action_reply"
         android:layout_gravity="center_vertical" />
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    <TextView
         android:id="@+id/label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

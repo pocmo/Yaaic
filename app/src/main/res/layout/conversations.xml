@@ -46,8 +46,6 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:inputType="textImeMultiLine"
-            android:textIsSelectable="true"
             android:imeOptions="actionSend" />
         <Button
             android:id="@+id/speech"
