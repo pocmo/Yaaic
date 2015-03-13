@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.Yaaic" parent="android:Theme.Material">
-        <item name="android:editTextStyle">@style/edittext_holo</item>
     </style>
-    <style name="edittext_holo" parent="@android:style/Widget.EditText">
-        <item name="android:focusable">true</item>
-        <item name="android:focusableInTouchMode">true</item>
-        <item name="android:clickable">true</item>
-        <item name="android:background">@drawable/edit_text_holo_dark</item>
-        <item name="android:textColor">#FFFFFF</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:textColorHint">#FFFFFF</item>
-        <item name="android:textColorHighlight">#FF0000</item>
-     </style>
 </resources>
