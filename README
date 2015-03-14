@@ -1,27 +1,26 @@
 
 Yaaic - Yet Another Android IRC Client
 
+[![Build Status](https://travis-ci.org/pocmo/Yaaic.svg?branch=master)](https://travis-ci.org/pocmo/Yaaic)
+
 Yaaic is as the full name already says an Internet Relay Chat (IRC)
 client for Android devices.
 
 --------------------------------------------------------------------
 
 This is the source code distribution of Yaaic. If you are looking
-for a compiled 'ready to use' version (APK), see the official
-homepage at:
+for a compiled 'ready to use' version (APK), get the official
+build at the Google Play Store:
 
- http://www.yaaic.org
-
-Yaaic is also avaiable at the Google Play Store.
+https://play.google.com/store/apps/details?id=org.yaaic
 
 If you are a developer and want to contribute to Yaaic, checkout
 our repository at GitHub:
 
  http://github.com/pocmo/Yaaic
 
-The application project is located in application/ while the test/
-folder contains unit and scenario tests. (Both folders are two
-separate Eclipse projects!)
+The project is using Gradle to build the application. Importing it
+into Android Studio should be enough to get it building.
 
 Drop me a line for questions regarding Yaaic or use one of the
 following resources:
@@ -42,10 +41,6 @@ Yaaic uses the ViewPagerIndicator widget written by Patrik
 under the Apache License 2.0.
 https://github.com/JakeWharton/Android-ViewPagerIndicator
 
-Yaaic also uses the ActionBarSherlock library written by Jack
-Wharton. Licensed under the Apache License 2.0.
-https://github.com/JakeWharton/ActionBarSherlock
-
 The Yaaic icon was designed by http://www.androidicons.com
 
 Some icons are part of the Silk icon set designed by Mark James
@@ -54,7 +49,7 @@ Licence. http://www.famfamfam.com
 
 --------------------------------------------------------------------
 
-Copyright 2009-2013 Sebastian Kaspari
+Copyright 2009-2015 Sebastian Kaspari
 
 Yaaic is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
