@@ -1,23 +1,21 @@
-Yaaic - Yet Another Android IRC Client [![Build Status](https://travis-ci.org/pocmo/Yaaic.svg?branch=master)](https://travis-ci.org/pocmo/Yaaic)
+[![Build Status](https://travis-ci.org/pocmo/Yaaic.svg?branch=master)](https://travis-ci.org/pocmo/Yaaic)
+
+Yaaic - Yet Another Android IRC Client
 ======================================
 
 Yaaic is as the full name already says an Internet Relay Chat (IRC)
 client for Android devices.
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 This is the source code distribution of Yaaic. If you are looking
 for a compiled 'ready to use' version (APK), get the official
 build at the Google Play Store:
 
-https://play.google.com/store/apps/details?id=org.yaaic
+* https://play.google.com/store/apps/details?id=org.yaaic
 
 If you are a developer and want to contribute to Yaaic, checkout
 our repository at GitHub:
 
- http://github.com/pocmo/Yaaic
- 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+* http://github.com/pocmo/Yaaic
 
 The project is using Gradle to build the application. Importing it
 into Android Studio should be enough to get it building.
