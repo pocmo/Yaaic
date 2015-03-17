@@ -1,4 +1,14 @@
 --------------------------------------------------------------------------------
+Yaaic 1.1 - 2015-03-17 - 55 commits, 707 files changed, 4 authors
+--------------------------------------------------------------------------------
+ * Android 5.0 only (First preparations for a Material theme)
+ * You can finally scroll and it won't scroll back when someone writes something
+ * Fixed annoying bug that caused keyboard not showing up
+ * Forward slashes are now allowed in an Ident
+ * Support for LED light notification on nickname highlight
+ * Option to show seconds in timestamp
+
+--------------------------------------------------------------------------------
 Yaaic 1.0 - 2012-07-29 - 89 commits, 685 files changed, 7 authors
 --------------------------------------------------------------------------------
  * New cleaned up UI using ActionBar and ViewPager.
