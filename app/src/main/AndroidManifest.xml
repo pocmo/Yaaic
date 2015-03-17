@@ -74,7 +74,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         <activity
             android:name=".activity.UsersActivity"
             android:label="@string/users"
-            android:theme="@android:style/Theme.Dialog" >
+            android:theme="@android:style/Theme.Material.Dialog" >
         </activity>
         <activity
             android:name=".activity.AddAliasActivity"
@@ -82,23 +82,23 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         </activity>
         <activity
             android:name=".activity.AddChannelActivity"
-            android:theme="@android:style/Theme.Dialog" >
+            android:theme="@android:style/Theme.Material.Dialog" >
         </activity>
         <activity
             android:name=".activity.AddCommandsActivity"
-            android:theme="@android:style/Theme.Dialog" >
+            android:theme="@android:style/Theme.Material.Dialog" >
         </activity>
         <activity
             android:name=".activity.MessageActivity"
-            android:theme="@android:style/Theme.Dialog" >
+            android:theme="@android:style/Theme.Material.Dialog" >
         </activity>
         <activity
             android:name=".activity.UserActivity"
-            android:theme="@android:style/Theme.Dialog" >
+            android:theme="@android:style/Theme.Material.Dialog" >
         </activity>
         <activity
             android:name=".activity.AuthenticationActivity"
-            android:theme="@android:style/Theme.Dialog" >
+            android:theme="@android:style/Theme.Material.Dialog" >
         </activity>
 
         <service android:name=".irc.IRCService" >
