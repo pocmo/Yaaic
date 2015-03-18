@@ -22,22 +22,17 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/join"
-        android:title="@string/join_channel"
-        android:icon="@drawable/actionbar_add"
-        android:showAsAction="ifRoom|withText" />
+        android:title="@string/join_channel" />
     <item
         android:id="@+id/users"
         android:title="@string/users"
-        android:icon="@drawable/actionbar_users"
-        android:showAsAction="ifRoom|withText" />
+        android:icon="@drawable/actionbar_users" />
     <item
         android:id="@+id/close"
         android:title="@string/close"
-        android:icon="@android:drawable/ic_menu_close_clear_cancel"
         android:showAsAction="never" />
     <item
         android:id="@+id/disconnect"
         android:title="@string/disconnect"
-        android:icon="@android:drawable/ic_menu_revert"
         android:showAsAction="never" />
 </menu>
