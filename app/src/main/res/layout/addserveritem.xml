@@ -24,8 +24,6 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
-    android:drawableLeft="@drawable/actionbar_add"
-    android:drawablePadding="5dip"
     android:padding="10dip"
     android:gravity="center_vertical"
     android:text="@string/add_server_list"
