@@ -5,5 +5,13 @@
         <item name="android:colorPrimaryDark">@color/primary_dark</item>
         <item name="android:colorAccent">@color/accent</item>
         <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:colorControlHighlight">#FFC107</item>
+    </style>
+
+    <style name="FloatingActionButton" parent="android:Widget.Material.Button">
+        <item name="android:background">@drawable/fab_background</item>
+        <item name="android:stateListAnimator">@anim/fab_state_list_animator</item>
+        <item name="android:layout_width">56dp</item>
+        <item name="android:layout_height">56dp</item>
     </style>
 </resources>
