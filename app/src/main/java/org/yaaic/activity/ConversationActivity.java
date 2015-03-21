@@ -20,37 +20,6 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.yaaic.activity;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.yaaic.R;
-import org.yaaic.Yaaic;
-import org.yaaic.adapter.ConversationPagerAdapter;
-import org.yaaic.adapter.MessageListAdapter;
-import org.yaaic.command.CommandParser;
-import org.yaaic.indicator.ConversationIndicator;
-import org.yaaic.indicator.ConversationTitlePageIndicator.IndicatorStyle;
-import org.yaaic.irc.IRCBinder;
-import org.yaaic.irc.IRCConnection;
-import org.yaaic.irc.IRCService;
-import org.yaaic.listener.ConversationListener;
-import org.yaaic.listener.ServerListener;
-import org.yaaic.listener.SpeechClickListener;
-import org.yaaic.model.Broadcast;
-import org.yaaic.model.Conversation;
-import org.yaaic.model.Extra;
-import org.yaaic.model.Message;
-import org.yaaic.model.Query;
-import org.yaaic.model.Scrollback;
-import org.yaaic.model.Server;
-import org.yaaic.model.ServerInfo;
-import org.yaaic.model.Settings;
-import org.yaaic.model.Status;
-import org.yaaic.model.User;
-import org.yaaic.receiver.ConversationReceiver;
-import org.yaaic.receiver.ServerReceiver;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -82,6 +51,36 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.yaaic.R;
+import org.yaaic.Yaaic;
+import org.yaaic.adapter.ConversationPagerAdapter;
+import org.yaaic.adapter.MessageListAdapter;
+import org.yaaic.command.CommandParser;
+import org.yaaic.irc.IRCBinder;
+import org.yaaic.irc.IRCConnection;
+import org.yaaic.irc.IRCService;
+import org.yaaic.listener.ConversationListener;
+import org.yaaic.listener.ServerListener;
+import org.yaaic.listener.SpeechClickListener;
+import org.yaaic.model.Broadcast;
+import org.yaaic.model.Conversation;
+import org.yaaic.model.Extra;
+import org.yaaic.model.Message;
+import org.yaaic.model.Query;
+import org.yaaic.model.Scrollback;
+import org.yaaic.model.Server;
+import org.yaaic.model.ServerInfo;
+import org.yaaic.model.Settings;
+import org.yaaic.model.Status;
+import org.yaaic.model.User;
+import org.yaaic.receiver.ConversationReceiver;
+import org.yaaic.receiver.ServerReceiver;
+import org.yaaic.view.ConversationTabLayout;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 /**
  * The server view with a scrollable list of all channels
  *
@@ -103,8 +102,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     private ServerReceiver serverReceiver;
 
     private ViewPager pager;
-    private ConversationIndicator indicator;
     private ConversationPagerAdapter pagerAdapter;
+    private ConversationTabLayout tabLayout;
 
     private Scrollback scrollback;
 
@@ -190,6 +189,7 @@ public class ConversationActivity extends Activity implements ServiceConnection,
 
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setElevation(0);
 
         setTitle(server.getTitle());
 
@@ -205,20 +205,10 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         pagerAdapter = new ConversationPagerAdapter(this, server);
         pager.setAdapter(pagerAdapter);
 
-        final float density = getResources().getDisplayMetrics().density;
-
-        indicator = (ConversationIndicator) findViewById(R.id.titleIndicator);
-        indicator.setServer(server);
-        indicator.setTypeface(Typeface.MONOSPACE);
-        indicator.setViewPager(pager);
-
-        indicator.setFooterColor(0xFF31B6E7);
-        indicator.setFooterLineHeight(1 * density);
-        indicator.setFooterIndicatorHeight(3 * density);
-        indicator.setFooterIndicatorStyle(IndicatorStyle.Underline);
-        indicator.setSelectedColor(0xFFFFFFFF);
-        indicator.setSelectedBold(true);
-        indicator.setBackgroundColor(0xFF181818);
+        tabLayout = (ConversationTabLayout) findViewById(R.id.indicator);
+        tabLayout.setViewPager(pager);
+        tabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.accent));
+        tabLayout.setDividerColors(getResources().getColor(R.color.divider));
 
         historySize = settings.getHistorySize();
 
@@ -227,9 +217,6 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             pagerAdapter.clearConversations();
             server.getConversation(ServerInfo.DEFAULT_NAME).setHistorySize(historySize);
         }
-
-        float fontSize = settings.getFontSize();
-        indicator.setTextSize(fontSize * density);
 
         input.setTextSize(settings.getFontSize());
         input.setTypeface(Typeface.MONOSPACE);
@@ -529,7 +516,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             }
         }
 
-        indicator.updateStateColors();
+
+        // indicator.updateStateColors();
     }
 
     /**
@@ -552,6 +540,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
     public void createNewConversation(String target)
     {
         pagerAdapter.addConversation(server.getConversation(target));
+
+        tabLayout.update();
     }
 
     /**
@@ -565,6 +555,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         if (position != -1) {
             pagerAdapter.removeConversation(position);
         }
+
+        tabLayout.update();
     }
 
     /**

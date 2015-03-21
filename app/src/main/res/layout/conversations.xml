@@ -23,16 +23,17 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="#ff000000">
-    <org.yaaic.indicator.ConversationIndicator
-        android:id="@+id/titleIndicator"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+    android:layout_height="fill_parent">
+    <org.yaaic.view.ConversationTabLayout
+        android:id="@+id/indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        android:elevation="4dp" />
     <android.support.v4.view.ViewPager
        android:id="@+id/pager"
        android:layout_width="fill_parent"
-       android:layout_height="wrap_content"
+       android:layout_height="0dp"
        android:layout_weight="1"
        android:layout_margin="0px"
        android:unselectedAlpha="100"

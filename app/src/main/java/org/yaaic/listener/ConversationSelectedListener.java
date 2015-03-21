@@ -20,17 +20,16 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.yaaic.listener;
 
-import org.yaaic.adapter.ConversationPagerAdapter;
-import org.yaaic.indicator.ConversationIndicator;
-import org.yaaic.irc.IRCService;
-import org.yaaic.model.Channel;
-import org.yaaic.model.Conversation;
-import org.yaaic.model.Server;
-
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.widget.TextView;
+
+import org.yaaic.adapter.ConversationPagerAdapter;
+import org.yaaic.irc.IRCService;
+import org.yaaic.model.Channel;
+import org.yaaic.model.Conversation;
+import org.yaaic.model.Server;
 
 /**
  * Listener for conversation selections.
@@ -42,7 +41,6 @@ public class ConversationSelectedListener implements OnPageChangeListener
     private final Context context;
     private final Server server;
     private final TextView titleView;
-    private final ConversationIndicator indicator;
     private final ConversationPagerAdapter adapter;
 
     /**
@@ -51,12 +49,11 @@ public class ConversationSelectedListener implements OnPageChangeListener
      * @param server
      * @param titleView
      */
-    public ConversationSelectedListener(Context ctx, Server server, TextView titleView, ConversationPagerAdapter adapter, ConversationIndicator indicator)
+    public ConversationSelectedListener(Context ctx, Server server, TextView titleView, ConversationPagerAdapter adapter)
     {
         this.context       = ctx;
         this.server    = server;
         this.titleView = titleView;
-        this.indicator = indicator;
         this.adapter   = adapter;
     }
 
@@ -98,8 +95,6 @@ public class ConversationSelectedListener implements OnPageChangeListener
             conversation.setStatus(Conversation.STATUS_SELECTED);
             server.setSelectedConversation(conversation.getName());
         }
-
-        indicator.invalidate();
     }
 
     /**

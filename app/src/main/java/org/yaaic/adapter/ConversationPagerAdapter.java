@@ -20,15 +20,6 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.adapter;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-
-import org.yaaic.indicator.ConversationStateProvider;
-import org.yaaic.listener.MessageClickListener;
-import org.yaaic.model.Conversation;
-import org.yaaic.model.Server;
-import org.yaaic.view.MessageListView;
-
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -36,18 +27,21 @@ import android.view.View;
 
 import com.viewpagerindicator.TitlePageIndicator;
 
+import org.yaaic.listener.MessageClickListener;
+import org.yaaic.model.Conversation;
+import org.yaaic.model.Server;
+import org.yaaic.view.MessageListView;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+
 /**
  * Adapter for displaying a pager of conversations.
  *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class ConversationPagerAdapter extends PagerAdapter implements ConversationStateProvider
+public class ConversationPagerAdapter extends PagerAdapter
 {
-    public static final int COLOR_NONE      = 0x0;
-    public static final int COLOR_DEFAULT   = 0xFFDDDDDD;
-    public static final int COLOR_MESSAGE   = 0xFF31B6E7;
-    public static final int COLOR_HIGHLIGHT = 0xFFFFBB00;
-
     private final Server server;
     private LinkedList<ConversationInfo> conversations;
     private final HashMap<Integer, View> views;
@@ -282,69 +276,5 @@ public class ConversationPagerAdapter extends PagerAdapter implements Conversati
         } else {
             return conversation.getName();
         }
-    }
-
-    @Override
-    public int getColorAt(int position)
-    {
-        Conversation conversation = getItem(position);
-
-        switch (conversation.getStatus()) {
-            case Conversation.STATUS_HIGHLIGHT:
-                return COLOR_HIGHLIGHT;
-
-            case Conversation.STATUS_MESSAGE:
-                return COLOR_MESSAGE;
-
-            default:
-                return COLOR_DEFAULT;
-        }
-    }
-
-    /**
-     * Get the state color for all conversations lower than the given position.
-     */
-    @Override
-    public int getColorForLowerThan(int position)
-    {
-        int color = COLOR_NONE;
-
-        for (int i = 0; i < position; i++) {
-            int currentColor = getColorAt(i);
-
-            if (currentColor == COLOR_HIGHLIGHT) {
-                return COLOR_HIGHLIGHT;
-            }
-
-            if (currentColor == COLOR_MESSAGE) {
-                color = COLOR_MESSAGE;
-            }
-        }
-
-        return color;
-    }
-
-    /**
-     * Get the state color for all conversations greater than the given position.
-     */
-    @Override
-    public int getColorForGreaterThan(int position)
-    {
-        int size  = conversations.size();
-        int color = COLOR_NONE;
-
-        for (int i = position + 1; i < size; i++) {
-            int currentColor = getColorAt(i);
-
-            if (currentColor == COLOR_HIGHLIGHT) {
-                return COLOR_HIGHLIGHT;
-            }
-
-            if (currentColor == COLOR_MESSAGE) {
-                color = COLOR_MESSAGE;
-            }
-        }
-
-        return color;
     }
 }
