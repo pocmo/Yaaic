@@ -31,7 +31,7 @@ import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.NickAlreadyInUseException;
 import org.yaaic.R;
 import org.yaaic.Yaaic;
-import org.yaaic.activity.ServersActivity;
+import org.yaaic.activity.MainActivity;
 import org.yaaic.db.Database;
 import org.yaaic.model.Broadcast;
 import org.yaaic.model.Conversation;
@@ -196,10 +196,10 @@ public class IRCService extends Service
             foreground = true;
 
             // Set the icon, scrolling text and timestamp
-            notification = new Notification(R.drawable.icon, getText(R.string.notification_running), System.currentTimeMillis());
+            notification = new Notification(R.mipmap.ic_launcher, getText(R.string.notification_running), System.currentTimeMillis());
 
             // The PendingIntent to launch our activity if the user selects this notification
-            Intent notifyIntent = new Intent(this, ServersActivity.class);
+            Intent notifyIntent = new Intent(this, MainActivity.class);
             notifyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0);
 
@@ -226,8 +226,8 @@ public class IRCService extends Service
     private void updateNotification(String text, String contentText, boolean vibrate, boolean sound, boolean light)
     {
         if (foreground) {
-            notification = new Notification(R.drawable.icon, text, System.currentTimeMillis());
-            Intent notifyIntent = new Intent(this, ServersActivity.class);
+            notification = new Notification(R.mipmap.ic_launcher, text, System.currentTimeMillis());
+            Intent notifyIntent = new Intent(this, MainActivity.class);
             notifyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0);
 
