@@ -41,4 +41,7 @@ public class Extra
     public static final String NICKSERV_PASSWORD = "nickserv_password";
     public static final String SASL_USER         = "sasl_user";
     public static final String SASL_PASSWORD     = "sasl_password";
+
+    public static final String CONNECT           = "connect";
+    public static final String SERVER_ID         = "serverId";
 }

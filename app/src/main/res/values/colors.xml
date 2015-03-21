@@ -9,4 +9,8 @@
     <color name="divider">#B6B6B6</color>
     <color name="highlight">#FFC107</color>
     <color name="window_background">#EEEEEE</color>
+
+    <color name="cardview_background">#FFFFFF</color>
+    <color name="connected">#4CAF50</color>
+    <color name="disconnected">#F44336</color>
 </resources>

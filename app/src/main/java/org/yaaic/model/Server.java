@@ -410,26 +410,6 @@ public class Server
     }
 
     /**
-     * Get icon for current server status
-     * 
-     * @return int Status icon ressource
-     */
-    public int getStatusIcon()
-    {
-        switch (status) {
-            case Status.CONNECTED:
-                return R.drawable.connected;
-            case Status.DISCONNECTED:
-                return R.drawable.disconnected;
-            case Status.PRE_CONNECTING:
-            case Status.CONNECTING:
-                return R.drawable.connecting;
-        }
-
-        return R.drawable.connecting;
-    }
-
-    /**
      * Get whether a ConversationActivity for this server is currently in the foreground.
      */
     public boolean getIsForeground()
