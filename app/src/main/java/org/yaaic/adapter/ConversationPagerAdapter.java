@@ -25,8 +25,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
-import com.viewpagerindicator.TitlePageIndicator;
-
 import org.yaaic.listener.MessageClickListener;
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Server;
@@ -162,7 +160,6 @@ public class ConversationPagerAdapter extends PagerAdapter
     /**
      * Get an item by the channel's name
      *
-     * @param channel
      * @return The item
      */
     public int getPositionByName(String name)
@@ -264,7 +261,7 @@ public class ConversationPagerAdapter extends PagerAdapter
     }
 
     /**
-     * Get the title for the given position. Used by the {@link TitlePageIndicator}.
+     * Get the title for the given position.
      */
     @Override
     public String getPageTitle(int position)
