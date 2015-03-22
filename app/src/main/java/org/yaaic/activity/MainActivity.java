@@ -18,7 +18,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.yaaic.a ctivity;
+package org.yaaic.activity;
 
 import android.content.ComponentName;
 import android.content.Intent;
