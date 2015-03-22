@@ -23,7 +23,8 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:support-v4:22.0.0'
     compile 'com.android.support:cardview-v7:22.0.0'
-    compile "com.android.support:recyclerview-v7:22.0.0"
+    compile 'com.android.support:recyclerview-v7:22.0.0'
+    compile 'com.android.support:appcompat-v7:22.0.0'
 
     compile 'com.viewpagerindicator:library:2.4.1@aar'
 }

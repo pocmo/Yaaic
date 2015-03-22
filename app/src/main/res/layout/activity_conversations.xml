@@ -26,24 +26,47 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     android:fitsSystemWindows="true">
 
     <LinearLayout
-        android:id="@+id/chrome"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <include layout="@layout/item_toolbar" />
 
-        <FrameLayout
-            android:id="@+id/container"
+        <org.yaaic.view.ConversationTabLayout
+            android:id="@+id/indicator"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:background="@color/primary" />
 
-            <fragment
-                android:name="org.yaaic.fragment.OverviewFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </FrameLayout>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_margin="0px"
+            android:layout_weight="1"
+            android:padding="0dp"
+            android:unselectedAlpha="100" />
 
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:imeOptions="actionSend"
+                android:inputType="textImeMultiLine" />
+
+            <Button
+                android:id="@+id/speech"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@android:drawable/ic_btn_speak_now"
+                android:visibility="gone" />
+        </LinearLayout>
     </LinearLayout>
 
     <include layout="@layout/item_drawer" />

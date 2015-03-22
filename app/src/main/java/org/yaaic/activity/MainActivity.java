@@ -18,14 +18,18 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.yaaic.activity;
+package org.yaaic.a ctivity;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import org.yaaic.R;
 import org.yaaic.fragment.OverviewFragment;
@@ -38,7 +42,8 @@ import org.yaaic.model.Status;
 /**
  * The main activity of Yaaic. We'll add, remove and replace fragments here.
  */
-public class MainActivity extends Activity implements OverviewFragment.Callback, ServiceConnection {
+public class MainActivity extends ActionBarActivity implements OverviewFragment.Callback, ServiceConnection {
+    private ActionBarDrawerToggle toggle;
     private IRCBinder binder;
 
     @Override
@@ -46,6 +51,21 @@ public class MainActivity extends Activity implements OverviewFragment.Callback,
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer);
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, 0, 0);
+
+        drawer.setDrawerListener(toggle);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        toggle.syncState();
     }
 
     @Override
@@ -68,6 +88,15 @@ public class MainActivity extends Activity implements OverviewFragment.Callback,
         }
 
         unbindService(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        return false;
     }
 
     @Override

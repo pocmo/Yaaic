@@ -1,7 +1,7 @@
 /*
 Yaaic - Yet Another Android IRC Client
 
-Copyright 2009-2013 Sebastian Kaspari
+Copyright 2009-2015 Sebastian Kaspari
 
 This file is part of Yaaic.
 
@@ -20,8 +20,6 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.yaaic.activity;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
@@ -37,6 +35,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.speech.RecognizerIntent;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.text.method.TextKeyListener;
 import android.view.KeyEvent;
@@ -86,7 +86,7 @@ import java.util.List;
  *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class ConversationActivity extends Activity implements ServiceConnection, ServerListener, ConversationListener
+public class ConversationActivity extends ActionBarActivity implements ServiceConnection, ServerListener, ConversationListener
 {
     public static final int REQUEST_CODE_SPEECH = 99;
 
@@ -187,13 +187,15 @@ public class ConversationActivity extends Activity implements ServiceConnection,
             this.finish();
         }
 
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setElevation(0);
-
         setTitle(server.getTitle());
 
-        setContentView(R.layout.conversations);
+        setContentView(R.layout.activity_conversations);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setElevation(0);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         boolean isLandscape = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
 
@@ -411,12 +413,8 @@ public class ConversationActivity extends Activity implements ServiceConnection,
         return true;
     }
 
-    /**
-     * On menu item selected
-     */
     @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case  android.R.id.home:
                 finish();
