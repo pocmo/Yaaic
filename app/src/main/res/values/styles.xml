@@ -5,7 +5,7 @@
         <item name="android:colorPrimaryDark">@color/primary_dark</item>
         <item name="android:colorAccent">@color/accent</item>
         <item name="android:windowBackground">@color/window_background</item>
-        <item name="android:colorControlHighlight">#FFC107</item>
+        <item name="android:colorControlHighlight">@color/control_highlight</item>
     </style>
 
     <style name="FloatingActionButton" parent="android:Widget.Material.Button">

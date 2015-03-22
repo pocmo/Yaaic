@@ -9,6 +9,7 @@
     <color name="divider">#CCCCCC</color>
     <color name="highlight">#FFC107</color>
     <color name="window_background">#EEEEEE</color>
+    <color name="control_highlight">#FFC107</color>
 
     <color name="cardview_background">#FFFFFF</color>
     <color name="connected">#4CAF50</color>
