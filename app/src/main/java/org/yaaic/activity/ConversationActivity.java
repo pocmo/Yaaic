@@ -49,6 +49,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import org.yaaic.R;
@@ -101,6 +102,7 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
     private ConversationReceiver channelReceiver;
     private ServerReceiver serverReceiver;
 
+    private EditText input;
     private ViewPager pager;
     private ConversationPagerAdapter pagerAdapter;
     private ConversationTabLayout tabLayout;
@@ -148,14 +150,7 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
             }
 
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                sendMessage(input.getText().toString());
-
-                // Workaround for a race condition in EditText
-                // Instead of calling input.setText("");
-                // See:
-                // - https://github.com/pocmo/Yaaic/issues/67
-                // - http://code.google.com/p/android/issues/detail?id=17508
-                TextKeyListener.clear(input.getText());
+                sendCurrentMessage();
 
                 return true;
             }
@@ -199,7 +194,7 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
 
         boolean isLandscape = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
 
-        EditText input = (EditText) findViewById(R.id.input);
+        input = (EditText) findViewById(R.id.input);
         input.setOnKeyListener(inputKeyListener);
 
         pager = (ViewPager) findViewById(R.id.pager);
@@ -219,9 +214,6 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
             pagerAdapter.clearConversations();
             server.getConversation(ServerInfo.DEFAULT_NAME).setHistorySize(historySize);
         }
-
-        input.setTextSize(settings.getFontSize());
-        input.setTypeface(Typeface.MONOSPACE);
 
         // Optimization : cache field lookups
         Collection<Conversation> mConversations = server.getConversations();
@@ -252,6 +244,23 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
         }
 
         input.setInputType(input.getInputType() | setInputTypeFlags);
+
+        ImageButton sendButton = (ImageButton) findViewById(R.id.send);
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (input.getText().length() > 0) {
+                    sendCurrentMessage();
+                }
+            }
+        });
+        sendButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                doNickCompletion(input);
+                return true;
+            }
+        });
 
         // Create a new scrollback history
         scrollback = new Scrollback();
@@ -602,7 +611,7 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
                         }
                         binder.getService().getConnection(server.getId()).setAutojoinChannels(
                                 server.getCurrentChannelNames()
-                                );
+                        );
                         server.setStatus(Status.CONNECTING);
                         binder.connect(server);
                         reconnectDialogActive = false;
@@ -735,6 +744,17 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
 
                 break;
         }
+    }
+
+    private void sendCurrentMessage() {
+        sendMessage(input.getText().toString());
+
+        // Workaround for a race condition in EditText
+        // Instead of calling input.setText("");
+        // See:
+        // - https://github.com/pocmo/Yaaic/issues/67
+        // - http://code.google.com/p/android/issues/detail?id=17508
+        TextKeyListener.clear(input.getText());
     }
 
     /**

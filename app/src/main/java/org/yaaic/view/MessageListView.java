@@ -47,9 +47,8 @@ public class MessageListView extends ListView
 
         setDivider(null);
 
-        setCacheColorHint(0x000000);
+        setCacheColorHint(0xFFFFFFFF);
         setVerticalFadingEdgeEnabled(false);
-        setBackgroundResource(R.drawable.conversation_background);
         setScrollBarStyle(SCROLLBARS_OUTSIDE_INSET);
 
         // Scale padding by screen density
