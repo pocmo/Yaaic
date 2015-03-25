@@ -24,5 +24,5 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/save"
         android:title="@string/server_save"
         android:icon="@drawable/actionbar_save"
-        android:showAsAction="ifRoom|withText" />
+        android:showAsAction="always" />
 </menu>

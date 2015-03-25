@@ -20,11 +20,12 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.yaaic.activity;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -56,7 +57,7 @@ import java.util.regex.Pattern;
  *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class AddServerActivity extends Activity implements OnClickListener
+public class AddServerActivity extends ActionBarActivity implements OnClickListener
 {
     private static final int REQUEST_CODE_CHANNELS       = 1;
     private static final int REQUEST_CODE_COMMANDS       = 2;
@@ -77,9 +78,12 @@ public class AddServerActivity extends Activity implements OnClickListener
     {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.serveradd);
+        setContentView(R.layout.activity_add_server);
 
-        ActionBar actionBar = getActionBar();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         authentication = new Authentication();
@@ -172,12 +176,8 @@ public class AddServerActivity extends Activity implements OnClickListener
         return true;
     }
 
-    /**
-     * On menu item selected
-     */
     @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save:
                 save();
@@ -185,10 +185,10 @@ public class AddServerActivity extends Activity implements OnClickListener
 
             case  android.R.id.home:
                 finish();
-                break;
+                return true;
         }
 
-        return super.onMenuItemSelected(featureId, item);
+        return super.onOptionsItemSelected(item);
     }
 
     /**
