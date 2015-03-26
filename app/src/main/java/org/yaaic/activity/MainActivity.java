@@ -30,6 +30,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
 import org.yaaic.R;
 import org.yaaic.fragment.OverviewFragment;
@@ -44,6 +45,7 @@ import org.yaaic.model.Status;
  */
 public class MainActivity extends ActionBarActivity implements OverviewFragment.Callback, ServiceConnection {
     private ActionBarDrawerToggle toggle;
+    private DrawerLayout drawer;
     private IRCBinder binder;
 
     @Override
@@ -55,7 +57,7 @@ public class MainActivity extends ActionBarActivity implements OverviewFragment.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer);
+        drawer = (DrawerLayout) findViewById(R.id.drawer);
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, 0, 0);
 
         drawer.setDrawerListener(toggle);
@@ -111,6 +113,18 @@ public class MainActivity extends ActionBarActivity implements OverviewFragment.
         intent.putExtra(Extra.SERVER_ID, server.getId());
         startActivity(intent);
 
+    }
+
+    public void onSettings(View view) {
+        drawer.closeDrawers();
+
+        startActivity(new Intent(this, SettingsActivity.class));
+    }
+
+    public void onAbout(View view) {
+        drawer.closeDrawers();
+
+        startActivity(new Intent(this, AboutActivity.class));
     }
 
     @Override
