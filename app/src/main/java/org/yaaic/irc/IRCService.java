@@ -130,11 +130,6 @@ public class IRCService extends Service
             mStartForeground = mStopForeground = null;
         }
 
-        // Load servers from Database
-        Database db = new Database(this);
-        Yaaic.getInstance().setServers(db.getServers());
-        db.close();
-
         // Broadcast changed server list
         sendBroadcast(new Intent(Broadcast.SERVER_UPDATE));
     }

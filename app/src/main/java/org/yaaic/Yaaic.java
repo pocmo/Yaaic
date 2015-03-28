@@ -101,16 +101,6 @@ public class Yaaic
     }
 
     /**
-     * Set servers
-     * 
-     * @param servers
-     */
-    public void setServers(HashMap<Integer, Server> servers)
-    {
-        this.servers = servers;
-    }
-
-    /**
      * Add server to list
      */
     public void addServer(Server server)
