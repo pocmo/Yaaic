@@ -29,10 +29,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.yaaic.R;
+import org.yaaic.Yaaic;
 import org.yaaic.fragment.OverviewFragment;
 import org.yaaic.irc.IRCBinder;
 import org.yaaic.irc.IRCService;
@@ -40,11 +45,14 @@ import org.yaaic.model.Extra;
 import org.yaaic.model.Server;
 import org.yaaic.model.Status;
 
+import java.util.List;
+
 /**
  * The main activity of Yaaic. We'll add, remove and replace fragments here.
  */
 public class MainActivity extends ActionBarActivity implements OverviewFragment.Callback, ServiceConnection {
     private ActionBarDrawerToggle toggle;
+    private Toolbar toolbar;
     private DrawerLayout drawer;
     private IRCBinder binder;
 
@@ -54,13 +62,38 @@ public class MainActivity extends ActionBarActivity implements OverviewFragment.
 
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        initializeToolbar();
+        initializeDrawer();
+    }
 
+    public void initializeToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+    }
+
+    public void initializeDrawer() {
         drawer = (DrawerLayout) findViewById(R.id.drawer);
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, 0, 0);
 
         drawer.setDrawerListener(toggle);
+
+        LinearLayout drawerContent = (LinearLayout) findViewById(R.id.drawer_content);
+
+        for (final Server server : Yaaic.getInstance().getServersAsArrayList()) {
+            TextView serverView = (TextView) getLayoutInflater().inflate(R.layout.item_navigation, drawer, false);
+            serverView.setText(server.getTitle());
+
+            serverView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onServerSelected(server);
+
+                    drawer.closeDrawers();
+                }
+            });
+
+            drawerContent.addView(serverView, 0);
+        }
     }
 
     @Override
