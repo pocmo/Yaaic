@@ -36,13 +36,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <fragment
-                android:name="org.yaaic.fragment.OverviewFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </FrameLayout>
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 

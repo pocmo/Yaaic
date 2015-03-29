@@ -55,6 +55,8 @@ import org.yaaic.receiver.ServerReceiver;
  * Fragment showing a list of configured servers.
  */
 public class OverviewFragment extends Fragment implements ServerListener, ServersAdapter.ClickListener, View.OnClickListener {
+    public static final String TRANSACTION_TAG = "fragment_overview";
+
     /**
      * Callback interface to be implemented by Activities using this fragment.
      */
