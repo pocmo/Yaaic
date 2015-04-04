@@ -166,6 +166,10 @@ public class ConversationFragment extends Fragment implements ServerListener, Co
         }
     };
 
+    public ConversationFragment() {
+        setHasOptionsMenu(true);
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
