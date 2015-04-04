@@ -81,7 +81,7 @@ public class MainActivity extends ActionBarActivity implements OverviewFragment.
 
         drawer.setDrawerListener(toggle);
 
-        LinearLayout drawerContent = (LinearLayout) findViewById(R.id.drawer_content);
+        LinearLayout serverContainer = (LinearLayout) findViewById(R.id.server_container);
 
         for (final Server server : Yaaic.getInstance().getServersAsArrayList()) {
             TextView serverView = (TextView) getLayoutInflater().inflate(R.layout.item_drawer_server, drawer, false);
@@ -96,7 +96,7 @@ public class MainActivity extends ActionBarActivity implements OverviewFragment.
                 }
             });
 
-            drawerContent.addView(serverView, 0);
+            serverContainer.addView(serverView, 0);
         }
     }
 
