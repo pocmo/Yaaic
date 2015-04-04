@@ -33,17 +33,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import org.yaaic.R;
 import org.yaaic.Yaaic;
 import org.yaaic.activity.AddServerActivity;
+import org.yaaic.activity.YaaicActivity;
 import org.yaaic.adapter.ServersAdapter;
 import org.yaaic.db.Database;
 import org.yaaic.irc.IRCBinder;
-import org.yaaic.irc.IRCService;
 import org.yaaic.listener.ServerListener;
 import org.yaaic.model.Broadcast;
 import org.yaaic.model.Extra;
@@ -57,27 +56,26 @@ import org.yaaic.receiver.ServerReceiver;
 public class OverviewFragment extends Fragment implements ServerListener, ServersAdapter.ClickListener, View.OnClickListener {
     public static final String TRANSACTION_TAG = "fragment_overview";
 
-    /**
-     * Callback interface to be implemented by Activities using this fragment.
-     */
-    public interface Callback {
-        void onServerSelected(Server server);
-        IRCBinder getBinder();
-    }
-
     private ServersAdapter adapter;
-    private Callback callback;
+    private YaaicActivity activity;
     private BroadcastReceiver receiver;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        if (!(activity instanceof Callback)) {
-            throw new IllegalArgumentException("Activity has to implement Callback interface");
+        if (!(activity instanceof YaaicActivity)) {
+            throw new IllegalArgumentException("Activity has to implement YaaicActivity interface");
         }
 
-        this.callback = (Callback) activity;
+        this.activity = (YaaicActivity) activity;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        activity.setToolbarTitle(getString(R.string.app_name));
     }
 
     @Nullable
@@ -124,12 +122,12 @@ public class OverviewFragment extends Fragment implements ServerListener, Server
 
     @Override
     public void onServerSelected(Server server) {
-        callback.onServerSelected(server);
+        activity.onServerSelected(server);
     }
 
     @Override
     public void onConnectToServer(Server server) {
-        IRCBinder binder = callback.getBinder();
+        IRCBinder binder = activity.getBinder();
 
         if (binder != null && server.getStatus() == Status.DISCONNECTED) {
             binder.connect(server);
@@ -140,7 +138,7 @@ public class OverviewFragment extends Fragment implements ServerListener, Server
 
     @Override
     public void onDisconnectFromServer(Server server) {
-        IRCBinder binder = callback.getBinder();
+        IRCBinder binder = activity.getBinder();
 
         if (binder != null) {
             server.clearConversations();
@@ -164,7 +162,7 @@ public class OverviewFragment extends Fragment implements ServerListener, Server
 
     @Override
     public void onDeleteServer(Server server) {
-        IRCBinder binder = callback.getBinder();
+        IRCBinder binder = activity.getBinder();
 
         if (binder != null) {
             binder.getService().getConnection(server.getId()).quitServer();

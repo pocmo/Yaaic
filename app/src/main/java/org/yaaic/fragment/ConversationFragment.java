@@ -56,6 +56,7 @@ import org.yaaic.Yaaic;
 import org.yaaic.activity.JoinActivity;
 import org.yaaic.activity.UserActivity;
 import org.yaaic.activity.UsersActivity;
+import org.yaaic.activity.YaaicActivity;
 import org.yaaic.adapter.ConversationPagerAdapter;
 import org.yaaic.adapter.MessageListAdapter;
 import org.yaaic.command.CommandParser;
@@ -100,6 +101,8 @@ public class ConversationFragment extends Fragment implements ServerListener, Co
     private IRCBinder binder;
     private ConversationReceiver channelReceiver;
     private ServerReceiver serverReceiver;
+
+    private YaaicActivity activity;
 
     private EditText input;
     private ViewPager pager;
@@ -161,6 +164,17 @@ public class ConversationFragment extends Fragment implements ServerListener, Co
         }
     };
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        if (!(activity instanceof YaaicActivity)) {
+            throw new IllegalArgumentException("Activity has to implement YaaicActivity interface");
+        }
+
+        this.activity = (YaaicActivity) activity;
+    }
+
     /**
      * On create
      */
@@ -171,7 +185,8 @@ public class ConversationFragment extends Fragment implements ServerListener, Co
         serverId = getArguments().getInt("serverId");
         server = Yaaic.getInstance().getServerById(serverId);
 
-        // Create a new scrollback history
+        activity.setToolbarTitle(server.getTitle());
+
         scrollback = new Scrollback();
     }
 

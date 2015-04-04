@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
- */
+*/
 package org.yaaic.activity;
 
 import android.app.Fragment;
@@ -31,6 +31,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -50,7 +51,7 @@ import org.yaaic.model.Status;
 /**
  * The main activity of Yaaic. We'll add, remove and replace fragments here.
  */
-public class MainActivity extends ActionBarActivity implements OverviewFragment.Callback, ServiceConnection {
+public class MainActivity extends ActionBarActivity implements YaaicActivity, ServiceConnection {
     private ActionBarDrawerToggle toggle;
     private Toolbar toolbar;
     private DrawerLayout drawer;
@@ -182,6 +183,11 @@ public class MainActivity extends ActionBarActivity implements OverviewFragment.
     @Override
     public IRCBinder getBinder() {
         return binder;
+    }
+
+    @Override
+    public void setToolbarTitle(String title) {
+        toolbar.setTitle(title);
     }
 
     @Override
