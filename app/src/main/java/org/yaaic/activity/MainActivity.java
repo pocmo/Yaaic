@@ -186,6 +186,11 @@ public class MainActivity extends ActionBarActivity implements YaaicActivity, Se
     }
 
     @Override
+    public Toolbar getToolbar() {
+        return toolbar;
+    }
+
+    @Override
     public void setToolbarTitle(String title) {
         toolbar.setTitle(title);
     }

@@ -21,6 +21,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.fragment;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -36,8 +37,13 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.speech.RecognizerIntent;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.text.method.TextKeyListener;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -185,8 +191,6 @@ public class ConversationFragment extends Fragment implements ServerListener, Co
         serverId = getArguments().getInt("serverId");
         server = Yaaic.getInstance().getServerById(serverId);
 
-        activity.setToolbarTitle(server.getTitle());
-
         scrollback = new Scrollback();
     }
 
@@ -206,10 +210,18 @@ public class ConversationFragment extends Fragment implements ServerListener, Co
         pagerAdapter = new ConversationPagerAdapter(getActivity(), server);
         pager.setAdapter(pagerAdapter);
 
-        tabLayout = (ConversationTabLayout) view.findViewById(R.id.indicator);
+        tabLayout = new ConversationTabLayout(container.getContext());
         tabLayout.setViewPager(pager);
         tabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.accent));
         tabLayout.setDividerColors(getResources().getColor(R.color.divider));
+
+        Toolbar.LayoutParams params = new Toolbar.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        );
+        params.gravity = Gravity.BOTTOM;
+
+        activity.getToolbar().addView(tabLayout, params);
 
         if (server.getStatus() == Status.PRE_CONNECTING) {
             server.clearConversations();
@@ -268,6 +280,13 @@ public class ConversationFragment extends Fragment implements ServerListener, Co
         });
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        activity.getToolbar().removeView(tabLayout);
     }
 
     /**

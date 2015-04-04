@@ -20,6 +20,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.activity;
 
+import android.support.v7.widget.Toolbar;
+
 import org.yaaic.irc.IRCBinder;
 import org.yaaic.model.Server;
 
@@ -28,6 +30,8 @@ import org.yaaic.model.Server;
  */
 public interface YaaicActivity {
     IRCBinder getBinder();
+
+    Toolbar getToolbar();
 
     void setToolbarTitle(String title);
 
