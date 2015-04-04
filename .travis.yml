@@ -5,9 +5,8 @@ android:
     - tools
     - build-tools-22.0.0
     - android-22
-
     - extra-google-google_play_services
     - extra-google-m2repository
-    - extra-android-m2repositoriy
+    - extra-android-m2repository
 notifications:
   irc: "irc.epd-me.net#yaaic"
