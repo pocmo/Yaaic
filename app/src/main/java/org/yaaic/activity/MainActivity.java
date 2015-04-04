@@ -169,9 +169,13 @@ public class MainActivity extends ActionBarActivity implements YaaicActivity, Se
     private void switchToFragment(Fragment fragment, String tag) {
         drawer.closeDrawers();
 
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, fragment, tag);
-        transaction.commit();
+        getFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(
+                        R.animator.card_flip_right_in, R.animator.card_flip_right_out,
+                        R.animator.card_flip_left_in, R.animator.card_flip_left_out)
+                .replace(R.id.container, fragment, tag)
+                .commit();
     }
 
     public void onAbout(View view) {
