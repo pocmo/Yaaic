@@ -31,7 +31,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         android:label="Yaaic"
         android:theme="@style/Theme.Yaaic"
         android:allowBackup="true"
-        android:name=".ApplicationController">
+        android:name=".YaaicApplication">
         <activity android:name=".activity.MainActivity"
             android:label="@string/app_name"
             android:launchMode="standard" >

@@ -25,7 +25,7 @@ import android.app.Application;
 /**
  * Application implementation for Yaaic.
  */
-public class ApplicationController extends Application {
+public class YaaicApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
