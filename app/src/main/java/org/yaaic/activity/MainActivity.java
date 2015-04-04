@@ -38,6 +38,7 @@ import android.widget.TextView;
 
 import org.yaaic.R;
 import org.yaaic.Yaaic;
+import org.yaaic.fragment.ConversationFragment;
 import org.yaaic.fragment.OverviewFragment;
 import org.yaaic.fragment.SettingsFragment;
 import org.yaaic.irc.IRCBinder;
@@ -139,15 +140,20 @@ public class MainActivity extends ActionBarActivity implements OverviewFragment.
 
     @Override
     public void onServerSelected(Server server) {
-        Intent intent = new Intent(this, ConversationActivity.class);
+        Bundle arguments = new Bundle();
 
         if (server.getStatus() == Status.DISCONNECTED && !server.mayReconnect()) {
             server.setStatus(Status.PRE_CONNECTING);
-            intent.putExtra(Extra.CONNECT, true);
+
+            arguments.putBoolean(Extra.CONNECT, true);
         }
 
-        intent.putExtra(Extra.SERVER_ID, server.getId());
-        startActivity(intent);
+        arguments.putInt(Extra.SERVER_ID, server.getId());
+
+        ConversationFragment fragment = new ConversationFragment();
+        fragment.setArguments(arguments);
+
+        switchToFragment(fragment, ConversationFragment.TRANSACTION_TAG);
 
     }
 

@@ -1,7 +1,7 @@
 /*
 Yaaic - Yet Another Android IRC Client
 
-Copyright 2009-2013 Sebastian Kaspari
+Copyright 2009-2015 Sebastian Kaspari
 Copyright 2012 Daniel E. Moctezuma <democtezuma@gmail.com>
 
 This file is part of Yaaic.
@@ -21,12 +21,12 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.yaaic.model;
 
-import org.yaaic.R;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
+
+import org.yaaic.R;
 
 /**
  * The settings class is a helper class to access the different preferences via
@@ -141,8 +141,8 @@ public class Settings
     public boolean isReconnectEnabled()
     {
         return preferences.getBoolean(
-            resources.getString(R.string.key_reconnect),
-            Boolean.parseBoolean(resources.getString(R.string.default_reconnect))
+                resources.getString(R.string.key_reconnect),
+                Boolean.parseBoolean(resources.getString(R.string.default_reconnect))
         );
     }
 
@@ -154,8 +154,8 @@ public class Settings
     public int getReconnectInterval()
     {
         return Integer.parseInt(preferences.getString(
-            resources.getString(R.string.key_reconnect_interval),
-            resources.getString(R.string.default_reconnect_interval)
+                resources.getString(R.string.key_reconnect_interval),
+                resources.getString(R.string.default_reconnect_interval)
         ));
     }
 
@@ -167,8 +167,8 @@ public class Settings
     public boolean isIgnoreMOTDEnabled()
     {
         return preferences.getBoolean(
-            resources.getString(R.string.key_ignore_motd),
-            Boolean.parseBoolean(resources.getString(R.string.default_ignore_motd))
+                resources.getString(R.string.key_ignore_motd),
+                Boolean.parseBoolean(resources.getString(R.string.default_ignore_motd))
         );
     }
 
@@ -180,8 +180,8 @@ public class Settings
     public String getQuitMessage()
     {
         return preferences.getString(
-            resources.getString(R.string.key_quitmessage),
-            resources.getString(R.string.default_quitmessage)
+                resources.getString(R.string.key_quitmessage),
+                resources.getString(R.string.default_quitmessage)
         );
     }
 
@@ -193,22 +193,9 @@ public class Settings
     public int getFontSize()
     {
         return Integer.parseInt(preferences.getString(
-            resources.getString(R.string.key_fontsize),
-            resources.getString(R.string.default_fontsize)
+                resources.getString(R.string.key_fontsize),
+                resources.getString(R.string.default_fontsize)
         ));
-    }
-
-    /**
-     * Is voice recognition enabled?
-     *
-     * @return True if voice recognition is enabled, false otherwise
-     */
-    public boolean isVoiceRecognitionEnabled()
-    {
-        return preferences.getBoolean(
-            resources.getString(R.string.key_voice_recognition),
-            Boolean.parseBoolean(resources.getString(R.string.default_voice_recognition))
-        );
     }
 
     /**

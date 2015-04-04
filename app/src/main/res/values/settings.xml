@@ -33,9 +33,6 @@
     <string name="key_fontsize" translatable="false">fontsize</string>
     <string name="default_fontsize" translatable="false">11</string>
     
-    <string name="key_voice_recognition" translatable="false">voice_recognition</string>
-    <string name="default_voice_recognition" translatable="false">false</string>
-
     <string name="key_show_joinpartquit" translatable="false">show_joinpartquit</string>
     <string name="default_show_joinpartquit" translatable="false">true</string>
 

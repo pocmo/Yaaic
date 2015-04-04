@@ -2,6 +2,7 @@
 Yaaic - Yet Another Android IRC Client
 
 Copyright 2009-2015 Sebastian Kaspari
+Copyright 2012 Daniel E. Moctezuma <democtezuma@gmail.com>
 
 This file is part of Yaaic.
 
@@ -17,43 +18,44 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
- */
-package org.yaaic.activity;
+*/
+package org.yaaic.fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.speech.RecognizerIntent;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.text.method.TextKeyListener;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnKeyListener;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import org.yaaic.R;
 import org.yaaic.Yaaic;
+import org.yaaic.activity.JoinActivity;
+import org.yaaic.activity.UserActivity;
+import org.yaaic.activity.UsersActivity;
 import org.yaaic.adapter.ConversationPagerAdapter;
 import org.yaaic.adapter.MessageListAdapter;
 import org.yaaic.command.CommandParser;
@@ -62,7 +64,6 @@ import org.yaaic.irc.IRCConnection;
 import org.yaaic.irc.IRCService;
 import org.yaaic.listener.ConversationListener;
 import org.yaaic.listener.ServerListener;
-import org.yaaic.listener.SpeechClickListener;
 import org.yaaic.model.Broadcast;
 import org.yaaic.model.Conversation;
 import org.yaaic.model.Extra;
@@ -83,12 +84,10 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * The server view with a scrollable list of all channels
- *
- * @author Sebastian Kaspari <sebastian@yaaic.org>
+ * The server view with a scrollable pager of all conversations.
  */
-public class ConversationActivity extends ActionBarActivity implements ServiceConnection, ServerListener, ConversationListener
-{
+public class ConversationFragment extends Fragment implements ServerListener, ConversationListener, ServiceConnection {
+    public static final String TRANSACTION_TAG = "fragment_conversation";
     public static final int REQUEST_CODE_SPEECH = 99;
 
     private static final int REQUEST_CODE_JOIN = 1;
@@ -116,17 +115,14 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
     //      channel name in onActivityResult() and run the join command in onResume().
     private String joinChannelBuffer;
 
-    private int historySize;
-
     private boolean reconnectDialogActive = false;
 
-    private final OnKeyListener inputKeyListener = new OnKeyListener() {
+    private final View.OnKeyListener inputKeyListener = new View.OnKeyListener() {
         /**
          * On key pressed (input line)
          */
         @Override
-        public boolean onKey(View view, int keyCode, KeyEvent event)
-        {
+        public boolean onKey(View view, int keyCode, KeyEvent event) {
             EditText input = (EditText) view;
 
             if (event.getAction() != KeyEvent.ACTION_DOWN) {
@@ -169,50 +165,43 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
      * On create
      */
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        serverId = getIntent().getExtras().getInt("serverId");
+        serverId = getArguments().getInt("serverId");
         server = Yaaic.getInstance().getServerById(serverId);
-        Settings settings = new Settings(this);
 
-        // Finish activity if server does not exist anymore - See #55
-        if (server == null) {
-            this.finish();
-        }
+        // Create a new scrollback history
+        scrollback = new Scrollback();
+    }
 
-        setTitle(server.getTitle());
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_conversations, container, false);
 
-        setContentView(R.layout.activity_conversations);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setElevation(0);
-        setSupportActionBar(toolbar);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Settings settings = new Settings(getActivity());
 
         boolean isLandscape = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
 
-        input = (EditText) findViewById(R.id.input);
+        input = (EditText) view.findViewById(R.id.input);
         input.setOnKeyListener(inputKeyListener);
 
-        pager = (ViewPager) findViewById(R.id.pager);
+        pager = (ViewPager) view.findViewById(R.id.pager);
 
-        pagerAdapter = new ConversationPagerAdapter(this, server);
+        pagerAdapter = new ConversationPagerAdapter(getActivity(), server);
         pager.setAdapter(pagerAdapter);
 
-        tabLayout = (ConversationTabLayout) findViewById(R.id.indicator);
+        tabLayout = (ConversationTabLayout) view.findViewById(R.id.indicator);
         tabLayout.setViewPager(pager);
         tabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.accent));
         tabLayout.setDividerColors(getResources().getColor(R.color.divider));
 
-        historySize = settings.getHistorySize();
-
         if (server.getStatus() == Status.PRE_CONNECTING) {
             server.clearConversations();
             pagerAdapter.clearConversations();
-            server.getConversation(ServerInfo.DEFAULT_NAME).setHistorySize(historySize);
+            server.getConversation(ServerInfo.DEFAULT_NAME).setHistorySize(
+                settings.getHistorySize()
+            );
         }
 
         // Optimization : cache field lookups
@@ -245,7 +234,7 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
 
         input.setInputType(input.getInputType() | setInputTypeFlags);
 
-        ImageButton sendButton = (ImageButton) findViewById(R.id.send);
+        ImageButton sendButton = (ImageButton) view.findViewById(R.id.send);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -254,6 +243,7 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
                 }
             }
         });
+
         sendButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -262,51 +252,33 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
             }
         });
 
-        // Create a new scrollback history
-        scrollback = new Scrollback();
+        return view;
     }
 
     /**
      * On resume
      */
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         // register the receivers as early as possible, otherwise we may loose a broadcast message
         channelReceiver = new ConversationReceiver(server.getId(), this);
-        registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_MESSAGE));
-        registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_NEW));
-        registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_REMOVE));
-        registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_TOPIC));
+        getActivity().registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_MESSAGE));
+        getActivity().registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_NEW));
+        getActivity().registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_REMOVE));
+        getActivity().registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_TOPIC));
 
         serverReceiver = new ServerReceiver(this);
-        registerReceiver(serverReceiver, new IntentFilter(Broadcast.SERVER_UPDATE));
+        getActivity().registerReceiver(serverReceiver, new IntentFilter(Broadcast.SERVER_UPDATE));
 
         super.onResume();
 
-        // Check if speech recognition is enabled and available
-        if (new Settings(this).isVoiceRecognitionEnabled()) {
-            PackageManager pm = getPackageManager();
-            Button speechButton = (Button) findViewById(R.id.speech);
-            List<ResolveInfo> activities = pm.queryIntentActivities(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
-
-            if (activities.size() != 0) {
-                ((Button) findViewById(R.id.speech)).setOnClickListener(new SpeechClickListener(this));
-                speechButton.setVisibility(View.VISIBLE);
-            }
-        }
-
         // Start service
-        Intent intent = new Intent(this, IRCService.class);
+        Intent intent = new Intent(getActivity(), IRCService.class);
         intent.setAction(IRCService.ACTION_FOREGROUND);
-        startService(intent);
-        bindService(intent, this, 0);
+        getActivity().startService(intent);
+        getActivity().bindService(intent, this, 0);
 
-        if (!server.isConnected()) {
-            ((EditText) findViewById(R.id.input)).setEnabled(false);
-        } else {
-            ((EditText) findViewById(R.id.input)).setEnabled(true);
-        }
+        input.setEnabled(server.isConnected());
 
         // Optimization - cache field lookup
         Collection<Conversation> mConversations = server.getConversations();
@@ -329,11 +301,11 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
 
             // Clear new message notifications for the selected conversation
             if (conversation.getStatus() == Conversation.STATUS_SELECTED && conversation.getNewMentions() > 0) {
-                Intent ackIntent = new Intent(this, IRCService.class);
+                Intent ackIntent = new Intent(getActivity(), IRCService.class);
                 ackIntent.setAction(IRCService.ACTION_ACK_NEW_MENTIONS);
                 ackIntent.putExtra(IRCService.EXTRA_ACK_SERVERID, serverId);
                 ackIntent.putExtra(IRCService.EXTRA_ACK_CONVTITLE, name);
-                startService(ackIntent);
+                getActivity().startService(ackIntent);
             }
         }
 
@@ -366,8 +338,7 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
      * On Pause
      */
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         super.onPause();
 
         server.setIsForeground(false);
@@ -376,21 +347,20 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
             binder.getService().checkServiceStatus();
         }
 
-        unbindService(this);
-        unregisterReceiver(channelReceiver);
-        unregisterReceiver(serverReceiver);
+        getActivity().unbindService(this);
+        getActivity().unregisterReceiver(channelReceiver);
+        getActivity().unregisterReceiver(serverReceiver);
     }
 
     /**
      * On service connected
      */
     @Override
-    public void onServiceConnected(ComponentName name, IBinder service)
-    {
+    public void onServiceConnected(ComponentName name, IBinder service) {
         this.binder = (IRCBinder) service;
 
         // connect to irc server if connect has been requested
-        if (server.getStatus() == Status.PRE_CONNECTING && getIntent().hasExtra("connect")) {
+        if (server.getStatus() == Status.PRE_CONNECTING && getArguments().containsKey("connect")) {
             server.setStatus(Status.CONNECTING);
             binder.connect(server);
         } else {
@@ -402,40 +372,27 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
      * On service disconnected
      */
     @Override
-    public void onServiceDisconnected(ComponentName name)
-    {
+    public void onServiceDisconnected(ComponentName name) {
         this.binder = null;
     }
-
     /**
      * On options menu requested
      */
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        super.onCreateOptionsMenu(menu);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
 
-        // inflate from xml
-        MenuInflater inflater = new MenuInflater(this);
         inflater.inflate(R.menu.conversations, menu);
-
-        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case  android.R.id.home:
-                finish();
-                break;
-
             case R.id.disconnect:
                 server.setStatus(Status.DISCONNECTED);
                 server.setMayReconnect(false);
                 binder.getService().getConnection(serverId).quitServer();
                 server.clearConversations();
-                setResult(RESULT_OK);
-                finish();
                 break;
 
             case R.id.close:
@@ -448,27 +405,27 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
                     server.removeConversation(conversationToClose.getName());
                     onRemoveConversation(conversationToClose.getName());
                 } else {
-                    Toast.makeText(this, getResources().getString(R.string.close_server_window), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getResources().getString(R.string.close_server_window), Toast.LENGTH_SHORT).show();
                 }
                 break;
 
             case R.id.join:
-                startActivityForResult(new Intent(this, JoinActivity.class), REQUEST_CODE_JOIN);
+                startActivityForResult(new Intent(getActivity(), JoinActivity.class), REQUEST_CODE_JOIN);
                 break;
 
             case R.id.users:
                 Conversation conversationForUserList = pagerAdapter.getItem(pager.getCurrentItem());
                 if (conversationForUserList.getType() == Conversation.TYPE_CHANNEL) {
-                    Intent intent = new Intent(this, UsersActivity.class);
+                    Intent intent = new Intent(getActivity(), UsersActivity.class);
                     intent.putExtra(
                             Extra.USERS,
                             binder.getService().getConnection(server.getId()).getUsersAsStringArray(
                                     conversationForUserList.getName()
-                                    )
-                            );
+                            )
+                    );
                     startActivityForResult(intent, REQUEST_CODE_USERS);
                 } else {
-                    Toast.makeText(this, getResources().getString(R.string.only_usable_from_channel), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getResources().getString(R.string.only_usable_from_channel), Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -481,8 +438,7 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
      *
      * @return the server object
      */
-    public Server getServer()
-    {
+    public Server getServer() {
         return server;
     }
 
@@ -490,8 +446,7 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
      * On conversation message
      */
     @Override
-    public void onConversationMessage(String target)
-    {
+    public void onConversationMessage(String target) {
         Conversation conversation = server.getConversation(target);
 
         if (conversation == null) {
@@ -522,17 +477,13 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
                 conversation.setStatus(status);
             }
         }
-
-
-        // indicator.updateStateColors();
     }
 
     /**
      * On new conversation
      */
     @Override
-    public void onNewConversation(String target)
-    {
+    public void onNewConversation(String target) {
         createNewConversation(target);
 
         pager.setCurrentItem(pagerAdapter.getCount() - 1);
@@ -544,8 +495,7 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
      *
      * @param target
      */
-    public void createNewConversation(String target)
-    {
+    public void createNewConversation(String target) {
         pagerAdapter.addConversation(server.getConversation(target));
 
         tabLayout.update();
@@ -555,8 +505,7 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
      * On conversation remove
      */
     @Override
-    public void onRemoveConversation(String target)
-    {
+    public void onRemoveConversation(String target) {
         int position = pagerAdapter.getPositionByName(target);
 
         if (position != -1) {
@@ -570,8 +519,7 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
      * On topic change
      */
     @Override
-    public void onTopicChanged(String target)
-    {
+    public void onTopicChanged(String target) {
         // No implementation
     }
 
@@ -579,10 +527,7 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
      * On server status update
      */
     @Override
-    public void onStatusUpdate()
-    {
-        EditText input = (EditText) findViewById(R.id.input);
-
+    public void onStatusUpdate() {
         if (server.isConnected()) {
             input.setEnabled(true);
         } else {
@@ -599,32 +544,32 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
 
             if (!binder.getService().getSettings().isReconnectEnabled() && !reconnectDialogActive) {
                 reconnectDialogActive = true;
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setMessage(getResources().getString(R.string.reconnect_after_disconnect, server.getTitle()))
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        if (!server.isDisconnected()) {
-                            reconnectDialogActive = false;
-                            return;
-                        }
-                        binder.getService().getConnection(server.getId()).setAutojoinChannels(
-                                server.getCurrentChannelNames()
-                        );
-                        server.setStatus(Status.CONNECTING);
-                        binder.connect(server);
-                        reconnectDialogActive = false;
-                    }
-                })
-                .setNegativeButton(getString(R.string.negative_button), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        server.setMayReconnect(false);
-                        reconnectDialogActive = false;
-                        dialog.cancel();
-                    }
-                });
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                if (!server.isDisconnected()) {
+                                    reconnectDialogActive = false;
+                                    return;
+                                }
+                                binder.getService().getConnection(server.getId()).setAutojoinChannels(
+                                        server.getCurrentChannelNames()
+                                );
+                                server.setStatus(Status.CONNECTING);
+                                binder.connect(server);
+                                reconnectDialogActive = false;
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.negative_button), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                server.setMayReconnect(false);
+                                reconnectDialogActive = false;
+                                dialog.cancel();
+                            }
+                        });
                 AlertDialog alert = builder.create();
                 alert.show();
             }
@@ -635,9 +580,8 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
      * On activity result
      */
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if (resultCode != RESULT_OK) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
             // ignore other result codes
             return;
         }
@@ -646,19 +590,19 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
             case REQUEST_CODE_SPEECH:
                 ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 if (matches.size() > 0) {
-                    ((EditText) findViewById(R.id.input)).setText(matches.get(0));
+                    input.setText(matches.get(0));
                 }
                 break;
             case REQUEST_CODE_JOIN:
                 joinChannelBuffer = data.getExtras().getString("channel");
                 break;
             case REQUEST_CODE_USERS:
-                Intent intent = new Intent(this, UserActivity.class);
+                Intent intent = new Intent(getActivity(), UserActivity.class);
                 intent.putExtra(Extra.USER, data.getStringExtra(Extra.USER));
                 startActivityForResult(intent, REQUEST_CODE_USER);
                 break;
             case REQUEST_CODE_NICK_COMPLETION:
-                insertNickCompletion((EditText) findViewById(R.id.input), data.getExtras().getString(Extra.USER));
+                insertNickCompletion(input, data.getExtras().getString(Extra.USER));
                 break;
             case REQUEST_CODE_USER:
                 final int actionId = data.getExtras().getInt(Extra.ACTION);
@@ -684,9 +628,9 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
 
                         while (
                                 nicknameWithoutPrefix.startsWith("@") ||
-                                nicknameWithoutPrefix.startsWith("+") ||
-                                nicknameWithoutPrefix.startsWith(".") ||
-                                nicknameWithoutPrefix.startsWith("%")
+                                        nicknameWithoutPrefix.startsWith("+") ||
+                                        nicknameWithoutPrefix.startsWith(".") ||
+                                        nicknameWithoutPrefix.startsWith("%")
                                 ) {
                             // Strip prefix(es) now
                             nicknameWithoutPrefix = nicknameWithoutPrefix.substring(1);
@@ -698,7 +642,6 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
                                 handler.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        EditText input = (EditText) findViewById(R.id.input);
                                         input.setText(replyText);
                                         input.setSelection(replyText.length());
                                     }
@@ -716,7 +659,7 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
                                             Broadcast.CONVERSATION_NEW,
                                             server.getId(),
                                             nicknameWithoutPrefix
-                                            );
+                                    );
                                     binder.getService().sendBroadcast(intent);
                                 }
                                 break;
@@ -862,7 +805,7 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
         if (conversationForUserList.getType() == Conversation.TYPE_CHANNEL) {
             users = binder.getService().getConnection(server.getId()).getUsersAsStringArray(
                     conversationForUserList.getName()
-                    );
+            );
         }
 
         // go through users and add matches
@@ -880,7 +823,7 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
                 input.setSelection(cursor, sel_end);
                 insertNickCompletion(input, users[result.get(0).intValue()]);
             } else if (result.size() > 0) {
-                Intent intent  = new Intent(this, UsersActivity.class);
+                Intent intent  = new Intent(getActivity(), UsersActivity.class);
                 String[] extra = new String[result.size()];
                 int i = 0;
 
@@ -901,7 +844,7 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
      * @param input The input line widget, with the incomplete nick selected
      * @param nick The completed nick
      */
-    private void insertNickCompletion(EditText input, String nick) {
+    private void insertNickCompletion(final EditText input, String nick) {
         int start = input.getSelectionStart();
         int end  = input.getSelectionEnd();
         nick = removeStatusChar(nick);
@@ -919,7 +862,6 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
             @Override
             public void run() {
                 // make the softkeyboard come up again (only if no hw keyboard is attached)
-                EditText input = (EditText) findViewById(R.id.input);
                 openSoftKeyboard(input);
             }
         });
@@ -931,7 +873,8 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
      * Open the soft keyboard (helper function)
      */
     private void openSoftKeyboard(View view) {
-        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+        ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE))
+                .showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
     }
 
     /**
@@ -940,8 +883,7 @@ public class ConversationActivity extends ActionBarActivity implements ServiceCo
      * @param nick
      * @return nick without statuschar
      */
-    private String removeStatusChar(String nick)
-    {
+    private String removeStatusChar(String nick) {
         /* Discard status characters */
         if (nick.startsWith("@") || nick.startsWith("+")
                 || nick.startsWith("%")) {
