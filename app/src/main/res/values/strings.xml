@@ -23,7 +23,6 @@
     <string name="server_useSSL">Use SSL</string>
     <string name="server_autoconnect">Auto connect on startup</string>
     <string name="server_channels">Channels</string>
-    <string name="server_save">Save</string>
     <string name="select_charset">Select a charset</string>
     <string name="nickname">Nickname</string>
     <string name="aliases">Aliases</string>
@@ -48,6 +47,7 @@
     <string name="preferences">Preferences</string>
     <string name="charset">Charset</string>
 
+    <string name="action_save">Save</string>
     <string name="action_remove">Remove</string>
     <string name="action_add">Add</string>
     <string name="action_ok">Ok</string>

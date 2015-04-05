@@ -34,7 +34,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:scrollbarStyle="outsideInset">
+            android:scrollbarStyle="outsideInset"
+            android:padding="8dp">
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -213,26 +214,6 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
                     android:layout_height="wrap_content"
                     android:prompt="@string/select_charset" />
                 <!-- ############################################################################ -->
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingTop="10dp">
-
-                    <Button
-                        android:id="@+id/add"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/server_save" />
-
-                    <Button
-                        android:id="@+id/cancel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0"
-                        android:text="@string/action_cancel" />
-                </LinearLayout>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

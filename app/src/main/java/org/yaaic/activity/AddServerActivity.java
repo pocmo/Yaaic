@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -81,22 +82,19 @@ public class AddServerActivity extends ActionBarActivity implements OnClickListe
         setContentView(R.layout.activity_add_server);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        toolbar.addView(LayoutInflater.from(this).inflate(R.layout.item_done_discard, toolbar, false));
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        setSupportActionBar(toolbar);
 
         authentication = new Authentication();
         aliases = new ArrayList<String>();
         channels = new ArrayList<String>();
         commands = new ArrayList<String>();
 
-        ((Button) findViewById(R.id.add)).setOnClickListener(this);
-        ((Button) findViewById(R.id.cancel)).setOnClickListener(this);
-        ((Button) findViewById(R.id.aliases)).setOnClickListener(this);
-        ((Button) findViewById(R.id.channels)).setOnClickListener(this);
-        ((Button) findViewById(R.id.commands)).setOnClickListener(this);
-        ((Button) findViewById(R.id.authentication)).setOnClickListener(this);
+        findViewById(R.id.aliases).setOnClickListener(this);
+        findViewById(R.id.channels).setOnClickListener(this);
+        findViewById(R.id.commands).setOnClickListener(this);
+        findViewById(R.id.authentication).setOnClickListener(this);
 
         Spinner spinner = (Spinner) findViewById(R.id.charset);
         String[] charsets = getResources().getStringArray(R.array.charsets);
@@ -163,35 +161,6 @@ public class AddServerActivity extends ActionBarActivity implements OnClickListe
     }
 
     /**
-     * On options menu requested
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        super.onCreateOptionsMenu(menu);
-
-        MenuInflater inflater = new MenuInflater(this);
-        inflater.inflate(R.menu.addserver, menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.save:
-                save();
-                return true;
-
-            case  android.R.id.home:
-                finish();
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
      * On activity result
      */
     @Override
@@ -255,22 +224,18 @@ public class AddServerActivity extends ActionBarActivity implements OnClickListe
                 commandsIntent.putExtra(Extra.COMMANDS, commands);
                 startActivityForResult(commandsIntent, REQUEST_CODE_COMMANDS);
                 break;
-
-            case R.id.add:
-                save();
-                break;
-
-            case R.id.cancel:
-                setResult(RESULT_CANCELED);
-                finish();
-                break;
         }
+    }
+
+    public void onCancel(View view) {
+        setResult(RESULT_CANCELED);
+        finish();
     }
 
     /**
      * Try to save server.
      */
-    private void save() {
+    public void onSave(View view) {
         try {
             validateServer();
             validateIdentity();
