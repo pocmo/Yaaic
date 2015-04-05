@@ -46,6 +46,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:onClick="onOverview"
             android:paddingLeft="16dp"
             android:text="@string/navigation_overview"
+            android:drawableLeft="@drawable/ic_navigation_overview"
+            android:drawablePadding="4dp"
             android:textSize="14sp" />
 
         <View
@@ -76,6 +78,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:fontFamily="sans-serif-medium"
             android:gravity="center_vertical"
             android:onClick="onSettings"
+            android:drawableLeft="@drawable/ic_navigation_settings"
+            android:drawablePadding="4dp"
             android:paddingLeft="16dp"
             android:text="@string/navigation_settings"
             android:textSize="14sp" />
@@ -89,6 +93,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:gravity="center_vertical"
             android:onClick="onAbout"
             android:paddingLeft="16dp"
+            android:drawableLeft="@drawable/ic_navigation_about"
+            android:drawablePadding="4dp"
             android:text="@string/navigation_about"
             android:textSize="14sp" />
 

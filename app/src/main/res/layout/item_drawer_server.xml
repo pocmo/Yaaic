@@ -9,4 +9,6 @@
     android:gravity="center_vertical"
     android:onClick="onAbout"
     android:paddingLeft="16dp"
+    android:drawableLeft="@drawable/ic_navigation_server_disconnected"
+    android:drawablePadding="4dp"
     android:textSize="14sp" />
