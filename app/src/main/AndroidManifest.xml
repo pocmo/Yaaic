@@ -54,17 +54,9 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.ConversationActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
-        <activity
             android:name=".activity.AboutActivity"
             android:label="@string/about_label"
             android:theme="@android:style/Theme.Dialog" >
-        </activity>
-        <activity
-            android:name=".activity.SettingsActivity"
-            android:label="@string/settings_label" >
         </activity>
         <activity
             android:name=".activity.JoinActivity"
