@@ -19,52 +19,50 @@ You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:layout_height="wrap_content"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="4dp"
     card_view:cardBackgroundColor="@color/cardview_background">
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="8dp">
 
-        <View
+        <ImageView
             android:id="@+id/connection"
-            android:layout_width="16dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="4dp" />
-
-        <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:paddingLeft="4dp">
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Server"
-                android:textAppearance="@android:style/TextAppearance.Material.Title" />
-
-            <TextView
-                android:id="@+id/host"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="irc.example.com"
-                android:textAppearance="@android:style/TextAppearance.Material.Body1" />
-        </LinearLayout>
+            android:src="@drawable/ic_navigation_server_disconnected"/>
 
         <ImageView
             android:id="@+id/menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
             android:src="@drawable/ic_action_menu" />
-    </LinearLayout>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/connection"
+            android:layout_toLeftOf="@id/menu"
+            android:text="Server"
+            android:textAppearance="@android:style/TextAppearance.Material.Title" />
+
+        <TextView
+            android:id="@+id/host"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_toRightOf="@id/connection"
+            android:layout_toLeftOf="@id/menu"
+            android:text="irc.example.com"
+            android:textAppearance="@android:style/TextAppearance.Material.Body1" />
+
+    </RelativeLayout>
 </android.support.v7.widget.CardView>

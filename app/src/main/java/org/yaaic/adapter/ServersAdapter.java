@@ -24,6 +24,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.yaaic.R;
@@ -48,7 +49,7 @@ public class ServersAdapter extends RecyclerView.Adapter<ServersAdapter.ViewHold
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView titleView;
         public final TextView hostView;
-        public final View connectionView;
+        public final ImageView connectionView;
         public final View menuView;
         public final ServerPopupMenu popupMenu;
 
@@ -57,7 +58,7 @@ public class ServersAdapter extends RecyclerView.Adapter<ServersAdapter.ViewHold
 
             titleView = (TextView) view.findViewById(R.id.title);
             hostView = (TextView) view.findViewById(R.id.host);
-            connectionView = view.findViewById(R.id.connection);
+            connectionView = (ImageView) view.findViewById(R.id.connection);
             menuView = view.findViewById(R.id.menu);
 
             popupMenu = new ServerPopupMenu(
@@ -94,7 +95,11 @@ public class ServersAdapter extends RecyclerView.Adapter<ServersAdapter.ViewHold
 
         holder.titleView.setText(server.getTitle());
         holder.titleView.setTextColor(color);
-        holder.connectionView.setBackgroundColor(color);
+        holder.connectionView.setImageResource(
+                server.isConnected()
+                ? R.drawable.ic_navigation_server_connected
+                : R.drawable.ic_navigation_server_disconnected
+        );
         holder.hostView.setText(String.format("%s @ %s : %d",
                 server.getIdentity().getNickname(),
                 server.getHost(),
