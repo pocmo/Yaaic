@@ -1,7 +1,7 @@
 /*
 Yaaic - Yet Another Android IRC Client
 
-Copyright 2009-2013 Sebastian Kaspari
+Copyright 2009-2015 Sebastian Kaspari
 
 This file is part of Yaaic.
 
@@ -17,38 +17,50 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
- */
+*/
 package org.yaaic.activity;
-
-import org.yaaic.R;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
+import org.yaaic.R;
+
 /**
- * About activity
- *
- * @author Sebastian Kaspari <sebastian@yaaic.org>
+ * "About" dialog activity.
  */
-public class AboutActivity extends Activity
-{
-    /**
-     * On activity getting created.
-     */
+public class AboutActivity extends Activity {
+    private static final String TAG = "Yaaic/AboutActivity";
+
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.about);
 
+        initializeVersionView();
+        initializeIrcView();
+    }
+
+    private void initializeVersionView() {
+        try {
+            TextView versionView = (TextView) findViewById(R.id.version);
+            versionView.setText(
+                getPackageManager().getPackageInfo(getPackageName(), 0).versionName
+            );
+        } catch (PackageManager.NameNotFoundException e) {
+            throw new AssertionError("Should not happen: Can't read application info of myself");
+        }
+    }
+
+    private void initializeIrcView() {
         TextView ircLinkView = (TextView) findViewById(R.id.about_irclink);
         ircLinkView.setOnClickListener(new View.OnClickListener() {
             @Override
