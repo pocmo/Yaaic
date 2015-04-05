@@ -59,12 +59,12 @@ public class MainActivity extends ActionBarActivity implements YaaicActivity, Se
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
         initializeToolbar();
         initializeDrawer();
+
+        super.onCreate(savedInstanceState);
 
         if (savedInstanceState == null) {
             onOverview(null);
