@@ -56,12 +56,12 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         <activity
             android:name=".activity.AboutActivity"
             android:label="@string/about_label"
-            android:theme="@android:style/Theme.Dialog" >
+            android:theme="@android:style/Theme.Material.Dialog" >
         </activity>
         <activity
             android:name=".activity.JoinActivity"
             android:label="@string/join_label"
-            android:theme="@android:style/Theme.Dialog" >
+            android:theme="@android:style/Theme.Material.Dialog" >
         </activity>
         <activity
             android:name=".activity.UsersActivity"
