@@ -28,13 +28,30 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     android:clickable="true"
     android:fitsSystemWindows="true"
     android:paddingTop="24dp"
-    app:insetForeground="#4000">
+    app:insetForeground="@color/primary_dark">
 
     <LinearLayout
         android:id="@+id/drawer_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/abc_action_bar_default_height_material"
+            android:background="@color/primary"
+            android:elevation="4dp"
+            android:layout_toRightOf="@id/icon"
+            android:layout_centerVertical="true"
+            android:paddingLeft="16dp"
+            android:drawablePadding="8dp"
+            android:drawableLeft="@drawable/ic_notification"
+            android:layout_marginBottom="4dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/abc_primary_text_material_dark"
+            android:text="@string/app_name"
+            style="@android:style/TextAppearance.Material.Widget.ActionBar.Title"/>
+
 
         <TextView
             android:layout_width="match_parent"
