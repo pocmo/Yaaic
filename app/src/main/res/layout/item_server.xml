@@ -24,6 +24,8 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:clickable="true"
     card_view:cardBackgroundColor="@color/cardview_background">
 
     <RelativeLayout
@@ -43,6 +45,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:clickable="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_action_menu" />
 
         <TextView
