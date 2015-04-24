@@ -35,11 +35,6 @@ Third party libraries & resources
     Yaaic includes the PircBot IRC API written by Paul Mutton available
     under the GNU General Public License (GPL). http://www.jibble.org
 
-    Yaaic uses the ViewPagerIndicator widget written by Patrik
-    Åkerfeldt, Francisco Figueiredo Jr. and Jake Wharton. Licensed
-    under the Apache License 2.0.
-    https://github.com/JakeWharton/Android-ViewPagerIndicator
-
     The Yaaic icon was designed by http://www.androidicons.com
 
     Some icons are part of the Silk icon set designed by Mark James
