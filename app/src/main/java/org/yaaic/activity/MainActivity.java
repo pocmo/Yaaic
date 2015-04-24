@@ -30,6 +30,7 @@ import android.os.IBinder;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.MenuItem;
@@ -51,7 +52,7 @@ import org.yaaic.model.Status;
 /**
  * The main activity of Yaaic. We'll add, remove and replace fragments here.
  */
-public class MainActivity extends ActionBarActivity implements YaaicActivity, ServiceConnection {
+public class MainActivity extends AppCompatActivity implements YaaicActivity, ServiceConnection {
     private ActionBarDrawerToggle toggle;
     private Toolbar toolbar;
     private DrawerLayout drawer;
@@ -59,12 +60,12 @@ public class MainActivity extends ActionBarActivity implements YaaicActivity, Se
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         initializeToolbar();
         initializeDrawer();
-
-        super.onCreate(savedInstanceState);
 
         if (savedInstanceState == null) {
             onOverview(null);
