@@ -91,7 +91,6 @@ import java.util.List;
  */
 public class ConversationFragment extends Fragment implements ServerListener, ConversationListener, ServiceConnection {
     public static final String TRANSACTION_TAG = "fragment_conversation";
-    public static final int REQUEST_CODE_SPEECH = 99;
 
     private static final int REQUEST_CODE_JOIN = 1;
     private static final int REQUEST_CODE_USERS = 2;
@@ -621,12 +620,6 @@ public class ConversationFragment extends Fragment implements ServerListener, Co
         }
 
         switch (requestCode) {
-            case REQUEST_CODE_SPEECH:
-                ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                if (matches.size() > 0) {
-                    input.setText(matches.get(0));
-                }
-                break;
             case REQUEST_CODE_JOIN:
                 joinChannelBuffer = data.getExtras().getString("channel");
                 break;
