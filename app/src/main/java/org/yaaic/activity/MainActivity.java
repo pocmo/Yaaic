@@ -216,7 +216,11 @@ public class MainActivity extends AppCompatActivity implements YaaicActivity, Se
 
     public void autoConnectServers() {
         for (final Server server : Yaaic.getInstance().getAutoconnectServersAsArrayList()) {
-            binder.connect(server);
+
+           if (binder != null && server.getStatus() == Status.DISCONNECTED) {
+                binder.connect(server);
+                server.setStatus(Status.CONNECTING);
+           }
         }
     }
 }
