@@ -52,6 +52,7 @@ public class Server
     private String selected = "";
     private boolean isForeground = false;
     private boolean mayReconnect = false;
+    private boolean autoconnect = false;
 
     /**
      * Create a new server object
@@ -263,7 +264,7 @@ public class Server
     /**
      * Set list of channels to auto join after connect
      * 
-     * @param channels List of channel names
+     * @param autoJoinChannels List of channel names
      */
     public void setAutoJoinChannels(ArrayList<String> autoJoinChannels)
     {
@@ -283,7 +284,7 @@ public class Server
     /**
      * Set commands to execute after connect
      * 
-     * @param commands List of commands
+     * @param connectCommands List of commands
      */
     public void setConnectCommands(ArrayList<String> connectCommands)
     {
@@ -439,5 +440,21 @@ public class Server
     public void setMayReconnect(boolean mayReconnect)
     {
         this.mayReconnect = mayReconnect;
+    }
+
+    /**
+     * Get if server is connect on startup
+     */
+    public boolean getAutoconnect()
+    {
+        return autoconnect;
+    }
+
+    /**
+     * Set if server is connect on startup
+     */
+    public void setAutoconnect(boolean autoconnect)
+    {
+        this.autoconnect = autoconnect;
     }
 }

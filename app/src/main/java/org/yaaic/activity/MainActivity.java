@@ -32,6 +32,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
@@ -70,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements YaaicActivity, Se
         if (savedInstanceState == null) {
             onOverview(null);
         }
+
+        autoConnectServers();
     }
 
     public void initializeToolbar() {
@@ -208,5 +211,11 @@ public class MainActivity extends AppCompatActivity implements YaaicActivity, Se
     @Override
     public void onServiceDisconnected(ComponentName name) {
         binder = null;
+    }
+
+    public void autoConnectServers() {
+        for (final Server server : Yaaic.getInstance().getAutoconnectServersAsArrayList()) {
+            onServerSelected(server);
+        }
     }
 }

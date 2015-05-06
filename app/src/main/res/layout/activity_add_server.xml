@@ -109,9 +109,9 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
                     android:id="@+id/autoconnect"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/server_port"
-                    android:text="@string/server_port"
-                    android:visibility="gone" />
+                    android:contentDescription="@string/server_autoconnect"
+                    android:text="@string/server_autoconnect"
+                />
 
                 <CheckBox
                     android:id="@+id/useSSL"
