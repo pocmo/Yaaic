@@ -39,7 +39,6 @@ public class Yaaic
     public static Yaaic              instance;
 
     private HashMap<Integer, Server> servers;
-    private HashMap<Integer, Server> autoConnectServers;
     private boolean                  serversLoaded = false;
 
     /**
@@ -60,7 +59,6 @@ public class Yaaic
         if (!serversLoaded) {
             Database db = new Database(context);
             servers = db.getServers();
-            autoConnectServers = db.getAutoConnectServers();
             db.close();
 
             // context.sendBroadcast(new Intent(Broadcast.SERVER_UPDATE));
@@ -147,9 +145,12 @@ public class Yaaic
     {
         ArrayList<Server> serverList = new ArrayList<Server>();
 
-        Set<Integer> mKeys = autoConnectServers.keySet();
+        Set<Integer> mKeys = servers.keySet();
         for (int key : mKeys) {
-            serverList.add(autoConnectServers.get(key));
+            Server server = servers.get(key);
+            if(server.getAutoconnect()) {
+                serverList.add(server);
+            }
         }
 
         return serverList;

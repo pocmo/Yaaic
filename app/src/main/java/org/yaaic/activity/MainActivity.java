@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements YaaicActivity, Se
             onOverview(null);
         }
 
-        autoConnectServers();
     }
 
     public void initializeToolbar() {
@@ -206,6 +205,8 @@ public class MainActivity extends AppCompatActivity implements YaaicActivity, Se
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
         binder = (IRCBinder) service;
+
+        autoConnectServers();
     }
 
     @Override
@@ -215,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements YaaicActivity, Se
 
     public void autoConnectServers() {
         for (final Server server : Yaaic.getInstance().getAutoconnectServersAsArrayList()) {
-            onServerSelected(server);
+            binder.connect(server);
         }
     }
 }
