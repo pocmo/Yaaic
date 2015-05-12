@@ -9,4 +9,4 @@ android:
     - extra-google-m2repository
     - extra-android-m2repository
 notifications:
-  irc: "irc.epd-me.net#yaaic"
+  irc: "irc.freenode.net#yaaic"
