@@ -23,7 +23,7 @@ into Android Studio should be enough to get it building.
 Drop me a line for questions regarding Yaaic or use one of the
 following resources:
 
-- IRC:           irc.epd-me.net #yaaic
+- IRC:           irc.freenode.net #yaaic
 - Homepage:      http://www.yaaic.org
 - Google Group:  http://groups.google.com/group/yaaic
 - Twitter:       http://twitter.com/Yaaic

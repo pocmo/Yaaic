@@ -3,7 +3,7 @@
     <string name="app_name" translatable="false">Yaaic</string>
     <string name="app_full_name" translatable="false">Yet Another Android IRC Client</string>
     <string name="app_homepage" translatable="false">http://www.yaaic.org</string>
-    <string name="app_irc" translatable="false">irc://irc.epd-me.net/yaaic</string>
+    <string name="app_irc" translatable="false">irc://irc.freenode.net/yaaic</string>
     <string name="app_copyright" translatable="false">&#169; 2009-2015 Sebastian Kaspari</string>
     
     <string name="licence_info" translatable="false">
