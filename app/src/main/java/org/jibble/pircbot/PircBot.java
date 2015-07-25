@@ -165,6 +165,7 @@ public abstract class PircBot implements ReplyConstants {
                 context.init(null, new X509TrustManager[] { new NaiveTrustManager() }, null);
                 SSLSocketFactory factory = context.getSocketFactory();
                 SSLSocket ssocket = (SSLSocket) factory.createSocket(hostname, port);
+                setSNIHost(factory, ssocket, hostname);
                 ssocket.startHandshake();
                 _socket = ssocket;
             }
@@ -265,6 +266,17 @@ public abstract class PircBot implements ReplyConstants {
         this.onConnect();
     }
 
+    private void setSNIHost(final SSLSocketFactory factory, final SSLSocket socket, final String hostname) {
+        if (factory instanceof android.net.SSLCertificateSocketFactory && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            ((android.net.SSLCertificateSocketFactory)factory).setHostname(socket, hostname);
+        } else {
+            try {
+                socket.getClass().getMethod("setHostname", String.class).invoke(socket, hostname);
+            } catch (Throwable e) {
+                // ignore any error, we just can't set the hostname...
+            }
+        }
+    }
 
     /**
      * Reconnects to the IRC server that we were previously connected to.
