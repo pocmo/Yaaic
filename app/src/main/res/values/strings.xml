@@ -123,6 +123,7 @@
     <string name="command_desc_topic">Show or change the current topic</string>
     <string name="command_desc_voice">Give a user voice status</string>
     <string name="command_desc_whois">Get information about a user</string>
+    <string name="command_desc_clear">Clear the history of the current window</string>
 
     <string name="notification_running">Yaaic is running</string>
     <string name="notification_not_connected">Not connected</string>
