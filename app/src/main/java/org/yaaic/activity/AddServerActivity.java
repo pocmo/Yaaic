@@ -125,6 +125,7 @@ public class AddServerActivity extends ActionBarActivity implements OnClickListe
             ((EditText) findViewById(R.id.ident)).setText(server.getIdentity().getIdent());
             ((EditText) findViewById(R.id.realname)).setText(server.getIdentity().getRealName());
             ((CheckBox) findViewById(R.id.useSSL)).setChecked(server.useSSL());
+            ((CheckBox) findViewById(R.id.autoconnect)).setChecked(server.getAutoconnect());
 
             // Select charset
             if (server.getCharset() != null) {
@@ -333,9 +334,7 @@ public class AddServerActivity extends ActionBarActivity implements OnClickListe
         String password = ((EditText) findViewById(R.id.password)).getText().toString().trim();
         String charset = ((Spinner) findViewById(R.id.charset)).getSelectedItem().toString();
         Boolean useSSL = ((CheckBox) findViewById(R.id.useSSL)).isChecked();
-
-        // not in use yet
-        //boolean autoConnect = ((CheckBox) findViewById(R.id.autoconnect)).isChecked();
+        Boolean autoConnect = ((CheckBox) findViewById(R.id.autoconnect)).isChecked();
 
         Server server = new Server();
         server.setHost(host);
@@ -345,6 +344,7 @@ public class AddServerActivity extends ActionBarActivity implements OnClickListe
         server.setCharset(charset);
         server.setUseSSL(useSSL);
         server.setStatus(Status.DISCONNECTED);
+        server.setAutoconnect(autoConnect);
 
         return server;
     }

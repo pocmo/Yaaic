@@ -35,6 +35,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Database Helper for the servers and channels tables
@@ -175,7 +176,7 @@ public class Database extends SQLiteOpenHelper
         values.put(ServerConstants.HOST, server.getHost());
         values.put(ServerConstants.PORT, server.getPort());
         values.put(ServerConstants.PASSWORD, server.getPassword());
-        values.put(ServerConstants.AUTOCONNECT, false);
+        values.put(ServerConstants.AUTOCONNECT, server.getAutoconnect());
         values.put(ServerConstants.USE_SSL, server.useSSL());
         values.put(ServerConstants.IDENTITY, identityId);
         values.put(ServerConstants.CHARSET, server.getCharset());
@@ -203,7 +204,7 @@ public class Database extends SQLiteOpenHelper
         values.put(ServerConstants.HOST, server.getHost());
         values.put(ServerConstants.PORT, server.getPort());
         values.put(ServerConstants.PASSWORD, server.getPassword());
-        values.put(ServerConstants.AUTOCONNECT, false);
+        values.put(ServerConstants.AUTOCONNECT, server.getAutoconnect());
         values.put(ServerConstants.USE_SSL, server.useSSL());
         values.put(ServerConstants.IDENTITY, identityId);
         values.put(ServerConstants.CHARSET, server.getCharset());
@@ -425,8 +426,14 @@ public class Database extends SQLiteOpenHelper
         server.setCharset(cursor.getString(cursor.getColumnIndex(ServerConstants.CHARSET)));
 
         String useSSLvalue = cursor.getString(cursor.getColumnIndex(ServerConstants.USE_SSL));
+        String autoConnect = cursor.getString(cursor.getColumnIndex(ServerConstants.AUTOCONNECT));
+
         if (useSSLvalue != null && useSSLvalue.equals("1")) {
             server.setUseSSL(true);
+        }
+
+        if (autoConnect != null && autoConnect.equals("1")) {
+            server.setAutoconnect(true);
         }
 
         server.setStatus(Status.DISCONNECTED);
@@ -457,17 +464,27 @@ public class Database extends SQLiteOpenHelper
      * 
      * @return
      */
-    public Cursor getAutoConnectServers()
+    public HashMap<Integer, Server> getAutoConnectServers()
     {
-        return this.getReadableDatabase().query(
-            ServerConstants.TABLE_NAME,
-            ServerConstants.ALL,
-            ServerConstants.AUTOCONNECT + " = 1",
-            null,
-            null,
-            null,
-            ServerConstants.TITLE + " ASC"
+        HashMap<Integer, Server> servers = new HashMap<Integer, Server>();
+
+        Cursor cursor = this.getReadableDatabase().query(
+                ServerConstants.TABLE_NAME,
+                ServerConstants.ALL,
+                ServerConstants.AUTOCONNECT + " = 1",
+                null,
+                null,
+                null,
+                ServerConstants.TITLE + " ASC"
         );
+
+        while (cursor.moveToNext()) {
+            Server server = populateServer(cursor);
+            servers.put(server.getId(), server);
+        }
+        cursor.close();
+
+        return servers;
     }
 
     /**

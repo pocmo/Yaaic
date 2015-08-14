@@ -134,4 +134,25 @@ public class Yaaic
 
         return serverList;
     }
+
+
+    /**
+     * Get list of autoconnect servers
+     *
+     * @return list of autoconnect servers
+     */
+    public ArrayList<Server> getAutoconnectServersAsArrayList()
+    {
+        ArrayList<Server> serverList = new ArrayList<Server>();
+
+        Set<Integer> mKeys = servers.keySet();
+        for (int key : mKeys) {
+            Server server = servers.get(key);
+            if(server.getAutoconnect()) {
+                serverList.add(server);
+            }
+        }
+
+        return serverList;
+    }
 }
