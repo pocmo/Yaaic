@@ -24,6 +24,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -32,6 +33,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,18 +47,23 @@ import org.yaaic.fragment.OverviewFragment;
 import org.yaaic.fragment.SettingsFragment;
 import org.yaaic.irc.IRCBinder;
 import org.yaaic.irc.IRCService;
+import org.yaaic.listener.ServerListener;
+import org.yaaic.model.Broadcast;
 import org.yaaic.model.Extra;
 import org.yaaic.model.Server;
 import org.yaaic.model.Status;
+import org.yaaic.receiver.ServerReceiver;
 
 /**
  * The main activity of Yaaic. We'll add, remove and replace fragments here.
  */
-public class MainActivity extends AppCompatActivity implements YaaicActivity, ServiceConnection {
+public class MainActivity extends AppCompatActivity implements YaaicActivity, ServiceConnection, ServerListener {
     private ActionBarDrawerToggle toggle;
     private Toolbar toolbar;
     private DrawerLayout drawer;
     private IRCBinder binder;
+    private ServerReceiver receiver;
+    private LinearLayout serverContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,11 +90,29 @@ public class MainActivity extends AppCompatActivity implements YaaicActivity, Se
 
         drawer.setDrawerListener(toggle);
 
-        LinearLayout serverContainer = (LinearLayout) findViewById(R.id.server_container);
+        serverContainer = (LinearLayout) findViewById(R.id.server_container);
+    }
+
+    public void updateDrawerServerList() {
+        Log.d("MainActivity", "updateDrawerServerList()");
+
+        serverContainer.removeAllViews();
 
         for (final Server server : Yaaic.getInstance().getServersAsArrayList()) {
             TextView serverView = (TextView) getLayoutInflater().inflate(R.layout.item_drawer_server, drawer, false);
             serverView.setText(server.getTitle());
+
+            serverView.setCompoundDrawablesWithIntrinsicBounds(
+                    getDrawable(server.isConnected()
+                        ? R.drawable.ic_navigation_server_connected
+                        : R.drawable.ic_navigation_server_disconnected),
+                    null,
+                    null,
+                    null
+            );
+
+            int colorResource = server.isConnected() ? R.color.connected : R.color.disconnected;
+            serverView.setTextColor(getColor(colorResource));
 
             serverView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -113,16 +138,23 @@ public class MainActivity extends AppCompatActivity implements YaaicActivity, Se
     protected void onResume() {
         super.onResume();
 
+        receiver = new ServerReceiver(this);
+        registerReceiver(receiver, new IntentFilter(Broadcast.SERVER_UPDATE));
+
         Intent intent = new Intent(this, IRCService.class);
         intent.setAction(IRCService.ACTION_BACKGROUND);
         startService(intent);
 
         bindService(intent, this, 0);
+
+        updateDrawerServerList();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+
+        unregisterReceiver(receiver);
 
         if (binder != null && binder.getService() != null) {
             binder.getService().checkServiceStatus();
@@ -181,7 +213,6 @@ public class MainActivity extends AppCompatActivity implements YaaicActivity, Se
 
     public void onAbout(View view) {
         drawer.closeDrawers();
-
         startActivity(new Intent(this, AboutActivity.class));
     }
 
@@ -208,5 +239,10 @@ public class MainActivity extends AppCompatActivity implements YaaicActivity, Se
     @Override
     public void onServiceDisconnected(ComponentName name) {
         binder = null;
+    }
+
+    @Override
+    public void onStatusUpdate() {
+        updateDrawerServerList();
     }
 }
