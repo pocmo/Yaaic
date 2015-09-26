@@ -92,6 +92,16 @@ public class ConversationPagerAdapter extends PagerAdapter
     }
 
     /**
+     * Update the history of the conversation at the given position from the adapter.
+     *
+     * @param position
+     */
+    public void updateConversation(int position) {
+        ConversationInfo convInfo = conversations.get(position);
+        convInfo.adapter.update(convInfo.conv);
+    }
+
+    /**
      * Get position of given item.
      */
     @Override

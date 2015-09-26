@@ -298,6 +298,7 @@ public class ConversationFragment extends Fragment implements ServerListener, Co
         getActivity().registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_MESSAGE));
         getActivity().registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_NEW));
         getActivity().registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_REMOVE));
+        getActivity().registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_CLEAR));
         getActivity().registerReceiver(channelReceiver, new IntentFilter(Broadcast.CONVERSATION_TOPIC));
 
         serverReceiver = new ServerReceiver(this);
@@ -546,6 +547,15 @@ public class ConversationFragment extends Fragment implements ServerListener, Co
         }
 
         tabLayout.update();
+    }
+
+    @Override
+    public void onClearConversation(String target) {
+        int position = pagerAdapter.getPositionByName(target);
+
+        if (position != -1) {
+            pagerAdapter.updateConversation(position);
+        }
     }
 
     /**

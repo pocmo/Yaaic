@@ -51,29 +51,11 @@ public class MessageListAdapter extends BaseAdapter
      */
     public MessageListAdapter(Conversation conversation, Context context)
     {
-        LinkedList<TextView> messages = new LinkedList<TextView>();
-
-        // Render channel name as first message in channel
-        if (conversation.getType() != Conversation.TYPE_SERVER) {
-            Message header = new Message(conversation.getName());
-            header.setColor(Message.COLOR_RED);
-            messages.add(header.renderTextView(context));
-        }
-
-        // Optimization - cache field lookups
-        LinkedList<Message> mHistory =  conversation.getHistory();
-        int mSize = mHistory.size();
-
-        for (int i = 0; i < mSize; i++) {
-            messages.add(mHistory.get(i).renderTextView(context));
-        }
-
-        // XXX: We don't want to clear the buffer, we want to add only
-        //      buffered messages that are not already added (history)
-        conversation.clearBuffer();
-
-        this.messages = messages;
         this.context = context;
+        this.messages = new LinkedList<TextView>();
+
+        update(conversation);
+
         historySize = conversation.getHistorySize();
     }
 
@@ -87,7 +69,7 @@ public class MessageListAdapter extends BaseAdapter
         messages.add(message.renderTextView(context));
 
         if (messages.size() > historySize) {
-            messages.remove(0);
+            messages.remove(1);
         }
 
         notifyDataSetChanged();
@@ -108,7 +90,7 @@ public class MessageListAdapter extends BaseAdapter
             mMessages.add(messages.get(i).renderTextView(mContext));
 
             if (mMessages.size() > historySize) {
-                mMessages.remove(0);
+                mMessages.remove(1);
             }
         }
 
@@ -173,5 +155,36 @@ public class MessageListAdapter extends BaseAdapter
             return;
         }
         super.unregisterDataSetObserver(observer);
+    }
+
+    /**
+     * Update the history from the conversation.
+     *
+     * @param conversation
+     */
+    public void update(Conversation conversation)
+    {
+        messages.clear();
+
+        // Render channel name as first message in channel
+        if (conversation.getType() != Conversation.TYPE_SERVER) {
+            Message header = new Message(conversation.getName());
+            header.setColor(Message.COLOR_RED);
+            messages.add(header.renderTextView(context));
+        }
+
+        // Optimization - cache field lookups
+        LinkedList<Message> mHistory = conversation.getHistory();
+        int mSize = mHistory.size();
+
+        for (int i = 0; i < mSize; i++) {
+            messages.add(mHistory.get(i).renderTextView(context));
+        }
+
+        // XXX: We don't want to clear the buffer, we want to add only
+        //      buffered messages that are not already added (history)
+        conversation.clearBuffer();
+
+        notifyDataSetChanged();
     }
 }

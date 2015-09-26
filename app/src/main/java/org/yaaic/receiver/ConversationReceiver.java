@@ -72,6 +72,8 @@ public class ConversationReceiver extends BroadcastReceiver
             listener.onNewConversation(intent.getExtras().getString(Extra.CONVERSATION));
         } else if (action.equals(Broadcast.CONVERSATION_REMOVE)) {
             listener.onRemoveConversation(intent.getExtras().getString(Extra.CONVERSATION));
+        } else if (action.equals(Broadcast.CONVERSATION_CLEAR)) {
+            listener.onClearConversation(intent.getExtras().getString(Extra.CONVERSATION));
         } else if (action.equals(Broadcast.CONVERSATION_TOPIC)) {
             listener.onTopicChanged(intent.getExtras().getString(Extra.CONVERSATION));
         }

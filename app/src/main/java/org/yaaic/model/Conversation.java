@@ -232,4 +232,12 @@ public abstract class Conversation
             history.subList(size, history.size()).clear();
         }
     }
+
+    /**
+     * Clear the message history
+     */
+    public void clearHistory()
+    {
+        history.clear();
+    }
 }

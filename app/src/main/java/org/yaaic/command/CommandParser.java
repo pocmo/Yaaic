@@ -25,6 +25,7 @@ import java.util.HashMap;
 import org.yaaic.command.handler.AMsgHandler;
 import org.yaaic.command.handler.AwayHandler;
 import org.yaaic.command.handler.BackHandler;
+import org.yaaic.command.handler.ClearHandler;
 import org.yaaic.command.handler.CloseHandler;
 import org.yaaic.command.handler.DCCHandler;
 import org.yaaic.command.handler.DeopHandler;
@@ -100,6 +101,7 @@ public class CommandParser
         commands.put("msg", new MsgHandler());
         commands.put("quote", new RawHandler());
         commands.put("amsg", new AMsgHandler());
+        commands.put("clear", new ClearHandler());
 
         aliases = new HashMap<String, String>();
 
