@@ -1,6 +1,6 @@
 package org.yaaic.fragment;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 
@@ -16,22 +16,27 @@ public class SettingsFragment extends PreferenceFragment {
     private YaaicActivity activity;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
-        if (!(activity instanceof YaaicActivity)) {
+        if (!(context instanceof YaaicActivity)) {
             throw new IllegalArgumentException("Activity has to implement YaaicActivity interface");
         }
 
-        this.activity = (YaaicActivity) activity;
+        this.activity = (YaaicActivity) context;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        activity.setToolbarTitle(getString(R.string.navigation_settings));
-
         addPreferencesFromResource(R.xml.preferences);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        activity.setToolbarTitle(getString(R.string.navigation_settings));
     }
 }

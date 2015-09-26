@@ -223,7 +223,9 @@ public class MainActivity extends AppCompatActivity implements YaaicActivity, Se
 
     @Override
     public void setToolbarTitle(String title) {
-        toolbar.setTitle(title);
+        if (toolbar != null) {
+            toolbar.setTitle(title);
+        }
     }
 
     @Override

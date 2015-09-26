@@ -170,14 +170,14 @@ public class ConversationFragment extends Fragment implements ServerListener, Co
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
-        if (!(activity instanceof YaaicActivity)) {
+        if (!(context instanceof YaaicActivity)) {
             throw new IllegalArgumentException("Activity has to implement YaaicActivity interface");
         }
 
-        this.activity = (YaaicActivity) activity;
+        this.activity = (YaaicActivity) context;
     }
 
     /**
