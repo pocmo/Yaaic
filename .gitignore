@@ -6,6 +6,8 @@ build/
 .gradle/
 .idea/
 
+# MacOS X
+.DS_Store
 
 # Compiled and generated files
 bin/
