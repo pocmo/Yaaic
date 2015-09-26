@@ -21,20 +21,17 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 package org.yaaic.activity;
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -94,8 +91,6 @@ public class MainActivity extends AppCompatActivity implements YaaicActivity, Se
     }
 
     public void updateDrawerServerList() {
-        Log.d("MainActivity", "updateDrawerServerList()");
-
         serverContainer.removeAllViews();
 
         for (final Server server : Yaaic.getInstance().getServersAsArrayList()) {
@@ -112,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements YaaicActivity, Se
             );
 
             int colorResource = server.isConnected() ? R.color.connected : R.color.disconnected;
-            serverView.setTextColor(getColor(colorResource));
+            serverView.setTextColor(ContextCompat.getColor(this, colorResource));
 
             serverView.setOnClickListener(new View.OnClickListener() {
                 @Override
