@@ -50,6 +50,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.SystemClock;
+import android.support.v4.app.NotificationCompat;
 
 /**
  * The background service for managing the irc connections
@@ -190,6 +191,7 @@ public class IRCService extends Service
             }
             foreground = true;
 
+
             // Set the icon, scrolling text and timestamp
             notification = new Notification(R.drawable.ic_notification, getText(R.string.notification_running), System.currentTimeMillis());
 
@@ -198,8 +200,13 @@ public class IRCService extends Service
             notifyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0);
 
-            // Set the info for the views that show in the notification panel.
-            notification.setLatestEventInfo(this, getText(R.string.app_name), getText(R.string.notification_not_connected), contentIntent);
+            notification = new NotificationCompat.Builder(this)
+                    .setSmallIcon(R.drawable.ic_notification)
+                    .setContentTitle(getText(R.string.app_name))
+                    .setContentText(getText(R.string.notification_not_connected))
+                    .setWhen(System.currentTimeMillis())
+                    .setContentIntent(contentIntent)
+                    .build();
 
             startForegroundCompat(FOREGROUND_NOTIFICATION, notification);
         } else if (ACTION_BACKGROUND.equals(intent.getAction()) && !foreground) {
@@ -221,7 +228,6 @@ public class IRCService extends Service
     private void updateNotification(String text, String contentText, boolean vibrate, boolean sound, boolean light)
     {
         if (foreground) {
-            notification = new Notification(R.drawable.ic_notification, text, System.currentTimeMillis());
             Intent notifyIntent = new Intent(this, MainActivity.class);
             notifyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0);
@@ -244,7 +250,13 @@ public class IRCService extends Service
                 }
             }
 
-            notification.setLatestEventInfo(this, getText(R.string.app_name), contentText, contentIntent);
+            notification = new NotificationCompat.Builder(this)
+                    .setSmallIcon(R.drawable.ic_notification)
+                    .setContentTitle(getText(R.string.app_name))
+                    .setContentText(contentText)
+                    .setContentIntent(contentIntent)
+                    .setWhen(System.currentTimeMillis())
+                    .build();
 
             if (vibrate) {
                 notification.defaults |= Notification.DEFAULT_VIBRATE;
