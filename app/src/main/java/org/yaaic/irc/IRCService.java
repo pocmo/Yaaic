@@ -206,6 +206,8 @@ public class IRCService extends Service
                     .setContentText(getText(R.string.notification_not_connected))
                     .setWhen(System.currentTimeMillis())
                     .setContentIntent(contentIntent)
+                    .setPriority(NotificationCompat.PRIORITY_MIN)
+                    .setCategory(NotificationCompat.CATEGORY_PROGRESS)
                     .build();
 
             startForegroundCompat(FOREGROUND_NOTIFICATION, notification);
@@ -256,6 +258,8 @@ public class IRCService extends Service
                     .setContentText(contentText)
                     .setContentIntent(contentIntent)
                     .setWhen(System.currentTimeMillis())
+                    .setPriority(mentions.size() > 0 ? NotificationCompat.PRIORITY_DEFAULT : NotificationCompat.PRIORITY_MIN)
+                    .setCategory(NotificationCompat.CATEGORY_PROGRESS)
                     .build();
 
             if (vibrate) {
