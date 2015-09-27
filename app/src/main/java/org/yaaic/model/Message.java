@@ -36,6 +36,7 @@ import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 import android.text.util.Linkify;
+import android.view.View;
 import android.widget.TextView;
 
 /**
@@ -319,26 +320,19 @@ public class Message
      * @param context
      * @return
      */
-    public TextView renderTextView(Context context)
+    public TextView renderTextView(Context context, TextView view)
     {
-        TextView canvas = new TextView(context);
-
-        canvas.setAutoLinkMask(Linkify.ALL);
-        canvas.setLinksClickable(true);
-        canvas.setLinkTextColor(COLOR_BLUE);
-
-        canvas.setText(this.render(context));
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            setupViewForHoneycombAndLater(canvas);
+        if (view == null) {
+            view = new TextView(context);
         }
 
-        return canvas;
-    }
+        view.setAutoLinkMask(Linkify.ALL);
+        view.setLinksClickable(true);
+        view.setLinkTextColor(COLOR_BLUE);
+        view.setText(this.render(context));
+        view.setTextIsSelectable(true);
 
-    @TargetApi(11)
-    private void setupViewForHoneycombAndLater(TextView canvas) {
-        canvas.setTextIsSelectable(true);
+        return view;
     }
 
     /**
