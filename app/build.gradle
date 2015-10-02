@@ -8,8 +8,8 @@ android {
         applicationId "org.yaaic"
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 14
-        versionName "2.0"
+        versionCode 15
+        versionName "2.0.1"
     }
 
     lintOptions {
