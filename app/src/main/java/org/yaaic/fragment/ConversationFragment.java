@@ -34,7 +34,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.speech.RecognizerIntent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
@@ -170,14 +169,14 @@ public class ConversationFragment extends Fragment implements ServerListener, Co
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
 
-        if (!(context instanceof YaaicActivity)) {
+        if (!(activity instanceof YaaicActivity)) {
             throw new IllegalArgumentException("Activity has to implement YaaicActivity interface");
         }
 
-        this.activity = (YaaicActivity) context;
+        this.activity = (YaaicActivity) activity;
     }
 
     /**

@@ -20,6 +20,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.yaaic.fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -60,14 +61,14 @@ public class OverviewFragment extends Fragment implements ServerListener, Server
     private BroadcastReceiver receiver;
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
 
-        if (!(context instanceof YaaicActivity)) {
+        if (!(activity instanceof YaaicActivity)) {
             throw new IllegalArgumentException("Activity has to implement YaaicActivity interface");
         }
 
-        this.activity = (YaaicActivity) context;
+        this.activity = (YaaicActivity) activity;
     }
 
     @Nullable

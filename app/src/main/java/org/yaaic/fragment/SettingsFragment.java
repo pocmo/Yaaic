@@ -1,6 +1,6 @@
 package org.yaaic.fragment;
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 
@@ -16,14 +16,14 @@ public class SettingsFragment extends PreferenceFragment {
     private YaaicActivity activity;
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
 
-        if (!(context instanceof YaaicActivity)) {
+        if (!(activity instanceof YaaicActivity)) {
             throw new IllegalArgumentException("Activity has to implement YaaicActivity interface");
         }
 
-        this.activity = (YaaicActivity) context;
+        this.activity = (YaaicActivity) activity;
     }
 
     @Override
