@@ -98,6 +98,8 @@ public class MainActivity extends AppCompatActivity implements YaaicActivity, Se
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AddServerActivity.class);
                 startActivity(intent);
+
+                drawer.closeDrawers();
             }
         });
     }
