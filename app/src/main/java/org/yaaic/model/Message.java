@@ -46,12 +46,12 @@ import android.widget.TextView;
  */
 public class Message
 {
-    public static final int COLOR_GREEN   = 0xFF458509;
-    public static final int COLOR_RED     = 0xFFcc0000;
-    public static final int COLOR_BLUE    = 0xFF729fcf;
-    public static final int COLOR_YELLOW  = 0xFFbe9b01;
-    public static final int COLOR_GREY    = 0xFFaaaaaa;
-    public static final int COLOR_DEFAULT = 0xFFeeeeee;
+    public static final int COLOR_GREEN   = 0xFF4caf50;
+    public static final int COLOR_RED     = 0xFFf44336;
+    public static final int COLOR_BLUE    = 0xFF3f51b5;
+    public static final int COLOR_YELLOW  = 0xFFffc107;
+    public static final int COLOR_GREY    = 0xFF607d8b;
+    public static final int COLOR_DEFAULT = 0xFF212121;
 
     /* normal message, this is the default */
     public static final int TYPE_MESSAGE = 0;
@@ -61,23 +61,24 @@ public class Message
 
     /* Some are light versions because dark colors hardly readable on
      * Yaaic's dark background */
-    public static final int[] colors = {
-        0xFFffffff, // White
-        0xFFffff00, // Yellow
-        0xFFff00ff, // Fuchsia
-        0xFFff0000, // Red
-        0xFFc0c0c0, // Silver
-        0xFF808080, // Gray
-        0xFF808000, // Olive
-        0xFFC040C0, // Light Purple
-        0xFFC04040, // Light Maroon
-        0xFF00ffff, // Agua
-        0xFF80ff80, // Light Lime
-        0xFF008080, // Teal
-        0xFF008000, // Green
-        0xFF8484FF, // Light Blue
-        0xFF6060D0, // Light Navy
-        0xFF000000, // Black
+    private static final int[] colors = {
+            0xFFf44336, // Red
+            0xFFe91e63, // Pink
+            0xFF9c27b0, // Purple
+            0xFF673ab7, // Deep Purple
+            0xFF3f51b5, // Indigo
+            0xFF2196f3, // Blue
+            0xFF03a9f4, // Light Blue
+            0xFF00bcd4, // Cyan
+            0xFF009688, // Teal
+            0xFF4caf50, // Green
+            0xFF8bc34a, // Light green
+            0xFFcddc39, // Lime
+            0xFFffeb3b, // Yellow
+            0xFFffc107, // Amber
+            0xFFff9800, // Orange
+            0xFFff5722, // Deep Orange
+            0xFF795548, // Brown
     };
 
     public static final int NO_ICON  = -1;
