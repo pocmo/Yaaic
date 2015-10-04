@@ -167,7 +167,10 @@ public class OverviewFragment extends Fragment implements ServerListener, Server
             db.close();
 
             Yaaic.getInstance().removeServerById(server.getId());
-            adapter.loadServers();
+
+            getActivity().sendBroadcast(
+                    Broadcast.createServerIntent(Broadcast.SERVER_UPDATE, server.getId())
+            );
         }
     }
 
