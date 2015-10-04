@@ -22,12 +22,14 @@ package org.yaaic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 import org.yaaic.db.Database;
 import org.yaaic.model.Server;
 
 import android.content.Context;
+import android.util.SparseArray;
 
 /**
  * Global Master Class :)
@@ -36,17 +38,17 @@ import android.content.Context;
  */
 public class Yaaic
 {
-    public static Yaaic              instance;
+    private static Yaaic instance;
 
-    private HashMap<Integer, Server> servers;
-    private boolean                  serversLoaded = false;
+    private SparseArray<Server> servers;
+    private boolean serversLoaded = false;
 
     /**
      * Private constructor, you may want to use static getInstance()
      */
     private Yaaic()
     {
-        servers = new HashMap<Integer, Server>();
+        servers = new SparseArray<Server>();
     }
 
     /**
@@ -61,7 +63,6 @@ public class Yaaic
             servers = db.getServers();
             db.close();
 
-            // context.sendBroadcast(new Intent(Broadcast.SERVER_UPDATE));
             serversLoaded = true;
         }
     }
@@ -105,9 +106,7 @@ public class Yaaic
      */
     public void addServer(Server server)
     {
-        if (!servers.containsKey(server.getId())) {
-            servers.put(server.getId(), server);
-        }
+        servers.put(server.getId(), server);
     }
 
     /**
@@ -123,15 +122,14 @@ public class Yaaic
      * 
      * @return list of servers
      */
-    public ArrayList<Server> getServersAsArrayList()
+    public List<Server> getServers()
     {
-        ArrayList<Server> serverList = new ArrayList<Server>();
+        List<Server> servers = new ArrayList<>(this.servers.size());
 
-        Set<Integer> mKeys = servers.keySet();
-        for (int key : mKeys) {
-            serverList.add(servers.get(key));
+        for (int i = 0; i < this.servers.size(); i++) {
+            servers.add(servers.get(i));
         }
 
-        return serverList;
+        return servers;
     }
 }

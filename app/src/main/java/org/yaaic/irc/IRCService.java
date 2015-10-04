@@ -21,27 +21,6 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.yaaic.irc;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-
-import org.jibble.pircbot.IrcException;
-import org.jibble.pircbot.NickAlreadyInUseException;
-import org.yaaic.R;
-import org.yaaic.Yaaic;
-import org.yaaic.activity.MainActivity;
-import org.yaaic.db.Database;
-import org.yaaic.model.Broadcast;
-import org.yaaic.model.Conversation;
-import org.yaaic.model.Message;
-import org.yaaic.model.Server;
-import org.yaaic.model.ServerInfo;
-import org.yaaic.model.Settings;
-import org.yaaic.model.Status;
-import org.yaaic.receiver.ReconnectReceiver;
-
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -51,6 +30,27 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
+
+import org.jibble.pircbot.IrcException;
+import org.jibble.pircbot.NickAlreadyInUseException;
+import org.yaaic.R;
+import org.yaaic.Yaaic;
+import org.yaaic.activity.MainActivity;
+import org.yaaic.model.Broadcast;
+import org.yaaic.model.Conversation;
+import org.yaaic.model.Message;
+import org.yaaic.model.Server;
+import org.yaaic.model.ServerInfo;
+import org.yaaic.model.Settings;
+import org.yaaic.model.Status;
+import org.yaaic.receiver.ReconnectReceiver;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * The background service for managing the irc connections
@@ -571,12 +571,9 @@ public class IRCService extends Service
     public void checkServiceStatus()
     {
         boolean shutDown = true;
-        ArrayList<Server> mServers = Yaaic.getInstance().getServersAsArrayList();
-        int mSize = mServers.size();
-        Server server;
+        List<Server> servers = Yaaic.getInstance().getServers();
 
-        for (int i = 0; i < mSize; i++) {
-            server = mServers.get(i);
+        for (final Server server : servers) {
             if (server.isDisconnected() && !server.mayReconnect()) {
                 int serverId = server.getId();
                 synchronized(this) {

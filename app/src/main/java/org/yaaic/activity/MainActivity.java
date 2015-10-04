@@ -51,7 +51,7 @@ import org.yaaic.model.Server;
 import org.yaaic.model.Status;
 import org.yaaic.receiver.ServerReceiver;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The main activity of Yaaic. We'll add, remove and replace fragments here.
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements YaaicActivity, Se
     }
 
     public void updateDrawerServerList() {
-        ArrayList<Server> servers = Yaaic.getInstance().getServersAsArrayList();
+        List<Server> servers = Yaaic.getInstance().getServers();
         drawerEmptyView.setVisibility(servers.size() > 0 ? View.GONE : View.VISIBLE);
 
         serverContainer.removeAllViews();
