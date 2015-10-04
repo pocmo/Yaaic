@@ -74,11 +74,28 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
             android:layout_marginTop="4dp"
             android:background="@color/divider" />
 
+        <TextView
+            android:id="@+id/drawer_empty_servers"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/navigation_item_background"
+            android:clickable="true"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_vertical"
+            android:onClick="onSettings"
+            android:drawableLeft="@drawable/ic_navigation_add"
+            android:drawablePadding="4dp"
+            android:paddingLeft="16dp"
+            android:text="@string/action_add_server"
+            android:textSize="14sp" />
+
         <LinearLayout
             android:id="@+id/server_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:orientation="vertical">
+
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"

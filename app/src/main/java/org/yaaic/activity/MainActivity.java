@@ -51,6 +51,8 @@ import org.yaaic.model.Server;
 import org.yaaic.model.Status;
 import org.yaaic.receiver.ServerReceiver;
 
+import java.util.ArrayList;
+
 /**
  * The main activity of Yaaic. We'll add, remove and replace fragments here.
  */
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements YaaicActivity, Se
     private IRCBinder binder;
     private ServerReceiver receiver;
     private LinearLayout serverContainer;
+    private View drawerEmptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,12 +91,24 @@ public class MainActivity extends AppCompatActivity implements YaaicActivity, Se
         drawer.setDrawerListener(toggle);
 
         serverContainer = (LinearLayout) findViewById(R.id.server_container);
+
+        drawerEmptyView = findViewById(R.id.drawer_empty_servers);
+        drawerEmptyView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AddServerActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void updateDrawerServerList() {
+        ArrayList<Server> servers = Yaaic.getInstance().getServersAsArrayList();
+        drawerEmptyView.setVisibility(servers.size() > 0 ? View.GONE : View.VISIBLE);
+
         serverContainer.removeAllViews();
 
-        for (final Server server : Yaaic.getInstance().getServersAsArrayList()) {
+        for (final Server server : servers) {
             TextView serverView = (TextView) getLayoutInflater().inflate(R.layout.item_drawer_server, drawer, false);
             serverView.setText(server.getTitle());
 
