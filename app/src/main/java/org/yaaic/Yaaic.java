@@ -127,7 +127,7 @@ public class Yaaic
         List<Server> servers = new ArrayList<>(this.servers.size());
 
         for (int i = 0; i < this.servers.size(); i++) {
-            servers.add(servers.get(i));
+            servers.add(this.servers.valueAt(i));
         }
 
         return servers;
