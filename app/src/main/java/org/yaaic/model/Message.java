@@ -20,24 +20,20 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.yaaic.model;
 
-import java.util.Date;
-
-import org.yaaic.utils.MircColors;
-import org.yaaic.utils.Smilies;
-
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 import android.text.util.Linkify;
-import android.view.View;
 import android.widget.TextView;
+
+import org.yaaic.utils.Emojis;
+import org.yaaic.utils.MircColors;
+
+import java.util.Date;
 
 /**
  * A channel or server message
@@ -239,16 +235,14 @@ public class Message
             canvas = new SpannableString(prefix + timestamp + nick);
             SpannableString renderedText;
 
+            String text = settings.showGraphicalSmilies() ? Emojis.convert(this.text) : this.text;
+
             if (settings.showMircColors()) {
                 renderedText = MircColors.toSpannable(text);
             } else {
                 renderedText = new SpannableString(
                     MircColors.removeStyleAndColors(text)
                 );
-            }
-
-            if (settings.showGraphicalSmilies()) {
-                renderedText = Smilies.toSpannable(renderedText, context);
             }
 
             canvas = new SpannableString(TextUtils.concat(canvas, renderedText));
