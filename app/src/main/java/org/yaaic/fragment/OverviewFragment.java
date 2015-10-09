@@ -21,13 +21,13 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 package org.yaaic.fragment;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -61,14 +61,14 @@ public class OverviewFragment extends Fragment implements ServerListener, Server
     private BroadcastReceiver receiver;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
-        if (!(activity instanceof YaaicActivity)) {
+        if (!(context instanceof YaaicActivity)) {
             throw new IllegalArgumentException("Activity has to implement YaaicActivity interface");
         }
 
-        this.activity = (YaaicActivity) activity;
+        this.activity = (YaaicActivity) context;
     }
 
     @Nullable

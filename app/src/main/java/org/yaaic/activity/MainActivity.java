@@ -20,13 +20,13 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.yaaic.activity;
 
-import android.app.Fragment;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -200,7 +200,6 @@ public class MainActivity extends AppCompatActivity implements YaaicActivity, Se
         fragment.setArguments(arguments);
 
         switchToFragment(fragment, ConversationFragment.TRANSACTION_TAG);
-
     }
 
     public void onOverview(View view) {
@@ -214,11 +213,8 @@ public class MainActivity extends AppCompatActivity implements YaaicActivity, Se
     private void switchToFragment(Fragment fragment, String tag) {
         drawer.closeDrawers();
 
-        getFragmentManager()
+        getSupportFragmentManager()
                 .beginTransaction()
-                .setCustomAnimations(
-                        R.animator.card_flip_right_in, R.animator.card_flip_right_out,
-                        R.animator.card_flip_left_in, R.animator.card_flip_left_out)
                 .replace(R.id.container, fragment, tag)
                 .commit();
     }
