@@ -18,7 +18,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.yaaic.ssl;
+package org.yaaic.pircbot;
 
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;

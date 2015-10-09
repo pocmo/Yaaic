@@ -14,6 +14,10 @@ Modified by: Sebastian Kaspari <sebastian@yaaic.org>
  */
 package org.jibble.pircbot;
 
+import android.util.Base64;
+
+import org.yaaic.pircbot.NaiveTrustManager;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -37,9 +41,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
-
-import org.yaaic.ssl.NaiveTrustManager;
-import org.yaaic.tools.Base64;
 
 /**
  * PircBot is a Java framework for writing IRC bots quickly and easily.
@@ -213,7 +214,7 @@ public abstract class PircBot implements ReplyConstants {
 
             String authString = saslUsername + "\0" + saslUsername + "\0" + saslPassword;
 
-            String authStringEncoded = Base64.encodeBytes(authString.getBytes());
+            String authStringEncoded = Base64.encodeToString(authString.getBytes(), Base64.NO_WRAP);
 
             while (authStringEncoded.length() >= 400) {
                 String toSend = authStringEncoded.substring(0, 400);
