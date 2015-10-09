@@ -215,6 +215,7 @@ public class MainActivity extends AppCompatActivity implements YaaicActivity, Se
 
         getSupportFragmentManager()
                 .beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left)
                 .replace(R.id.container, fragment, tag)
                 .commit();
     }
