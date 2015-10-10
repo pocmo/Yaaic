@@ -27,6 +27,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -199,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements YaaicActivity, Se
         ConversationFragment fragment = new ConversationFragment();
         fragment.setArguments(arguments);
 
-        switchToFragment(fragment, ConversationFragment.TRANSACTION_TAG);
+        switchToFragment(fragment, ConversationFragment.TRANSACTION_TAG + "-" + server.getId());
     }
 
     public void onOverview(View view) {
@@ -213,7 +214,14 @@ public class MainActivity extends AppCompatActivity implements YaaicActivity, Se
     private void switchToFragment(Fragment fragment, String tag) {
         drawer.closeDrawers();
 
-        getSupportFragmentManager()
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        if (fragmentManager.findFragmentByTag(tag) != null) {
+            // We are already showing this fragment
+            return;
+        }
+
+        fragmentManager
                 .beginTransaction()
                 .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left)
                 .replace(R.id.container, fragment, tag)
