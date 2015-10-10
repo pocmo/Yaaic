@@ -19,7 +19,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/join"
         android:title="@string/join_channel" />
@@ -30,9 +31,9 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     <item
         android:id="@+id/close"
         android:title="@string/close"
-        android:showAsAction="never" />
+        app:showAsAction="never" />
     <item
         android:id="@+id/disconnect"
         android:title="@string/disconnect"
-        android:showAsAction="never" />
+        app:showAsAction="never" />
 </menu>
