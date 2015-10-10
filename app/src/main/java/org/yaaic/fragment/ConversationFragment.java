@@ -418,6 +418,14 @@ public class ConversationFragment extends Fragment implements ServerListener, Co
     }
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        Conversation conversation = pagerAdapter.getItem(pager.getCurrentItem());
+        menu.findItem(R.id.notify).setChecked(conversation.shouldAlwaysNotify());
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.disconnect:
@@ -459,6 +467,11 @@ public class ConversationFragment extends Fragment implements ServerListener, Co
                 } else {
                     Toast.makeText(getActivity(), getResources().getString(R.string.only_usable_from_channel), Toast.LENGTH_SHORT).show();
                 }
+                break;
+
+            case R.id.notify:
+                Conversation conversationForNotify = pagerAdapter.getItem(pager.getCurrentItem());
+                conversationForNotify.setAlwaysNotify(!item.isChecked());
                 break;
         }
 

@@ -39,6 +39,7 @@
     <string name="join">Join</string>
     <string name="join_channel">Join Channel</string>
     <string name="close">Close</string>
+    <string name="notify">Notify</string>
     <string name="users">Users</string>
     <string name="connect">Connect</string>
     <string name="disconnect">Disconnect</string>

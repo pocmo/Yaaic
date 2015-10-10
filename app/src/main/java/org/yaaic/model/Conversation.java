@@ -49,6 +49,7 @@ public abstract class Conversation
     private int status = 1;
     private int newMentions = 0;
     private int historySize = DEFAULT_HISTORY_SIZE;
+    private boolean notify;
 
     /**
      * Get the type of conversation (channel, query, ..)
@@ -231,5 +232,13 @@ public abstract class Conversation
         if (history.size() > size) {
             history.subList(size, history.size()).clear();
         }
+    }
+
+    public boolean shouldAlwaysNotify() {
+        return notify;
+    }
+
+    public void setAlwaysNotify(boolean notify) {
+        this.notify = notify;
     }
 }

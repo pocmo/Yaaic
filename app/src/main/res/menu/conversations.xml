@@ -29,6 +29,11 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
         android:title="@string/users"
         android:icon="@drawable/actionbar_users" />
     <item
+        android:id="@+id/notify"
+        android:checkable="true"
+        android:checked="false"
+        android:title="@string/notify" />
+    <item
         android:id="@+id/close"
         android:title="@string/close"
         app:showAsAction="never" />
