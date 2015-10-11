@@ -1,5 +1,5 @@
 <resources>
     <declare-styleable name="ScrimInsetsView">
-        <attr name="insetForeground" format="reference|color" />
+        <attr name="scrimInsetForeground" format="reference|color" />
     </declare-styleable>
 </resources>

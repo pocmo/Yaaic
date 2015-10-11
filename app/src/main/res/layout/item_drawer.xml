@@ -28,7 +28,7 @@ along with Yaaic.  If not, see <http://www.gnu.org/licenses/>.
     android:clickable="true"
     android:fitsSystemWindows="true"
     android:paddingTop="24dp"
-    app:insetForeground="@color/primary_dark">
+    app:scrimInsetForeground="@color/primary_dark">
 
     <LinearLayout
         android:id="@+id/drawer_content"

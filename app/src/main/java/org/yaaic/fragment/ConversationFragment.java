@@ -33,6 +33,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -118,7 +119,7 @@ public class ConversationFragment extends Fragment implements ServerListener, Co
     //      channel name in onActivityResult() and run the join command in onResume().
     private String joinChannelBuffer;
 
-    private boolean reconnectDialogActive = false;
+    private Snackbar snackbar;
 
     private final View.OnKeyListener inputKeyListener = new View.OnKeyListener() {
         /**
@@ -587,36 +588,32 @@ public class ConversationFragment extends Fragment implements ServerListener, Co
                 return;
             }
 
-            if (!binder.getService().getSettings().isReconnectEnabled() && !reconnectDialogActive) {
-                reconnectDialogActive = true;
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage(getResources().getString(R.string.reconnect_after_disconnect, server.getTitle()))
-                        .setCancelable(false)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                                if (!server.isDisconnected()) {
-                                    reconnectDialogActive = false;
-                                    return;
-                                }
-                                binder.getService().getConnection(server.getId()).setAutojoinChannels(
-                                        server.getCurrentChannelNames()
-                                );
-                                server.setStatus(Status.CONNECTING);
-                                binder.connect(server);
-                                reconnectDialogActive = false;
+            if (!binder.getService().getSettings().isReconnectEnabled()) {
+                if (snackbar == null) {
+                    snackbar = Snackbar.make(pager,
+                            getString(R.string.disconnect_info, server.getTitle()),
+                            Snackbar.LENGTH_INDEFINITE
+                    );
+
+                    snackbar.setAction(R.string.action_reconnect, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (!server.isDisconnected()) {
+                                return;
                             }
-                        })
-                        .setNegativeButton(getString(R.string.negative_button), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                                server.setMayReconnect(false);
-                                reconnectDialogActive = false;
-                                dialog.cancel();
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.show();
+
+                            binder.getService().getConnection(server.getId()).setAutojoinChannels(
+                                    server.getCurrentChannelNames()
+                            );
+                            server.setStatus(Status.CONNECTING);
+                            binder.connect(server);
+                        }
+                    });
+                }
+
+                if (!snackbar.isShown()) {
+                    snackbar.show();
+                }
             }
         }
     }
