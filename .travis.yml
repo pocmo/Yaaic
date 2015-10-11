@@ -10,3 +10,4 @@ android:
     - extra-android-m2repository
 notifications:
   irc: "irc.freenode.net#yaaic"
+sudo: false
