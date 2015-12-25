@@ -207,7 +207,7 @@ public abstract class PircBot implements ReplyConstants {
 
         if (saslUsername != null) {
             OutputThread.sendRawLine(this, bwriter, "CAP LS");
-            OutputThread.sendRawLine(this, bwriter, "CAP REQ : sasl multi-prefix");
+            OutputThread.sendRawLine(this, bwriter, "CAP REQ :sasl");
             OutputThread.sendRawLine(this, bwriter, "CAP END");
 
             OutputThread.sendRawLine(this, bwriter, "AUTHENTICATE PLAIN");
