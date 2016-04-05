@@ -198,32 +198,25 @@ public class AddServerActivity extends ActionBarActivity implements OnClickListe
     @Override
     public void onClick(View v)
     {
-        switch (v.getId()) {
-            case R.id.aliases:
-                Intent aliasIntent = new Intent(this, AddAliasActivity.class);
-                aliasIntent.putExtra(Extra.ALIASES, aliases);
-                startActivityForResult(aliasIntent, REQUEST_CODE_ALIASES);
-                break;
-
-            case R.id.authentication:
-                Intent authIntent = new Intent(this, AuthenticationActivity.class);
-                authIntent.putExtra(Extra.NICKSERV_PASSWORD, authentication.getNickservPassword());
-                authIntent.putExtra(Extra.SASL_USER, authentication.getSaslUsername());
-                authIntent.putExtra(Extra.SASL_PASSWORD, authentication.getSaslPassword());
-                startActivityForResult(authIntent, REQUEST_CODE_AUTHENTICATION);
-                break;
-
-            case R.id.channels:
-                Intent channelIntent = new Intent(this, AddChannelActivity.class);
-                channelIntent.putExtra(Extra.CHANNELS, channels);
-                startActivityForResult(channelIntent, REQUEST_CODE_CHANNELS);
-                break;
-
-            case R.id.commands:
-                Intent commandsIntent = new Intent(this, AddCommandsActivity.class);
-                commandsIntent.putExtra(Extra.COMMANDS, commands);
-                startActivityForResult(commandsIntent, REQUEST_CODE_COMMANDS);
-                break;
+        int id = v.getId();
+        if(id == R.id.aliases) {
+            Intent aliasIntent = new Intent(this, AddAliasActivity.class);
+            aliasIntent.putExtra(Extra.ALIASES, aliases);
+            startActivityForResult(aliasIntent, REQUEST_CODE_ALIASES);
+        } else if(id == R.id.authentication) {
+            Intent authIntent = new Intent(this, AuthenticationActivity.class);
+            authIntent.putExtra(Extra.NICKSERV_PASSWORD, authentication.getNickservPassword());
+            authIntent.putExtra(Extra.SASL_USER, authentication.getSaslUsername());
+            authIntent.putExtra(Extra.SASL_PASSWORD, authentication.getSaslPassword());
+            startActivityForResult(authIntent, REQUEST_CODE_AUTHENTICATION);
+        } else if(id == R.id.channels) {
+            Intent channelIntent = new Intent(this, AddChannelActivity.class);
+            channelIntent.putExtra(Extra.CHANNELS, channels);
+            startActivityForResult(channelIntent, REQUEST_CODE_CHANNELS);
+        } else if(id == R.id.commands) {
+            Intent commandsIntent = new Intent(this, AddCommandsActivity.class);
+            commandsIntent.putExtra(Extra.COMMANDS, commands);
+            startActivityForResult(commandsIntent, REQUEST_CODE_COMMANDS);
         }
     }
 

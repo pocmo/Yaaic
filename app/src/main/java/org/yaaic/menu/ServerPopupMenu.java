@@ -55,19 +55,14 @@ public class ServerPopupMenu extends PopupMenu implements PopupMenu.OnMenuItemCl
     public boolean onMenuItemClick(MenuItem item) {
         int id = item.getItemId();
 
-        switch (id) {
-            case R.id.edit:
-                listener.onEditServer(server);
-                break;
-            case R.id.delete:
-                listener.onDeleteServer(server);
-                break;
-            case R.id.connect:
-                listener.onConnectToServer(server);
-                break;
-            case R.id.disconnect:
-                listener.onDisconnectFromServer(server);
-                break;
+        if(id == R.id.edit) {
+            listener.onEditServer(server);
+        } else if(id == R.id.delete) {
+            listener.onDeleteServer(server);
+        } else if(id == R.id.connect) {
+            listener.onConnectToServer(server);
+        } else if(id == R.id.disconnect) {
+            listener.onDisconnectFromServer(server);
         }
 
         return true;
