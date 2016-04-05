@@ -59,6 +59,9 @@ import java.util.List;
  */
 public class IRCService extends Service
 {
+
+    private Intent notifyExternalIntent;
+
     public static final String ACTION_FOREGROUND = "org.yaaic.service.foreground";
     public static final String ACTION_BACKGROUND = "org.yaaic.service.background";
     public static final String ACTION_ACK_NEW_MENTIONS = "org.yaaic.service.ack_new_mentions";
@@ -120,6 +123,10 @@ public class IRCService extends Service
     {
         super.onCreate();
 
+        Intent notifyIntent = new Intent(this, MainActivity.class);
+        notifyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        setNotifyIntent(notifyIntent);
+
         settings = new Settings(getBaseContext());
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
@@ -178,6 +185,14 @@ public class IRCService extends Service
     }
 
 
+    public Intent getNotifyIntent(){
+        return notifyExternalIntent;
+    }
+    public void setNotifyIntent(Intent intent){
+        notifyExternalIntent = intent;
+    }
+
+
     /**
      * Handle command
      *
@@ -196,8 +211,7 @@ public class IRCService extends Service
             notification = new Notification(R.drawable.ic_notification, getText(R.string.notification_running), System.currentTimeMillis());
 
             // The PendingIntent to launch our activity if the user selects this notification
-            Intent notifyIntent = new Intent(this, MainActivity.class);
-            notifyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Intent notifyIntent = getNotifyIntent();
             PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0);
 
             notification = new NotificationCompat.Builder(this)
@@ -230,8 +244,8 @@ public class IRCService extends Service
     private void updateNotification(String text, String contentText, boolean vibrate, boolean sound, boolean light)
     {
         if (foreground) {
-            Intent notifyIntent = new Intent(this, MainActivity.class);
-            notifyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            notification = new Notification(R.drawable.ic_notification, text, System.currentTimeMillis());
+            Intent notifyIntent = getNotifyIntent();
             PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notifyIntent, 0);
 
             if (contentText == null) {
