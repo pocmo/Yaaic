@@ -31,8 +31,8 @@ import android.content.IntentFilter;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 
-import org.jibble.pircbot.IrcException;
-import org.jibble.pircbot.NickAlreadyInUseException;
+import org.yaaic.protocol.IrcException;
+import org.yaaic.protocol.NickAlreadyInUseException;
 import org.yaaic.R;
 import org.yaaic.Yaaic;
 import org.yaaic.activity.MainActivity;

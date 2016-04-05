@@ -12,7 +12,7 @@ found at http://www.jibble.org/licenses/
 */
 
 
-package org.jibble.pircbot;
+package org.yaaic.protocol;
 
 import java.io.*;
 
@@ -39,7 +39,7 @@ public class OutputThread extends Thread {
      * @param bot The underlying PircBot instance.
      * @param outQueue The Queue from which we will obtain our messages.
      */
-    OutputThread(PircBot bot, Queue outQueue) {
+    OutputThread(IRCClient bot, Queue outQueue) {
         _bot = bot;
         _outQueue = outQueue;
         this.setName(this.getClass() + "-Thread");
@@ -56,7 +56,7 @@ public class OutputThread extends Thread {
      * @param encoding The charset to use when encoing this string into a
      *                 byte array.
      */
-    static void sendRawLine(PircBot bot, BufferedWriter bwriter, String line) {
+    static void sendRawLine(IRCClient bot, BufferedWriter bwriter, String line) {
         if (line.length() > bot.getMaxLineLength() - 2) {
             line = line.substring(0, bot.getMaxLineLength() - 2);
         }
@@ -97,7 +97,7 @@ public class OutputThread extends Thread {
         }
     }
     
-    private PircBot _bot = null;
+    private IRCClient _bot = null;
     private Queue _outQueue = null;
     
 }

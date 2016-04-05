@@ -11,7 +11,7 @@ found at http://www.jibble.org/licenses/
 
 */
 
-package org.jibble.pircbot;
+package org.yaaic.protocol;
 
 /**
  * An IrcException class.

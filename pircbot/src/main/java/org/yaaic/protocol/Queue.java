@@ -12,7 +12,7 @@ found at http://www.jibble.org/licenses/
 */
 
 
-package org.jibble.pircbot;
+package org.yaaic.protocol;
 
 import java.util.Vector;
 
@@ -35,16 +35,6 @@ import java.util.Vector;
  * @version    1.4.6 (Build time: Wed Apr 11 19:20:59 2007)
  */
 public class Queue {
-    
-
-    /**
-     * Constructs a Queue object of unlimited size.
-     */
-    public Queue() {
-        
-    }
-    
-    
     /**
      * Adds an Object to the end of the Queue.
      *
@@ -56,21 +46,7 @@ public class Queue {
             _queue.notify();
         }
     }
-    
-    
-    /**
-     * Adds an Object to the front of the Queue.
-     * 
-     * @param o The Object to be added to the Queue.
-     */
-    public void addFront(Object o) {
-        synchronized(_queue) {
-            _queue.insertElementAt(o, 0);
-            _queue.notify();
-        }
-    }
-    
-    
+
     /**
      * Returns the Object at the front of the Queue.  This
      * Object is then removed from the Queue.  If the Queue
@@ -81,7 +57,7 @@ public class Queue {
      */
     public Object next() {
         
-        Object o = null;
+        Object o;
         
         // Block if the Queue is empty.
         synchronized(_queue) {
@@ -106,31 +82,7 @@ public class Queue {
 
         return o;
     }
-    
-    
-    /**
-     * Returns true if the Queue is not empty.  If another
-     * Thread empties the Queue before <b>next()</b> is
-     * called, then the call to <b>next()</b> shall block
-     * until the Queue has been populated again.
-     *
-     * @return True only if the Queue not empty.
-     */
-    public boolean hasNext() {
-        return (this.size() != 0);
-    }
-    
-    
-    /**
-     * Clears the contents of the Queue.
-     */
-    public void clear() {
-        synchronized(_queue) {
-            _queue.removeAllElements();
-        }
-    }
-    
-    
+
     /**
      * Returns the size of the Queue.
      *
@@ -141,6 +93,6 @@ public class Queue {
     }
     
 
-    private Vector<Object> _queue = new Vector<Object>();
+    private final Vector<Object> _queue = new Vector<Object>();
     
 }

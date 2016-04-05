@@ -12,11 +12,11 @@ found at http://www.jibble.org/licenses/
 Modified by: Sebastian Kaspari <sebastian@yaaic.org>
 
  */
-package org.jibble.pircbot;
+package org.yaaic.protocol;
 
 import android.util.Base64;
 
-import org.yaaic.pircbot.NaiveTrustManager;
+import org.yaaic.protocol.ssl.NaiveTrustManager;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -77,7 +77,13 @@ import javax.net.ssl.X509TrustManager;
  *          <a href="http://www.jibble.org/">http://www.jibble.org/</a>
  * @version    1.4.6 (Build time: Wed Apr 11 19:20:59 2007)
  */
-public abstract class PircBot implements ReplyConstants {
+public abstract class IRCClient {
+    public static final int RPL_LIST = 322;
+    public static final int RPL_TOPIC = 332;
+    public static final int RPL_TOPICINFO = 333;;
+    public static final int RPL_NAMREPLY = 353;
+    public static final int RPL_ENDOFNAMES = 366;
+
     /**
      * The definitive version number of this release of PircBot.
      * (Note: Change this before automatically building releases)
@@ -94,7 +100,7 @@ public abstract class PircBot implements ReplyConstants {
      * in classes which extend the PircBot abstract class should be responsible
      * for changing the default settings if required.
      */
-    public PircBot() {}
+    public IRCClient() {}
 
     /**
      * Attempt to connect to the specified IRC server.
@@ -280,25 +286,6 @@ public abstract class PircBot implements ReplyConstants {
     }
 
     /**
-     * Reconnects to the IRC server that we were previously connected to.
-     * If necessary, the appropriate port number and password will be used.
-     * This method will throw an IrcException if we have never connected
-     * to an IRC server previously.
-     * 
-     * @since PircBot 0.9.9
-     * 
-     * @throws IOException if it was not possible to connect to the server.
-     * @throws IrcException if the server would not let us join it.
-     * @throws NickAlreadyInUseException if our nick is already in use on the server.
-     */
-    public final synchronized void reconnect() throws IOException, IrcException, NickAlreadyInUseException{
-        if (getServer() == null) {
-            throw new IrcException("Cannot reconnect to an IRC server because we were never connected to one previously!");
-        }
-        connect(getServer(), getPort(), getPassword());
-    }
-
-    /**
      * Set wether SSL should be used to connect to the server.
      * 
      * @author Sebastian Kaspari <sebastian@yaaic.org>
@@ -321,21 +308,6 @@ public abstract class PircBot implements ReplyConstants {
         this.saslUsername = username;
         this.saslPassword = password;
     }
-
-
-    /**
-     * This method disconnects from the server cleanly by calling the
-     * quitServer() method.  Providing the PircBot was connected to an
-     * IRC server, the onDisconnect() will be called as soon as the
-     * disconnection is made by the server.
-     *
-     * @see #quitServer() quitServer
-     * @see #quitServer(String) quitServer
-     */
-    public final synchronized void disconnect() {
-        this.quitServer();
-    }
-
 
     /**
      * When you connect to a server and your nick is already in use and
@@ -379,18 +351,6 @@ public abstract class PircBot implements ReplyConstants {
     public final void partChannel(String channel) {
         this.sendRawLine("PART " + channel);
     }
-
-
-    /**
-     * Parts a channel, giving a reason.
-     *
-     * @param channel The name of the channel to leave.
-     * @param reason  The reason for parting the channel.
-     */
-    public final void partChannel(String channel, String reason) {
-        this.sendRawLine("PART " + channel + " :" + reason);
-    }
-
 
     /**
      * Quits from the IRC server.
@@ -461,8 +421,6 @@ public abstract class PircBot implements ReplyConstants {
      *
      * @param target The name of the channel or user nick to send to.
      * @param message The message to send.
-     * 
-     * @see Colors
      */
     public final void sendMessage(String target, String message) {
         _outQueue.add("PRIVMSG " + target + " :" + message);
@@ -474,8 +432,6 @@ public abstract class PircBot implements ReplyConstants {
      *
      * @param target The name of the channel or user nick to send to.
      * @param action The action to send.
-     * 
-     * @see Colors
      */
     public final void sendAction(String target, String action) {
         sendCTCPCommand(target, "ACTION " + action);
@@ -571,21 +527,6 @@ public abstract class PircBot implements ReplyConstants {
     public final void setMode(String channel, String mode) {
         this.sendRawLine("MODE " + channel + " " + mode);
     }
-
-
-    /**
-     * Sends an invitation to join a channel.  Some channels can be marked
-     * as "invite-only", so it may be useful to allow a bot to invite people
-     * into it.
-     * 
-     * @param nick    The nick of the user to invite
-     * @param channel The channel you are inviting the user to join.
-     * 
-     */
-    public final void sendInvite(String nick, String channel) {
-        this.sendRawLine("INVITE " + nick + " :" + channel);
-    }
-
 
     /**
      * Bans a user from a channel.  An example of a valid hostmask is
@@ -709,20 +650,6 @@ public abstract class PircBot implements ReplyConstants {
         this.sendRawLine("KICK " + channel + " " + nick + " :" + reason);
     }
 
-
-    /**
-     * Issues a request for a list of all channels on the IRC server.
-     * When the PircBot receives information for each channel, it will
-     * call the onChannelInfo method, which you will need to override
-     * if you want it to do anything useful.
-     * 
-     * @see #onChannelInfo(String,int,String) onChannelInfo
-     */
-    public final void listChannels() {
-        this.listChannels(null);
-    }
-
-
     /**
      * Issues a request for a list of all channels on the IRC server.
      * When the PircBot receives information for each channel, it will
@@ -746,137 +673,6 @@ public abstract class PircBot implements ReplyConstants {
         else {
             this.sendRawLine("LIST " + parameters);
         }
-    }
-
-
-    /**
-     * Sends a file to another user.  Resuming is supported.
-     * The other user must be able to connect directly to your bot to be
-     * able to receive the file.
-     *  <p>
-     * You may throttle the speed of this file transfer by calling the
-     * setPacketDelay method on the DccFileTransfer that is returned.
-     *  <p>
-     * This method may not be overridden.
-     * 
-     * @since 0.9c
-     * 
-     * @param file The file to send.
-     * @param nick The user to whom the file is to be sent.
-     * @param timeout The number of milliseconds to wait for the recipient to
-     *                acccept the file (we recommend about 120000).
-     * 
-     * @return The DccFileTransfer that can be used to monitor this transfer.
-     * 
-     * @see DccFileTransfer
-     * 
-     */
-    public final DccFileTransfer dccSendFile(File file, String nick, int timeout) {
-        DccFileTransfer transfer = new DccFileTransfer(this, _dccManager, file, nick, timeout);
-        transfer.doSend(true);
-        return transfer;
-    }
-
-
-    /**
-     * Receives a file that is being sent to us by a DCC SEND request.
-     * Please use the onIncomingFileTransfer method to receive files.
-     * 
-     * @deprecated As of PircBot 1.2.0, use {@link #onIncomingFileTransfer(DccFileTransfer)}
-     */
-    @Deprecated
-    protected final void dccReceiveFile(File file, long address, int port, int size) {
-        throw new RuntimeException("dccReceiveFile is deprecated, please use sendFile");
-    }
-
-
-    /**
-     * Attempts to establish a DCC CHAT session with a client.  This method
-     * issues the connection request to the client and then waits for the
-     * client to respond.  If the connection is successfully made, then a
-     * DccChat object is returned by this method.  If the connection is not
-     * made within the time limit specified by the timeout value, then null
-     * is returned.
-     *  <p>
-     * It is <b>strongly recommended</b> that you call this method within a new
-     * Thread, as it may take a long time to return.
-     *  <p>
-     * This method may not be overridden.
-     * 
-     * @since PircBot 0.9.8
-     *
-     * @param nick The nick of the user we are trying to establish a chat with.
-     * @param timeout The number of milliseconds to wait for the recipient to
-     *                accept the chat connection (we recommend about 120000).
-     * 
-     * @return a DccChat object that can be used to send and recieve lines of
-     *         text.  Returns <b>null</b> if the connection could not be made.
-     * 
-     * @see DccChat
-     */
-    public final DccChat dccSendChatRequest(String nick, int timeout) {
-        DccChat chat = null;
-        try {
-            ServerSocket ss = null;
-
-            int[] ports = getDccPorts();
-            if (ports == null) {
-                // Use any free port.
-                ss = new ServerSocket(0);
-            }
-            else {
-                for (int i = 0; i < ports.length; i++) {
-                    try {
-                        ss = new ServerSocket(ports[i]);
-                        // Found a port number we could use.
-                        break;
-                    }
-                    catch (Exception e) {
-                        // Do nothing; go round and try another port.
-                    }
-                }
-                if (ss == null) {
-                    // No ports could be used.
-                    throw new IOException("All ports returned by getDccPorts() are in use.");
-                }
-            }
-
-            ss.setSoTimeout(timeout);
-            int port = ss.getLocalPort();
-
-            InetAddress inetAddress = getDccInetAddress();
-            if (inetAddress == null) {
-                inetAddress = getInetAddress();
-            }
-            byte[] ip = inetAddress.getAddress();
-            long ipNum = ipToLong(ip);
-
-            sendCTCPCommand(nick, "DCC CHAT chat " + ipNum + " " + port);
-
-            // The client may now connect to us to chat.
-            Socket socket = ss.accept();
-
-            // Close the server socket now that we've finished with it.
-            ss.close();
-
-            chat = new DccChat(this, nick, socket);
-        }
-        catch (Exception e) {
-            // Do nothing.
-        }
-        return chat;
-    }
-
-
-    /**
-     * Attempts to accept a DCC CHAT request by a client.
-     * Please use the onIncomingChatRequest method to receive files.
-     * 
-     * @deprecated As of PircBot 1.2.0, use {@link #onIncomingChatRequest(DccChat)}
-     */
-    @Deprecated
-    protected final DccChat dccAcceptChatRequest(String sourceNick, long address, int port) {
-        throw new RuntimeException("dccAcceptChatRequest is deprecated, please use onIncomingChatRequest");
     }
 
     /**
@@ -1026,14 +822,6 @@ public abstract class PircBot implements ReplyConstants {
             else if (request.equals("FINGER")) {
                 // FINGER request
                 this.onFinger(sourceNick, sourceLogin, sourceHostname, target);
-            }
-            else if ((tokenizer = new StringTokenizer(request)).countTokens() >= 5 && tokenizer.nextToken().equals("DCC")) {
-                // This is a DCC request.
-                boolean success = _dccManager.processRequest(sourceNick, sourceLogin, sourceHostname, request);
-                if (!success) {
-                    // The DccManager didn't know what to do with the line.
-                    this.onUnknown(line);
-                }
             }
             else {
                 // An unknown CTCP message - ignore it.
@@ -1302,8 +1090,6 @@ public abstract class PircBot implements ReplyConstants {
      * 
      * @param code The three-digit numerical code for the response.
      * @param response The full response from the IRC server.
-     * 
-     * @see ReplyConstants
      */
     protected void onServerResponse(int code, String response) {}
 
@@ -1523,8 +1309,6 @@ public abstract class PircBot implements ReplyConstants {
      * @param channel The name of the channel.
      * @param userCount The number of users visible in this channel.
      * @param topic The topic for this channel.
-     * 
-     * @see #listChannels() listChannels
      */
     protected void onChannelInfo(String channel, int userCount, String topic) {}
 
@@ -2174,141 +1958,6 @@ public abstract class PircBot implements ReplyConstants {
      */
     protected void onInvite(String targetNick, String sourceNick, String sourceLogin, String sourceHostname, String channel)  {}
 
-
-    /**
-     * This method used to be called when a DCC SEND request was sent to the PircBot.
-     * Please use the onIncomingFileTransfer method to receive files, as it
-     * has better functionality and supports resuming.
-     * 
-     * @deprecated As of PircBot 1.2.0, use {@link #onIncomingFileTransfer(DccFileTransfer)}
-     */
-    @Deprecated
-    protected void onDccSendRequest(String sourceNick, String sourceLogin, String sourceHostname, String filename, long address, int port, int size) {}
-
-
-    /**
-     * This method used to be called when a DCC CHAT request was sent to the PircBot.
-     * Please use the onIncomingChatRequest method to accept chats, as it
-     * has better functionality.
-     * 
-     * @deprecated As of PircBot 1.2.0, use {@link #onIncomingChatRequest(DccChat)}
-     */
-    @Deprecated
-    protected void onDccChatRequest(String sourceNick, String sourceLogin, String sourceHostname, long address, int port) {}
-
-
-    /**
-     * This method is called whenever a DCC SEND request is sent to the PircBot.
-     * This means that a client has requested to send a file to us.
-     * This abstract implementation performs no action, which means that all
-     * DCC SEND requests will be ignored by default. If you wish to receive
-     * the file, then you may override this method and call the receive method
-     * on the DccFileTransfer object, which connects to the sender and downloads
-     * the file.
-     *  <p>
-     * Example:
-     * <pre> public void onIncomingFileTransfer(DccFileTransfer transfer) {
-     *     // Use the suggested file name.
-     *     File file = transfer.getFile();
-     *     // Receive the transfer and save it to the file, allowing resuming.
-     *     transfer.receive(file, true);
-     * }</pre>
-     *  <p>
-     * <b>Warning:</b> Receiving an incoming file transfer will cause a file
-     * to be written to disk. Please ensure that you make adequate security
-     * checks so that this file does not overwrite anything important!
-     *  <p>
-     * Each time a file is received, it happens within a new Thread
-     * in order to allow multiple files to be downloaded by the PircBot
-     * at the same time.
-     *  <p>
-     * If you allow resuming and the file already partly exists, it will
-     * be appended to instead of overwritten.  If resuming is not enabled,
-     * the file will be overwritten if it already exists.
-     *  <p>
-     * You can throttle the speed of the transfer by calling the setPacketDelay
-     * method on the DccFileTransfer object, either before you receive the
-     * file or at any moment during the transfer.
-     *  <p>
-     * The implementation of this method in the PircBot abstract class
-     * performs no actions and may be overridden as required.
-     *
-     * @since PircBot 1.2.0
-     * 
-     * @param transfer The DcccFileTransfer that you may accept.
-     * 
-     * @see DccFileTransfer
-     * 
-     */
-    protected void onIncomingFileTransfer(DccFileTransfer transfer) {}
-
-
-    /**
-     * This method gets called when a DccFileTransfer has finished.
-     * If there was a problem, the Exception will say what went wrong.
-     * If the file was sent successfully, the Exception will be null.
-     *  <p>
-     * Both incoming and outgoing file transfers are passed to this method.
-     * You can determine the type by calling the isIncoming or isOutgoing
-     * methods on the DccFileTransfer object.
-     *
-     * @since PircBot 1.2.0
-     * 
-     * @param transfer The DccFileTransfer that has finished.
-     * @param e null if the file was transfered successfully, otherwise this
-     *          will report what went wrong.
-     * 
-     * @see DccFileTransfer
-     * 
-     */
-    protected void onFileTransferFinished(DccFileTransfer transfer, Exception e) {}
-
-
-    /**
-     * This method will be called whenever a DCC Chat request is received.
-     * This means that a client has requested to chat to us directly rather
-     * than via the IRC server. This is useful for sending many lines of text
-     * to and from the bot without having to worry about flooding the server
-     * or any operators of the server being able to "spy" on what is being
-     * said. This abstract implementation performs no action, which means
-     * that all DCC CHAT requests will be ignored by default.
-     *  <p>
-     * If you wish to accept the connection, then you may override this
-     * method and call the accept() method on the DccChat object, which
-     * connects to the sender of the chat request and allows lines to be
-     * sent to and from the bot.
-     *  <p>
-     * Your bot must be able to connect directly to the user that sent the
-     * request.
-     *  <p>
-     * Example:
-     * <pre> public void onIncomingChatRequest(DccChat chat) {
-     *     try {
-     *         // Accept all chat, whoever it's from.
-     *         chat.accept();
-     *         chat.sendLine("Hello");
-     *         String response = chat.readLine();
-     *         chat.close();
-     *     }
-     *     catch (IOException e) {}
-     * }</pre>
-     * 
-     * Each time this method is called, it is called from within a new Thread
-     * so that multiple DCC CHAT sessions can run concurrently.
-     *  <p>
-     * The implementation of this method in the PircBot abstract class
-     * performs no actions and may be overridden as required.
-     *
-     * @since PircBot 1.2.0
-     * 
-     * @param chat A DccChat object that represents the incoming chat request.
-     * 
-     * @see DccChat
-     * 
-     */
-    protected void onIncomingChatRequest(DccChat chat) {}
-
-
     /**
      * This method is called whenever we receive a VERSION request.
      * This abstract implementation responds with the PircBot's _version string,
@@ -2850,8 +2499,8 @@ public abstract class PircBot implements ReplyConstants {
     @Override
     public boolean equals(Object o) {
         // This probably has the same effect as Object.equals, but that may change...
-        if (o instanceof PircBot) {
-            PircBot other = (PircBot) o;
+        if (o instanceof IRCClient) {
+            IRCClient other = (IRCClient) o;
             return other == this;
         }
         return false;
@@ -3177,7 +2826,6 @@ public abstract class PircBot implements ReplyConstants {
     private final Hashtable<String, String> _topics = new Hashtable<String, String>();
 
     // DccManager to process and handle all DCC events.
-    private final DccManager _dccManager = new DccManager(this);
     private int[] _dccPorts = null;
     private InetAddress _dccInetAddress = null;
 

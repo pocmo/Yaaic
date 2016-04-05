@@ -11,7 +11,7 @@ found at http://www.jibble.org/licenses/
 
 */
 
-package org.jibble.pircbot;
+package org.yaaic.protocol;
 
 /**
  * This class is used to represent a user on an IRC server.
@@ -27,8 +27,6 @@ package org.jibble.pircbot;
  * @version    1.4.6 (Build time: Wed Apr 11 19:20:59 2007)
  */
 public class User {
-    
-    
     /**
      * Constructs a User object with a known prefix and nick.
      *
@@ -137,22 +135,6 @@ public class User {
     public int hashCode() {
         return _lowerNick.hashCode();
     }
-    
-    
-    /**
-     * Returns the result of calling the compareTo method on lowercased
-     * nicks. This is useful for sorting lists of User objects.
-     * 
-     * @return the result of calling compareTo on lowercased nicks.
-     */
-    public int compareTo(Object o) {
-        if (o instanceof User) {
-            User other = (User) o;
-            return other._lowerNick.compareTo(_lowerNick);
-        }
-        return -1;
-    }
-    
     
     private String _prefix;
     private String _nick;

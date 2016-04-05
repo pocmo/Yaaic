@@ -27,9 +27,9 @@ import java.util.Collection;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
-import org.jibble.pircbot.NickAlreadyInUseException;
-import org.jibble.pircbot.PircBot;
-import org.jibble.pircbot.User;
+import org.yaaic.protocol.NickAlreadyInUseException;
+import org.yaaic.protocol.IRCClient;
+import org.yaaic.protocol.User;
 import org.yaaic.R;
 import org.yaaic.Yaaic;
 import org.yaaic.command.CommandParser;
@@ -50,7 +50,7 @@ import android.util.Log;
  *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class IRCConnection extends PircBot
+public class IRCConnection extends IRCClient
 {
     private static final String TAG = "Yaaic/IRCConnection";
     private final IRCService service;

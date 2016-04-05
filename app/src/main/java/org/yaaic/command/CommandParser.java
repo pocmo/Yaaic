@@ -26,7 +26,6 @@ import org.yaaic.command.handler.AMsgHandler;
 import org.yaaic.command.handler.AwayHandler;
 import org.yaaic.command.handler.BackHandler;
 import org.yaaic.command.handler.CloseHandler;
-import org.yaaic.command.handler.DCCHandler;
 import org.yaaic.command.handler.DeopHandler;
 import org.yaaic.command.handler.DevoiceHandler;
 import org.yaaic.command.handler.EchoHandler;
@@ -91,7 +90,6 @@ public class CommandParser
         commands.put("part", new PartHandler());
         commands.put("close", new CloseHandler());
         commands.put("notice", new NoticeHandler());
-        commands.put("dcc", new DCCHandler());
         commands.put("mode", new ModeHandler());
         commands.put("help", new HelpHandler());
         commands.put("away", new AwayHandler());
