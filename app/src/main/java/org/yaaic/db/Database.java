@@ -103,10 +103,10 @@ public class Database extends SQLiteOpenHelper
         );
 
         db.execSQL("CREATE TABLE " + AliasConstants.TABLE_NAME + " ("
-            + AliasConstants._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + AliasConstants.ALIAS + " TEXT NOT NULL, "
-            + AliasConstants.IDENTITY + " INTEGER"
-            + ");"
+                        + AliasConstants._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                        + AliasConstants.ALIAS + " TEXT NOT NULL, "
+                        + AliasConstants.IDENTITY + " INTEGER"
+                        + ");"
         );
     }
 
@@ -216,10 +216,10 @@ public class Database extends SQLiteOpenHelper
         values.put(ServerConstants.SASL_PASSWORD, authentication.getSaslPassword());
 
         this.getWritableDatabase().update(
-            ServerConstants.TABLE_NAME,
-            values,
-            ServerConstants._ID + " = " + serverId,
-            null
+                ServerConstants.TABLE_NAME,
+                values,
+                ServerConstants._ID + " = " + serverId,
+                null
         );
     }
 
@@ -251,9 +251,9 @@ public class Database extends SQLiteOpenHelper
     {
         // Remove old channels
         this.getWritableDatabase().delete(
-            ChannelConstants.TABLE_NAME,
-            ChannelConstants.SERVER + " = " + serverId,
-            null
+                ChannelConstants.TABLE_NAME,
+                ChannelConstants.SERVER + " = " + serverId,
+                null
         );
 
         // Add new channels
@@ -282,12 +282,14 @@ public class Database extends SQLiteOpenHelper
             null
         );
 
-        while (cursor.moveToNext()) {
-            String command = cursor.getString(cursor.getColumnIndex(CommandConstants.COMMAND));
-            commands.add(command);
+        try {
+            while (cursor.moveToNext()) {
+                String command = cursor.getString(cursor.getColumnIndex(CommandConstants.COMMAND));
+                commands.add(command);
+            }
+        } finally {
+            cursor.close();
         }
-
-        cursor.close();
 
         return commands;
     }
@@ -318,9 +320,9 @@ public class Database extends SQLiteOpenHelper
     {
         // Remove old commands
         this.getWritableDatabase().delete(
-            CommandConstants.TABLE_NAME,
-            CommandConstants.SERVER + " = " + serverId,
-            null
+                CommandConstants.TABLE_NAME,
+                CommandConstants.SERVER + " = " + serverId,
+                null
         );
 
         // Add new commands
@@ -482,21 +484,23 @@ public class Database extends SQLiteOpenHelper
         ArrayList<String> channels = new ArrayList<String>();
 
         Cursor cursor = this.getReadableDatabase().query(
-            ChannelConstants.TABLE_NAME,
-            ChannelConstants.ALL,
-            ChannelConstants.SERVER + " = " + serverId,
-            null,
-            null,
-            null,
-            ChannelConstants.NAME + " ASC"
+                ChannelConstants.TABLE_NAME,
+                ChannelConstants.ALL,
+                ChannelConstants.SERVER + " = " + serverId,
+                null,
+                null,
+                null,
+                ChannelConstants.NAME + " ASC"
         );
 
-        while (cursor.moveToNext()) {
-            String channel = cursor.getString(cursor.getColumnIndex(ChannelConstants.NAME));
-            channels.add(channel);
+        try {
+            while (cursor.moveToNext()) {
+                String channel = cursor.getString(cursor.getColumnIndex(ChannelConstants.NAME));
+                channels.add(channel);
+            }
+        } finally {
+            cursor.close();
         }
-
-        cursor.close();
 
         return channels;
     }
@@ -541,7 +545,7 @@ public class Database extends SQLiteOpenHelper
     protected void deleteAliases(long identityId)
     {
         getWritableDatabase().execSQL(
-            "DELETE FROM " + AliasConstants.TABLE_NAME + " WHERE " + AliasConstants.IDENTITY + " = " + identityId
+                "DELETE FROM " + AliasConstants.TABLE_NAME + " WHERE " + AliasConstants.IDENTITY + " = " + identityId
         );
     }
 
@@ -550,19 +554,23 @@ public class Database extends SQLiteOpenHelper
         List<String> aliases = new ArrayList<String>();
 
         Cursor cursor = this.getReadableDatabase().query(
-            AliasConstants.TABLE_NAME,
-            AliasConstants.ALL,
-            AliasConstants.IDENTITY + " = " + identityId,
-            null,
-            null,
-            null,
-            null
+                AliasConstants.TABLE_NAME,
+                AliasConstants.ALL,
+                AliasConstants.IDENTITY + " = " + identityId,
+                null,
+                null,
+                null,
+                null
         );
 
-        while (cursor.moveToNext()) {
-            aliases.add(cursor.getString(cursor.getColumnIndex(AliasConstants.ALIAS)));
+        try {
+            while (cursor.moveToNext()) {
+                aliases.add(cursor.getString(cursor.getColumnIndex(AliasConstants.ALIAS)));
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
         }
-        cursor.close();
 
         return aliases;
     }
@@ -608,10 +616,10 @@ public class Database extends SQLiteOpenHelper
         values.put(IdentityConstants.REALNAME, realname);
 
         this.getWritableDatabase().update(
-            IdentityConstants.TABLE_NAME,
-            values,
-            IdentityConstants._ID + " = " + identityId,
-            null
+                IdentityConstants.TABLE_NAME,
+                values,
+                IdentityConstants._ID + " = " + identityId,
+                null
         );
 
         setAliases(identityId, aliases);
@@ -628,26 +636,29 @@ public class Database extends SQLiteOpenHelper
         Identity identity = null;
 
         Cursor cursor = this.getReadableDatabase().query(
-            IdentityConstants.TABLE_NAME,
-            IdentityConstants.ALL,
-            IdentityConstants._ID + "=" + identityId,
-            null,
-            null,
-            null,
-            null
+                IdentityConstants.TABLE_NAME,
+                IdentityConstants.ALL,
+                IdentityConstants._ID + "=" + identityId,
+                null,
+                null,
+                null,
+                null
         );
 
-        if (cursor.moveToNext()) {
-            identity = new Identity();
+        try {
+            if (cursor.moveToNext()) {
+                identity = new Identity();
 
-            identity.setNickname(cursor.getString(cursor.getColumnIndex(IdentityConstants.NICKNAME)));
-            identity.setIdent(cursor.getString(cursor.getColumnIndex(IdentityConstants.IDENT)));
-            identity.setRealName(cursor.getString(cursor.getColumnIndex(IdentityConstants.REALNAME)));
+                identity.setNickname(cursor.getString(cursor.getColumnIndex(IdentityConstants.NICKNAME)));
+                identity.setIdent(cursor.getString(cursor.getColumnIndex(IdentityConstants.IDENT)));
+                identity.setRealName(cursor.getString(cursor.getColumnIndex(IdentityConstants.REALNAME)));
 
-            identity.setAliases(getAliasesByIdentityId(identityId));
+                identity.setAliases(getAliasesByIdentityId(identityId));
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
         }
-
-        cursor.close();
 
         return identity;
     }
@@ -672,12 +683,57 @@ public class Database extends SQLiteOpenHelper
             null
         );
 
-        if (cursor.moveToNext()) {
-            identityId = cursor.getInt(cursor.getColumnIndex(ServerConstants.IDENTITY));
+        try {
+            if (cursor.moveToNext()) {
+                identityId = cursor.getInt(cursor.getColumnIndex(ServerConstants.IDENTITY));
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
         }
 
-        cursor.close();
-
         return identityId;
+    }
+
+    public void beginTransition()
+    {
+        this.getWritableDatabase().beginTransaction();
+    }
+
+    public void setTransactionSuccessful()
+    {
+        this.getWritableDatabase().setTransactionSuccessful();
+    }
+
+    /**
+     * Quietly close the database.
+     *
+     * @param db The database.
+     */
+    public static void close(Database db)
+    {
+        if (db != null) {
+            try {
+                db.close();
+            } catch (Exception e) { /* quietly close... */ }
+        }
+    }
+
+    /**
+     * Quietly end the transaction and close the database.
+     *
+     * @param db The database.
+     */
+    public static void closeWithTransition(Database db)
+    {
+        if (db != null) {
+            try {
+                db.getWritableDatabase().endTransaction();
+            } catch (Exception e) { /* quietly end transition... */ }
+            try {
+                db.close();
+            } catch (Exception e) { /* quietly close... */ }
+        }
+
     }
 }

@@ -59,9 +59,14 @@ public class Yaaic
     public void loadServers(Context context)
     {
         if (!serversLoaded) {
-            Database db = new Database(context);
-            servers = db.getServers();
-            db.close();
+
+            Database db = null;
+            try {
+                db = new Database(context);
+                servers = db.getServers();
+            } finally {
+                Database.close(db);
+            }
 
             serversLoaded = true;
         }
