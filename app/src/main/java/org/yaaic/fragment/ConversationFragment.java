@@ -118,6 +118,7 @@ public class ConversationFragment extends Fragment implements ServerListener, Co
     //      join command would be called in onActivityResult(). joinChannelBuffer will save the
     //      channel name in onActivityResult() and run the join command in onResume().
     private String joinChannelBuffer;
+    private Conversation conversationToClose;
 
     private Snackbar snackbar;
 
@@ -208,6 +209,25 @@ public class ConversationFragment extends Fragment implements ServerListener, Co
 
         pagerAdapter = new ConversationPagerAdapter(getActivity(), server);
         pager.setAdapter(pagerAdapter);
+	    pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+		    @Override
+		    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+		    }
+
+		    @Override
+		    public void onPageSelected(int position) {
+			    Conversation conv = pagerAdapter.getItem(position);
+			    if (conv != null) {
+				    server.setSelectedConversation(conv.getName());
+			    }
+		    }
+
+		    @Override
+		    public void onPageScrollStateChanged(int state) {
+
+		    }
+	    });
 
         tabLayout = new ConversationTabLayout(container.getContext());
         tabLayout.setViewPager(pager);
@@ -437,10 +457,16 @@ public class ConversationFragment extends Fragment implements ServerListener, Co
                 break;
 
             case R.id.close:
-                Conversation conversationToClose = pagerAdapter.getItem(pager.getCurrentItem());
+                conversationToClose = pagerAdapter.getItem(pager.getCurrentItem());
                 // Make sure we part a channel when closing the channel conversation
                 if (conversationToClose.getType() == Conversation.TYPE_CHANNEL) {
-                    binder.getService().getConnection(serverId).partChannel(conversationToClose.getName());
+                    new Thread() {
+                        @Override
+                        public void run() {
+                        binder.getService().getConnection(serverId).partChannel(conversationToClose.getName());
+                        conversationToClose = null;
+                        }
+                    }.start();
                 }
                 else if (conversationToClose.getType() == Conversation.TYPE_QUERY) {
                     server.removeConversation(conversationToClose.getName());
