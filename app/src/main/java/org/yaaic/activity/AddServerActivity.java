@@ -24,7 +24,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -58,7 +58,7 @@ import java.util.regex.Pattern;
  *
  * @author Sebastian Kaspari <sebastian@yaaic.org>
  */
-public class AddServerActivity extends ActionBarActivity implements OnClickListener
+public class AddServerActivity extends AppCompatActivity implements OnClickListener
 {
     private static final int REQUEST_CODE_CHANNELS       = 1;
     private static final int REQUEST_CODE_COMMANDS       = 2;
