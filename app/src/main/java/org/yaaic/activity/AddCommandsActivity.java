@@ -92,32 +92,27 @@ public class AddCommandsActivity extends Activity implements OnClickListener, On
     @Override
     public void onClick(View v)
     {
-        switch (v.getId()) {
-            case R.id.add:
-                String command = commandInput.getText().toString().trim();
+        int id = v.getId();
+        if(id == R.id.add) {
+            String command = commandInput.getText().toString().trim();
 
-                if (!command.startsWith("/")) {
-                    command = "/" + command;
-                }
+            if (!command.startsWith("/")) {
+                command = "/" + command;
+            }
 
-                commands.add(command);
-                adapter.add(command);
-                commandInput.setText("/");
-                okButton.setEnabled(true);
-                break;
-
-            case R.id.cancel:
-                setResult(RESULT_CANCELED);
-                finish();
-                break;
-
-            case R.id.ok:
-                // Get list and return as result
-                Intent intent = new Intent();
-                intent.putExtra(Extra.COMMANDS, commands);
-                setResult(RESULT_OK, intent);
-                finish();
-                break;
+            commands.add(command);
+            adapter.add(command);
+            commandInput.setText("/");
+            okButton.setEnabled(true);
+        } else if(id == R.id.cancel) {
+            setResult(RESULT_CANCELED);
+            finish();
+        } else if(id == R.id.ok) {
+            // Get list and return as result
+            Intent intent = new Intent();
+            intent.putExtra(Extra.COMMANDS, commands);
+            setResult(RESULT_OK, intent);
+            finish();
         }
     }
 

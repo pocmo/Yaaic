@@ -92,28 +92,23 @@ public class AddChannelActivity extends Activity implements OnClickListener, OnI
     @Override
     public void onClick(View v)
     {
-        switch (v.getId()) {
-            case R.id.add:
-                String channel = channelInput.getText().toString().trim();
-                channels.add(channel);
-                adapter.add(channel);
-                channelInput.setText("#");
-                channelInput.setSelection(1);
-                okButton.setEnabled(true);
-                break;
-
-            case R.id.cancel:
-                setResult(RESULT_CANCELED);
-                finish();
-                break;
-
-            case R.id.ok:
-                // Get list and return as result
-                Intent intent = new Intent();
-                intent.putExtra(Extra.CHANNELS, channels);
-                setResult(RESULT_OK, intent);
-                finish();
-                break;
+        int id = v.getId();
+        if(id == R.id.add) {
+            String channel = channelInput.getText().toString().trim();
+            channels.add(channel);
+            adapter.add(channel);
+            channelInput.setText("#");
+            channelInput.setSelection(1);
+            okButton.setEnabled(true);
+        } else if(id == R.id.cancel) {
+            setResult(RESULT_CANCELED);
+            finish();
+        } else if(id == R.id.ok) {
+            // Get list and return as result
+            Intent intent = new Intent();
+            intent.putExtra(Extra.CHANNELS, channels);
+            setResult(RESULT_OK, intent);
+            finish();
         }
     }
 
