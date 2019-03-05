@@ -74,7 +74,7 @@ public class ConversationTabLayout extends HorizontalScrollView {
     }
 
     private static final int TITLE_OFFSET_DIPS = 24;
-    private static final int TAB_VIEW_PADDING_DIPS = 16;
+    private static final int TAB_VIEW_PADDING_DIPS = 12;
     private static final int TAB_VIEW_TEXT_SIZE_SP = 18;
 
     private int mTitleOffset;
@@ -184,7 +184,7 @@ public class ConversationTabLayout extends HorizontalScrollView {
     protected TextView createDefaultTabView(Context context) {
         TextView textView = new TextView(context);
         textView.setGravity(Gravity.CENTER);
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, TAB_VIEW_TEXT_SIZE_SP);
+        textView.setTextAppearance(context, android.R.style.TextAppearance_DeviceDefault_Medium);
         textView.setTypeface(Typeface.DEFAULT_BOLD);
         textView.setTextColor(0xFFFFFFFF);
 
