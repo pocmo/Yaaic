@@ -11,3 +11,8 @@ android:
 notifications:
   irc: "irc.freenode.net#yaaic"
 sudo: false
+
+cache:
+  directories:
+  - $HOME/.gradle/caches/
+  - $HOME/.gradle/wrapper/
