@@ -14,7 +14,9 @@ found at http://www.jibble.org/licenses/
 
 package org.yaaic.protocol;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * A Thread which is responsible for sending messages to the IRC server.
@@ -28,14 +30,13 @@ import java.io.*;
  * @version    1.4.6 (Build time: Wed Apr 11 19:20:59 2007)
  */
 public class OutputThread extends Thread {
-    
-    
+
     /**
      * Constructs an OutputThread for the underlying PircBot.  All messages
      * sent to the IRC server are sent by this OutputThread to avoid hammering
      * the server.  Messages are sent immediately if possible.  If there are
      * multiple messages queued, then there is a delay imposed.
-     * 
+     *
      * @param bot The underlying PircBot instance.
      * @param outQueue The Queue from which we will obtain our messages.
      */
@@ -44,34 +45,41 @@ public class OutputThread extends Thread {
         _outQueue = outQueue;
         this.setName(this.getClass() + "-Thread");
     }
-    
-    
+
+
     /**
      * A static method to write a line to a BufferedOutputStream and then pass
      * the line to the log method of the supplied PircBot instance.
-     * 
+     *
      * @param bot The underlying PircBot instance.
      * @param out The BufferedOutputStream to write to.
      * @param line The line to be written. "\r\n" is appended to the end.
      * @param encoding The charset to use when encoing this string into a
      *                 byte array.
      */
-    static void sendRawLine(IRCClient bot, BufferedWriter bwriter, String line) {
-        if (line.length() > bot.getMaxLineLength() - 2) {
-            line = line.substring(0, bot.getMaxLineLength() - 2);
-        }
-        synchronized(bwriter) {
-            try {
-                bwriter.write(line + "\r\n");
-                bwriter.flush();
+    static void sendRawLine(final IRCClient bot, final BufferedWriter bwriter, final String line) {
+        RAW_LINE_SENDER_THREAD.execute(new Runnable() {
+            @Override public void run() {
+                synchronized (bwriter) {
+                    String lineToSend;
+                    if (line.length() > bot.getMaxLineLength() - 2) {
+                        lineToSend = line.substring(0, bot.getMaxLineLength() - 2);
+                    } else {
+                        lineToSend = line;
+                    }
+
+                    try {
+                        bwriter.write(lineToSend + "\r\n");
+                        bwriter.flush();
+                    } catch (Exception e) {
+                        // Silent response - just lose the line.
+                    }
+                }
             }
-            catch (Exception e) {
-                // Silent response - just lose the line.
-            }
-        }
+        });
     }
-    
-    
+
+
     /**
      * This method starts the Thread consuming from the outgoing message
      * Queue and sending lines to the server.
@@ -82,7 +90,7 @@ public class OutputThread extends Thread {
             while (running) {
                 // Small delay to prevent spamming of the channel
                 Thread.sleep(_bot.getMessageDelay());
-                
+
                 String line = (String) _outQueue.next();
                 if (line != null) {
                     _bot.sendRawLine(line);
@@ -96,8 +104,9 @@ public class OutputThread extends Thread {
             // Just let the method return naturally...
         }
     }
-    
+
+    private static final Executor RAW_LINE_SENDER_THREAD = Executors.newSingleThreadExecutor();
     private IRCClient _bot = null;
     private Queue _outQueue = null;
-    
+
 }
