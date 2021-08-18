@@ -108,29 +108,27 @@ public class AuthenticationActivity extends Activity implements OnCheckedChangeL
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
     {
-        switch (buttonView.getId()) {
-            case R.id.nickserv_checkbox:
-                nickservPasswordLabel.setEnabled(isChecked);
-                nickservPasswordEditText.setEnabled(isChecked);
 
-                if (!isChecked) {
-                    nickservPasswordEditText.setText("");
-                }
+        int id = buttonView.getId();
+        if(id == R.id.nickserv_checkbox) {
+            nickservPasswordLabel.setEnabled(isChecked);
+            nickservPasswordEditText.setEnabled(isChecked);
 
-                break;
+            if (!isChecked) {
+                nickservPasswordEditText.setText("");
+            }
 
-            case R.id.sasl_checkbox:
-                saslUsernameLabel.setEnabled(isChecked);
-                saslUsernameEditText.setEnabled(isChecked);
-                saslPasswordLabel.setEnabled(isChecked);
-                saslPasswordEditText.setEnabled(isChecked);
+        } else if(id == R.id.sasl_checkbox) {
+            saslUsernameLabel.setEnabled(isChecked);
+            saslUsernameEditText.setEnabled(isChecked);
+            saslPasswordLabel.setEnabled(isChecked);
+            saslPasswordEditText.setEnabled(isChecked);
 
-                if (!isChecked) {
-                    saslUsernameEditText.setText("");
-                    saslPasswordEditText.setText("");
-                }
+            if (!isChecked) {
+                saslUsernameEditText.setText("");
+                saslPasswordEditText.setText("");
+            }
 
-                break;
         }
     }
 
@@ -140,20 +138,18 @@ public class AuthenticationActivity extends Activity implements OnCheckedChangeL
     @Override
     public void onClick(View v)
     {
-        switch (v.getId()) {
-            case R.id.ok:
-                Intent intent = new Intent();
-                intent.putExtra(Extra.NICKSERV_PASSWORD, nickservPasswordEditText.getText().toString());
-                intent.putExtra(Extra.SASL_USER, saslUsernameEditText.getText().toString());
-                intent.putExtra(Extra.SASL_PASSWORD, saslPasswordEditText.getText().toString());
-                setResult(RESULT_OK, intent);
-                finish();
-                break;
+        int id = v.getId();
+        if(id == R.id.ok) {
+            Intent intent = new Intent();
+            intent.putExtra(Extra.NICKSERV_PASSWORD, nickservPasswordEditText.getText().toString());
+            intent.putExtra(Extra.SASL_USER, saslUsernameEditText.getText().toString());
+            intent.putExtra(Extra.SASL_PASSWORD, saslPasswordEditText.getText().toString());
+            setResult(RESULT_OK, intent);
+            finish();
 
-            case R.id.cancel:
-                setResult(RESULT_CANCELED);
-                finish();
-                break;
+        } else if(id == R.id.cancel) {
+            setResult(RESULT_CANCELED);
+            finish();
         }
     }
 }

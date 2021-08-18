@@ -68,28 +68,25 @@ public class AddAliasActivity extends Activity implements OnClickListener, OnIte
     @Override
     public void onClick(View v)
     {
-        switch (v.getId()) {
-            case R.id.add:
-                String alias = aliasInput.getText().toString().trim();
-                aliases.add(alias);
-                adapter.add(alias);
-                aliasInput.setText("");
-                okButton.setEnabled(true);
-                break;
 
-            case R.id.cancel:
-                setResult(RESULT_CANCELED);
-                finish();
-                break;
-
-            case R.id.ok:
-                // Get list and return as result
-                Intent intent = new Intent();
-                intent.putExtra(Extra.ALIASES, aliases);
-                setResult(RESULT_OK, intent);
-                finish();
-                break;
+        int id = v.getId();
+        if(id == R.id.add) {
+            String alias = aliasInput.getText().toString().trim();
+            aliases.add(alias);
+            adapter.add(alias);
+            aliasInput.setText("");
+            okButton.setEnabled(true);
+        } else if(id == R.id.cancel) {
+            setResult(RESULT_CANCELED);
+            finish();
+        } else if(id == R.id.ok) {
+          // Get list and return as result
+            Intent intent = new Intent();
+            intent.putExtra(Extra.ALIASES, aliases);
+            setResult(RESULT_OK, intent);
+            finish();
         }
+
     }
 
     /**

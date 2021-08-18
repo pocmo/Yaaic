@@ -428,52 +428,40 @@ public class ConversationFragment extends Fragment implements ServerListener, Co
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.disconnect:
-                server.setStatus(Status.DISCONNECTED);
-                server.setMayReconnect(false);
-                binder.getService().getConnection(serverId).quitServer();
-                server.clearConversations();
-                break;
-
-            case R.id.close:
-                Conversation conversationToClose = pagerAdapter.getItem(pager.getCurrentItem());
-                // Make sure we part a channel when closing the channel conversation
-                if (conversationToClose.getType() == Conversation.TYPE_CHANNEL) {
-                    binder.getService().getConnection(serverId).partChannel(conversationToClose.getName());
-                }
-                else if (conversationToClose.getType() == Conversation.TYPE_QUERY) {
-                    server.removeConversation(conversationToClose.getName());
-                    onRemoveConversation(conversationToClose.getName());
-                } else {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.close_server_window), Toast.LENGTH_SHORT).show();
-                }
-                break;
-
-            case R.id.join:
-                startActivityForResult(new Intent(getActivity(), JoinActivity.class), REQUEST_CODE_JOIN);
-                break;
-
-            case R.id.users:
-                Conversation conversationForUserList = pagerAdapter.getItem(pager.getCurrentItem());
-                if (conversationForUserList.getType() == Conversation.TYPE_CHANNEL) {
-                    Intent intent = new Intent(getActivity(), UsersActivity.class);
-                    intent.putExtra(
-                            Extra.USERS,
-                            binder.getService().getConnection(server.getId()).getUsersAsStringArray(
-                                    conversationForUserList.getName()
-                            )
-                    );
-                    startActivityForResult(intent, REQUEST_CODE_USERS);
-                } else {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.only_usable_from_channel), Toast.LENGTH_SHORT).show();
-                }
-                break;
-
-            case R.id.notify:
-                Conversation conversationForNotify = pagerAdapter.getItem(pager.getCurrentItem());
-                conversationForNotify.setAlwaysNotify(!item.isChecked());
-                break;
+        int id = item.getItemId();
+        if(id == R.id.disconnect) {
+            server.setStatus(Status.DISCONNECTED);
+            server.setMayReconnect(false);
+            binder.getService().getConnection(serverId).quitServer();
+            server.clearConversations();
+        } else if(id == R.id.close) {
+            Conversation conversationToClose = pagerAdapter.getItem(pager.getCurrentItem());
+            // Make sure we part a channel when closing the channel conversation
+            if (conversationToClose.getType() == Conversation.TYPE_CHANNEL) {
+                binder.getService().getConnection(serverId).partChannel(conversationToClose.getName());
+            }
+            else if (conversationToClose.getType() == Conversation.TYPE_QUERY) {
+                server.removeConversation(conversationToClose.getName());
+                onRemoveConversation(conversationToClose.getName());
+            } else {
+                Toast.makeText(getActivity(), getResources().getString(R.string.close_server_window), Toast.LENGTH_SHORT).show();
+            }
+        } else if(id == R.id.join) {
+            startActivityForResult(new Intent(getActivity(), JoinActivity.class), REQUEST_CODE_JOIN);
+        } else if(id == R.id.users) {
+            Conversation conversationForUserList = pagerAdapter.getItem(pager.getCurrentItem());
+            if (conversationForUserList.getType() == Conversation.TYPE_CHANNEL) {
+                Intent intent = new Intent(getActivity(), UsersActivity.class);
+                intent.putExtra(
+                        Extra.USERS,
+                        binder.getService().getConnection(server.getId()).getUsersAsStringArray(
+                                conversationForUserList.getName()
+                        )
+                );
+                startActivityForResult(intent, REQUEST_CODE_USERS);
+            } else {
+                Toast.makeText(getActivity(), getResources().getString(R.string.only_usable_from_channel), Toast.LENGTH_SHORT).show();
+            }
         }
 
         return true;
